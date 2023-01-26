@@ -14,21 +14,21 @@ const upload = require("express-fileupload");
 const fs = require("fs");
 const path = require('path');
 
-const pool = new Pool({
-  user: "vittaex",
-  host: "localhost",
-  database: "finance",
-  password: "123456",
-  port: 5432,
-});
-
 // const pool = new Pool({
-//   user: "postgres",
+//   user: "vittaex",
 //   host: "localhost",
 //   database: "finance",
-//   password: "arun",
+//   password: "123456",
 //   port: 5432,
 // });
+
+const pool = new Pool({
+  user: "postgres",
+  host: "localhost",
+  database: "finance",
+  password: "arun",
+  port: 5432,
+});
 
 const assets  = require("./assetsName.json");
 const data = require("./info.json");
@@ -64,7 +64,7 @@ async function addAssets() {
     await pool.query(`TRUNCATE TABLE gameData`);
     for (years in data){
       data[years].forEach(year=>{
-        const promise = pool.query(`insert into gameData(year,phase1,phase2,phase3,phase4) values($1,$2,$2,$2,$2)`,[year,'00:00:30']);
+        const promise = pool.query(`insert into gameData(year,phase1,phase2,phase3,phase4) values($1,$2,$2,$2,$2)`,[year,'00:00:10']);
         promises.push(promise);
       });
     }

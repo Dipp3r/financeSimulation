@@ -17,21 +17,21 @@ const path = require("path");
 // const uploadFolderPath = `./upload`;
 // fs.mkdir(uploadFolderPath, { recursive: true }, (err) => {});
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -96,16 +96,17 @@ const addInt = async (phase = 1,year = 1,lastYear = 0) => {
   }
   if (year <= lastYear) {
     try {
-      const query = `SELECT phase${phase} FROM gamedata WHERE year = $1`;
+      const query = `SELECT phase${phase} FROM gamedata WHERE year = $1 ORDER BY year ASC`;
       const result = await pool.query(query, [year]);
       const time = result.rows[0][`phase${phase}`];
       const [hours, minutes, seconds] = time.split(":");
       const totalSeconds = Number.parseInt((hours * 3600) + (minutes * 60) + (seconds))
       console.log("year: ",year," phase:", phase," sec: ", totalSeconds);
       let obj = {};
-      obj.messageType = "phaseChange";
+      obj.msgType = "phaseChange";
       obj.year = year;
       obj.phase = phase;
+      obj.time = time;
 
       wss.broadcast(obj);
 
@@ -117,8 +118,8 @@ const addInt = async (phase = 1,year = 1,lastYear = 0) => {
 };
 
 app.post("/start",async (req,res)=>{
-  let result = await pool.query("select year from gameData")
-  let [firstyear,lastYear] = [result.rows[0].year,result.rows.pop().year]
+  let result = await pool.query("select year from gameData ORDER BY year ASC");
+  let [firstyear,lastYear] = [result.rows[0].year,result.rows.pop().year];
   addInt(1,firstyear,lastYear);
   res.status(200).end();
 })
@@ -184,10 +185,10 @@ app.get("/team/:id", async (req, res) => {
       [groupid]
       );
       res.status(200).send(players.rows);
-    } catch (error) {
+  } catch (error) {
       console.log("Error: " + error.message);
-    }
-  });
+  }
+});
   
 app.get("/news", async (req, res) => {
   try {
