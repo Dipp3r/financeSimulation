@@ -1,0 +1,37 @@
+@import 'main';
+
+#portfolio{
+    #topBar{
+        border-bottom: 2px solid rgba(34, 63, 128, 0.4);
+        @include flex(row,space-between,center);
+        img{
+            margin-left:10px;
+        }
+        p{
+            margin:15px;
+            margin-left:50px;
+            margin-bottom:8px;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            color: #6A6A6A;
+        }
+        #timer{
+            @include flex(row,space-between,center);
+            p{
+                margin:5px 20px 0px 5px;
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 16px;
+                color: #FF473F;
+
+            }
+        }
+    }
+    #main{
+        @include flex(column,center,center);
+    }
+
+}

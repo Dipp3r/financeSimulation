@@ -31,6 +31,11 @@ section {
   align-items: center;
 }
 
+button {
+  background-color: transparent;
+  border: none;
+}
+
 #login {
   display: flex;
   flex-direction: column;
