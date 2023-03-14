@@ -1,0 +1,106 @@
+@font-face {
+  font-family: Montserrat;
+  src: url(../Montserrat/Montserrat-VariableFont_wght.ttf);
+}
+body {
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 0px;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+#root {
+  position: fixed;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+section {
+  overflow: auto;
+  height: 100vh;
+  width: 100vw;
+  padding-top: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#login {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 390px;
+  height: 844px;
+}
+#login #portion1 {
+  width: 100%;
+  margin-top: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#login #portion1 #description {
+  margin: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+#login #portion1 #description p {
+  margin: 0px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 35px;
+  line-height: 43px;
+  color: #363636;
+}
+#login #portion1 img {
+  margin-right: 100px;
+}
+#login input {
+  margin-bottom: 50px;
+  width: 270px;
+  border: none;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  border-bottom: 2px solid #D9D9D9;
+}
+#login input ::-moz-placeholder {
+  color: #8A8A8A;
+}
+#login input ::placeholder {
+  color: #8A8A8A;
+}
+#login input:focus {
+  outline: none;
+}
+#login #loginButton {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  padding: 5px 10px;
+  width: 124px;
+  height: 49px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #FFFFFF;
+  background: #223F80;
+  border-radius: 35px;
+}
+#login #loginButton:focus {
+  opacity: 0.8;
+}/*# sourceMappingURL=login.css.map */
