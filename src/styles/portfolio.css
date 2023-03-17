@@ -2,6 +2,10 @@
   font-family: Montserrat;
   src: url(../Montserrat/Montserrat-VariableFont_wght.ttf);
 }
+@font-face {
+  font-family: Inter;
+  src: url(../Inter/Inter-VariableFont_slntwght.ttf);
+}
 body {
   margin: 0px;
   display: flex;
@@ -75,4 +79,195 @@ button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+#portfolio #main img {
+  margin-top: 40px;
+}
+#portfolio #main .row {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+  width: 288px;
+}
+#portfolio #main .row .column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+#portfolio #main .row .column .content {
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+}
+#portfolio #main .row .column .content p {
+  margin: 0px;
+  padding: 0px;
+  margin-left: 10px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 10px;
+  color: #4F4F4F;
+}
+#portfolio #main #row1 {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+  width: 340px;
+}
+#portfolio #main #row1 p {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  color: #4F4F4F;
+}
+#portfolio #main #row2 {
+  margin: 20px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+  width: 300px;
+}
+#portfolio #main #row2 p {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  color: #4F4F4F;
+}
+#portfolio #main #row2 hr {
+  width: 25px;
+  height: 0px;
+  border: 2px solid rgba(34, 63, 128, 0.2);
+  transform: rotate(90deg);
+}
+#portfolio #main #row2 .rowContent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+#portfolio #main #row2 .rowContent img {
+  margin: 5px;
+}
+#portfolio #main #row2 .rowContent #percentage {
+  margin: 5px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  color: #FB5151;
+}
+#portfolio #main .card {
+  margin-top: 10px;
+  width: 320px;
+  height: 30px;
+  background: rgba(34, 63, 128, 0.2);
+  border-radius: 7px;
+  padding: 10px 15px;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#portfolio #main .card #left {
+  height: 42px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+#portfolio #main .card #left p {
+  margin: 0px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  color: #4F4F4F;
+}
+#portfolio #main .card #left img {
+  margin: 0px;
+  margin-left: 5px;
+  margin-bottom: 4px;
+  height: 24px;
+  width: 18px;
+}
+#portfolio #main .card #middle {
+  height: 42px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  color: #4F4F4F;
+}
+#portfolio #main .card #last {
+  height: 42px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+#portfolio #main .card #last #amount {
+  margin: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+#portfolio #main .card #last #amount img {
+  margin: 5px;
+}
+#portfolio #main .card #last #amount p {
+  margin: 0px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+}
+#portfolio #main .card #last #amount button {
+  margin-left: 10px;
+}
+#portfolio #main #title {
+  margin: 0px;
+  margin-top: 50px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  color: #4F4F4F;
+}
+#portfolio #main #amount {
+  margin: 0px;
+  margin-top: 10px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  color: #4F4F4F;
+}
+
+.mr-2 {
+  margin-right: 20px;
+}
+
+.gain {
+  color: #6BC640;
+}
+
+.loss {
+  color: #FB5151;
 }/*# sourceMappingURL=portfolio.css.map */
