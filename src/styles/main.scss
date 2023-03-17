@@ -3,6 +3,11 @@
     src: url(../Montserrat/Montserrat-VariableFont_wght.ttf);
 }
 
+@font-face {
+    font-family: Inter;
+    src: url(../Inter/Inter-VariableFont_slntwght.ttf);
+}
+
 @mixin flex($a,$b,$c){
     display: flex;
     flex-direction: $a;

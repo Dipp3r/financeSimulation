@@ -2,6 +2,10 @@
   font-family: Montserrat;
   src: url(../Montserrat/Montserrat-VariableFont_wght.ttf);
 }
+@font-face {
+  font-family: Inter;
+  src: url(../Inter/Inter-VariableFont_slntwght.ttf);
+}
 body {
   margin: 0px;
   display: flex;
