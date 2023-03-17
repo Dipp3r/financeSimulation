@@ -47,4 +47,8 @@ section{
 button{
     background-color: transparent;
     border: none;
+    &:focus{
+        outline:none;
+        border:none;
+    }
 }

@@ -38,4 +38,8 @@ section {
 button {
   background-color: transparent;
   border: none;
+}
+button:focus {
+  outline: none;
+  border: none;
 }/*# sourceMappingURL=main.css.map */
