@@ -31,7 +31,9 @@
         }
     }
     #main{
-        @include flex(column,center,center);
+        @include flex(column,flex-start,center);
+        height:800px;
+        overflow-y:scroll;
         img{
             margin-top:40px;
         }
@@ -171,6 +173,48 @@
             }
 
         }
+        #expand{
+            margin:20px 0px;
+            @include flex(column,center,center);
+            // display:none;
+            .row{
+                margin:0px;
+                width: 320px;
+                height: 30px;
+                @include flex(row,space-between,flex-start);
+                #name{
+                    margin:0px;
+                    font-family: 'Inter';
+                    font-style: normal;
+                    font-weight: 700;
+                    color: #505050;
+                    font-size: 14px;
+                }
+                div{
+                    @include flex(column,center,center);
+                    p{  
+                        margin:0px;
+                        font-family: 'Inter';
+                        font-style: normal;
+                        font-weight: 400;
+                        font-size: 16px; 
+                    }
+                    div{
+                        @include flex(row,center,center);
+                        img{
+                            margin:5px;
+                        }
+                    }
+                    
+                }
+            }
+            hr{
+                margin-top:15px;
+                width: 330px;
+                height: 1px;
+                background: rgba(34, 63, 128, 0.2);
+            }
+        }
         #title{
             margin:0px;
             margin-top:50px;
@@ -204,4 +248,8 @@
 }
 .loss{
     color: #FB5151;
+}
+
+.final{
+    margin-bottom:40px;
 }

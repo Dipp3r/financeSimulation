@@ -77,8 +77,10 @@ button {
 #portfolio #main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  height: 800px;
+  overflow-y: scroll;
 }
 #portfolio #main img {
   margin-top: 40px;
@@ -241,6 +243,58 @@ button {
 #portfolio #main .card #last #amount button {
   margin-left: 10px;
 }
+#portfolio #main #expand {
+  margin: 20px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#portfolio #main #expand .row {
+  margin: 0px;
+  width: 320px;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+#portfolio #main #expand .row #name {
+  margin: 0px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  color: #505050;
+  font-size: 14px;
+}
+#portfolio #main #expand .row div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#portfolio #main #expand .row div p {
+  margin: 0px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+}
+#portfolio #main #expand .row div div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+#portfolio #main #expand .row div div img {
+  margin: 5px;
+}
+#portfolio #main #expand hr {
+  margin-top: 15px;
+  width: 330px;
+  height: 1px;
+  background: rgba(34, 63, 128, 0.2);
+}
 #portfolio #main #title {
   margin: 0px;
   margin-top: 50px;
@@ -270,4 +324,8 @@ button {
 
 .loss {
   color: #FB5151;
+}
+
+.final {
+  margin-bottom: 40px;
 }/*# sourceMappingURL=portfolio.css.map */

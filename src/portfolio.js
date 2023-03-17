@@ -101,6 +101,140 @@ class PortfolioComp extends React.Component{
                         </div>          
                     </div>
 
+                    <div id="expand">
+                        <div class="row">
+                            <p id="name">Ram dom</p>
+                            <div>
+                                <p>₹100</p>
+                                <div>
+                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <p class="gain">2%</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p>₹49,800</p>
+                                <div>
+                                    <img src={require("./images/loss.svg")} alt="loss"/>
+                                    <p class="loss">₹200</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        <div class="row">
+                            <p id="name">Ram dom</p>
+                            <div>
+                                <p>₹100</p>
+                                <div>
+                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <p class="gain">2%</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p>₹49,800</p>
+                                <div>
+                                    <img src={require("./images/loss.svg")} alt="loss"/>
+                                    <p class="loss">₹200</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        <div class="row">
+                            <p id="name">Ram dom</p>
+                            <div>
+                                <p>₹100</p>
+                                <div>
+                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <p class="gain">2%</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p>₹49,800</p>
+                                <div>
+                                    <img src={require("./images/loss.svg")} alt="loss"/>
+                                    <p class="loss">₹200</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        <div class="row">
+                            <p id="name">Ram dom</p>
+                            <div>
+                                <p>₹100</p>
+                                <div>
+                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <p class="gain">2%</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p>₹49,800</p>
+                                <div>
+                                    <img src={require("./images/loss.svg")} alt="loss"/>
+                                    <p class="loss">₹200</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        <div class="row">
+                            <p id="name">Ram dom</p>
+                            <div>
+                                <p>₹100</p>
+                                <div>
+                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <p class="gain">2%</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p>₹49,800</p>
+                                <div>
+                                    <img src={require("./images/loss.svg")} alt="loss"/>
+                                    <p class="loss">₹200</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        <div class="row">
+                            <p id="name">Ram dom</p>
+                            <div>
+                                <p>₹100</p>
+                                <div>
+                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <p class="gain">2%</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p>₹49,800</p>
+                                <div>
+                                    <img src={require("./images/loss.svg")} alt="loss"/>
+                                    <p class="loss">₹200</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        <div class="row">
+                            <p id="name">Ram dom</p>
+                            <div>
+                                <p>₹100</p>
+                                <div>
+                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <p class="gain">2%</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p>₹49,800</p>
+                                <div>
+                                    <img src={require("./images/loss.svg")} alt="loss"/>
+                                    <p class="loss">₹200</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card">
                         <div id="left">
                             <p>Mutual Funds</p>
@@ -121,7 +255,7 @@ class PortfolioComp extends React.Component{
                         </div>          
                     </div>
 
-                    <div class="card">
+                    <div class="card final">
                         <div id="left">
                             <p>Commodities</p>
                         </div>
