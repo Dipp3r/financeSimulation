@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route ,useNavigate} from "react-router-dom";
 import LoginComp from './loginComp';
 import PortfolioComp from './portfolio';
 import ProfileComp from './profile'; 
+import TeamComp from './team';
+
 
 class IndexComp extends React.Component{
   constructor(props){
@@ -28,6 +30,7 @@ root.render(
   <div>
     {/* <LoginComp/> */}
     {/* <ProfileComp/> */}
-    <PortfolioComp/>
+    {/* <PortfolioComp/> */}
+    <TeamComp/>
   </div>
 );
