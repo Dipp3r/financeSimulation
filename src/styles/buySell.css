@@ -1,0 +1,241 @@
+@font-face {
+  font-family: Montserrat;
+  src: url(../Montserrat/Montserrat-VariableFont_wght.ttf);
+}
+@font-face {
+  font-family: Inter;
+  src: url(../Inter/Inter-VariableFont_slntwght.ttf);
+}
+body {
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 0px;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+#root {
+  position: fixed;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+section {
+  overflow: auto;
+  height: 100vh;
+  width: 100vw;
+  padding-top: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+}
+button:focus {
+  outline: none;
+  border: none;
+}
+
+.mr-2 {
+  margin-right: 20px;
+}
+
+.gain {
+  color: #6BC640;
+}
+
+.loss {
+  color: #FB5151;
+}
+
+.final {
+  margin-bottom: 40px;
+}
+
+#sell #success {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: none;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.9);
+}
+#sell #success #circle {
+  width: 165px;
+  height: 165px;
+  border-radius: 100%;
+  background: #33A05F;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#sell #success p {
+  margin: 5px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  color: #FFFFFF;
+}
+#sell #success .small {
+  font-size: 14px;
+}
+#sell #topBar {
+  border-bottom: 2px solid rgba(34, 63, 128, 0.4);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#sell #topBar div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+#sell #topBar div img {
+  margin-left: 10px;
+}
+#sell #topBar div .coin {
+  width: 23px;
+  height: 30px;
+}
+#sell #topBar div p {
+  margin-left: 5px;
+  margin-bottom: 8px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  color: #223F80;
+}
+#sell #topBar #timer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#sell #topBar #timer p {
+  margin: 5px 20px 0px 5px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  color: #FF473F;
+}
+#sell #main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 800px;
+  overflow-y: scroll;
+}
+#sell #main #about {
+  position: relative;
+  width: 100vw;
+  height: 101px;
+  background: rgba(34, 63, 128, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#sell #main #about p {
+  margin-top: 0px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  color: #262626;
+}
+#sell #main #about div {
+  position: absolute;
+  bottom: 0px;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+#sell #main #about div button {
+  padding: 10px;
+  width: 50%;
+  color: rgba(34, 63, 128, 0.5);
+}
+#sell #main #about div button:focus {
+  color: #223F80;
+  border-bottom: 3px solid #223F80;
+}
+#sell #main #content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#sell #main #content p {
+  margin-top: 150px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  color: #262626;
+}
+#sell #main #content #amount {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+#sell #main #content #amount p {
+  margin: 0px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  color: #000000;
+}
+#sell #main #content #amount input {
+  margin-left: 5px;
+  height: 44px;
+  width: 100px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 36px;
+  color: #282828;
+  border: none;
+}
+#sell #main #content #amount input:focus {
+  border: none;
+  outline: none;
+}
+#sell #main #fixed {
+  position: fixed;
+  bottom: 0px;
+  z-index: -1;
+}
+#sell #main #fixed button {
+  margin: 40px;
+  width: 282px;
+  height: 42px;
+  background: #33A05F;
+  border-radius: 4px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  color: #FFFFFF;
+}/*# sourceMappingURL=buySell.css.map */

@@ -2,6 +2,10 @@
   font-family: Montserrat;
   src: url(../Montserrat/Montserrat-VariableFont_wght.ttf);
 }
+@font-face {
+  font-family: Inter;
+  src: url(../Inter/Inter-VariableFont_slntwght.ttf);
+}
 body {
   margin: 0px;
   display: flex;
@@ -34,6 +38,26 @@ section {
 button {
   background-color: transparent;
   border: none;
+}
+button:focus {
+  outline: none;
+  border: none;
+}
+
+.mr-2 {
+  margin-right: 20px;
+}
+
+.gain {
+  color: #6BC640;
+}
+
+.loss {
+  color: #FB5151;
+}
+
+.final {
+  margin-bottom: 40px;
 }
 
 #login {
