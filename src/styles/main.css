@@ -58,4 +58,13 @@ button:focus {
 
 .final {
   margin-bottom: 40px;
+}
+
+.coin {
+  height: 30px;
+  width: 30px;
+}
+
+.text-thin {
+  font-weight: 400;
 }/*# sourceMappingURL=main.css.map */
