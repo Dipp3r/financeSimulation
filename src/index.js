@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HashRouter } from 'react-router-dom'
 import { BrowserRouter, Routes, Route ,useNavigate} from "react-router-dom";
+import SellComp from './buySell';
 import LoginComp from './loginComp';
 import PortfolioComp from './portfolio';
 import ProfileComp from './profile'; 
@@ -31,6 +32,7 @@ root.render(
     {/* <LoginComp/> */}
     {/* <ProfileComp/> */}
     {/* <PortfolioComp/> */}
-    <TeamComp/>
+    {/* <TeamComp/> */}
+    <SellComp/>
   </div>
 );

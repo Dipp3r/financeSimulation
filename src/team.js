@@ -86,19 +86,6 @@ class TeamComp extends React.Component{
                             
                         </p>
                     </div>
-
-                    <div class="row">
-                        <div id="portion1">
-                            <img src={require("./images/User_circle_light.svg")} alt="profile"/>
-                            <div id="info">
-                                <p>Arya</p>
-                                <p class="num">9446210451</p>
-                            </div>
-                        </div>
-                        <p id="portion2">
-                            
-                        </p>
-                    </div>
                 </div>
             </div> 
         )
