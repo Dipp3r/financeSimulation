@@ -2,6 +2,10 @@
   font-family: Montserrat;
   src: url(../Montserrat/Montserrat-VariableFont_wght.ttf);
 }
+@font-face {
+  font-family: Inter;
+  src: url(../Inter/Inter-VariableFont_slntwght.ttf);
+}
 body {
   margin: 0px;
   display: flex;
@@ -59,7 +63,7 @@ button {
   align-items: center;
 }
 #profile #topBar #timer p {
-  margin: 0px 20px 0px 5px;
+  margin: 5px 20px 0px 5px;
   font-family: "Inter";
   font-style: normal;
   font-weight: 700;
@@ -67,6 +71,7 @@ button {
   color: #FF473F;
 }
 #profile #main {
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -127,7 +132,7 @@ button {
 }
 #profile #main #desc {
   width: 164px;
-  height: 70px;
+  height: 30px;
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 500;
@@ -136,6 +141,7 @@ button {
   color: #6A6A6A;
 }
 #profile #main #options {
+  margin-bottom: 100px;
   padding: 5px 30px;
   width: 300px;
   height: 77px;

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { HashRouter } from 'react-router-dom'
 import { BrowserRouter, Routes, Route ,useNavigate} from "react-router-dom";
 import LoginComp from './loginComp';
+import PortfolioComp from './portfolio';
 import ProfileComp from './profile'; 
 
 class IndexComp extends React.Component{
@@ -26,6 +27,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <div>
     {/* <LoginComp/> */}
-    <ProfileComp/>
+    {/* <ProfileComp/> */}
+    <PortfolioComp/>
   </div>
 );
