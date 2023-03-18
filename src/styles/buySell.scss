@@ -17,6 +17,7 @@
         background: rgba(0, 0, 0, 0.9);
         p{
             margin:5px;
+            margin-top:20px;
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 600;
@@ -24,6 +25,7 @@
             color: #FFFFFF;
         }
         .small{
+            margin-top:5px;
             font-size: 14px;
         }
     }
@@ -71,6 +73,7 @@
         overflow-y:scroll;
         #about{
             position:relative;
+            z-index: -1;
             width: 100vw;
             height: 101px;
             background: rgba(34, 63, 128, 0.2);

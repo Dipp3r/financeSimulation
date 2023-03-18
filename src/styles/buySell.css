@@ -83,6 +83,7 @@ button:focus {
 }
 #sell #success p {
   margin: 5px;
+  margin-top: 20px;
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 600;
@@ -90,6 +91,7 @@ button:focus {
   color: #FFFFFF;
 }
 #sell #success .small {
+  margin-top: 5px;
   font-size: 14px;
 }
 #sell #topBar {
@@ -145,6 +147,7 @@ button:focus {
 }
 #sell #main #about {
   position: relative;
+  z-index: -1;
   width: 100vw;
   height: 101px;
   background: rgba(34, 63, 128, 0.2);
