@@ -44,6 +44,22 @@ button:focus {
   border: none;
 }
 
+.mr-2 {
+  margin-right: 20px;
+}
+
+.gain {
+  color: #6BC640;
+}
+
+.loss {
+  color: #FB5151;
+}
+
+.final {
+  margin-bottom: 40px;
+}
+
 #profile #topBar {
   border-bottom: 2px solid rgba(34, 63, 128, 0.4);
   display: flex;

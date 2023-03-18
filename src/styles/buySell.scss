@@ -1,0 +1,163 @@
+@import 'main';
+
+#sell{
+    #success{
+        @include flex(column,center,center);
+        display:none;
+        #circle{
+            width: 165px;
+            height: 165px;
+            border-radius:100%;
+            background: #33A05F;
+            @include flex(column,center,center);
+        }
+        position:fixed;
+        height:100vh;
+        width:100vw;
+        background: rgba(0, 0, 0, 0.9);
+        p{
+            margin:5px;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 32px;
+            color: #FFFFFF;
+        }
+        .small{
+            font-size: 14px;
+        }
+    }
+    #topBar{
+        border-bottom: 2px solid rgba(34, 63, 128, 0.4);
+        @include flex(row,space-between,center);
+        
+        div{
+            @include flex(row,flex-start,center);
+            img{
+                margin-left:10px;
+            }
+            .coin{
+                width:23px;
+                height:30px;
+            }
+            p{
+                margin-left:5px;
+                margin-bottom:8px;  
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 16px;
+                color: #223F80;
+            }
+        }
+        
+        #timer{
+            @include flex(row,space-between,center);
+            p{
+                margin:5px 20px 0px 5px;
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 16px;
+                color: #FF473F;
+
+            }
+        }
+    }
+    
+    #main{
+        @include flex(column,flex-start,center);
+        height:800px;
+        overflow-y:scroll;
+        #about{
+            position:relative;
+            width: 100vw;
+            height: 101px;
+            background: rgba(34, 63, 128, 0.2);
+            @include flex(column,center,center);
+            p{
+                margin-top:0px;
+                font-family: 'Montserrat';
+                font-style: normal;
+                font-weight: 500;
+                font-size: 16px;
+                color: #262626;
+            }
+            div{
+                position:absolute;
+                bottom:0px;
+                width:100vw;
+                @include flex(row,space-around,center);
+                button{
+                    padding:10px;
+                    width:50%;
+                    color: rgba(34, 63, 128, 0.5);
+                    &:focus{
+                        color: #223F80;
+                        border-bottom:3px solid #223F80;
+                    }
+                    
+                }
+            }
+        }
+        #content{
+            @include flex(column,center,center);
+            p{
+                margin-top:150px;
+                font-family: 'Montserrat';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 16px;
+                color: #262626;
+
+            }
+            #amount{
+                @include flex(row,center,center);
+                p{
+                    margin:0px;
+                    font-family: 'Inter';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 24px;
+                    color: #000000;
+
+                }
+                input{
+                    margin-left:5px;
+                    height:44px;
+                    width:100px;
+                    font-family: 'Inter';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 36px;
+                    color: #282828;
+                    border:none;
+                    &:focus{
+                        border:none;
+                        outline:none;
+                    }
+                }
+            }
+        }
+        #fixed{
+            position:fixed;
+            bottom:0px;
+            z-index:-1;
+            button{
+                margin:40px;
+                width: 282px;
+                height: 42px;
+                background: #33A05F;
+                border-radius: 4px;
+                font-family: 'Montserrat';
+                font-style: normal;
+                font-weight: 600;
+                font-size: 20px;
+                color: #FFFFFF;
+
+            }
+        }
+    }
+
+}
+
