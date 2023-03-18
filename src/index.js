@@ -4,6 +4,8 @@ import { HashRouter } from 'react-router-dom'
 import { BrowserRouter, Routes, Route ,useNavigate} from "react-router-dom";
 import SellComp from './buySell';
 import LoginComp from './loginComp';
+import NewsComp from './news';
+import NotifComp from './notification';
 import PortfolioComp from './portfolio';
 import ProfileComp from './profile'; 
 import TeamComp from './team';
@@ -33,6 +35,8 @@ root.render(
     {/* <ProfileComp/> */}
     {/* <PortfolioComp/> */}
     {/* <TeamComp/> */}
-    <SellComp/>
+    {/* <SellComp/> */}
+    {/* <NewsComp/> */}
+    <NotifComp/>
   </div>
 );
