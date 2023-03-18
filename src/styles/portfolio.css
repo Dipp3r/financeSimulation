@@ -39,6 +39,26 @@ button {
   background-color: transparent;
   border: none;
 }
+button:focus {
+  outline: none;
+  border: none;
+}
+
+.mr-2 {
+  margin-right: 20px;
+}
+
+.gain {
+  color: #6BC640;
+}
+
+.loss {
+  color: #FB5151;
+}
+
+.final {
+  margin-bottom: 40px;
+}
 
 #portfolio #topBar {
   border-bottom: 2px solid rgba(34, 63, 128, 0.4);
@@ -312,20 +332,4 @@ button {
   font-weight: 700;
   font-size: 30px;
   color: #4F4F4F;
-}
-
-.mr-2 {
-  margin-right: 20px;
-}
-
-.gain {
-  color: #6BC640;
-}
-
-.loss {
-  color: #FB5151;
-}
-
-.final {
-  margin-bottom: 40px;
 }/*# sourceMappingURL=portfolio.css.map */
