@@ -4,6 +4,7 @@
     #success{
         @include flex(column,center,center);
         display:none;
+        z-index:1;
         #circle{
             width: 165px;
             height: 165px;
@@ -73,7 +74,6 @@
         overflow-y:scroll;
         #about{
             position:relative;
-            z-index: -1;
             width: 100vw;
             height: 101px;
             background: rgba(34, 63, 128, 0.2);

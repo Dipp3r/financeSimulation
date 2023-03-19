@@ -8,6 +8,7 @@ import NewsComp from './news';
 import NotifComp from './notification';
 import PortfolioComp from './portfolio';
 import ProfileComp from './profile'; 
+import StocksComp from './stocks';
 import TeamComp from './team';
 
 
@@ -37,6 +38,7 @@ root.render(
     {/* <TeamComp/> */}
     {/* <SellComp/> */}
     {/* <NewsComp/> */}
-    <NotifComp/>
+    {/* <NotifComp/> */}
+    <StocksComp/>
   </div>
 );
