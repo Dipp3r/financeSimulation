@@ -1,0 +1,175 @@
+@import 'main';
+
+#stocks{
+    #topBar{
+        border-bottom: 2px solid rgba(34, 63, 128, 0.4);
+        @include flex(row,space-between,center);
+        
+        div{
+            @include flex(row,flex-start,center);
+            img{
+                margin-left:10px;
+            }
+            .coin{
+                width:23px;
+                height:30px;
+            }
+            p{
+                margin-left:5px;
+                margin-bottom:8px;  
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 16px;
+                color: #223F80;
+            }
+        }
+        p{
+            margin-bottom:8px;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            color: #595959;
+        }
+        
+        #timer{
+            @include flex(row,space-between,center);
+            p{
+                margin:5px 20px 0px 5px;
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 16px;
+                color: #FF473F;
+
+            }
+        }
+    }
+    
+    #main{
+        @include flex(column,flex-start,center);
+        #fixedNav{
+            position:fixed;
+            bottom:0px;
+            z-index: 1;
+            width:100vw;
+            height: 69px;
+            background: #FFFFFF;
+            box-shadow: 0px -3px 14px 1px rgba(0, 0, 0, 0.1);
+            @include flex(row,space-around,center);
+        }
+        #about{
+            position:relative;
+            width: 100vw;
+            height:50px;
+            background: white;
+            @include flex(column,center,center);
+            p{
+                margin-top:0px;
+                font-family: 'Montserrat';
+                font-style: normal;
+                font-weight: 500;
+                font-size: 16px;
+                color: #262626;
+            }
+            #statusButton{
+                position:absolute;
+                bottom:0px;
+                overflow:hidden;
+                width:100vw;
+                @include flex(row,space-around,center);
+                button{
+                    height:50px;
+                    width:50%;
+                    font-family: 'Montserrat';
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 15px;
+                    color: rgba(34, 63, 128, 0.5);
+                    border-bottom:3px solid rgba(34, 63, 128, 0.4);
+                    &:focus{
+                        color: #223F80;
+                        border-bottom:3px solid #223F80;
+                    }
+                }
+               
+            }
+        }
+        #stockInfo{
+            width: 100vw;
+            height: 32px;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            background: #223F80;
+            @include flex(row,space-evenly,center);
+            div{
+                margin-left:10px;
+                height: 32px;
+                @include flex(row,flex-start,center);
+                p{
+                    font-family: 'Inter';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 12px;
+                    color: #FFFFFF;
+                }
+                a{
+                    font-family: 'Inter';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 12px;
+                }
+
+            }
+        } 
+        #content{
+            height:700px;
+            overflow:hidden;
+            overflow-y:scroll;
+            .top{
+                background: rgba(34, 63, 128, 0.15);
+            }
+            .bottom{
+                background: rgba(34, 63, 128, 0.1);
+            }
+            .row{
+                width: 100vw;
+                height:94px;
+                @include flex(row,space-between,center);
+                #name{
+                    font-family: 'Inter';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 16px;
+                    color: #292929;
+                    margin-left:20px;
+                    width:75px;
+                }
+                div{
+                    @include flex(column,center,center);
+                    p{
+                        margin:2px;
+                        margin-left:5px;
+                        font-family: 'Inter';
+                        font-style: normal;
+                        font-weight: 400;
+                        font-size: 16px;
+                    }
+                    div{
+                        @include flex(row,center,center);
+                    }
+                }
+                #amount{
+                    font-family: 'Inter';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 16px;
+                    color: #223F80;
+                    margin-right:20px;
+                }
+            }
+        }
+    }
+}
+

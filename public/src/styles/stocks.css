@@ -69,62 +69,27 @@ button:focus {
   font-weight: 400;
 }
 
-#sell #success {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  display: none;
-  z-index: 1;
-  position: fixed;
-  height: 100vh;
-  width: 100vw;
-  background: rgba(0, 0, 0, 0.9);
-}
-#sell #success #circle {
-  width: 165px;
-  height: 165px;
-  border-radius: 100%;
-  background: #33A05F;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-#sell #success p {
-  margin: 5px;
-  margin-top: 20px;
-  font-family: "Montserrat";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 32px;
-  color: #FFFFFF;
-}
-#sell #success .small {
-  margin-top: 5px;
-  font-size: 14px;
-}
-#sell #topBar {
+#stocks #topBar {
   border-bottom: 2px solid rgba(34, 63, 128, 0.4);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
-#sell #topBar div {
+#stocks #topBar div {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
 }
-#sell #topBar div img {
+#stocks #topBar div img {
   margin-left: 10px;
 }
-#sell #topBar div .coin {
+#stocks #topBar div .coin {
   width: 23px;
   height: 30px;
 }
-#sell #topBar div p {
+#stocks #topBar div p {
   margin-left: 5px;
   margin-bottom: 8px;
   font-family: "Inter";
@@ -133,13 +98,21 @@ button:focus {
   font-size: 16px;
   color: #223F80;
 }
-#sell #topBar #timer {
+#stocks #topBar p {
+  margin-bottom: 8px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  color: #595959;
+}
+#stocks #topBar #timer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
-#sell #topBar #timer p {
+#stocks #topBar #timer p {
   margin: 5px 20px 0px 5px;
   font-family: "Inter";
   font-style: normal;
@@ -147,25 +120,36 @@ button:focus {
   font-size: 16px;
   color: #FF473F;
 }
-#sell #main {
+#stocks #main {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height: 800px;
-  overflow-y: scroll;
 }
-#sell #main #about {
+#stocks #main #fixedNav {
+  position: fixed;
+  bottom: 0px;
+  z-index: 1;
+  width: 100vw;
+  height: 69px;
+  background: #FFFFFF;
+  box-shadow: 0px -3px 14px 1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+#stocks #main #about {
   position: relative;
   width: 100vw;
-  height: 101px;
-  background: rgba(34, 63, 128, 0.2);
+  height: 50px;
+  background: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-#sell #main #about p {
+#stocks #main #about p {
   margin-top: 0px;
   font-family: "Montserrat";
   font-style: normal;
@@ -173,81 +157,115 @@ button:focus {
   font-size: 16px;
   color: #262626;
 }
-#sell #main #about div {
+#stocks #main #about #statusButton {
   position: absolute;
   bottom: 0px;
+  overflow: hidden;
   width: 100vw;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
 }
-#sell #main #about div button {
-  padding: 10px;
+#stocks #main #about #statusButton button {
+  height: 50px;
   width: 50%;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
   color: rgba(34, 63, 128, 0.5);
+  border-bottom: 3px solid rgba(34, 63, 128, 0.4);
 }
-#sell #main #about div button:focus {
+#stocks #main #about #statusButton button:focus {
   color: #223F80;
   border-bottom: 3px solid #223F80;
 }
-#sell #main #content {
+#stocks #main #stockInfo {
+  width: 100vw;
+  height: 32px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  background: #223F80;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+#stocks #main #stockInfo div {
+  margin-left: 10px;
+  height: 32px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+#stocks #main #stockInfo div p {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  color: #FFFFFF;
+}
+#stocks #main #stockInfo div a {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+}
+#stocks #main #content {
+  height: 700px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+#stocks #main #content .top {
+  background: rgba(34, 63, 128, 0.15);
+}
+#stocks #main #content .bottom {
+  background: rgba(34, 63, 128, 0.1);
+}
+#stocks #main #content .row {
+  width: 100vw;
+  height: 94px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#stocks #main #content .row #name {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  color: #292929;
+  margin-left: 20px;
+  width: 75px;
+}
+#stocks #main #content .row div {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-#sell #main #content p {
-  margin-top: 150px;
-  font-family: "Montserrat";
+#stocks #main #content .row div p {
+  margin: 2px;
+  margin-left: 5px;
+  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
-  color: #262626;
 }
-#sell #main #content #amount {
+#stocks #main #content .row div div {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
-#sell #main #content #amount p {
-  margin: 0px;
+#stocks #main #content .row #amount {
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
-  font-size: 24px;
-  color: #000000;
-}
-#sell #main #content #amount input {
-  margin-left: 5px;
-  height: 44px;
-  width: 100px;
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 36px;
-  color: #282828;
-  border: none;
-}
-#sell #main #content #amount input:focus {
-  border: none;
-  outline: none;
-}
-#sell #main #fixed {
-  position: fixed;
-  bottom: 0px;
-  z-index: -1;
-}
-#sell #main #fixed button {
-  margin: 40px;
-  width: 282px;
-  height: 42px;
-  background: #33A05F;
-  border-radius: 4px;
-  font-family: "Montserrat";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 20px;
-  color: #FFFFFF;
-}/*# sourceMappingURL=buySell.css.map */
+  font-size: 16px;
+  color: #223F80;
+  margin-right: 20px;
+}/*# sourceMappingURL=stocks.css.map */

@@ -8,6 +8,7 @@ import NewsComp from './news';
 import NotifComp from './notification';
 import PortfolioComp from './portfolio';
 import ProfileComp from './profile'; 
+import StocksComp from './stocks';
 import TeamComp from './team';
 
 
@@ -31,12 +32,13 @@ class IndexComp extends React.Component{
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <div>
-    {/* <LoginComp/> */}
+    <LoginComp/>
     {/* <ProfileComp/> */}
     {/* <PortfolioComp/> */}
-    <TeamComp/>
+    {/* <TeamComp/> */}
     {/* <SellComp/> */}
     {/* <NewsComp/> */}
     {/* <NotifComp/> */}
+    {/* <StocksComp/> */}
   </div>
 );
