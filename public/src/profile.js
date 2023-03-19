@@ -6,6 +6,7 @@ class ProfileComp extends React.Component{
         super(props)
     }
     render(){
+
         return(
             <div id="profile">
                 <div id="topBar">

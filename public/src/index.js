@@ -32,8 +32,8 @@ class IndexComp extends React.Component{
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <div>
-    <LoginComp/>
-    {/* <ProfileComp/> */}
+    {/* <LoginComp/> */}
+    <ProfileComp/>
     {/* <PortfolioComp/> */}
     {/* <TeamComp/> */}
     {/* <SellComp/> */}
