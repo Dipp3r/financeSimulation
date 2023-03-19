@@ -32,13 +32,13 @@ class IndexComp extends React.Component{
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <div>
-    {/* <LoginComp/> */}
+    <LoginComp/>
     {/* <ProfileComp/> */}
     {/* <PortfolioComp/> */}
     {/* <TeamComp/> */}
     {/* <SellComp/> */}
     {/* <NewsComp/> */}
     {/* <NotifComp/> */}
-    <StocksComp/>
+    {/* <StocksComp/> */}
   </div>
 );
