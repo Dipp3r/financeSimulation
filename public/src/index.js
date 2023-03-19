@@ -34,9 +34,9 @@ root.render(
     {/* <LoginComp/> */}
     {/* <ProfileComp/> */}
     {/* <PortfolioComp/> */}
-    {/* <TeamComp/> */}
+    <TeamComp/>
     {/* <SellComp/> */}
     {/* <NewsComp/> */}
-    <NotifComp/>
+    {/* <NotifComp/> */}
   </div>
 );

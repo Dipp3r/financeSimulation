@@ -37,7 +37,7 @@ class NotifComp extends React.Component{
                         </p>
                     </div>
                     <div class="notif notif-extend">
-                        <img class="coin" src={require("./images/star.svg")} alt="star"/>
+                        <img class="coin" src={require("./images/Star.svg")} alt="star"/>
                         <p class="text-thin">
                             You’ve been assigned as an Analyst
                         </p>
