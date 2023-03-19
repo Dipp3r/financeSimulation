@@ -7,7 +7,7 @@ class NewsComp extends React.Component{
     }
     render(){
         return(
-            <div id="sell">
+            <div id="news">
                 <div id="topBar">
                     <div>
                         <img src={require("./images/Arrow_left.svg")} alt="back_arrow" />

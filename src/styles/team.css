@@ -60,6 +60,15 @@ button:focus {
   margin-bottom: 40px;
 }
 
+.coin {
+  height: 30px;
+  width: 30px;
+}
+
+.text-thin {
+  font-weight: 400;
+}
+
 #team #topBar {
   border-bottom: 2px solid rgba(34, 63, 128, 0.4);
   display: flex;
