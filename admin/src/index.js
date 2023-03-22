@@ -4,6 +4,7 @@ import EditComp from './edit';
 // import { HashRouter } from 'react-router-dom'
 // import { BrowserRouter, Routes, Route ,useNavigate} from "react-router-dom";
 import SessionsComp from './sessions';
+import "./styles/home.css";
 
 class IndexComp extends React.Component{
   constructor(props){
@@ -39,12 +40,14 @@ class IndexComp extends React.Component{
     }
 
   return(
-    <section>
-      <nav>
+    <section id="home">
+      <nav id="sideBar">
+        <img src={require("./images/vittae_logo_color.svg")} alt="vittae logo" />
         <div>
           <button value='0' onClick={this.toggleMainPage} >seesions</button>
           <button value='1' onClick={this.toggleMainPage} >edit</button>
         </div>
+        <img src={require("./images/illustration.svg")} alt="tree illustration" />
       </nav>
       <div id='main'>
         {mainPage}

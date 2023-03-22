@@ -1,0 +1,15 @@
+@import "main";
+
+#home{
+    overflow:hidden;
+    @include flex(row,flex-start,flex-start); 
+    #sideBar{
+        position:relative;
+        @include flex(column,flex-start,center);
+        margin:30px;
+        width: 286px;
+        height: 95%;
+        background: rgba(34, 63, 128, 0.2);
+        border-radius: 35px;
+    }
+}
