@@ -1,0 +1,80 @@
+@font-face {
+    font-family: Montserrat;
+    src: url(../Montserrat/Montserrat-VariableFont_wght.ttf);
+}
+
+@font-face {
+    font-family: Inter;
+    src: url(../Inter/Inter-VariableFont_slntwght.ttf);
+}
+
+@mixin flex($a,$b,$c){
+    display: flex;
+    flex-direction: $a;
+    justify-content: $b;
+    align-items: $c;
+}
+
+body{
+    margin: 0px;
+    padding-bottom: 0px;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+ 
+#root{
+    position: fixed;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+  
+section{
+    overflow: auto;
+    height: 100vh;
+    width: 100vw;
+}
+
+button{
+    background-color: transparent;
+    border: none;
+    &:focus{
+        outline:none;
+        border:none;
+    }
+}
+
+#editMainSection{
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll; 
+}
+
+#editMainSection::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+}
+
+.mr-2{
+    margin-right:20px;
+}
+
+.gain{
+    color: #6BC640;
+}
+.loss{
+    color: #FB5151;
+}
+
+.final{
+    margin-bottom:40px;
+}
+
+.coin{
+    height:30px;
+    width:30px;
+}
+
+.text-thin{
+    font-weight: 400;
+}
