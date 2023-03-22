@@ -1,5 +1,4 @@
 import React from "react";
-import "./styles/edit.css"
 
 class EditComp extends React.Component{
     constructor(props){
