@@ -1,4 +1,4 @@
-import React from "react";
+ import React from "react";
 
 class EditComp extends React.Component{
     constructor(props){
@@ -59,6 +59,400 @@ class EditComp extends React.Component{
                         <button value='2' onClick={this.toggleMainSection}  >Commodities</button>
                     </div>
                     <div id='editMainSection'></div>
+                </div>
+                <div id="news" class="row-1">
+                    <div class="newsComp">
+                        <div id="first">
+                            <p id="year">2099</p>
+                            <p>Open phase</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <p>05:00</p>
+                            </div>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Market update</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Super breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="newsComp">
+                        <div id="first">
+                            <p id="year">2099</p>
+                            <p>Open phase</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <p>05:00</p>
+                            </div>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Market update</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Super breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="newsComp">
+                        <div id="first">
+                            <p id="year">2099</p>
+                            <p>Open phase</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <p>05:00</p>
+                            </div>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Market update</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Super breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="newsComp">
+                        <div id="first">
+                            <p id="year">2099</p>
+                            <p>Open phase</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <p>05:00</p>
+                            </div>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Market update</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Super breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="newsComp">
+                        <div id="first">
+                            <p id="year">2099</p>
+                            <p>Open phase</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <p>05:00</p>
+                            </div>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Market update</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Super breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="newsComp">
+                        <div id="first">
+                            <p id="year">2099</p>
+                            <p>Open phase</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <p>05:00</p>
+                            </div>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Market update</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Super breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="newsComp">
+                        <div id="first">
+                            <p id="year">2099</p>
+                            <p>Open phase</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <p>05:00</p>
+                            </div>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Market update</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Super breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="newsComp">
+                        <div id="first">
+                            <p id="year">2099</p>
+                            <p>Open phase</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <p>05:00</p>
+                            </div>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Market update</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="newsUpdate">
+                            <p>Super breaking news</p>
+                            <div>
+                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <p>05:00</p>
+                            </div>
+                            <button>
+                                <div>
+                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <p>Upload</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
