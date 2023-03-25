@@ -264,6 +264,67 @@
                 }
                 
             }
+            #createSessionPage{
+                position:fixed;
+                width:100vw;
+                height: 100vh;
+                top:0px;
+                left:0px;
+                background: rgba(0, 0, 0, 0.9);
+                @include flex(column,center,center);
+                #createSessionMenu{
+                    position:relative;
+                    width:410px;
+                    height:250px;
+                    div{
+                        font-family: 'Montserrat';
+                        font-style: normal;
+                        font-weight: 500;
+                        font-size: 32px;
+                        color: #FFFFFF;
+                        @include flex(row,space-between,center);
+                        #close{
+                            top:0px;
+                            right:0px;
+                            border-radius: 100%;
+                            &:focus{
+                                background-color: #224080c3;
+                            }
+                        }
+                    }
+                    input{
+                        margin-top:30px;
+                        width: 406px;
+                        height: 49px;
+                        background: #151515;
+                        border: 2px solid #8C8C8C;
+                        border-radius: 8px;
+                        font-family: 'Montserrat';
+                        font-style: normal;
+                        font-weight: 400;
+                        font-size: 20px;
+                        padding-left:14px;
+                        color: #8C8C8C;
+                        &:focus{
+                            outline:none;
+                        }
+                    }
+                    #save{
+                        position: absolute;
+                        width: 131px;
+                        height: 49px;
+                        bottom:0px;
+                        left:0px;
+                        background: #223F80;
+                        border-radius: 8px;
+                        font-family: 'Montserrat';
+                        font-style: normal;
+                        font-weight: 500;
+                        font-size: 20px;
+                        color: #FFFFFF;
+                    }
+                }
+            }
         }
     }
 }
