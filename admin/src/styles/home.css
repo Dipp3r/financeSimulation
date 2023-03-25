@@ -234,7 +234,6 @@ button:focus {
   background: rgba(34, 63, 128, 0.75);
 }
 #home #main #editMain #assets {
-  display: none;
   padding: 10px 35px;
   margin-top: 60px;
   width: 70%;
@@ -281,6 +280,7 @@ button:focus {
   color: #626262;
 }
 #home #main #editMain #news {
+  display: none;
   padding: 10px 35px;
   margin-top: 60px;
   max-width: 1500px;
@@ -381,58 +381,8 @@ button:focus {
   justify-content: flex-start;
   align-items: center;
 }
-#home #main #sessionMain #top {
-  width: 100%;
-  margin-top: 150px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-#home #main #sessionMain #top #searchDiv {
-  width: 50%;
-  border: 2.5px solid #ACACAC;
-  border-radius: 8px;
-  height: 44px;
-  padding: 5px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-#home #main #sessionMain #top #searchDiv input {
-  width: 100%;
-  margin-left: 10px;
-  font-family: "Montserrat";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-}
-#home #main #sessionMain #top #searchDiv input:focus {
-  outline: none;
-}
-#home #main #sessionMain #top button {
-  margin-left: 20px;
-  width: 210px;
-  height: 44px;
-  background: #223F80;
-  border-radius: 8px;
-}
-#home #main #sessionMain #top button div {
-  padding: 5px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-}
-#home #main #sessionMain #top button div p {
-  font-family: "Montserrat";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  color: #FFFFFF;
-}
 #home #main #sessionMain #sessionsViewer {
+  margin-top: 150px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -444,6 +394,58 @@ button:focus {
   margin-top: 15px;
   width: 80%;
   max-width: 1500px;
+}
+#home #main #sessionMain #sessionsViewer #top {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+#home #main #sessionMain #sessionsViewer #top #searchDiv {
+  width: 50%;
+  border: 2.5px solid #ACACAC;
+  border-radius: 8px;
+  height: 44px;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#home #main #sessionMain #sessionsViewer #top #searchDiv input {
+  width: 100%;
+  margin-left: 10px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+}
+#home #main #sessionMain #sessionsViewer #top #searchDiv input:focus {
+  outline: none;
+}
+#home #main #sessionMain #sessionsViewer #top #create {
+  margin-left: 20px;
+  margin-top: 0px;
+  width: 210px;
+  height: 44px;
+  background: #223F80;
+  border-radius: 8px;
+}
+#home #main #sessionMain #sessionsViewer #top #create div {
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+#home #main #sessionMain #sessionsViewer #top #create div p {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #FFFFFF;
 }
 #home #main #sessionMain #createSessionPage {
   position: fixed;
@@ -511,4 +513,132 @@ button:focus {
   font-weight: 500;
   font-size: 20px;
   color: #FFFFFF;
+}
+#home #main #sessionMain #groupPage {
+  margin-top: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  width: 100%;
+}
+#home #main #sessionMain #groupPage #topBar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#home #main #sessionMain #groupPage #topBar #top {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+#home #main #sessionMain #groupPage #topBar #top #back {
+  margin-right: 10px;
+}
+#home #main #sessionMain #groupPage #topBar #top #searchDiv {
+  width: 70%;
+  border: 2.5px solid #ACACAC;
+  border-radius: 8px;
+  height: 44px;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#home #main #sessionMain #groupPage #topBar #top #searchDiv input {
+  width: 100%;
+  margin-left: 10px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+}
+#home #main #sessionMain #groupPage #topBar #top #searchDiv input:focus {
+  outline: none;
+}
+#home #main #sessionMain #groupPage #topBar #top #create {
+  margin-left: 20px;
+  margin-top: 0px;
+  width: 210px;
+  height: 44px;
+  background: #223F80;
+  border-radius: 8px;
+}
+#home #main #sessionMain #groupPage #topBar #top #create div {
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+#home #main #sessionMain #groupPage #topBar #top #create div p {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #FFFFFF;
+}
+#home #main #sessionMain #groupPage #topBar #second {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-left: 30px;
+}
+#home #main #sessionMain #groupPage #topBar #second #navBar {
+  width: 66%;
+  margin-left: 55px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background: #434343;
+  border-radius: 8px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  padding: 5px;
+  color: #AAAAAA;
+}
+#home #main #sessionMain #groupPage #topBar #second #navBar .navComp {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+#home #main #sessionMain #groupPage #topBar #second #navBar .navComp img {
+  margin: 5px;
+}
+#home #main #sessionMain #groupPage #topBar #second #navBar #navigate button {
+  margin: 10px;
+}
+#home #main #sessionMain #groupPage #topBar #second #gameStatus {
+  margin-left: 25px;
+  width: 202px;
+  height: 44px;
+  border: 2px solid #223F80;
+  border-radius: 8px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #223F80;
+}
+#home #main #sessionMain #groupPage #topBar #second #gameStatus:hover {
+  color: white;
+  background: #223F80;
+}
+#home #main #sessionMain #groupPage #groupsList {
+  padding: 50px;
+  display: grid;
+  grid-template-columns: auto auto auto;
 }/*# sourceMappingURL=home.css.map */

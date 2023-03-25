@@ -84,7 +84,7 @@
                 }
             }
             #assets{
-                display:none;
+                // display:none;
                 padding:10px 35px;
                 margin-top:60px;
                 width: 70%;
@@ -125,6 +125,7 @@
                 }
             }
             #news{
+                display:none;
                 padding:10px 35px;
                 margin-top:60px;
                 max-width:1500px;
@@ -208,53 +209,16 @@
                 }
             }
         }
+
         #sessionMain{
             width:100%;
             height:100vh;
             @include flex(column,flex-start,center);
-            #top{
-                width:100%;
-                margin-top:150px;
-                @include flex(row,center,center);
-                #searchDiv{
-                    width:50%;
-                    border: 2.5px solid #ACACAC;
-                    border-radius: 8px;
-                    height: 44px;
-                    padding:5px;
-                    @include flex(row,space-between,center);
-                    input{
-                        width:100%;
-                        margin-left:10px;
-                        font-family: 'Montserrat';
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 20px;
-                        &:focus{
-                            outline:none;
-                        }
-                    }
-                }
-                button{
-                    margin-left:20px;
-                    width: 210px;
-                    height: 44px;
-                    background: #223F80;
-                    border-radius: 8px;
-                    div{
-                        padding:5px;
-                        @include flex(row,space-around,center);
-                    p{
-                        font-family: 'Montserrat';
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 20px;
-                        color: #FFFFFF;
-                    }}
-                }
-            }
+            
             #sessionsViewer{
+                margin-top:150px;
                 @include flex(column,center,center);
+                // display:none;
                 padding:40px;
                 width:100%;
                 button{
@@ -262,8 +226,53 @@
                     width:80%;
                     max-width:1500px;
                 }
+                #top{
+                    width:100%;
+                    @include flex(row,center,center);
+                    margin-bottom:20px;
+                    #searchDiv{
+                        width:50%;
+                        border: 2.5px solid #ACACAC;
+                        border-radius: 8px;
+                        height: 44px;
+                        padding:5px;
+                        
+                        @include flex(row,space-between,center);
+                        input{
+                            width:100%;
+                            margin-left:10px;
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 20px;
+                            &:focus{
+                                outline:none;
+                            }
+                        }
+                    }
+                    #create{
+                        margin-left:20px;
+                        margin-top:0px;
+                        width: 210px;
+                        height: 44px;
+                        background: #223F80;
+                        border-radius: 8px;
+                        div{
+                            padding:5px;
+                            @include flex(row,space-around,center);
+                        p{
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 20px;
+                            color: #FFFFFF;
+                        }}
+                    }
+                }
+                
                 
             }
+
             #createSessionPage{
                 position:fixed;
                 width:100vw;
@@ -323,6 +332,115 @@
                         font-size: 20px;
                         color: #FFFFFF;
                     }
+                }
+            }
+
+            #groupPage{
+                margin-top:150px;
+                @include flex(column,center,center);
+                padding:40px;
+                width:100%;
+                #topBar{
+                    width:100%;
+                    @include flex(column,center,center);
+                    #top{
+                        width:100%;
+                        @include flex(row,center,center);
+                        margin-bottom:30px;
+                        #back{
+                            margin-right:10px;
+                        }
+                        #searchDiv{
+                            width:70%;
+                            border: 2.5px solid #ACACAC;
+                            border-radius: 8px;
+                            height: 44px;
+                            padding:5px;
+                            
+                            @include flex(row,space-between,center);
+                            input{
+                                width:100%;
+                                margin-left:10px;
+                                font-family: 'Montserrat';
+                                font-style: normal;
+                                font-weight: 500;
+                                font-size: 20px;
+                                &:focus{
+                                    outline:none;
+                                }
+                            }
+                        }
+                        #create{
+                            margin-left:20px;
+                            margin-top:0px;
+                            width: 210px;
+                            height: 44px;
+                            background: #223F80;
+                            border-radius: 8px;
+                            div{
+                                padding:5px;
+                                @include flex(row,space-around,center);
+                            p{
+                                font-family: 'Montserrat';
+                                font-style: normal;
+                                font-weight: 500;
+                                font-size: 20px;
+                                color: #FFFFFF;
+                            }}
+                        }
+                    }
+                    #second{
+                        @include flex(row,center,center);
+                        width:100%;
+                        margin-left:30px;
+                        #navBar{
+                            width: 66%;
+                            margin-left:55px;
+                            @include flex(row,space-around,center);
+                            background: #434343;
+                            border-radius: 8px;
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 20px;
+                            padding:5px;
+                            color: #AAAAAA;
+                            .navComp{
+                                @include flex(row,center,center);
+                                img{
+                                    margin:5px;
+                                }
+                            }
+                            #navigate{
+                                button{
+                                    margin:10px;
+                                }
+                            }
+    
+                        }   
+                        #gameStatus{
+                            margin-left:25px;
+                            width: 202px;
+                            height: 44px;
+                            border: 2px solid #223F80;
+                            border-radius: 8px;
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 20px;
+                            color: #223F80;
+                            &:hover{
+                                color:white;
+                                background: #223F80;
+                            }
+                        }
+                    }
+                }
+                #groupsList{
+                    padding:50px;
+                    // @include flex(row,flex-start,center);
+                    display:grid;
+                    grid-template-columns: auto auto auto;
                 }
             }
         }
