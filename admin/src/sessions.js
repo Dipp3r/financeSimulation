@@ -1,6 +1,7 @@
 import React from "react";
 import coin from './images/coin.svg';
 import downIcon from './images/Download.svg';
+import link from './images/link.svg';
 
 class SessionsComp extends React.Component {
   constructor(props) {
@@ -32,6 +33,11 @@ class SessionsComp extends React.Component {
         { id: 3, playersCount: 18 },
         { id: 4, playersCount: 8 },
         { id: 5, playersCount: 5 },
+        { id: 6, playersCount: 10 },
+        { id: 7, playersCount: 15 },
+        { id: 8, playersCount: 18 },
+        { id: 9, playersCount: 8 },
+        { id: 10, playersCount: 5 },
       ],
       createSessionMenu: "none",
       groupPage: "none",
@@ -128,19 +134,30 @@ class SessionsComp extends React.Component {
     let container = document.querySelector("#groupsList");
     container.innerHTML = "";
     if (list.length > 0) {
-      let card, groupBox, groupInfo, linkIcon, playerBox;
+      let card, groupBox, groupInfo,linkButton,players_count, linkIcon, playerBox;
       for (let group of list) {
         card = document.createElement("div");
+        card.style = "margin:64px;padding:20px;width: 236px;height: 127px;background: white;box-shadow: 0px 2px 23px -1px rgba(0, 0, 0, 0.08);border-radius: 10px;";
         groupBox = document.createElement("div");
+        groupBox.style = "display:flex;flex-direction:row;justify-content:space-between;align-items:center;"
         groupInfo = document.createElement("p");
+        groupInfo.style = "font-family: 'Montserrat';font-style: normal;font-weight: 600;font-size: 25px;text-align: center;color: #3F3F3F;";
+        linkButton = document.createElement("button");
         linkIcon = document.createElement("img");
+        linkIcon.src = link;
         groupBox.appendChild(groupInfo);
-        groupBox.appendChild(linkIcon);
+        linkButton.appendChild(linkIcon);
+        groupBox.appendChild(linkButton);
+
 
         playerBox = document.createElement("p");
-
-        groupInfo.innerText = `Group ${group.id}`;
-        playerBox.innerText = `players ${group.playersCount}`;
+        playerBox.style = "display:flex;flex-direction:row;margin-top:30px;font-family: 'Montserrat';font-style: normal;font-weight: 500;font-size: 18px;color: rgba(34, 63, 128, 0.4);";
+        players_count = document.createElement("p");
+        players_count.style = "margin-left:15px;font-family: 'Montserrat';font-style: normal;font-weight: 500;font-size: 18px;color: #3F3F3F;"
+        players_count.innerText = `${group.playersCount}`;
+        groupInfo.innerText = `Group 0${group.id}`;
+        playerBox.innerText = 'players';
+        playerBox.appendChild(players_count);
         card.appendChild(groupBox);
         card.appendChild(playerBox);
         container.appendChild(card);
@@ -171,19 +188,21 @@ class SessionsComp extends React.Component {
   render() {
     return (
       <div id="sessionMain">
-        <div id="top">
-          <div id="searchDiv">
-            <img src={require("./images/Search.svg")} alt="search icon" />
-            <input type="text" id="searchBar" />
-          </div>
-          <button onClick={this.toggleCreateSessionMenu}>
-            <div>
-              <img src={require("./images/Add_round.svg")} alt="add" />
-              <p>Create session</p>
+        
+        <div id="sessionsViewer">
+          <div id="top">
+            <div id="searchDiv">
+              <img src={require("./images/Search.svg")} alt="search icon" />
+              <input type="text" id="searchBar" />
             </div>
-          </button>
+            <button id="create" onClick={this.toggleCreateSessionMenu}>
+              <div>
+                <img src={require("./images/Add_round.svg")} alt="add" />
+                <p>Create Session</p>
+              </div>
+            </button>
+          </div>
         </div>
-        <div id="sessionsViewer"></div>
         <div
           id="createSessionPage"
           style={{ display: this.state.createSessionMenu }}
@@ -201,34 +220,50 @@ class SessionsComp extends React.Component {
             <button id="save" onClick={this.createSession}>Save</button>
           </div>
         </div>
+
         <div id="groupPage" style={{ display: this.state.groupPage }}>
-          <div>
-            <button onClick={this.toggleGroupPage}>back</button>
-            <div>
-              <input type="text" placeholder="Group Number" />
+          <div id="topBar">
+
+            <div id="top">
+              <button id="back" onClick={this.toggleGroupPage}><img src={require("./images/Arrow_left.svg")} alt="back arrow"/></button>
+              <div id="searchDiv">
+                <img src={require("./images/Search.svg")} alt="search icon" />
+                <input type="text" id="searchBar" />
+              </div>
+              <button id="create" onClick={this.toggleCreateSessionMenu}>
+                <div>
+                  <img src={require("./images/Add_round.svg")} alt="add" />
+                  <p>Create Group</p>
+                </div>
+              </button>
             </div>
-            <button>create group</button>
-          </div>
-          <div>
-            <div>
-              <div>
-                <p>2100</p>
+
+            <div id="second">
+              <div id="navBar">
+                <div class="navComp">
+                  <img src={require("./images/Date_range.svg")} alt="Date_range"/>
+                  <p>2100</p>
+                </div>
+                <p>|</p>
+                <div>
+                  <p>open phase</p>
+                </div>
+                <p>|</p>
+                <div class="navComp">
+                  <img src={require("./images/Alarmclock_grey.svg")} alt="alarmclock"/>
+                  <p>5:00</p>
+                </div>
+                <div id="navigate">
+                  <button><img src={require("./images/Expand_left_double.svg")} alt="expand left"/></button>
+                  <button><img src={require("./images/Expand_left.svg")} alt="left"/></button>
+                  <button><img src={require("./images/Expand_right.svg")} alt="right"/></button>
+                  <button><img src={require("./images/Expand_right_double.svg")} alt="expand right"/></button>
+                </div>
               </div>
-              <div>
-                <p>open phase</p>
-              </div>
-              <div>
-                <p>5:00</p>
-              </div>
-              <div>
-                <button>LL</button>
-                <button>L</button>
-                <button>R</button>
-                <button>RR</button>
-              </div>
+              <button id="gameStatus">Start</button>
             </div>
-            <button id="gameStatus">pause</button>
           </div>
+
           <div id="groupsList"></div>
         </div>
       </div>
