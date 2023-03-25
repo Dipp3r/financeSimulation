@@ -190,15 +190,15 @@ class SessionsComp extends React.Component {
         >
           <div id="createSessionMenu">
             <div>
-              <p>session name</p>
-              <button onClick={this.toggleCreateSessionMenu}>icon</button>
+              <p>Session name</p>
+              <button id="close" onClick={this.toggleCreateSessionMenu}> <img src={require("./images/Close.svg")} alt="close icon"/> </button>
             </div>
             <input
               onChange={this.changeInVal}
               name="newSessionName"
               placeholder="Enter session name"
             />
-            <button onClick={this.createSession}>save</button>
+            <button id="save" onClick={this.createSession}>Save</button>
           </div>
         </div>
         <div id="groupPage" style={{ display: this.state.groupPage }}>

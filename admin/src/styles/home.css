@@ -444,4 +444,71 @@ button:focus {
   margin-top: 15px;
   width: 80%;
   max-width: 1500px;
+}
+#home #main #sessionMain #createSessionPage {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#home #main #sessionMain #createSessionPage #createSessionMenu {
+  position: relative;
+  width: 410px;
+  height: 250px;
+}
+#home #main #sessionMain #createSessionPage #createSessionMenu div {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 32px;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#home #main #sessionMain #createSessionPage #createSessionMenu div #close {
+  top: 0px;
+  right: 0px;
+  border-radius: 100%;
+}
+#home #main #sessionMain #createSessionPage #createSessionMenu div #close:focus {
+  background-color: rgba(34, 64, 128, 0.7647058824);
+}
+#home #main #sessionMain #createSessionPage #createSessionMenu input {
+  margin-top: 30px;
+  width: 406px;
+  height: 49px;
+  background: #151515;
+  border: 2px solid #8C8C8C;
+  border-radius: 8px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  padding-left: 14px;
+  color: #8C8C8C;
+}
+#home #main #sessionMain #createSessionPage #createSessionMenu input:focus {
+  outline: none;
+}
+#home #main #sessionMain #createSessionPage #createSessionMenu #save {
+  position: absolute;
+  width: 131px;
+  height: 49px;
+  bottom: 0px;
+  left: 0px;
+  background: #223F80;
+  border-radius: 8px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #FFFFFF;
 }/*# sourceMappingURL=home.css.map */
