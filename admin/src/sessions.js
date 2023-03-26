@@ -244,19 +244,21 @@ class SessionsComp extends React.Component {
 
             <div id="second">
               <div id="navBar">
+               <div id="portion1">
                 <div class="navComp">
-                  <img src={require("./images/Date_range.svg")} alt="Date_range"/>
-                  <p>2100</p>
-                </div>
-                <p>|</p>
-                <div>
-                  <p>open phase</p>
-                </div>
-                <p>|</p>
-                <div class="navComp">
-                  <img src={require("./images/Alarmclock_grey.svg")} alt="alarmclock"/>
-                  <p>5:00</p>
-                </div>
+                    <img src={require("./images/Date_range.svg")} alt="Date_range"/>
+                    <p>2100</p>
+                  </div>
+                  <p>|</p>
+                  <div>
+                    <p>open phase</p>
+                  </div>
+                  <p>|</p>
+                  <div class="navComp">
+                    <img src={require("./images/Alarmclock_grey.svg")} alt="alarmclock"/>
+                    <p>5:00</p>
+                  </div>
+               </div>
                 <div id="navigate">
                   <button><img src={require("./images/Expand_left_double.svg")} alt="expand left"/></button>
                   <button><img src={require("./images/Expand_left.svg")} alt="left"/></button>
