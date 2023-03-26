@@ -10,8 +10,8 @@
     "express-session": "^1.17.3"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts --openssl-legacy-provider build",
+    "start": "react-scripts start --openssl-legacy-provider ",
+    "build": "react-scripts  --openssl-legacy-provider build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "pg:init": "pg_ctl init -D data",

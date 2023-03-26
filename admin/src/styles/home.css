@@ -654,10 +654,6 @@ button:focus {
 #home #main #sessionMain #groupPage #topBar #second #navBar {
   width: 66%;
   margin-left: 55px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
   background: #434343;
   border-radius: 8px;
   font-family: "Montserrat";
@@ -667,13 +663,19 @@ button:focus {
   padding: 5px;
   color: #AAAAAA;
 }
-#home #main #sessionMain #groupPage #topBar #second #navBar .navComp {
+#home #main #sessionMain #groupPage #topBar #second #navBar #portion1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+#home #main #sessionMain #groupPage #topBar #second #navBar #portion1 .navComp {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
-#home #main #sessionMain #groupPage #topBar #second #navBar .navComp img {
+#home #main #sessionMain #groupPage #topBar #second #navBar #portion1 .navComp img {
   margin: 5px;
 }
 #home #main #sessionMain #groupPage #topBar #second #navBar #navigate button {
@@ -762,5 +764,27 @@ button:focus {
   }
   #playerBox {
     margin-top: 30px;
+  }
+}
+@media only screen and (max-width: 1480px) {
+  #navBar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  #portion1 {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 1480px) {
+  #navBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+  #portion1 {
+    width: 70%;
   }
 }/*# sourceMappingURL=home.css.map */
