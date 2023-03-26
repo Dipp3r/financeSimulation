@@ -460,7 +460,6 @@
                         #navBar{
                             width: 66%;
                             margin-left:55px;
-                            @include flex(row,space-around,center);
                             background: #434343;
                             border-radius: 8px;
                             font-family: 'Montserrat';
@@ -469,10 +468,13 @@
                             font-size: 20px;
                             padding:5px;
                             color: #AAAAAA;
-                            .navComp{
-                                @include flex(row,center,center);
-                                img{
-                                    margin:5px;
+                            #portion1{
+                                @include flex(row,space-around,center);
+                                .navComp{
+                                    @include flex(row,center,center);
+                                    img{
+                                        margin:5px;
+                                    }
                                 }
                             }
                             #navigate{
@@ -574,5 +576,23 @@
     }
     #playerBox{
         margin-top:30px;
+    }
+}
+
+@media only screen and (max-width:1480px){
+    #navBar{
+        @include flex(column,center,center);
+    }
+    #portion1{
+        width:100%;
+    }
+}
+
+@media only screen and (min-width:1480px){
+    #navBar{
+        @include flex(row,space-around,center);
+    }
+    #portion1{
+        width:70%;
     }
 }
