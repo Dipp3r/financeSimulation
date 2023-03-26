@@ -7,7 +7,7 @@
         padding-top:30px;
         position:relative;
         @include flex(column,flex-start,center);
-        margin:30px;
+        margin:20px 10px;
         width: 286px;
         height: 95%;
         background: rgba(34, 63, 128, 0.2);
@@ -33,21 +33,21 @@
                 button{
                     margin-left:55px;
                 }
-                &:hover{
-                    color: #FFFFFF;
-                    background: #223F80;
-                    svg{
-                        circle{
-                            stroke:white;
-                        }
-                        #p1,#p2,#p5{
-                            stroke:white;
-                        }
-                        #p3,#p4 {
-                            fill:white;
-                        }
-                    } 
-                }
+                // &:hover{
+                //     // color: #FFFFFF;
+                //     // background: #223F80;
+                //     svg{
+                //         circle{
+                //             stroke:white;
+                //         }
+                //         #p1,#p2,#p5{
+                //             stroke:white;
+                //         }
+                //         #p3,#p4 {
+                //             fill:white;
+                //         }
+                //     } 
+                // }
             }
         }
         #tree{
@@ -56,7 +56,7 @@
         }
     }
     #main{
-        width:100vw;
+        width:calc(100% - 310px);
         #editMain{
             @include flex(column,flex-start,center);
             width:100%;
@@ -77,14 +77,15 @@
                     font-style: normal;
                     font-weight: 500;
                     font-size: 20px;
-                    &:focus{
-                        color:white;
-                        background: rgba(34, 63, 128, 0.75);
-                    }
+                    // &:focus{
+                    //     color:white;
+                    //     background: #223f80bf;
+                    // }
                 }
             }
             #assets{
-                display:none;
+                // display:none;
+                
                 padding:10px 35px;
                 margin-top:60px;
                 width: 70%;
@@ -125,6 +126,7 @@
                 }
             }
             #news{
+                display:none;
                 padding:10px 35px;
                 margin-top:60px;
                 max-width:1500px;
@@ -208,53 +210,20 @@
                 }
             }
         }
+
         #sessionMain{
             width:100%;
             height:100vh;
             @include flex(column,flex-start,center);
-            #top{
-                width:100%;
-                margin-top:150px;
-                @include flex(row,center,center);
-                #searchDiv{
-                    width:50%;
-                    border: 2.5px solid #ACACAC;
-                    border-radius: 8px;
-                    height: 44px;
-                    padding:5px;
-                    @include flex(row,space-between,center);
-                    input{
-                        width:100%;
-                        margin-left:10px;
-                        font-family: 'Montserrat';
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 20px;
-                        &:focus{
-                            outline:none;
-                        }
-                    }
-                }
-                button{
-                    margin-left:20px;
-                    width: 210px;
-                    height: 44px;
-                    background: #223F80;
-                    border-radius: 8px;
-                    div{
-                        padding:5px;
-                        @include flex(row,space-around,center);
-                    p{
-                        font-family: 'Montserrat';
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 20px;
-                        color: #FFFFFF;
-                    }}
-                }
-            }
+            
             #sessionsViewer{
+                #sessionList{
+                    width:80%;
+                    @include flex(column,center,center);
+                }
+                margin-top:150px;
                 @include flex(column,center,center);
+                // display:none;
                 padding:40px;
                 width:100%;
                 button{
@@ -262,9 +231,348 @@
                     width:80%;
                     max-width:1500px;
                 }
+                .sessionCards{
+                    padding:25px;
+                    height: 84px;
+                    background: #FFFFFF;
+                    border: 2px solid #D4D4D4;
+                    border-radius: 13px;
+                    display:flex;
+                    flex-direction:row;
+                    justify-content:space-between;
+                    align-items:center;
+                    width:100%;
+                    #nameDiv{
+                        display:flex;
+                        flex-direction:row;
+                        align-items:center;
+                        #name{
+                            margin:10px 20px;
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 18px;
+                            color: #414141;
+                        }
+                    }
+                    #infoDiv{
+                        width:40%;
+                        display:flex;
+                        flex-direction:row;
+                        justify-content:flex-end;
+                        align-items:center;
+                        div{
+                            margin-right:10px
+                        }
+                        #groupLabel,#playerLabel{
+                            margin:10px;
+                            margin-bottom:0px;
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 20px;
+                            color: #8A8A8A;
+                        }
+                        #groupInfo,#playerInfo{
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 18px;
+                            color: #414141;
+                        }
+                        
+                    }
+                }
+                #top{
+                    width:100%;
+                    @include flex(row,center,center);
+                    margin-bottom:20px;
+                    #searchDiv{
+                        width:50%;
+                        border: 2.5px solid #ACACAC;
+                        border-radius: 8px;
+                        height: 44px;
+                        padding:5px;
+                        
+                        @include flex(row,space-between,center);
+                        input{
+                            width:100%;
+                            margin-left:10px;
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 20px;
+                            &:focus{
+                                outline:none;
+                            }
+                        }
+                    }
+                    #create{
+                        margin-left:20px;
+                        margin-top:0px;
+                        width: 210px;
+                        height: 44px;
+                        background: #223F80;
+                        border-radius: 8px;
+                        div{
+                            padding:5px;
+                            @include flex(row,space-around,center);
+                        p{
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 20px;
+                            color: #FFFFFF;
+                        }}
+                    }
+                }
                 
+                
+            }
+
+            #createSessionPage{
+                position:fixed;
+                width:100vw;
+                height: 100vh;
+                top:0px;
+                left:0px;
+                background: rgba(0, 0, 0, 0.9);
+                @include flex(column,center,center);
+                #createSessionMenu{
+                    position:relative;
+                    width:410px;
+                    height:250px;
+                    div{
+                        font-family: 'Montserrat';
+                        font-style: normal;
+                        font-weight: 500;
+                        font-size: 32px;
+                        color: #FFFFFF;
+                        @include flex(row,space-between,center);
+                        #close{
+                            top:0px;
+                            right:0px;
+                            border-radius: 100%;
+                            &:focus{
+                                background-color: #224080c3;
+                            }
+                        }
+                    }
+                    input{
+                        margin-top:30px;
+                        width: 406px;
+                        height: 49px;
+                        background: #151515;
+                        border: 2px solid #8C8C8C;
+                        border-radius: 8px;
+                        font-family: 'Montserrat';
+                        font-style: normal;
+                        font-weight: 400;
+                        font-size: 20px;
+                        padding-left:14px;
+                        color: #8C8C8C;
+                        &:focus{
+                            outline:none;
+                        }
+                    }
+                    #save{
+                        position: absolute;
+                        width: 131px;
+                        height: 49px;
+                        bottom:0px;
+                        left:0px;
+                        background: #223F80;
+                        border-radius: 8px;
+                        font-family: 'Montserrat';
+                        font-style: normal;
+                        font-weight: 500;
+                        font-size: 20px;
+                        color: #FFFFFF;
+                    }
+                }
+            }
+
+            #groupPage{
+                margin-top:150px;
+                @include flex(column,flex-start,center);
+                padding:40px;
+                width:calc(100% - 310px);
+                height: 100vh;
+                position: absolute;
+                top:0px;
+                right: 0px;
+                z-index: 1;
+                background-color: white;
+                overflow:hidden scroll ;
+                #topBar{
+                    width:100%;
+                    @include flex(column,center,center);
+                    #top{
+                        width:100%;
+                        @include flex(row,center,center);
+                        margin-bottom:30px;
+                        #back{
+                            margin-right:10px;
+                        }
+                        #searchDiv{
+                            width:70%;
+                            border: 2.5px solid #ACACAC;
+                            border-radius: 8px;
+                            height: 44px;
+                            padding:5px;
+                            
+                            @include flex(row,space-between,center);
+                            input{
+                                width:100%;
+                                margin-left:10px;
+                                font-family: 'Montserrat';
+                                font-style: normal;
+                                font-weight: 500;
+                                font-size: 20px;
+                                &:focus{
+                                    outline:none;
+                                }
+                            }
+                        }
+                        #create{
+                            margin-left:20px;
+                            margin-top:0px;
+                            width: 210px;
+                            height: 44px;
+                            background: #223F80;
+                            border-radius: 8px;
+                            div{
+                                padding:5px;
+                                @include flex(row,space-around,center);
+                            p{
+                                font-family: 'Montserrat';
+                                font-style: normal;
+                                font-weight: 500;
+                                font-size: 20px;
+                                color: #FFFFFF;
+                            }}
+                        }
+                    }
+                    #second{
+                        @include flex(row,center,center);
+                        width:100%;
+                        margin-left:30px;
+                        #navBar{
+                            width: 66%;
+                            margin-left:55px;
+                            @include flex(row,space-around,center);
+                            background: #434343;
+                            border-radius: 8px;
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 20px;
+                            padding:5px;
+                            color: #AAAAAA;
+                            .navComp{
+                                @include flex(row,center,center);
+                                img{
+                                    margin:5px;
+                                }
+                            }
+                            #navigate{
+                                button{
+                                    margin:10px;
+                                }
+                            }
+    
+                        }   
+                        #gameStatus{
+                            margin-left:25px;
+                            width: 202px;
+                            height: 44px;
+                            border: 2px solid #223F80;
+                            border-radius: 8px;
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 20px;
+                            color: #223F80;
+                            &:hover{
+                                color:white;
+                                background: #223F80;
+                            }
+                        }
+                    }
+                }
+                #groupsList{
+                    overflow-y:scroll;
+                    height:700px;
+                    padding:50px;
+                    margin: 30px 20px;
+                    .card{
+                        padding:15px;
+                        
+                        background: white;
+                        box-shadow: 0px 2px 23px -1px rgba(0, 0, 0, 0.09);
+                        border-radius: 10px;
+                        #groupBox{
+                            display:flex;
+                            flex-direction:row;
+                            justify-content:space-between;
+                            align-items:center;
+                            #groupInfo{
+                                font-family: 'Montserrat';
+                                font-style: normal;
+                                font-weight: 600;
+                                font-size: 25px;
+                                text-align: center;
+                                color: #3F3F3F;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 }
 
+@media only screen and (max-width:1200px){
+    #groupsList{
+        display:grid;
+        grid-template-columns: auto auto;
+    }
+    .card{
+        width: 230px;
+        height: 127px;
+        margin:15px 40px;
+    }
+    #playerBox{
+        margin-top:30px;
+    }
+}
+
+@media only screen and (min-width:1200px) and (max-width:1600px){
+    #groupsList{
+        display:grid;
+        grid-template-columns: auto auto auto;
+    }
+    .card{
+        width: 230px;
+        height: 127px;
+        margin:15px 50px;
+    }
+    #playerBox{
+        margin-top:30px;
+    }
+}
+
+@media only screen and (min-width:1600px){
+    #groupsList{
+        display:grid;
+        grid-template-columns: auto auto auto auto;
+    }
+    .card{
+        width: 230px;
+        height: 137px;
+        margin:20px 55px;
+    }
+    #playerBox{
+        margin-top:30px;
+    }
+}
