@@ -38,7 +38,7 @@ class IndexComp extends React.Component{
       element.style.color = "#223F80"
     });
     
-    options[value].style.backgroundColor = "#223f80bf"
+    options[value].style.backgroundColor = "#223f80"
     options[value].style.color = "#FFF"
   }
   componentDidMount(){
