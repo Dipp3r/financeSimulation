@@ -147,7 +147,7 @@ button:focus {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  margin: 30px;
+  margin: 20px 10px;
   width: 286px;
   height: 95%;
   background: rgba(34, 63, 128, 0.2);
@@ -180,25 +180,12 @@ button:focus {
 #home #sideBar #options .button button {
   margin-left: 55px;
 }
-#home #sideBar #options .button:hover {
-  color: #FFFFFF;
-  background: #223F80;
-}
-#home #sideBar #options .button:hover svg circle {
-  stroke: white;
-}
-#home #sideBar #options .button:hover svg #p1, #home #sideBar #options .button:hover svg #p2, #home #sideBar #options .button:hover svg #p5 {
-  stroke: white;
-}
-#home #sideBar #options .button:hover svg #p3, #home #sideBar #options .button:hover svg #p4 {
-  fill: white;
-}
 #home #sideBar #tree {
   position: absolute;
   bottom: -3px;
 }
 #home #main {
-  width: 100vw;
+  width: calc(100% - 310px);
 }
 #home #main #editMain {
   display: flex;
@@ -228,10 +215,6 @@ button:focus {
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
-}
-#home #main #editMain #topNav button:focus {
-  color: white;
-  background: rgba(34, 63, 128, 0.75);
 }
 #home #main #editMain #assets {
   padding: 10px 35px;
@@ -395,6 +378,57 @@ button:focus {
   width: 80%;
   max-width: 1500px;
 }
+#home #main #sessionMain #sessionsViewer .sessionCards {
+  padding: 25px;
+  height: 84px;
+  background: #FFFFFF;
+  border: 2px solid #D4D4D4;
+  border-radius: 13px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+#home #main #sessionMain #sessionsViewer .sessionCards #nameDiv {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+#home #main #sessionMain #sessionsViewer .sessionCards #nameDiv #name {
+  margin: 10px 20px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  color: #414141;
+}
+#home #main #sessionMain #sessionsViewer .sessionCards #infoDiv {
+  width: 40%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+#home #main #sessionMain #sessionsViewer .sessionCards #infoDiv div {
+  margin-right: 10px;
+}
+#home #main #sessionMain #sessionsViewer .sessionCards #infoDiv #groupLabel, #home #main #sessionMain #sessionsViewer .sessionCards #infoDiv #playerLabel {
+  margin: 10px;
+  margin-bottom: 0px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #8A8A8A;
+}
+#home #main #sessionMain #sessionsViewer .sessionCards #infoDiv #groupInfo, #home #main #sessionMain #sessionsViewer .sessionCards #infoDiv #playerInfo {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  color: #414141;
+}
 #home #main #sessionMain #sessionsViewer #top {
   width: 100%;
   display: flex;
@@ -515,13 +549,19 @@ button:focus {
   color: #FFFFFF;
 }
 #home #main #sessionMain #groupPage {
-  margin-top: 150px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 40px;
-  width: 100%;
+  width: calc(100% - 310px);
+  height: 100vh;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 1;
+  background-color: white;
+  overflow: hidden scroll;
 }
 #home #main #sessionMain #groupPage #topBar {
   width: 100%;
@@ -638,7 +678,31 @@ button:focus {
   background: #223F80;
 }
 #home #main #sessionMain #groupPage #groupsList {
-  padding: 50px;
+  margin: 0px 20px;
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-auto-flow: column;
+  grid-auto-columns: 230px;
+}
+#home #main #sessionMain #groupPage #groupsList .card {
+  margin: 20px 10px;
+  padding: 15px;
+  width: 230px;
+  height: 127px;
+  background: white;
+  box-shadow: 0px 2px 23px -1px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+}
+#home #main #sessionMain #groupPage #groupsList .card #groupBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#home #main #sessionMain #groupPage #groupsList .card #groupBox #groupInfo {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 25px;
+  text-align: center;
+  color: #3F3F3F;
 }/*# sourceMappingURL=home.css.map */

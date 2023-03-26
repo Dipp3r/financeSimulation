@@ -56,7 +56,7 @@ class SessionsComp extends React.Component {
     this.setState(obj);
   }
   displaySessions(list) {
-    let container = document.querySelector("#sessionsViewer");
+    let container = document.querySelector("#sessionList");
     if (list.length > 0) {
       let card,
         nameDiv,
@@ -74,32 +74,33 @@ class SessionsComp extends React.Component {
       for (let session of list) {
         card = document.createElement("button");
         card.onclick = this.toggleGroupPage;
+        card.className = "sessionCards"
         nameDiv = document.createElement("div");
+        nameDiv.id="nameDiv"
         name = document.createElement("p");
+        name.id = "name"
         coinIcon = document.createElement("img")
         coinIcon.src = coin;
         coinIcon.alt = 'coin';
         nameDiv.appendChild(coinIcon);
         nameDiv.appendChild(name);
-        nameDiv.style = "display:flex;flex-direction:row;align-items:center;";
-        name.style="margin:10px 20px;font-family: 'Montserrat';font-style: normal;font-weight: 500;font-size: 18px;color: #414141;"
-        card.style = "padding:25px; height: 84px;background: #FFFFFF;border: 2px solid #D4D4D4;border-radius: 13px;display:flex;flex-direction:row;justify-content:space-between;align-items:center;"
+
         infoDiv = document.createElement("div");
-        infoDiv.style="width:40%;display:flex;flex-direction:row;justify-content:flex-end;align-items:center;"
+        infoDiv.id="infoDiv"
         groupBox = document.createElement("div");
-        groupBox.style = "margin-right:10px";
+        
         playerBox = document.createElement("div");
-        playerBox.style = "margin-right:10px";
+
         groupLabel = document.createElement("p");
-        groupLabel.style = "margin:10px;margin-bottom:0px;font-family: 'Montserrat';font-style: normal;font-weight: 500;font-size: 20px;color: #8A8A8A;";
+        groupLabel.id = "groupLabel"
         groupLabel.innerText = "Groups";
         groupInfo = document.createElement("p");
-        groupInfo.style = "font-family: 'Montserrat';font-style: normal;font-weight: 500;font-size: 18px;color: #414141;"
+        groupInfo.id = "groupInfo"
         playerLabel = document.createElement("p");
-        playerLabel.style = "margin:10px;margin-bottom:0px;font-family: 'Montserrat';font-style: normal;font-weight: 500;font-size: 20px;color: #8A8A8A;";
+        playerLabel.id = "playerLabel"
         playerLabel.innerText = "Players";
         playerInfo = document.createElement("p");
-        playerInfo.style = "font-family: 'Montserrat';font-style: normal;font-weight: 700;font-size: 18px;color: #414141;"
+        playerInfo.id = "playerInfo"
         groupBox.appendChild(groupLabel);
         groupBox.appendChild(groupInfo);
 
@@ -137,11 +138,13 @@ class SessionsComp extends React.Component {
       let card, groupBox, groupInfo,linkButton,players_count, linkIcon, playerBox;
       for (let group of list) {
         card = document.createElement("div");
-        card.style = "margin:64px;padding:20px;width: 236px;height: 127px;background: white;box-shadow: 0px 2px 23px -1px rgba(0, 0, 0, 0.08);border-radius: 10px;";
+        card.className ="card"
         groupBox = document.createElement("div");
-        groupBox.style = "display:flex;flex-direction:row;justify-content:space-between;align-items:center;"
+        groupBox.id="groupBox"
+      
         groupInfo = document.createElement("p");
-        groupInfo.style = "font-family: 'Montserrat';font-style: normal;font-weight: 600;font-size: 25px;text-align: center;color: #3F3F3F;";
+        groupInfo.id = "groupInfo"
+        
         linkButton = document.createElement("button");
         linkIcon = document.createElement("img");
         linkIcon.src = link;
@@ -202,11 +205,11 @@ class SessionsComp extends React.Component {
               </div>
             </button>
           </div>
+          <div id="sessionList">
+
+          </div>
         </div>
-        <div
-          id="createSessionPage"
-          style={{ display: this.state.createSessionMenu }}
-        >
+        <div id="createSessionPage" style={{ display: this.state.createSessionMenu }}>
           <div id="createSessionMenu">
             <div>
               <p>Session name</p>

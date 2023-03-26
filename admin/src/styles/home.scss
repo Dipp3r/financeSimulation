@@ -7,7 +7,7 @@
         padding-top:30px;
         position:relative;
         @include flex(column,flex-start,center);
-        margin:30px;
+        margin:20px 10px;
         width: 286px;
         height: 95%;
         background: rgba(34, 63, 128, 0.2);
@@ -33,21 +33,21 @@
                 button{
                     margin-left:55px;
                 }
-                &:hover{
-                    color: #FFFFFF;
-                    background: #223F80;
-                    svg{
-                        circle{
-                            stroke:white;
-                        }
-                        #p1,#p2,#p5{
-                            stroke:white;
-                        }
-                        #p3,#p4 {
-                            fill:white;
-                        }
-                    } 
-                }
+                // &:hover{
+                //     // color: #FFFFFF;
+                //     // background: #223F80;
+                //     svg{
+                //         circle{
+                //             stroke:white;
+                //         }
+                //         #p1,#p2,#p5{
+                //             stroke:white;
+                //         }
+                //         #p3,#p4 {
+                //             fill:white;
+                //         }
+                //     } 
+                // }
             }
         }
         #tree{
@@ -56,7 +56,7 @@
         }
     }
     #main{
-        width:100vw;
+        width:calc(100% - 310px);
         #editMain{
             @include flex(column,flex-start,center);
             width:100%;
@@ -77,14 +77,15 @@
                     font-style: normal;
                     font-weight: 500;
                     font-size: 20px;
-                    &:focus{
-                        color:white;
-                        background: rgba(34, 63, 128, 0.75);
-                    }
+                    // &:focus{
+                    //     color:white;
+                    //     background: #223f80bf;
+                    // }
                 }
             }
             #assets{
                 // display:none;
+                
                 padding:10px 35px;
                 margin-top:60px;
                 width: 70%;
@@ -226,6 +227,58 @@
                     width:80%;
                     max-width:1500px;
                 }
+                .sessionCards{
+                    padding:25px;
+                    height: 84px;
+                    background: #FFFFFF;
+                    border: 2px solid #D4D4D4;
+                    border-radius: 13px;
+                    display:flex;
+                    flex-direction:row;
+                    justify-content:space-between;
+                    align-items:center;
+                    width:100%;
+                    #nameDiv{
+                        display:flex;
+                        flex-direction:row;
+                        align-items:center;
+                        #name{
+                            margin:10px 20px;
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 18px;
+                            color: #414141;
+                        }
+                    }
+                    #infoDiv{
+                        width:40%;
+                        display:flex;
+                        flex-direction:row;
+                        justify-content:flex-end;
+                        align-items:center;
+                        div{
+                            margin-right:10px
+                        }
+                        #groupLabel,#playerLabel{
+                            margin:10px;
+                            margin-bottom:0px;
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 20px;
+                            color: #8A8A8A;
+                        }
+                        #groupInfo,#playerInfo{
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 18px;
+                            color: #414141;
+                        }
+                        
+                    }
+                }
                 #top{
                     width:100%;
                     @include flex(row,center,center);
@@ -336,10 +389,17 @@
             }
 
             #groupPage{
-                margin-top:150px;
+                // margin-top:150px;
                 @include flex(column,center,center);
                 padding:40px;
-                width:100%;
+                width:calc(100% - 310px);
+                height: 100vh;
+                position: absolute;
+                top:0px;
+                right: 0px;
+                z-index: 1;
+                background-color: white;
+                overflow:hidden scroll ;
                 #topBar{
                     width:100%;
                     @include flex(column,center,center);
@@ -437,10 +497,37 @@
                     }
                 }
                 #groupsList{
-                    padding:50px;
-                    // @include flex(row,flex-start,center);
+                    // padding:50px;
+                    // @include flex(row,center,center);
+                    // flex-wrap: wrap;
+                    margin: 0px 20px;
                     display:grid;
-                    grid-template-columns: auto auto auto;
+                    grid-auto-flow: column;
+                    grid-auto-columns: 230px;
+                    // grid-template-columns: auto auto auto;
+                    .card{
+                        margin:20px 10px;
+                        padding:15px;
+                        width: 230px;
+                        height: 127px;
+                        background: white;
+                        box-shadow: 0px 2px 23px -1px rgba(0, 0, 0, 0.08);
+                        border-radius: 10px;
+                        #groupBox{
+                            display:flex;
+                            flex-direction:row;
+                            justify-content:space-between;
+                            align-items:center;
+                            #groupInfo{
+                                font-family: 'Montserrat';
+                                font-style: normal;
+                                font-weight: 600;
+                                font-size: 25px;
+                                text-align: center;
+                                color: #3F3F3F;
+                            }
+                        }
+                    }
                 }
             }
         }
