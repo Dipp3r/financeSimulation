@@ -108,6 +108,16 @@ button:focus {
   display: none; /* for Chrome, Safari, and Opera */
 }
 
+#groupsList {
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  overflow-y: scroll;
+}
+
+#groupsList::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}
+
 .mr-2 {
   margin-right: 20px;
 }
@@ -373,6 +383,13 @@ button:focus {
   padding: 40px;
   width: 100%;
 }
+#home #main #sessionMain #sessionsViewer #sessionList {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 #home #main #sessionMain #sessionsViewer button {
   margin-top: 15px;
   width: 80%;
@@ -549,9 +566,10 @@ button:focus {
   color: #FFFFFF;
 }
 #home #main #sessionMain #groupPage {
+  margin-top: 150px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 40px;
   width: calc(100% - 310px);
@@ -678,18 +696,15 @@ button:focus {
   background: #223F80;
 }
 #home #main #sessionMain #groupPage #groupsList {
-  margin: 0px 20px;
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 230px;
+  overflow-y: scroll;
+  height: 700px;
+  padding: 50px;
+  margin: 30px 20px;
 }
 #home #main #sessionMain #groupPage #groupsList .card {
-  margin: 20px 10px;
   padding: 15px;
-  width: 230px;
-  height: 127px;
   background: white;
-  box-shadow: 0px 2px 23px -1px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 2px 23px -1px rgba(0, 0, 0, 0.09);
   border-radius: 10px;
 }
 #home #main #sessionMain #groupPage #groupsList .card #groupBox {
@@ -705,4 +720,47 @@ button:focus {
   font-size: 25px;
   text-align: center;
   color: #3F3F3F;
+}
+
+@media only screen and (max-width: 1200px) {
+  #groupsList {
+    display: grid;
+    grid-template-columns: auto auto;
+  }
+  .card {
+    width: 230px;
+    height: 127px;
+    margin: 15px 40px;
+  }
+  #playerBox {
+    margin-top: 30px;
+  }
+}
+@media only screen and (min-width: 1200px) and (max-width: 1600px) {
+  #groupsList {
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+  .card {
+    width: 230px;
+    height: 127px;
+    margin: 15px 50px;
+  }
+  #playerBox {
+    margin-top: 30px;
+  }
+}
+@media only screen and (min-width: 1600px) {
+  #groupsList {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+  }
+  .card {
+    width: 230px;
+    height: 137px;
+    margin: 20px 55px;
+  }
+  #playerBox {
+    margin-top: 30px;
+  }
 }/*# sourceMappingURL=home.css.map */
