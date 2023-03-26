@@ -217,6 +217,10 @@
             @include flex(column,flex-start,center);
             
             #sessionsViewer{
+                #sessionList{
+                    width:80%;
+                    @include flex(column,center,center);
+                }
                 margin-top:150px;
                 @include flex(column,center,center);
                 // display:none;
@@ -389,8 +393,8 @@
             }
 
             #groupPage{
-                // margin-top:150px;
-                @include flex(column,center,center);
+                margin-top:150px;
+                @include flex(column,flex-start,center);
                 padding:40px;
                 width:calc(100% - 310px);
                 height: 100vh;
@@ -497,21 +501,15 @@
                     }
                 }
                 #groupsList{
-                    // padding:50px;
-                    // @include flex(row,center,center);
-                    // flex-wrap: wrap;
-                    margin: 0px 20px;
-                    display:grid;
-                    grid-auto-flow: column;
-                    grid-auto-columns: 230px;
-                    // grid-template-columns: auto auto auto;
+                    overflow-y:scroll;
+                    height:700px;
+                    padding:50px;
+                    margin: 30px 20px;
                     .card{
-                        margin:20px 10px;
                         padding:15px;
-                        width: 230px;
-                        height: 127px;
+                        
                         background: white;
-                        box-shadow: 0px 2px 23px -1px rgba(0, 0, 0, 0.08);
+                        box-shadow: 0px 2px 23px -1px rgba(0, 0, 0, 0.09);
                         border-radius: 10px;
                         #groupBox{
                             display:flex;
@@ -534,3 +532,47 @@
     }
 }
 
+@media only screen and (max-width:1200px){
+    #groupsList{
+        display:grid;
+        grid-template-columns: auto auto;
+    }
+    .card{
+        width: 230px;
+        height: 127px;
+        margin:15px 40px;
+    }
+    #playerBox{
+        margin-top:30px;
+    }
+}
+
+@media only screen and (min-width:1200px) and (max-width:1600px){
+    #groupsList{
+        display:grid;
+        grid-template-columns: auto auto auto;
+    }
+    .card{
+        width: 230px;
+        height: 127px;
+        margin:15px 50px;
+    }
+    #playerBox{
+        margin-top:30px;
+    }
+}
+
+@media only screen and (min-width:1600px){
+    #groupsList{
+        display:grid;
+        grid-template-columns: auto auto auto auto;
+    }
+    .card{
+        width: 230px;
+        height: 137px;
+        margin:20px 55px;
+    }
+    #playerBox{
+        margin-top:30px;
+    }
+}

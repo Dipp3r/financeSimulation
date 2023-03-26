@@ -154,7 +154,8 @@ class SessionsComp extends React.Component {
 
 
         playerBox = document.createElement("p");
-        playerBox.style = "display:flex;flex-direction:row;margin-top:30px;font-family: 'Montserrat';font-style: normal;font-weight: 500;font-size: 18px;color: rgba(34, 63, 128, 0.4);";
+        playerBox.style = "display:flex;flex-direction:row;font-family: 'Montserrat';font-style: normal;font-weight: 500;font-size: 18px;color: rgba(34, 63, 128, 0.4);";
+        playerBox.id = "playerBox"
         players_count = document.createElement("p");
         players_count.style = "margin-left:15px;font-family: 'Montserrat';font-style: normal;font-weight: 500;font-size: 18px;color: #3F3F3F;"
         players_count.innerText = `${group.playersCount}`;
