@@ -29,14 +29,14 @@ class IndexComp extends React.Component{
   getItem=(name)=>{
     return this.state[name]
   }
-  toggleMainDisplay = (e)=>{
+  toggleMainDisplay = (e,res)=>{
     let value = (typeof e === 'string')?e:e.currentTarget.getAttribute("value");
     console.log(value)
     let displayComp
     switch(value){
       case "dashboard":
       default:
-        displayComp = <Dashboard toggleMainDisplay={this.toggleMainDisplay} setItem={this.setItem} getItem={this.getItem}/>
+        displayComp = <Dashboard toggleMainDisplay={this.toggleMainDisplay} value={res} setItem={this.setItem} getItem={this.getItem}/>
         break;
       case "portfolio":
         displayComp = <PortfolioComp toggleMainDisplay={this.toggleMainDisplay} setItem={this.setItem} getItem={this.getItem}/>

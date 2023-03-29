@@ -14,9 +14,9 @@ import Message from "./images/Message.svg";
 
 
 class ProfileComp extends React.Component{
-    constructor(props){
-        super(props)
-    }
+    // constructor(props){
+    //     super(props);
+    // }
     updateProfileInfo =()=>{
         let obj = {}
         obj.userid = 1
@@ -28,7 +28,7 @@ class ProfileComp extends React.Component{
             body: JSON.stringify(obj)
           })
             .then(response => {
-                if(response.status == 200 || response.status == 201) {
+                if(response.status === 200 || response.status === 201) {
                     // this.props.toggleMainDisplay("dashboard")
                 }
                 return response.json()
@@ -43,7 +43,6 @@ class ProfileComp extends React.Component{
         this.updateProfileInfo()
     }
     render(){
-        {console.log()}
         return(
             <div id="profile">
                 <div id="topBar">

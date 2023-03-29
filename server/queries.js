@@ -163,7 +163,7 @@ const addUser = async (request, response) => {
             password,
             groupid,
             "",
-            new Date().toLocaleDateString(),
+            new Date().toLocaleString(),
           ]
         );
         response.status(200).send({ userid: id, star_count: 0 });
@@ -179,7 +179,7 @@ const addUser = async (request, response) => {
         const group = await pool.query('SELECT star FROM "group" WHERE groupid = $1',[groupid]);
         const [star_count] = Object.values(group.rows[0]);
         if (db_name == name && db_password == password) {
-          response.status(200).send({ userid: userid, star_count: star_count });
+          response.send({ userid: userid, star_count: star_count });
         } else {
           response.status(401).send({status:false,invalid:true});
         }

@@ -86,8 +86,8 @@ const FormLogin = ({toggleMainDisplay}) => {
                 body:JSON.stringify(Object.fromEntries(Object.entries(formData).slice(0, 3)))
             });
             if(response.ok){
-                console.log("SUCESS");
-                toggleMainDisplay("dashboard");
+                const data = await response.json().then(data=>{console.log(data)});
+                toggleMainDisplay("dashboard",data);
             }
             else{
                 setFormData((prevFormData) => ({
