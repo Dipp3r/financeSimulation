@@ -40,14 +40,20 @@ class SessionsComp extends React.Component {
         { id: 10, playersCount: 5 },
       ],
       createSessionMenu: "none",
+      createGroupMenu: "none",
       groupPage: "none",
+      playersPage: "none",
       newSessionName: "",
+      newGroupName: "",
     };
     this.displaySessions = this.displaySessions.bind(this);
     this.changeInVal = this.changeInVal.bind(this);
     this.createSession = this.createSession.bind(this);
+    this.createGroup = this.createGroup.bind(this);
     this.toggleCreateSessionMenu = this.toggleCreateSessionMenu.bind(this);
+    this.toggleCreateGroupMenu = this.toggleCreateGroupMenu.bind(this);
     this.toggleGroupPage = this.toggleGroupPage.bind(this);
+    this.togglePlayersPage = this.togglePlayersPage.bind(this);
     this.displayGroups = this.displayGroups.bind(this);
   }
   changeInVal(e) {
@@ -146,6 +152,7 @@ class SessionsComp extends React.Component {
         groupInfo.id = "groupInfo"
         
         linkButton = document.createElement("button");
+        linkButton.onclick = this.togglePlayersPage;
         linkIcon = document.createElement("img");
         linkIcon.src = link;
         groupBox.appendChild(groupInfo);
@@ -175,6 +182,15 @@ class SessionsComp extends React.Component {
     }
     this.setState({ createSessionMenu: temp });
   }
+
+  toggleCreateGroupMenu() {
+    let temp = "none";
+    if (this.state.createGroupMenu == "none") {
+      temp = "flex";
+    }
+    this.setState({ createGroupMenu: temp });
+  }
+
   toggleGroupPage() {
     let temp = "none";
     if (this.state.groupPage == "none") {
@@ -182,8 +198,24 @@ class SessionsComp extends React.Component {
     }
     this.setState({ groupPage: temp });
   }
+
+  togglePlayersPage() {
+    let temp = "none";
+    this.setState({groupPage:"none"});
+    if (this.state.groupPage == 'none'){
+      this.setState({groupPage: "flex"});
+    }
+    if (this.state.playersPage == "none") {
+      temp = "flex";
+    }
+    this.setState({ playersPage: temp });
+  }
+
   createSession() {
     console.log(this.state.newSessionName);
+  }
+  createGroup() {
+    console.log(this.state.newGroupName);
   }
   componentDidMount() {
     this.displaySessions(this.state.sessionsList);
@@ -210,6 +242,52 @@ class SessionsComp extends React.Component {
 
           </div>
         </div>
+
+        <div id="playersPage" style={{ display: this.state.playersPage }}>
+          <div id="topBar">
+            <div id="top">
+              <button id="back" onClick={this.togglePlayersPage}><img src={require("./images/Arrow_left.svg")} alt="back arrow"/></button>
+              <div id="searchDiv">
+                <img src={require("./images/Search.svg")} alt="search icon" />
+                <input type="text" id="searchBar" />
+              </div>
+              <button id="create" onClick={this.toggleCreateGroupMenu}>
+                <div>
+                  <img src={require("./images/Add_round.svg")} alt="add" />
+                  <p>Create Group</p>
+                </div>
+              </button>
+            </div>
+
+            <div id="second">
+              <div id="navBar">
+               <div id="portion1">
+                <div class="navComp">
+                    <img src={require("./images/Date_range.svg")} alt="Date_range"/>
+                    <p>2100</p>
+                  </div>
+                  <p>|</p>
+                  <div>
+                    <p>open phase</p>
+                  </div>
+                  <p>|</p>
+                  <div class="navComp">
+                    <img src={require("./images/Alarmclock_grey.svg")} alt="alarmclock"/>
+                    <p>5:00</p>
+                  </div>
+               </div>
+                <div id="navigate">
+                  <button><img src={require("./images/Expand_left_double.svg")} alt="expand left"/></button>
+                  <button><img src={require("./images/Expand_left.svg")} alt="left"/></button>
+                  <button><img src={require("./images/Expand_right.svg")} alt="right"/></button>
+                  <button><img src={require("./images/Expand_right_double.svg")} alt="expand right"/></button>
+                </div>
+              </div>
+              <button id="gameStatus">Start</button>
+            </div>
+          </div>
+        </div>
+
         <div id="createSessionPage" style={{ display: this.state.createSessionMenu }}>
           <div id="createSessionMenu">
             <div>
@@ -225,6 +303,30 @@ class SessionsComp extends React.Component {
           </div>
         </div>
 
+        <div id="createGroupPage" style={{ display: this.state.createGroupMenu }}>
+          <div id="createGroupMenu">
+            <div>
+              <p>Group name</p>
+              <button id="close" onClick={this.toggleCreateGroupMenu}> <img src={require("./images/Close.svg")} alt="close icon"/> </button>
+            </div>
+            <input
+              onChange={this.changeInVal}
+              name="newGroupName"
+              placeholder="Enter Group name"
+            />
+            <div id="groupLimit">
+              <p>Group limit</p>
+              <select name="limit" id="limitBox">
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+              </select>
+            </div>
+            <button id="save" onClick={this.createGroup}>Save</button>
+          </div>
+        </div>
+
         <div id="groupPage" style={{ display: this.state.groupPage }}>
           <div id="topBar">
 
@@ -234,7 +336,7 @@ class SessionsComp extends React.Component {
                 <img src={require("./images/Search.svg")} alt="search icon" />
                 <input type="text" id="searchBar" />
               </div>
-              <button id="create" onClick={this.toggleCreateSessionMenu}>
+              <button id="create" onClick={this.toggleCreateGroupMenu}>
                 <div>
                   <img src={require("./images/Add_round.svg")} alt="add" />
                   <p>Create Group</p>
