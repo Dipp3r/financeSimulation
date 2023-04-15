@@ -565,12 +565,245 @@ button:focus {
   font-size: 20px;
   color: #FFFFFF;
 }
+#home #main #sessionMain #createGroupPage {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0px;
+  z-index: 2;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#home #main #sessionMain #createGroupPage #createGroupMenu {
+  position: relative;
+  width: 410px;
+  height: 250px;
+}
+#home #main #sessionMain #createGroupPage #createGroupMenu div {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 32px;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#home #main #sessionMain #createGroupPage #createGroupMenu div #close {
+  top: 0px;
+  right: 0px;
+  border-radius: 100%;
+}
+#home #main #sessionMain #createGroupPage #createGroupMenu div #close:focus {
+  background-color: rgba(34, 64, 128, 0.7647058824);
+}
+#home #main #sessionMain #createGroupPage #createGroupMenu input {
+  margin-top: 30px;
+  width: 406px;
+  height: 49px;
+  background: #151515;
+  border: 2px solid #8C8C8C;
+  border-radius: 8px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  padding-left: 14px;
+  color: #8C8C8C;
+}
+#home #main #sessionMain #createGroupPage #createGroupMenu input:focus {
+  outline: none;
+}
+#home #main #sessionMain #createGroupPage #createGroupMenu #groupLimit {
+  margin-top: 30px;
+  float: right;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+#home #main #sessionMain #createGroupPage #createGroupMenu #groupLimit p {
+  margin: 10px 20px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #8C8C8C;
+}
+#home #main #sessionMain #createGroupPage #createGroupMenu #groupLimit select {
+  width: 92px;
+  height: 49px;
+  background: #151515;
+  border: 2px solid #8C8C8C;
+  border-radius: 8px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  padding-left: 14px;
+  color: #8C8C8C;
+}
+#home #main #sessionMain #createGroupPage #createGroupMenu #groupLimit select:focus {
+  outline: none;
+}
+#home #main #sessionMain #createGroupPage #createGroupMenu #save {
+  position: absolute;
+  width: 131px;
+  height: 49px;
+  bottom: 0px;
+  left: 0px;
+  background: #223F80;
+  border-radius: 8px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #FFFFFF;
+}
+#home #main #sessionMain #playersPage {
+  margin-top: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 40px;
+  width: calc(100% - 310px);
+  height: 100vh;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 1;
+  background-color: white;
+  overflow: hidden scroll;
+}
+#home #main #sessionMain #playersPage #topBar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#home #main #sessionMain #playersPage #topBar #top {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+#home #main #sessionMain #playersPage #topBar #top #back {
+  margin-right: 10px;
+}
+#home #main #sessionMain #playersPage #topBar #top #searchDiv {
+  width: 70%;
+  border: 2.5px solid #ACACAC;
+  border-radius: 8px;
+  height: 44px;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#home #main #sessionMain #playersPage #topBar #top #searchDiv input {
+  width: 100%;
+  margin-left: 10px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+}
+#home #main #sessionMain #playersPage #topBar #top #searchDiv input:focus {
+  outline: none;
+}
+#home #main #sessionMain #playersPage #topBar #top #create {
+  margin-left: 20px;
+  margin-top: 0px;
+  width: 210px;
+  height: 44px;
+  background: #223F80;
+  border-radius: 8px;
+}
+#home #main #sessionMain #playersPage #topBar #top #create div {
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+#home #main #sessionMain #playersPage #topBar #top #create div p {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #FFFFFF;
+}
+#home #main #sessionMain #playersPage #topBar #second {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-left: 30px;
+}
+#home #main #sessionMain #playersPage #topBar #second #navBar {
+  width: 66%;
+  margin-left: 55px;
+  background: #434343;
+  border-radius: 8px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  padding: 5px;
+  color: #AAAAAA;
+}
+#home #main #sessionMain #playersPage #topBar #second #navBar #portion1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+#home #main #sessionMain #playersPage #topBar #second #navBar #portion1 .navComp {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+#home #main #sessionMain #playersPage #topBar #second #navBar #portion1 .navComp img {
+  margin: 5px;
+}
+#home #main #sessionMain #playersPage #topBar #second #navBar #navigate button {
+  margin: 10px;
+}
+#home #main #sessionMain #playersPage #topBar #second #gameStatus {
+  margin-left: 25px;
+  width: 202px;
+  height: 44px;
+  border: 2px solid #223F80;
+  border-radius: 8px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #223F80;
+}
+#home #main #sessionMain #playersPage #topBar #second #gameStatus:hover {
+  color: white;
+  background: #223F80;
+}
 #home #main #sessionMain #groupPage {
   margin-top: 150px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  display: none;
   padding: 40px;
   width: calc(100% - 310px);
   height: 100vh;
