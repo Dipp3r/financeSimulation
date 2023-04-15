@@ -215,7 +215,6 @@
             width:100%;
             height:100vh;
             @include flex(column,flex-start,center);
-            
             #sessionsViewer{
                 #sessionList{
                     width:80%;
@@ -392,9 +391,213 @@
                 }
             }
 
+            #createGroupPage{
+                position:fixed;
+                width:100vw;
+                height: 100vh;
+                top:0px;
+                z-index: 2;
+                left:0px;
+                background: rgba(0, 0, 0, 0.9);
+                @include flex(column,center,center);
+                #createGroupMenu{
+                    position:relative;
+                    width:410px;
+                    height:250px;
+                    div{
+                        font-family: 'Montserrat';
+                        font-style: normal;
+                        font-weight: 500;
+                        font-size: 32px;
+                        color: #FFFFFF;
+                        @include flex(row,space-between,center);
+                        #close{
+                            top:0px;
+                            right:0px;
+                            border-radius: 100%;
+                            &:focus{
+                                background-color: #224080c3;
+                            }
+                        }
+                    }
+                    input{
+                        margin-top:30px;
+                        width: 406px;
+                        height: 49px;
+                        background: #151515;
+                        border: 2px solid #8C8C8C;
+                        border-radius: 8px;
+                        font-family: 'Montserrat';
+                        font-style: normal;
+                        font-weight: 400;
+                        font-size: 20px;
+                        padding-left:14px;
+                        color: #8C8C8C;
+                        &:focus{
+                            outline:none;
+                        }
+                    }
+                    #groupLimit{
+                        margin-top:30px;
+                        float: right;
+                        @include flex(row,center,center);
+                        p{
+                            margin:10px 20px;
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 20px;
+                            color: #8C8C8C;
+                        }
+                        select{
+                            width: 92px;
+                            height: 49px;
+                            background: #151515;
+                            border: 2px solid #8C8C8C;
+                            border-radius: 8px;
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 400;
+                            font-size: 20px;
+                            padding-left:14px;
+                            color: #8C8C8C;
+                            &:focus{
+                                outline:none;
+                            }
+                        }
+                    }
+                    #save{
+                        position: absolute;
+                        width: 131px;
+                        height: 49px;
+                        bottom:0px;
+                        left:0px;
+                        background: #223F80;
+                        border-radius: 8px;
+                        font-family: 'Montserrat';
+                        font-style: normal;
+                        font-weight: 500;
+                        font-size: 20px;
+                        color: #FFFFFF;
+                    }
+                }
+            }
+            #playersPage{
+                margin-top:150px;
+                @include flex(column,flex-start,center);
+                padding:40px;
+                width:calc(100% - 310px);
+                height: 100vh;
+                position: absolute;
+                top:0px;
+                right: 0px;
+                z-index: 1;
+                background-color: white;
+                overflow:hidden scroll ;
+                #topBar{
+                    width:100%;
+                    @include flex(column,center,center);
+                    #top{
+                        width:100%;
+                        @include flex(row,center,center);
+                        margin-bottom:30px;
+                        #back{
+                            margin-right:10px;
+                        }
+                        #searchDiv{
+                            width:70%;
+                            border: 2.5px solid #ACACAC;
+                            border-radius: 8px;
+                            height: 44px;
+                            padding:5px;
+                            
+                            @include flex(row,space-between,center);
+                            input{
+                                width:100%;
+                                margin-left:10px;
+                                font-family: 'Montserrat';
+                                font-style: normal;
+                                font-weight: 500;
+                                font-size: 20px;
+                                &:focus{
+                                    outline:none;
+                                }
+                            }
+                        }
+                        #create{
+                            margin-left:20px;
+                            margin-top:0px;
+                            width: 210px;
+                            height: 44px;
+                            background: #223F80;
+                            border-radius: 8px;
+                            div{
+                                padding:5px;
+                                @include flex(row,space-around,center);
+                            p{
+                                font-family: 'Montserrat';
+                                font-style: normal;
+                                font-weight: 500;
+                                font-size: 20px;
+                                color: #FFFFFF;
+                            }}
+                        }
+                    }
+                    #second{
+                        @include flex(row,center,center);
+                        width:100%;
+                        margin-left:30px;
+                        #navBar{
+                            width: 66%;
+                            margin-left:55px;
+                            background: #434343;
+                            border-radius: 8px;
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 20px;
+                            padding:5px;
+                            color: #AAAAAA;
+                            #portion1{
+                                @include flex(row,space-around,center);
+                                .navComp{
+                                    @include flex(row,center,center);
+                                    img{
+                                        margin:5px;
+                                    }
+                                }
+                            }
+                            #navigate{
+                                button{
+                                    margin:10px;
+                                }
+                            }
+    
+                        }   
+                        #gameStatus{
+                            margin-left:25px;
+                            width: 202px;
+                            height: 44px;
+                            border: 2px solid #223F80;
+                            border-radius: 8px;
+                            font-family: 'Montserrat';
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 20px;
+                            color: #223F80;
+                            &:hover{
+                                color:white;
+                                background: #223F80;
+                            }
+                        }
+                    }
+                }
+            }
+            
             #groupPage{
                 margin-top:150px;
                 @include flex(column,flex-start,center);
+                display:none;
                 padding:40px;
                 width:calc(100% - 310px);
                 height: 100vh;
