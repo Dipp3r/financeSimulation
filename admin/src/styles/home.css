@@ -682,7 +682,7 @@ button:focus {
   overflow: hidden scroll;
 }
 #home #main #sessionMain #playersPage #topBar {
-  width: 100%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -692,110 +692,137 @@ button:focus {
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 #home #main #sessionMain #playersPage #topBar #top #back {
   margin-right: 10px;
 }
-#home #main #sessionMain #playersPage #topBar #top #searchDiv {
-  width: 70%;
-  border: 2.5px solid #ACACAC;
-  border-radius: 8px;
-  height: 44px;
-  padding: 5px;
+#home #main #sessionMain #playersPage #topBar #top #topLabel {
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
-#home #main #sessionMain #playersPage #topBar #top #searchDiv input {
-  width: 100%;
-  margin-left: 10px;
+#home #main #sessionMain #playersPage #topBar #top #topLabel div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#home #main #sessionMain #playersPage #topBar #top #topLabel div #trash {
+  margin-right: 60px;
+}
+#home #main #sessionMain #playersPage #topBar #top #topLabel div #groupNum {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 37px;
+  text-align: center;
+  color: #223F80;
+}
+#home #main #sessionMain #playersPage #topBar #top #topLabel div #players {
+  margin-left: 100px;
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
+  color: rgba(34, 63, 128, 0.4);
 }
-#home #main #sessionMain #playersPage #topBar #top #searchDiv input:focus {
+#home #main #sessionMain #playersPage #topBar #top #topLabel div #players #playerCount {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #3F3F3F;
+}
+#home #main #sessionMain #playersPage #topBar hr {
+  width: calc(100% - 40px);
+  margin-left: 50px;
+  border: 3px solid rgba(34, 63, 128, 0.4);
+}
+#home #main #sessionMain #playersPage #playersList {
+  margin-top: 30px;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#home #main #sessionMain #playersPage #playersList .row {
+  margin-top: 40px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#home #main #sessionMain #playersPage #playersList .row #remove {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #A43936;
+}
+#home #main #sessionMain #playersPage #playersList .row button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#home #main #sessionMain #playersPage #playersList .row button .checkbox-round {
+  position: absolute;
+  top: 4.5px;
+  left: 5.4px;
+  box-sizing: border-box;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  vertical-align: middle;
+  -moz-appearance: none;
+       appearance: none;
+  -webkit-appearance: none;
   outline: none;
+  cursor: pointer;
 }
-#home #main #sessionMain #playersPage #topBar #top #create {
-  margin-left: 20px;
-  margin-top: 0px;
-  width: 210px;
-  height: 44px;
-  background: #223F80;
-  border-radius: 8px;
+#home #main #sessionMain #playersPage #playersList .row button .checkbox-round:checked {
+  background: linear-gradient(39.67deg, #D9D9D9 -3.78%, #223F80 -3.77%, #444584 46.57%, #A43936 101.3%);
 }
-#home #main #sessionMain #playersPage #topBar #top #create div {
-  padding: 5px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-}
-#home #main #sessionMain #playersPage #topBar #top #create div p {
+#home #main #sessionMain #playersPage #playersList .row p {
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
-  color: #FFFFFF;
+  color: #3F3F3F;
 }
-#home #main #sessionMain #playersPage #topBar #second {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-left: 30px;
-}
-#home #main #sessionMain #playersPage #topBar #second #navBar {
-  width: 66%;
-  margin-left: 55px;
-  background: #434343;
-  border-radius: 8px;
+#home #main #sessionMain #playersPage #playersList .row select {
+  width: 208px;
+  height: 35px;
+  left: 892px;
+  top: 240px;
+  border: 1.5px solid #B0B0B0;
+  border-radius: 7px;
+  padding: 5px;
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
-  padding: 5px;
-  color: #AAAAAA;
+  color: #B0B0B0;
 }
-#home #main #sessionMain #playersPage #topBar #second #navBar #portion1 {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
+#home #main #sessionMain #playersPage #playersList .row select option:checked {
+  color: #223F80;
 }
-#home #main #sessionMain #playersPage #topBar #second #navBar #portion1 .navComp {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-#home #main #sessionMain #playersPage #topBar #second #navBar #portion1 .navComp img {
-  margin: 5px;
-}
-#home #main #sessionMain #playersPage #topBar #second #navBar #navigate button {
-  margin: 10px;
-}
-#home #main #sessionMain #playersPage #topBar #second #gameStatus {
-  margin-left: 25px;
-  width: 202px;
-  height: 44px;
-  border: 2px solid #223F80;
-  border-radius: 8px;
+#home #main #sessionMain #playersPage #playersList .row select:focus {
+  outline: none;
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
   color: #223F80;
-}
-#home #main #sessionMain #playersPage #topBar #second #gameStatus:hover {
-  color: white;
-  background: #223F80;
 }
 #home #main #sessionMain #groupPage {
   margin-top: 150px;
