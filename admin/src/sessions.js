@@ -2,6 +2,8 @@ import React from "react";
 import coin from './images/coin.svg';
 import downIcon from './images/Download.svg';
 import link from './images/link.svg';
+import trash from './images/Trash.svg';
+
 
 class SessionsComp extends React.Component {
   constructor(props) {
@@ -247,43 +249,70 @@ class SessionsComp extends React.Component {
           <div id="topBar">
             <div id="top">
               <button id="back" onClick={this.togglePlayersPage}><img src={require("./images/Arrow_left.svg")} alt="back arrow"/></button>
-              <div id="searchDiv">
-                <img src={require("./images/Search.svg")} alt="search icon" />
-                <input type="text" id="searchBar" />
-              </div>
-              <button id="create" onClick={this.toggleCreateGroupMenu}>
+              <div id="topLabel">
                 <div>
-                  <img src={require("./images/Add_round.svg")} alt="add" />
-                  <p>Create Group</p>
+                  <p id="groupNum">Group 10</p>
+                  <p id="players">Players <a id="playerCount">04</a></p>
                 </div>
+                <div>
+                  <button id="trash">
+                    <img src={trash} alt="trashIcon"/>
+                  </button>
+                  <button>
+                    <img src={link} alt="linkIcon"/>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <hr/>
+          </div>
+          <div id="playersList">
+            <div class="row">
+              <button>
+                <img src={require("./images/grad_checkbox.svg")} alt="checkbox"/>
+                <input type="checkbox" class="checkbox-round" />
               </button>
+              <p>Rajesh</p>
+              <p>9443650124</p>
+              <select name="role" placeholder="Select" id="role">
+                <option id="select" value="-1" disabled selected>Select</option>
+                <option value="0">Executive</option>
+                <option value="1">Accountant</option>
+                <option value="2">Analyst</option>
+              </select>
+              <button id="remove">remove</button>
             </div>
 
-            <div id="second">
-              <div id="navBar">
-               <div id="portion1">
-                <div class="navComp">
-                    <img src={require("./images/Date_range.svg")} alt="Date_range"/>
-                    <p>2100</p>
-                  </div>
-                  <p>|</p>
-                  <div>
-                    <p>open phase</p>
-                  </div>
-                  <p>|</p>
-                  <div class="navComp">
-                    <img src={require("./images/Alarmclock_grey.svg")} alt="alarmclock"/>
-                    <p>5:00</p>
-                  </div>
-               </div>
-                <div id="navigate">
-                  <button><img src={require("./images/Expand_left_double.svg")} alt="expand left"/></button>
-                  <button><img src={require("./images/Expand_left.svg")} alt="left"/></button>
-                  <button><img src={require("./images/Expand_right.svg")} alt="right"/></button>
-                  <button><img src={require("./images/Expand_right_double.svg")} alt="expand right"/></button>
-                </div>
-              </div>
-              <button id="gameStatus">Start</button>
+            <div class="row">
+              <button>
+                <img src={require("./images/grad_checkbox.svg")} alt="checkbox"/>
+                <input type="checkbox" class="checkbox-round" />
+              </button>
+              <p>Rajesh</p>
+              <p>9443650124</p>
+              <select name="role" placeholder="Select" id="role">
+                <option id="select" value="-1" disabled selected>Select</option>
+                <option value="0">Executive</option>
+                <option value="1">Accountant</option>
+                <option value="2">Analyst</option>
+              </select>
+              <button id="remove">remove</button>
+            </div>
+
+            <div class="row">
+              <button>
+                <img src={require("./images/grad_checkbox.svg")} alt="checkbox"/>
+                <input type="checkbox" class="checkbox-round" />
+              </button>
+              <p>Rajesh</p>
+              <p>9443650124</p>
+              <select name="role" placeholder="Select" id="role">
+                <option id="select" value="-1" disabled selected>Select</option>
+                <option value="0">Executive</option>
+                <option value="1">Accountant</option>
+                <option value="2">Analyst</option>
+              </select>
+              <button id="remove">remove</button>
             </div>
           </div>
         </div>
