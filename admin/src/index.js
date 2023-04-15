@@ -68,8 +68,8 @@ class IndexComp extends React.Component{
         <img src={require("./images/vittae_logo_color.svg")} alt="vittae logo" />
         <div id="options">
           <div class="button" value='0'onClick={this.toggleMainPage}>
-            <img src={Group} alt="groupIcon"/>
-            <button  >Sessions</button>
+            <img  src={Group} alt="groupIcon"/>
+            <button >Sessions</button>
           </div>
           <div class="button" value='1' onClick={this.toggleMainPage}>
             <img src={Edit} alt="editIcon"/>  
