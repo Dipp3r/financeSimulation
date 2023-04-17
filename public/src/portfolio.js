@@ -1,5 +1,17 @@
 import React from "react";
 import './styles/portfolio.css';
+import Arrow_left from "./images/Arrow_left.svg"
+import Alarmclock from "./images/Alarmclock.svg"
+import PieChart from "./images/PieChart.svg"
+import dot1 from "./images/dot1.svg"
+import dot3 from "./images/dot3.svg"
+import dot2 from "./images/dot2.svg"
+import dot4 from "./images/dot4.svg"
+import loss from "./images/loss.svg"
+import gain from "./images/gain.svg"
+import coin from "./images/coin.svg"
+import upArrow from "./images/upArrow.svg"
+import downArrow from "./images/downArrow.svg"
 
 class PortfolioComp extends React.Component{
     constructor(props){
@@ -9,25 +21,25 @@ class PortfolioComp extends React.Component{
         return(
             <div id="portfolio">
                 <div id="topBar">
-                    <img src={require("./images/Arrow_left.svg")} alt="back_arrow" />
+                    <img src={Arrow_left} onClick={this.props.togglePortfolioComp} alt="back_arrow" />
                     <p>Portfolio</p>
                     <div id="timer">
-                        <img src={require("./images/Alarmclock.svg")} alt="timer"/>
+                        <img src={Alarmclock} alt="timer"/>
                         <p>05:00</p>
                     </div>
                 </div>
                 <div id="main">
-                    <img src={require("./images/PieChart.svg")} alt="piechart"/>
+                    <img src={PieChart} alt="piechart"/>
                     <div class="row">
                         <div class="column">
                             <div class="content">
-                                <img src={require("./images/dot1.svg")} alt="stocks"/>
+                                <img src={dot1} alt="stocks"/>
                                 <p>
                                     Stocks
                                 </p>
                             </div>
                             <div class="content">
-                                <img src={require("./images/dot3.svg")} alt="Commodities"/>
+                                <img src={dot3} alt="Commodities"/>
                                 <p>
                                     Commodities
                                 </p>
@@ -36,13 +48,13 @@ class PortfolioComp extends React.Component{
                         
                         <div class="column">
                             <div class="content">
-                                <img src={require("./images/dot2.svg")} alt="Mutual funds"/>
+                                <img src={dot2} alt="Mutual funds"/>
                                 <p>
                                     Mutual funds
                                 </p>
                             </div>
                             <div class="content">
-                                <img src={require("./images/dot4.svg")} alt="Cash"/>
+                                <img src={dot4} alt="Cash"/>
                                 <p>
                                     Cash
                                 </p>
@@ -57,13 +69,13 @@ class PortfolioComp extends React.Component{
                     </div>
                     <div id="row2">
                         <div class="rowContent">
-                            <img src={require("./images/loss.svg")} alt="loss"/>
+                            <img src={loss} alt="loss"/>
                             <p>20,000</p>
                             <p id="percentage">5%</p>
                         </div>
                         <hr/>
                         <div class="rowContent">
-                            <img src={require("./images/gain.svg")} alt="gain"/>
+                            <img src={gain} alt="gain"/>
                             <p>10,000</p>
                             <p id="percentage">2.5%</p>
                         </div>
@@ -72,7 +84,7 @@ class PortfolioComp extends React.Component{
                     <div class="card">
                         <div id="left">
                             <p>Cash</p>
-                            <img src={require("./images/coin.svg")} alt="coin"/>
+                            <img src={coin} alt="coin"/>
                         </div>
 
                         <div id="middle" class="mr-2">
@@ -92,10 +104,10 @@ class PortfolioComp extends React.Component{
 
                         <div id="last">
                             <div id="amount">
-                                <img src={require("./images/loss.svg")} alt="loss"/>
+                                <img src={loss} alt="loss"/>
                                 <p class="loss">12,000</p>
                                 <button>
-                                    <img src={require("./images/upArrow.svg")} alt="upArrow"/>
+                                    <img src={upArrow} alt="upArrow"/>
                                 </button>
                             </div>
                         </div>          
@@ -107,14 +119,14 @@ class PortfolioComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={gain} alt="gain"/>
                                     <p class="gain">2%</p>
                                 </div>
                             </div>
                             <div>
                                 <p>₹49,800</p>
                                 <div>
-                                    <img src={require("./images/loss.svg")} alt="loss"/>
+                                    <img src={loss} alt="loss"/>
                                     <p class="loss">₹200</p>
                                 </div>
                             </div>
@@ -126,14 +138,14 @@ class PortfolioComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={gain} alt="gain"/>
                                     <p class="gain">2%</p>
                                 </div>
                             </div>
                             <div>
                                 <p>₹49,800</p>
                                 <div>
-                                    <img src={require("./images/loss.svg")} alt="loss"/>
+                                    <img src={loss} alt="loss"/>
                                     <p class="loss">₹200</p>
                                 </div>
                             </div>
@@ -145,14 +157,14 @@ class PortfolioComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={gain} alt="gain"/>
                                     <p class="gain">2%</p>
                                 </div>
                             </div>
                             <div>
                                 <p>₹49,800</p>
                                 <div>
-                                    <img src={require("./images/loss.svg")} alt="loss"/>
+                                    <img src={loss} alt="loss"/>
                                     <p class="loss">₹200</p>
                                 </div>
                             </div>
@@ -164,14 +176,14 @@ class PortfolioComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={gain} alt="gain"/>
                                     <p class="gain">2%</p>
                                 </div>
                             </div>
                             <div>
                                 <p>₹49,800</p>
                                 <div>
-                                    <img src={require("./images/loss.svg")} alt="loss"/>
+                                    <img src={loss} alt="loss"/>
                                     <p class="loss">₹200</p>
                                 </div>
                             </div>
@@ -183,14 +195,14 @@ class PortfolioComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={gain} alt="gain"/>
                                     <p class="gain">2%</p>
                                 </div>
                             </div>
                             <div>
                                 <p>₹49,800</p>
                                 <div>
-                                    <img src={require("./images/loss.svg")} alt="loss"/>
+                                    <img src={loss} alt="loss"/>
                                     <p class="loss">₹200</p>
                                 </div>
                             </div>
@@ -202,14 +214,14 @@ class PortfolioComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={gain} alt="gain"/>
                                     <p class="gain">2%</p>
                                 </div>
                             </div>
                             <div>
                                 <p>₹49,800</p>
                                 <div>
-                                    <img src={require("./images/loss.svg")} alt="loss"/>
+                                    <img src={loss} alt="loss"/>
                                     <p class="loss">₹200</p>
                                 </div>
                             </div>
@@ -221,14 +233,14 @@ class PortfolioComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={gain} alt="gain"/>
                                     <p class="gain">2%</p>
                                 </div>
                             </div>
                             <div>
                                 <p>₹49,800</p>
                                 <div>
-                                    <img src={require("./images/loss.svg")} alt="loss"/>
+                                    <img src={loss} alt="loss"/>
                                     <p class="loss">₹200</p>
                                 </div>
                             </div>
@@ -246,10 +258,10 @@ class PortfolioComp extends React.Component{
 
                         <div id="last">
                             <div id="amount">
-                                <img src={require("./images/gain.svg")} alt="gain"/>
+                                <img src={gain} alt="gain"/>
                                 <p class="gain">1000</p>
                                 <button>
-                                    <img src={require("./images/downArrow.svg")} alt="downArrow"/>
+                                    <img src={downArrow} alt="downArrow"/>
                                 </button>
                             </div>
                         </div>          
@@ -266,10 +278,10 @@ class PortfolioComp extends React.Component{
 
                         <div id="last">
                             <div id="amount">
-                                <img src={require("./images/loss.svg")} alt="loss"/>
+                                <img src={loss} alt="loss"/>
                                 <p class="loss">5,000</p>
                                 <button>
-                                    <img src={require("./images/downArrow.svg")} alt="downArrow"/>
+                                    <img src={downArrow} alt="downArrow"/>
                                 </button>
                             </div>
                         </div>          

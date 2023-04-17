@@ -4,3 +4,9 @@ public/build/*
 public/node_modules/*
 build/*
 node_modules/*
+package.json
+package-lock.json
+admin/package.json
+admin/package-lock.json
+public/package.json
+public/package-lock.json

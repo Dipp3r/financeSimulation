@@ -3,7 +3,7 @@ const sessions = require('express-session');
 const cookieParser = require('cookie-parser');
 const path = require('path')
 const app = express()
-const port = 3000;
+const port = 3010;
 const cookieTime = 1000*60*60*24*10
 
 //middleware
