@@ -3,6 +3,17 @@ import coin from './images/coin.svg';
 import downIcon from './images/Download.svg';
 import link from './images/link.svg';
 import trash from './images/Trash.svg';
+import search from "./images/Search.svg"
+import add_round from "./images/Add_round.svg"
+import arrow_left from "./images/Arrow_left.svg"
+import grad_checkbox from "./images/grad_checkbox.svg"
+import close from "./images/Close.svg"
+import Date_range from "./images/Date_range.svg"
+import Alarmclock_grey from "./images/Alarmclock_grey.svg"
+import Expand_left_double from "./images/Expand_left_double.svg"
+import Expand_left from "./images/Expand_left.svg"
+import Expand_right from "./images/Expand_right.svg"
+import Expand_right_double from "./images/Expand_right_double.svg"
 
 
 class SessionsComp extends React.Component {
@@ -230,12 +241,12 @@ class SessionsComp extends React.Component {
         <div id="sessionsViewer">
           <div id="top">
             <div id="searchDiv">
-              <img src={require("./images/Search.svg")} alt="search icon" />
+              <img src={search} alt="search icon" />
               <input type="text" id="searchBar" />
             </div>
             <button id="create" onClick={this.toggleCreateSessionMenu}>
               <div>
-                <img src={require("./images/Add_round.svg")} alt="add" />
+                <img src={add_round} alt="add" />
                 <p>Create Session</p>
               </div>
             </button>
@@ -248,7 +259,7 @@ class SessionsComp extends React.Component {
         <div id="playersPage" style={{ display: this.state.playersPage }}>
           <div id="topBar">
             <div id="top">
-              <button id="back" onClick={this.togglePlayersPage}><img src={require("./images/Arrow_left.svg")} alt="back arrow"/></button>
+              <button id="back" onClick={this.togglePlayersPage}><img src={arrow_left} alt="back arrow"/></button>
               <div id="topLabel">
                 <div>
                   <p id="groupNum">Group 10</p>
@@ -269,7 +280,7 @@ class SessionsComp extends React.Component {
           <div id="playersList">
             <div class="row">
               <button>
-                <img src={require("./images/grad_checkbox.svg")} alt="checkbox"/>
+                <img src={grad_checkbox} alt="checkbox"/>
                 <input type="checkbox" class="checkbox-round" />
               </button>
               <p>Rajesh</p>
@@ -285,7 +296,7 @@ class SessionsComp extends React.Component {
 
             <div class="row">
               <button>
-                <img src={require("./images/grad_checkbox.svg")} alt="checkbox"/>
+                <img src={grad_checkbox} alt="checkbox"/>
                 <input type="checkbox" class="checkbox-round" />
               </button>
               <p>Rajesh</p>
@@ -301,7 +312,7 @@ class SessionsComp extends React.Component {
 
             <div class="row">
               <button>
-                <img src={require("./images/grad_checkbox.svg")} alt="checkbox"/>
+                <img src={grad_checkbox} alt="checkbox"/>
                 <input type="checkbox" class="checkbox-round" />
               </button>
               <p>Rajesh</p>
@@ -321,7 +332,7 @@ class SessionsComp extends React.Component {
           <div id="createSessionMenu">
             <div>
               <p>Session name</p>
-              <button id="close" onClick={this.toggleCreateSessionMenu}> <img src={require("./images/Close.svg")} alt="close icon"/> </button>
+              <button id="close" onClick={this.toggleCreateSessionMenu}> <img src={close} alt="close icon"/> </button>
             </div>
             <input
               onChange={this.changeInVal}
@@ -336,7 +347,7 @@ class SessionsComp extends React.Component {
           <div id="createGroupMenu">
             <div>
               <p>Group name</p>
-              <button id="close" onClick={this.toggleCreateGroupMenu}> <img src={require("./images/Close.svg")} alt="close icon"/> </button>
+              <button id="close" onClick={this.toggleCreateGroupMenu}> <img src={close} alt="close icon"/> </button>
             </div>
             <input
               onChange={this.changeInVal}
@@ -360,14 +371,14 @@ class SessionsComp extends React.Component {
           <div id="topBar">
 
             <div id="top">
-              <button id="back" onClick={this.toggleGroupPage}><img src={require("./images/Arrow_left.svg")} alt="back arrow"/></button>
+              <button id="back" onClick={this.toggleGroupPage}><img src={arrow_left} alt="back arrow"/></button>
               <div id="searchDiv">
-                <img src={require("./images/Search.svg")} alt="search icon" />
+                <img src={search} alt="search icon" />
                 <input type="text" id="searchBar" />
               </div>
               <button id="create" onClick={this.toggleCreateGroupMenu}>
                 <div>
-                  <img src={require("./images/Add_round.svg")} alt="add" />
+                  <img src={add_round} alt="add" />
                   <p>Create Group</p>
                 </div>
               </button>
@@ -377,7 +388,7 @@ class SessionsComp extends React.Component {
               <div id="navBar">
                <div id="portion1">
                 <div class="navComp">
-                    <img src={require("./images/Date_range.svg")} alt="Date_range"/>
+                    <img src={Date_range} alt="Date_range"/>
                     <p>2100</p>
                   </div>
                   <p>|</p>
@@ -386,15 +397,15 @@ class SessionsComp extends React.Component {
                   </div>
                   <p>|</p>
                   <div class="navComp">
-                    <img src={require("./images/Alarmclock_grey.svg")} alt="alarmclock"/>
+                    <img src={Alarmclock_grey} alt="alarmclock"/>
                     <p>5:00</p>
                   </div>
                </div>
                 <div id="navigate">
-                  <button><img src={require("./images/Expand_left_double.svg")} alt="expand left"/></button>
-                  <button><img src={require("./images/Expand_left.svg")} alt="left"/></button>
-                  <button><img src={require("./images/Expand_right.svg")} alt="right"/></button>
-                  <button><img src={require("./images/Expand_right_double.svg")} alt="expand right"/></button>
+                  <button><img src={Expand_left_double} alt="expand left"/></button>
+                  <button><img src={Expand_left} alt="left"/></button>
+                  <button><img src={Expand_right} alt="right"/></button>
+                  <button><img src={Expand_right_double} alt="expand right"/></button>
                 </div>
               </div>
               <button id="gameStatus">Start</button>

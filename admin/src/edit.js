@@ -1,5 +1,6 @@
  import React from "react";
-
+import Alarmclock from  "./images/Alarmclock.svg"
+import Export from "./images/Export.svg"
 class EditComp extends React.Component{
     constructor(props){
         super(props)
@@ -102,19 +103,19 @@ class EditComp extends React.Component{
                             <p id="year">2099</p>
                             <p>Open phase</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <img src={Alarmclock} alt="alarmclock"/>
                                 <p>05:00</p>
                             </div>
                         </div>
                         <div class="newsUpdate">
                             <p>Market update</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -122,12 +123,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -135,12 +136,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Super breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <img src={Export} alt="Export"/>
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -151,19 +152,19 @@ class EditComp extends React.Component{
                             <p id="year">2099</p>
                             <p>Open phase</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <img src={Alarmclock} alt="alarmclock"/>
                                 <p>05:00</p>
                             </div>
                         </div>
                         <div class="newsUpdate">
                             <p>Market update</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -171,12 +172,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -184,12 +185,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Super breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <img src={Export} alt="Export"/>
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -200,19 +201,19 @@ class EditComp extends React.Component{
                             <p id="year">2099</p>
                             <p>Open phase</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <img src={Alarmclock} alt="alarmclock"/>
                                 <p>05:00</p>
                             </div>
                         </div>
                         <div class="newsUpdate">
                             <p>Market update</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -220,12 +221,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -233,12 +234,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Super breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <img src={Export} alt="Export"/>
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -249,19 +250,19 @@ class EditComp extends React.Component{
                             <p id="year">2099</p>
                             <p>Open phase</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <img src={Alarmclock} alt="alarmclock"/>
                                 <p>05:00</p>
                             </div>
                         </div>
                         <div class="newsUpdate">
                             <p>Market update</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -269,12 +270,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -282,12 +283,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Super breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <img src={Export} alt="Export"/>
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -298,19 +299,19 @@ class EditComp extends React.Component{
                             <p id="year">2099</p>
                             <p>Open phase</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <img src={Alarmclock} alt="alarmclock"/>
                                 <p>05:00</p>
                             </div>
                         </div>
                         <div class="newsUpdate">
                             <p>Market update</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -318,12 +319,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -331,12 +332,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Super breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <img src={Export} alt="Export"/>
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -347,19 +348,19 @@ class EditComp extends React.Component{
                             <p id="year">2099</p>
                             <p>Open phase</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <img src={Alarmclock} alt="alarmclock"/>
                                 <p>05:00</p>
                             </div>
                         </div>
                         <div class="newsUpdate">
                             <p>Market update</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -367,12 +368,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -380,12 +381,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Super breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <img src={Export} alt="Export"/>
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -396,19 +397,19 @@ class EditComp extends React.Component{
                             <p id="year">2099</p>
                             <p>Open phase</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <img src={Alarmclock} alt="alarmclock"/>
                                 <p>05:00</p>
                             </div>
                         </div>
                         <div class="newsUpdate">
                             <p>Market update</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -416,12 +417,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -429,12 +430,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Super breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <img src={Export} alt="Export"/>
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -445,19 +446,19 @@ class EditComp extends React.Component{
                             <p id="year">2099</p>
                             <p>Open phase</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="alarmclock"/>
+                                <img src={Alarmclock} alt="alarmclock"/>
                                 <p>05:00</p>
                             </div>
                         </div>
                         <div class="newsUpdate">
                             <p>Market update</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -465,12 +466,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export" />
+                                    <img src={Export} alt="Export" />
                                     <p>Upload</p>
                                 </div>
                             </button>
@@ -478,12 +479,12 @@ class EditComp extends React.Component{
                         <div class="newsUpdate">
                             <p>Super breaking news</p>
                             <div>
-                                <img src={require("./images/Alarmclock.svg")} alt="" />
+                                <img src={Alarmclock} alt="" />
                                 <p>05:00</p>
                             </div>
                             <button>
                                 <div>
-                                    <img src={require("./images/Export.svg")} alt="Export"/>
+                                    <img src={Export} alt="Export"/>
                                     <p>Upload</p>
                                 </div>
                             </button>

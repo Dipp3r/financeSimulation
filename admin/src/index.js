@@ -9,8 +9,8 @@ import Group from './images/Group.svg';
 import Edit from './images/Edit.svg';
 import Edit_white from './images/Edit_white.svg';
 import Group_white from './images/Group_white.svg';
-
-
+import vittae_logo_color from "./images/vittae_logo_color.svg"
+import illustration from "./images/illustration.svg"
 class IndexComp extends React.Component{
   constructor(props){
     super(props)
@@ -42,7 +42,17 @@ class IndexComp extends React.Component{
       element.style.background = "transparent"
       element.style.color = "#223F80"
     });
-    
+    switch(value){
+      case "0":
+      default:
+        document.querySelector("#imgGroup").src = Group_white
+        document.querySelector("#imgEdit").src = Edit
+        break;
+      case "1":
+        document.querySelector("#imgEdit").src = Edit_white
+        document.querySelector("#imgGroup").src = Group
+        break;
+    }
     options[value].style.backgroundColor = "#223f80"
     options[value].style.color = "#FFF"
   }
@@ -65,18 +75,18 @@ class IndexComp extends React.Component{
   return(
     <section id="home">
       <nav id="sideBar">
-        <img src={require("./images/vittae_logo_color.svg")} alt="vittae logo" />
+        <img src={vittae_logo_color} alt="vittae logo" />
         <div id="options">
           <div class="button" value='0'onClick={this.toggleMainPage}>
-            <img src={Group} alt="groupIcon"/>
+            <img id="imgGroup" src={Group} alt="groupIcon"/>
             <button  >Sessions</button>
           </div>
           <div class="button" value='1' onClick={this.toggleMainPage}>
-            <img src={Edit} alt="editIcon"/>  
+            <img id="imgEdit" src={Edit} alt="editIcon"/>  
             <button  >Edit</button>
           </div>
         </div>
-        <img id="tree" src={require("./images/illustration.svg")} alt="tree illustration" />
+        <img id="tree" src={illustration} alt="tree illustration" />
       </nav>
       <div id='main'>
         {mainPage}
