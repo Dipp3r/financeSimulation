@@ -32,7 +32,7 @@
     }
     #main{
         @include flex(column,flex-start,center);
-        height:800px;
+        // height:800px;
         overflow-y:scroll;
         img{
             margin-top:40px;
@@ -173,15 +173,22 @@
             }
 
         }
-        #expand{
+        .expand{
             margin:20px 0px;
-            @include flex(column,center,center);
+            @include flex(column,flex-start,center);
             // display:none;
+            // height: 250px;
+            overflow:auto;
+            // border: 2px solid black;
+            display: block;
+            transition-duration: 0.5s;
+            width: 98%;
             .row{
-                margin:0px;
+                margin:12px 0px;
                 width: 320px;
                 height: 30px;
                 @include flex(row,space-between,flex-start);
+                // display: block;
                 #name{
                     margin:0px;
                     font-family: 'Inter';

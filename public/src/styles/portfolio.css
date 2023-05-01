@@ -108,7 +108,6 @@ button:focus {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height: 800px;
   overflow-y: scroll;
 }
 #portfolio #main img {
@@ -272,15 +271,19 @@ button:focus {
 #portfolio #main .card #last #amount button {
   margin-left: 10px;
 }
-#portfolio #main #expand {
+#portfolio #main .expand {
   margin: 20px 0px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  overflow: auto;
+  display: block;
+  transition-duration: 0.5s;
+  width: 98%;
 }
-#portfolio #main #expand .row {
-  margin: 0px;
+#portfolio #main .expand .row {
+  margin: 12px 0px;
   width: 320px;
   height: 30px;
   display: flex;
@@ -288,7 +291,7 @@ button:focus {
   justify-content: space-between;
   align-items: flex-start;
 }
-#portfolio #main #expand .row #name {
+#portfolio #main .expand .row #name {
   margin: 0px;
   font-family: "Inter";
   font-style: normal;
@@ -296,29 +299,29 @@ button:focus {
   color: #505050;
   font-size: 14px;
 }
-#portfolio #main #expand .row div {
+#portfolio #main .expand .row div {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-#portfolio #main #expand .row div p {
+#portfolio #main .expand .row div p {
   margin: 0px;
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
 }
-#portfolio #main #expand .row div div {
+#portfolio #main .expand .row div div {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
-#portfolio #main #expand .row div div img {
+#portfolio #main .expand .row div div img {
   margin: 5px;
 }
-#portfolio #main #expand hr {
+#portfolio #main .expand hr {
   margin-top: 15px;
   width: 330px;
   height: 1px;

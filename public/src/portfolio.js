@@ -13,9 +13,107 @@ import coin from "./images/coin.svg"
 import upArrow from "./images/upArrow.svg"
 import downArrow from "./images/downArrow.svg"
 
+import AssetsComp from "./components/assestsComp"
+
 class PortfolioComp extends React.Component{
     constructor(props){
         super(props)
+        this.state = {
+            stocksExpand:true,
+            commoditiesExpand:false,
+            mutualFundsExpand:false,
+            stocks:[
+                {
+                    id:0,
+                    name:"Ram dom",
+                    totalPrice:5000,
+                    changedTotalPrice:200,
+                    singlePrice:100,
+                    singlePercent:2
+                },
+                {
+                    id:1,
+                    name:"Ram dom",
+                    totalPrice:5000,
+                    changedTotalPrice:200,
+                    singlePrice:100,
+                    singlePercent:2
+                },
+                {
+                    id:2,
+                    name:"Ram dom",
+                    totalPrice:5000,
+                    changedTotalPrice:200,
+                    singlePrice:100,
+                    singlePercent:2
+                },
+                {
+                    id:3,
+                    name:"Ram dom",
+                    totalPrice:5000,
+                    changedTotalPrice:200,
+                    singlePrice:100,
+                    singlePercent:2
+                },
+                {
+                    id:4,
+                    name:"Ram dom",
+                    totalPrice:5000,
+                    changedTotalPrice:200,
+                    singlePrice:100,
+                    singlePercent:2
+                },
+                {
+                    id:5,
+                    name:"Ram dom",
+                    totalPrice:5000,
+                    changedTotalPrice:200,
+                    singlePrice:100,
+                    singlePercent:2
+                },
+                {
+                    id:6,
+                    name:"Ram dom",
+                    totalPrice:5000,
+                    changedTotalPrice:200,
+                    singlePrice:100,
+                    singlePercent:2
+                },
+                {
+                    id:7,
+                    name:"Ram dom",
+                    totalPrice:5000,
+                    changedTotalPrice:200,
+                    singlePrice:100,
+                    singlePercent:2
+                },
+                {
+                    id:8,
+                    name:"Ram dom",
+                    totalPrice:5000,
+                    changedTotalPrice:200,
+                    singlePrice:100,
+                    singlePercent:2
+                }
+            ]
+        }
+        this.toggleExpand = this.toggleExpand.bind(this)
+    }
+    toggleExpand(e){
+        let name  = e.currentTarget.getAttribute("name")
+        let target = document.querySelector("#"+name)
+        let display = this.state[name]
+        console.log(display)
+        if(display){
+            display = false
+            target.style.height = "0px"
+        }else{
+            display = true
+            target.style.height = "fit-content"
+        }
+        let obj = {}
+        obj[name] = display
+        this.setState(obj)
     }
     render(){
         return(
@@ -30,15 +128,15 @@ class PortfolioComp extends React.Component{
                 </div>
                 <div id="main">
                     <img src={PieChart} alt="piechart"/>
-                    <div class="row">
-                        <div class="column">
-                            <div class="content">
+                    <div className="row">
+                        <div className="column">
+                            <div className="content">
                                 <img src={dot1} alt="stocks"/>
                                 <p>
                                     Stocks
                                 </p>
                             </div>
-                            <div class="content">
+                            <div className="content">
                                 <img src={dot3} alt="Commodities"/>
                                 <p>
                                     Commodities
@@ -46,14 +144,14 @@ class PortfolioComp extends React.Component{
                             </div>
                         </div>
                         
-                        <div class="column">
-                            <div class="content">
+                        <div className="column">
+                            <div className="content">
                                 <img src={dot2} alt="Mutual funds"/>
                                 <p>
                                     Mutual funds
                                 </p>
                             </div>
-                            <div class="content">
+                            <div className="content">
                                 <img src={dot4} alt="Cash"/>
                                 <p>
                                     Cash
@@ -68,32 +166,32 @@ class PortfolioComp extends React.Component{
                         <p> Overall Gain/Loss</p>
                     </div>
                     <div id="row2">
-                        <div class="rowContent">
+                        <div className="rowContent">
                             <img src={loss} alt="loss"/>
                             <p>20,000</p>
                             <p id="percentage">5%</p>
                         </div>
                         <hr/>
-                        <div class="rowContent">
+                        <div className="rowContent">
                             <img src={gain} alt="gain"/>
                             <p>10,000</p>
                             <p id="percentage">2.5%</p>
                         </div>
                     </div>
 
-                    <div class="card">
+                    <div className="card">
                         <div id="left">
                             <p>Cash</p>
                             <img src={coin} alt="coin"/>
                         </div>
 
-                        <div id="middle" class="mr-2">
+                        <div id="middle" className="mr-2">
                             <p>₹30,000</p>
                         </div>
              
                     </div>
 
-                    <div class="card">
+                    <div className="card" name="stocksExpand" onClick={this.toggleExpand}>
                         <div id="left">
                             <p>Stocks</p>
                         </div>
@@ -105,7 +203,7 @@ class PortfolioComp extends React.Component{
                         <div id="last">
                             <div id="amount">
                                 <img src={loss} alt="loss"/>
-                                <p class="loss">12,000</p>
+                                <p className="loss">12,000</p>
                                 <button>
                                     <img src={upArrow} alt="upArrow"/>
                                 </button>
@@ -113,141 +211,19 @@ class PortfolioComp extends React.Component{
                         </div>          
                     </div>
 
-                    <div id="expand">
-                        <div class="row">
-                            <p id="name">Ram dom</p>
-                            <div>
-                                <p>₹100</p>
-                                <div>
-                                    <img src={gain} alt="gain"/>
-                                    <p class="gain">2%</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p>₹49,800</p>
-                                <div>
-                                    <img src={loss} alt="loss"/>
-                                    <p class="loss">₹200</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr/>
-
-                        <div class="row">
-                            <p id="name">Ram dom</p>
-                            <div>
-                                <p>₹100</p>
-                                <div>
-                                    <img src={gain} alt="gain"/>
-                                    <p class="gain">2%</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p>₹49,800</p>
-                                <div>
-                                    <img src={loss} alt="loss"/>
-                                    <p class="loss">₹200</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr/>
-
-                        <div class="row">
-                            <p id="name">Ram dom</p>
-                            <div>
-                                <p>₹100</p>
-                                <div>
-                                    <img src={gain} alt="gain"/>
-                                    <p class="gain">2%</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p>₹49,800</p>
-                                <div>
-                                    <img src={loss} alt="loss"/>
-                                    <p class="loss">₹200</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr/>
-
-                        <div class="row">
-                            <p id="name">Ram dom</p>
-                            <div>
-                                <p>₹100</p>
-                                <div>
-                                    <img src={gain} alt="gain"/>
-                                    <p class="gain">2%</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p>₹49,800</p>
-                                <div>
-                                    <img src={loss} alt="loss"/>
-                                    <p class="loss">₹200</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr/>
-
-                        <div class="row">
-                            <p id="name">Ram dom</p>
-                            <div>
-                                <p>₹100</p>
-                                <div>
-                                    <img src={gain} alt="gain"/>
-                                    <p class="gain">2%</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p>₹49,800</p>
-                                <div>
-                                    <img src={loss} alt="loss"/>
-                                    <p class="loss">₹200</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr/>
-
-                        <div class="row">
-                            <p id="name">Ram dom</p>
-                            <div>
-                                <p>₹100</p>
-                                <div>
-                                    <img src={gain} alt="gain"/>
-                                    <p class="gain">2%</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p>₹49,800</p>
-                                <div>
-                                    <img src={loss} alt="loss"/>
-                                    <p class="loss">₹200</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr/>
-
-                        <div class="row">
-                            <p id="name">Ram dom</p>
-                            <div>
-                                <p>₹100</p>
-                                <div>
-                                    <img src={gain} alt="gain"/>
-                                    <p class="gain">2%</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p>₹49,800</p>
-                                <div>
-                                    <img src={loss} alt="loss"/>
-                                    <p class="loss">₹200</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="stocksExpand" class="expand">
+                        {this.state.stocks.map((stock)=>{
+                            return <AssetsComp 
+                            key={stock.id}
+                            name={stock.name} 
+                            totalPrice={stock.totalPrice} 
+                            changedTotalPrice={stock.changedTotalPrice} 
+                            singlePrice={stock.singlePrice}
+                            singlePercent={stock.singlePercent}/>
+                        })}
                     </div>
 
-                    <div class="card">
+                    <div className="card" name='mutualFundsExpand' onClick={this.toggleExpand}>
                         <div id="left">
                             <p>Mutual Funds</p>
                         </div>
@@ -259,15 +235,25 @@ class PortfolioComp extends React.Component{
                         <div id="last">
                             <div id="amount">
                                 <img src={gain} alt="gain"/>
-                                <p class="gain">1000</p>
+                                <p className="gain">1000</p>
                                 <button>
                                     <img src={downArrow} alt="downArrow"/>
                                 </button>
                             </div>
                         </div>          
                     </div>
-
-                    <div class="card final">
+                    <div id="mutualFundsExpand" class="expand">
+                        {this.state.stocks.map((stock)=>{
+                            return <AssetsComp 
+                            key={stock.id}
+                            name={stock.name} 
+                            totalPrice={stock.totalPrice} 
+                            changedTotalPrice={stock.changedTotalPrice} 
+                            singlePrice={stock.singlePrice}
+                            singlePercent={stock.singlePercent}/>
+                        })}
+                    </div>
+                    <div className="card final" name="commoditiesExpand" onClick={this.toggleExpand}>
                         <div id="left">
                             <p>Commodities</p>
                         </div>
@@ -279,12 +265,23 @@ class PortfolioComp extends React.Component{
                         <div id="last">
                             <div id="amount">
                                 <img src={loss} alt="loss"/>
-                                <p class="loss">5,000</p>
+                                <p className="loss">5,000</p>
                                 <button>
                                     <img src={downArrow} alt="downArrow"/>
                                 </button>
                             </div>
                         </div>          
+                    </div>
+                    <div id="commoditiesExpand" class="expand">
+                        {this.state.stocks.map((stock)=>{
+                            return <AssetsComp 
+                            key={stock.id}
+                            name={stock.name} 
+                            totalPrice={stock.totalPrice} 
+                            changedTotalPrice={stock.changedTotalPrice} 
+                            singlePrice={stock.singlePrice}
+                            singlePercent={stock.singlePercent}/>
+                        })}
                     </div>
                 </div>
             </div> 
