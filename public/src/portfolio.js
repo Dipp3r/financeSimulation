@@ -2,7 +2,7 @@ import React from "react";
 import './styles/portfolio.css';
 import Arrow_left from "./images/Arrow_left.svg"
 import Alarmclock from "./images/Alarmclock.svg"
-import PieChart from "./images/PieChart.svg"
+// import PieChart from "./images/PieChart.svg"
 import dot1 from "./images/dot1.svg"
 import dot3 from "./images/dot3.svg"
 import dot2 from "./images/dot2.svg"
@@ -14,6 +14,8 @@ import upArrow from "./images/upArrow.svg"
 import downArrow from "./images/downArrow.svg"
 
 import AssetsComp from "./components/assestsComp"
+import {PieChart,Pie, Cell, Tooltip, Legend } from "recharts"
+// import { Pie } from 'react-chartjs-2';
 
 class PortfolioComp extends React.Component{
     constructor(props){
@@ -22,6 +24,10 @@ class PortfolioComp extends React.Component{
             stocksExpand:true,
             commoditiesExpand:false,
             mutualFundsExpand:false,
+            pie:undefined,
+            pieData:{
+                data:[{name:"stocks",value:60,color:"#223F80"},{name:"Mutual funds",value:10,color:"#406AC8"},{name:"commidities",value:15,color:"#6F82AB"},{name:"cash",value:15,color:"#CADAFF"}]
+            },
             stocks:[
                 {
                     id:0,
@@ -143,6 +149,9 @@ class PortfolioComp extends React.Component{
         obj[name] = display
         this.setState(obj)
     }
+    componentDidMount(){
+     
+    }
     render(){
         return(
             <div id="portfolio">
@@ -155,7 +164,23 @@ class PortfolioComp extends React.Component{
                     </div>
                 </div>
                 <div id="main">
-                    <img src={PieChart} alt="piechart"/>
+                    {/* <img src={PieChart} alt="piechart"/> */}
+                    <PieChart width={300} height={300}>
+                        <Pie data={this.state.pieData.data} color="#000000"
+                            dataKey="value"
+                            nameKey="name"
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={120}
+                            fill="#8884d8">
+                                {this.state.pieData.data.map((entry)=>{
+                                    console.log(entry)
+                                   return <Cell style={{outline:"none"}} fill={entry.color}/>
+                                })}
+                        </Pie>
+                        {/* <Tooltip /> */}
+                        {/* <Legend /> */}
+                    </PieChart>
                     <div className="row">
                         <div className="column">
                             <div className="content">
