@@ -174,7 +174,7 @@
 
         }
         .expand{
-            margin:20px 0px;
+            margin:0px;
             @include flex(column,flex-start,center);
             // display:none;
             // height: 250px;
@@ -183,10 +183,11 @@
             display: block;
             transition-duration: 0.5s;
             width: 98%;
+            height: 0px;
             .row{
                 margin:12px 0px;
                 width: 320px;
-                height: 30px;
+                height: 40px;
                 @include flex(row,space-between,flex-start);
                 // display: block;
                 #name{

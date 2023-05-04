@@ -94,6 +94,30 @@ class PortfolioComp extends React.Component{
                     changedTotalPrice:200,
                     singlePrice:100,
                     singlePercent:2
+                },
+                {
+                    id:9,
+                    name:"Ram dom",
+                    totalPrice:5000,
+                    changedTotalPrice:200,
+                    singlePrice:100,
+                    singlePercent:2
+                },
+                {
+                    id:10,
+                    name:"Ram dom",
+                    totalPrice:5000,
+                    changedTotalPrice:200,
+                    singlePrice:100,
+                    singlePercent:2
+                },
+                {
+                    id:11,
+                    name:"Ram dom",
+                    totalPrice:5000,
+                    changedTotalPrice:200,
+                    singlePrice:100,
+                    singlePercent:2
                 }
             ]
         }
@@ -102,14 +126,18 @@ class PortfolioComp extends React.Component{
     toggleExpand(e){
         let name  = e.currentTarget.getAttribute("name")
         let target = document.querySelector("#"+name)
+        let arrow = e.currentTarget.querySelector(".arrow")
         let display = this.state[name]
         console.log(display)
         if(display){
             display = false
             target.style.height = "0px"
+            arrow.style.transform = "rotateX(0deg)"
         }else{
             display = true
-            target.style.height = "fit-content"
+            target.style.height = `${((this.state.stocks.length-1)*60)}px`
+            arrow.style.transform = "rotateX(180deg)"
+            // target.scrollIntoView({ behavior: "smooth",inline:'center'})
         }
         let obj = {}
         obj[name] = display
@@ -205,7 +233,7 @@ class PortfolioComp extends React.Component{
                                 <img src={loss} alt="loss"/>
                                 <p className="loss">12,000</p>
                                 <button>
-                                    <img src={upArrow} alt="upArrow"/>
+                                    <img className="arrow" src={downArrow} alt="upArrow"/>
                                 </button>
                             </div>
                         </div>          
@@ -237,7 +265,7 @@ class PortfolioComp extends React.Component{
                                 <img src={gain} alt="gain"/>
                                 <p className="gain">1000</p>
                                 <button>
-                                    <img src={downArrow} alt="downArrow"/>
+                                    <img className="arrow" src={downArrow} alt="downArrow"/>
                                 </button>
                             </div>
                         </div>          
@@ -267,7 +295,7 @@ class PortfolioComp extends React.Component{
                                 <img src={loss} alt="loss"/>
                                 <p className="loss">5,000</p>
                                 <button>
-                                    <img src={downArrow} alt="downArrow"/>
+                                    <img className="arrow" src={downArrow} alt="downArrow"/>
                                 </button>
                             </div>
                         </div>          

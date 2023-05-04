@@ -272,7 +272,7 @@ button:focus {
   margin-left: 10px;
 }
 #portfolio #main .expand {
-  margin: 20px 0px;
+  margin: 0px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -281,11 +281,12 @@ button:focus {
   display: block;
   transition-duration: 0.5s;
   width: 98%;
+  height: 0px;
 }
 #portfolio #main .expand .row {
   margin: 12px 0px;
   width: 320px;
-  height: 30px;
+  height: 40px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
