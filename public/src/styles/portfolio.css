@@ -282,7 +282,6 @@ button:focus {
   justify-content: flex-start;
   align-items: center;
   overflow: auto;
-  display: block;
   transition-duration: 0.5s;
   width: 98%;
   height: 0px;
