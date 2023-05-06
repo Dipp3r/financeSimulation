@@ -7,7 +7,7 @@ class LoginComp extends React.Component{
         this.login = this.login.bind(this)
     }
     login(){
-        this.props.toggleLoginComp()
+        this.props.toggleMainDisplay("dashboard")
     }
     render(){
         return(

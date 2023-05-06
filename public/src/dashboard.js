@@ -14,7 +14,7 @@ class Dashboard extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            display:<ProfileComp/>
+            display:<ProfileComp toggleMainDisplay={this.props.toggleMainDisplay}/>
         }
         this.changeDisplay = this.changeDisplay.bind(this)
     }
@@ -29,7 +29,7 @@ class Dashboard extends React.Component{
         switch( e.currentTarget.value){
             case "ProfileComp":
             default:
-                display = <ProfileComp />
+                display = <ProfileComp toggleMainDisplay={this.props.toggleMainDisplay}/>
                 navImg[0].src = User_fill
                 break;
             case "StocksComp":
@@ -46,6 +46,7 @@ class Dashboard extends React.Component{
         })
     }
     render(){
+        {console.log(this.props)}
         return(
     <div id="dashboard">
         <div id="main">
@@ -53,13 +54,13 @@ class Dashboard extends React.Component{
         </div>
         <div id="fixedNav">
             <button value="ProfileComp" onClick={this.changeDisplay}>
-                <img id="userImg" class="navImg" src={User_fill} alt="User" />
+                <img id="userImg" className="navImg" src={User_fill} alt="User" />
             </button>
             <button value="StocksComp" onClick={this.changeDisplay}>
-                <img id="chartImg" class="navImg" src={Chart_alt} alt="chart" />
+                <img id="chartImg" className="navImg" src={Chart_alt} alt="chart" />
             </button>
             <button value="NotifComp" onClick={this.changeDisplay}>
-                <img id="messageImg" class="navImg" src={Message} alt="message" />
+                <img id="messageImg" className="navImg" src={Message} alt="message" />
             </button>
         </div>
     </div>

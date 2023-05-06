@@ -156,7 +156,7 @@ class PortfolioComp extends React.Component{
         return(
             <div id="portfolio">
                 <div id="topBar">
-                    <img src={Arrow_left} onClick={this.props.togglePortfolioComp} alt="back_arrow" />
+                    <img src={Arrow_left} onClick={this.props.toggleMainDisplay} value="dashboard" alt="back_arrow" />
                     <p>Portfolio</p>
                     <div id="timer">
                         <img src={Alarmclock} alt="timer"/>

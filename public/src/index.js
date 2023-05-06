@@ -17,51 +17,33 @@ class IndexComp extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-      loginComp:true,
-      profileComp:true,
-      portfolioComp:false,
-      teamComp:false,
-      notifComp:false
+      mainDisplay:<LoginComp toggleMainDisplay={this.toggleMainDisplay}/>
     }
-    this.toggleLoginComp = this.toggleLoginComp.bind(this)
-    this.toggleProfileComp = this.toggleProfileComp.bind(this)
-    this.togglePortfolioComp = this.togglePortfolioComp.bind(this)
-    this.toggleTeamComp = this.toggleTeamComp.bind(this)
-    this.toggleNotifyComp = this.toggleNotifyComp.bind(this)
-
   }
-  toggleLoginComp(){
-    let display = this.state.loginComp
-    this.setState({loginComp:!display})
-  }
-  toggleProfileComp(){
-    let display = this.state.profileComp 
-    this.setState({profileComp :!display})
-  }
-  toggleTeamComp(){
-    let display = this.state.teamComp 
-    this.toggleProfileComp()
-    this.setState({teamComp :!display})
-  }
-  togglePortfolioComp(){
-    let display = this.state.portfolioComp
-    this.setState({portfolioComp :!display,profileComp :display})
-  }
-  toggleNotifyComp(){
-    let display = this.state.notifComp
-    console.log(display)
-    this.setState({notifComp:!display,profileComp :display})
+  toggleMainDisplay = (e)=>{
+    let value = (typeof e === 'string')?e:e.currentTarget.getAttribute("value");
+    console.log(value)
+    let displayComp
+    switch(value){
+      case "dashboard":
+      default:
+        displayComp = <Dashboard toggleMainDisplay={this.toggleMainDisplay}/>
+        break;
+      case "portfolio":
+        displayComp = <PortfolioComp toggleMainDisplay={this.toggleMainDisplay} />
+        break;  
+      case "team":
+        displayComp = <TeamComp toggleMainDisplay={this.toggleMainDisplay}/>
+        break;
+    }
+    console.log(displayComp)
+    this.setState({"mainDisplay":displayComp})
   }
   render(){
     console.log(this.state);
   return(
     <section>
-      <Dashboard/>
-      {/* {this.state.loginComp && <LoginComp toggleLoginComp={this.toggleLoginComp}/>}
-      {!this.state.loginComp && this.state.profileComp && <ProfileComp togglePortfolioComp={this.togglePortfolioComp} toggleTeamComp={this.toggleTeamComp} toggleNotifyComp={this.toggleNotifyComp}/>}
-      {this.state.portfolioComp && <PortfolioComp togglePortfolioComp={this.togglePortfolioComp}/>}
-      {this.state.teamComp && <TeamComp toggleTeamComp={this.toggleTeamComp} /> }
-      {this.state.notifComp && <NotifComp/>} */}
+      {this.state.mainDisplay}
     </section>
   )
   }

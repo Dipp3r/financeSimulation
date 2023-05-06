@@ -15,7 +15,7 @@ class ProfileComp extends React.Component{
         super(props)
     }
     render(){
-
+        {console.log()}
         return(
             <div id="profile">
                 <div id="topBar">
@@ -47,13 +47,13 @@ class ProfileComp extends React.Component{
                 <div id="card"></div>
                 <p id="desc">Will unlock once all the badges have been collected</p>
                 <div id="options">
-                    <div className="option" onClick={this.props.togglePortfolioComp}>
+                    <div className="option" onClick={this.props.toggleMainDisplay} value="portfolio">
                         <img src={pie_chart} alt="portfolio logo" />
                         <p>Portfolio</p>
                     </div>
                     <hr/>
 
-                    <div className="option" id="team" onClick={this.props.toggleTeamComp}>
+                    <div className="option" id="team" onClick={this.props.toggleMainDisplay} value="team">
                         <img src={Group} alt="team logo" />
                         <p>Team</p>
                     </div>
