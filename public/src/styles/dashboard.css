@@ -71,4 +71,18 @@ button:focus {
 #topBar {
   border-bottom: 2px solid rgba(34, 63, 128, 0.4);
   width: 100vw;
-}/*# sourceMappingURL=main.css.map */
+}
+
+#fixedNav {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 69px;
+  background: #FFFFFF;
+  box-shadow: 0px -3px 14px 1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}/*# sourceMappingURL=dashboard.css.map */

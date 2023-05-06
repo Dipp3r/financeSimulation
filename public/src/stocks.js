@@ -1,6 +1,8 @@
 import React from "react";
 import './styles/stocks.css';
-
+import Alarmclock from "./images/Alarmclock.svg"
+import Coin from "./images/coin.svg"
+import Gain from "./images/gain.svg"
 class StocksComp extends React.Component{
     constructor(props){
         super(props)
@@ -11,27 +13,16 @@ class StocksComp extends React.Component{
                 
                 <div id="topBar">
                     <div>
-                        <img class="coin" src={require("./images/coin.svg")} alt="coin"/>
+                        <img class="coin" src={Coin} alt="coin"/>
                         <p>₹30,000</p>
                     </div>
                     <p>Buy/Sell</p>
                     <div id="timer">
-                        <img src={require("./images/Alarmclock.svg")} alt="timer"/>
+                        <img src={Alarmclock} alt="timer"/>
                         <p>05:00</p>
                     </div>
                 </div>
                 <div id="main">
-                    <div id="fixedNav">
-                        <button>
-                            <img src={require("./images/User.svg")} alt="User" />
-                        </button>
-                        <button>
-                            <img src={require("./images/Chart_alt_fill.svg")} alt="chart" />
-                        </button>
-                        <button>
-                            <img src={require("./images/Message.svg")} alt="message" />
-                        </button>
-                    </div>
                     <div id="stockInfo">
                         <div>
                             <p>Ram | ₹100 |</p><a class="gain">2%</a>
@@ -60,7 +51,7 @@ class StocksComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={Gain} alt="gain"/>
                                     <p class="gain">2%</p>
                                 </div>
                             </div>
@@ -71,7 +62,7 @@ class StocksComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={Gain} alt="gain"/>
                                     <p class="loss">2%</p>
                                 </div>
                             </div>
@@ -83,7 +74,7 @@ class StocksComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={Gain} alt="gain"/>
                                     <p class="loss">2%</p>
                                 </div>
                             </div>
@@ -94,7 +85,7 @@ class StocksComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={Gain} alt="gain"/>
                                     <p class="gain">2%</p>
                                 </div>
                             </div>
@@ -106,7 +97,7 @@ class StocksComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={Gain} alt="gain"/>
                                     <p class="loss">2%</p>
                                 </div>
                             </div>
@@ -117,7 +108,7 @@ class StocksComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={Gain} alt="gain"/>
                                     <p class="gain">2%</p>
                                 </div>
                             </div>
@@ -129,7 +120,7 @@ class StocksComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={Gain} alt="gain"/>
                                     <p class="loss">2%</p>
                                 </div>
                             </div>
@@ -140,7 +131,7 @@ class StocksComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={Gain} alt="gain"/>
                                     <p class="gain">2%</p>
                                 </div>
                             </div>
@@ -152,7 +143,7 @@ class StocksComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={Gain} alt="gain"/>
                                     <p class="loss">2%</p>
                                 </div>
                             </div>
@@ -163,7 +154,7 @@ class StocksComp extends React.Component{
                             <div>
                                 <p>₹100</p>
                                 <div>
-                                    <img src={require("./images/gain.svg")} alt="gain"/>
+                                    <img src={Gain} alt="gain"/>
                                     <p class="gain">2%</p>
                                 </div>
                             </div>

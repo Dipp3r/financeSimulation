@@ -28,7 +28,6 @@ section {
   overflow: auto;
   height: 100vh;
   width: 100vw;
-  padding-top: 80px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -67,6 +66,11 @@ button:focus {
 
 .text-thin {
   font-weight: 400;
+}
+
+#topBar {
+  border-bottom: 2px solid rgba(34, 63, 128, 0.4);
+  width: 100vw;
 }
 
 #news #topBar {

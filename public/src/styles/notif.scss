@@ -3,6 +3,7 @@
 #notification{
     #topBar{
         border-bottom: 2px solid rgba(34, 63, 128, 0.4);
+        width: 100vw;
         @include flex(row,space-between,center);
         p{
             margin:15px;

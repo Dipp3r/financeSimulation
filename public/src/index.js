@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { HashRouter } from 'react-router-dom'
 import { BrowserRouter, Routes, Route ,useNavigate} from "react-router-dom";
 import SellComp from './buySell';
+import Dashboard from './dashboard';
 import LoginComp from './loginComp';
 import NewsComp from './news';
 import NotifComp from './notification';
@@ -19,12 +20,14 @@ class IndexComp extends React.Component{
       loginComp:true,
       profileComp:true,
       portfolioComp:false,
-      teamComp:false
+      teamComp:false,
+      notifComp:false
     }
     this.toggleLoginComp = this.toggleLoginComp.bind(this)
     this.toggleProfileComp = this.toggleProfileComp.bind(this)
     this.togglePortfolioComp = this.togglePortfolioComp.bind(this)
     this.toggleTeamComp = this.toggleTeamComp.bind(this)
+    this.toggleNotifyComp = this.toggleNotifyComp.bind(this)
 
   }
   toggleLoginComp(){
@@ -44,14 +47,21 @@ class IndexComp extends React.Component{
     let display = this.state.portfolioComp
     this.setState({portfolioComp :!display,profileComp :display})
   }
+  toggleNotifyComp(){
+    let display = this.state.notifComp
+    console.log(display)
+    this.setState({notifComp:!display,profileComp :display})
+  }
   render(){
     console.log(this.state);
   return(
-    <section id='main'>
-      {this.state.loginComp && <LoginComp toggleLoginComp={this.toggleLoginComp}/>}
-      {!this.state.loginComp && this.state.profileComp && <ProfileComp togglePortfolioComp={this.togglePortfolioComp} toggleTeamComp={this.toggleTeamComp}/>}
-      {this.state.portfolioComp && <PortfolioComp togglePortfolioComp={this.togglePortfolioComp} />}
+    <section>
+      <Dashboard/>
+      {/* {this.state.loginComp && <LoginComp toggleLoginComp={this.toggleLoginComp}/>}
+      {!this.state.loginComp && this.state.profileComp && <ProfileComp togglePortfolioComp={this.togglePortfolioComp} toggleTeamComp={this.toggleTeamComp} toggleNotifyComp={this.toggleNotifyComp}/>}
+      {this.state.portfolioComp && <PortfolioComp togglePortfolioComp={this.togglePortfolioComp}/>}
       {this.state.teamComp && <TeamComp toggleTeamComp={this.toggleTeamComp} /> }
+      {this.state.notifComp && <NotifComp/>} */}
     </section>
   )
   }
@@ -71,4 +81,4 @@ root.render(
     // {/* <SellComp/> */}
     // {/* <NewsComp/> */}
     // {/* <NotifComp/> */}
-    // {/* <StocksComp/> */}
+    // {/*  */}
