@@ -181,10 +181,6 @@ button:focus {
   color: rgba(34, 63, 128, 0.5);
   border-bottom: 3px solid rgba(34, 63, 128, 0.4);
 }
-#stocks #main #about #statusButton button:focus {
-  color: #223F80;
-  border-bottom: 3px solid #223F80;
-}
 #stocks #main #stockInfo {
   width: 100vw;
   height: 32px;

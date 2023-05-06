@@ -21,7 +21,7 @@ class PortfolioComp extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            stocksExpand:true,
+            stocksExpand:false,
             commoditiesExpand:false,
             mutualFundsExpand:false,
             pie:undefined,
