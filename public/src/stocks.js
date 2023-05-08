@@ -184,6 +184,7 @@ class StocksComp extends React.Component{
                             singlePrice={element.singlePrice}
                             singlePercent={element.singlePercent}
                             position={index%2==0?"top":"bottom"}
+                            toggleMainDisplay={this.props.toggleMainDisplay}
                             />
 
                         })}

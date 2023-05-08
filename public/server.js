@@ -36,8 +36,8 @@ wss.broadcast = function (data) {
 };
 
 setInterval(()=>{
-  wss.broadcast(JSON.stringify({type:"notification",message:"new notification",notificationType:1}))
-},1000)
+  wss.broadcast(JSON.stringify({type:"time",message:"new news"}))
+},5000)
 
 server.listen(port, () => {
   console.log(`Server is listening on port ${port}`);

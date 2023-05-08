@@ -36,6 +36,9 @@ class IndexComp extends React.Component{
       case "team":
         displayComp = <TeamComp toggleMainDisplay={this.toggleMainDisplay}/>
         break;
+      case "purchase":
+        displayComp = <SellComp toggleMainDisplay={this.toggleMainDisplay}/>
+        break;
     }
     console.log(displayComp)
     this.setState({"mainDisplay":displayComp})
@@ -71,10 +74,5 @@ root.render(
   <IndexComp/>
 );
     
-    // {/*  */}
-    // {/*  */}
-    // {/*  */}
     // {/* <SellComp/> */}
     // {/* <NewsComp/> */}
-    // {/* <NotifComp/> */}
-    // {/*  */}

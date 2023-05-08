@@ -14,7 +14,7 @@ export default class AssetsCompCommon extends React.Component{
     }
     render(){
         return(
-            <div className={"row "+this.state.position}>
+            <div className={"row "+this.state.position} onClick={this.props.toggleMainDisplay} value="purchase">
                 <p id="name">{this.state.name}</p>
                 <div>
                     <p>₹{this.state.singlePrice}</p>

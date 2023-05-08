@@ -4,12 +4,29 @@ import './styles/team.css';
 import Arrow_left from "./images/Arrow_left.svg"
 import Alarmclock from "./images/Alarmclock.svg"
 import QR from "./images/QR.svg"
-import User_circle from "./images/User_circle.svg"
-import User_circle_light from "./images/User_circle_light.svg"
+
+import TeamCardComp from "./components/teamCard";
 
 class TeamComp extends React.Component{
     constructor(props){
         super(props)
+        this.state = {
+            team :[{name:"AAA",phone:"123456789",roll:"Executive",isExecutive:true},
+            {name:"BBB",phone:"123456789",roll:"Accountent",isExecutive:false},
+            {name:"CCC",phone:"123456789",roll:"Analysist",isExecutive:false},
+            {name:"DDD",phone:"123456789",roll:"",isExecutive:false},
+            {name:"EEE",phone:"123456789",roll:"",isExecutive:false}],
+            teamComp:[]
+        }
+    }
+    componentDidMount(){
+        console.log("starting")
+        let teamCompList = []
+        {this.state.team.map((player,index)=>{
+            
+            teamCompList.push(<TeamCardComp key={index} player={player}/>)
+        })}
+        this.setState({"teamComp":teamCompList})
     }
     render(){
         return(
@@ -27,71 +44,9 @@ class TeamComp extends React.Component{
                         <img src={QR} alt="qr"/>
                         <p>Invite team</p>
                     </button>
-
-                    <div class="row">
-                        <div id="portion1">
-                            <img src={User_circle} alt="profile"/>
-                            <div id="info">
-                                <p>Allwyn</p>
-                                <p class="num">9446210451</p>
-                            </div>
-                        </div>
-                        <p id="portion2">
-                            Executive
-                        </p>
-                    </div>
-
-                    <div class="row">
-                        <div id="portion1">
-                            <img src={User_circle_light} alt="profile"/>
-                            <div id="info">
-                                <p>Ding</p>
-                                <p class="num">9446210451</p>
-                            </div>
-                        </div>
-                        <p id="portion2">
-                            Accountant
-                        </p>
-                    </div>
-
-                    <div class="row">
-                        <div id="portion1">
-                            <img src={User_circle_light} alt="profile"/>
-                            <div id="info">
-                                <p>Dong</p>
-                                <p class="num">9446210451</p>
-                            </div>
-                        </div>
-                        <p id="portion2">
-                            Analyst
-                        </p>
-                    </div>
-
-                    <div class="row">
-                        <div id="portion1">
-                            <img src={User_circle_light} alt="profile"/>
-                            <div id="info">
-                                <p>Oggy</p>
-                                <p class="num">9446210451</p>
-                            </div>
-                        </div>
-                        <p id="portion2">
-
-                        </p>
-                    </div>
-
-                    <div class="row">
-                        <div id="portion1">
-                            <img src={User_circle_light} alt="profile"/>
-                            <div id="info">
-                                <p>Ben</p>
-                                <p class="num">9446210451</p>
-                            </div>
-                        </div>
-                        <p id="portion2">
-                            
-                        </p>
-                    </div>
+                    {this.state.teamComp.map((player)=>{
+                        return player
+                    })}
                 </div>
             </div> 
         )

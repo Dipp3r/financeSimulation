@@ -33,7 +33,7 @@ class Dashboard extends React.Component{
                 navImg[0].src = User_fill
                 break;
             case "StocksComp":
-                display =   <StocksComp/>
+                display =   <StocksComp toggleMainDisplay={this.props.toggleMainDisplay}/>
                 navImg[1].src = Chart_alt_fill
                 break;
             case "NotifComp":
