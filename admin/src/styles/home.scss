@@ -623,8 +623,8 @@
             #groupPage{
                 margin-top:150px;
                 @include flex(column,flex-start,center);
-                display:none;
-                padding:40px;
+                // display:none;
+                // padding:40px;
                 width:calc(100% - 310px);
                 height: 100vh;
                 position: absolute;

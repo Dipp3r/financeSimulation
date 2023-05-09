@@ -46,6 +46,7 @@ class IndexComp extends React.Component{
       case "0":
       default:
         document.querySelector("#imgGroup").src = Group_white
+
         document.querySelector("#imgEdit").src = Edit
         break;
       case "1":
@@ -79,11 +80,11 @@ class IndexComp extends React.Component{
         <div id="options">
           <div class="button" value='0'onClick={this.toggleMainPage}>
             <img id="imgGroup" src={Group} alt="groupIcon"/>
-            <button  >Sessions</button>
+            Sessions
           </div>
           <div class="button" value='1' onClick={this.toggleMainPage}>
             <img id="imgEdit" src={Edit} alt="editIcon"/>  
-            <button  >Edit</button>
+            Edit
           </div>
         </div>
         <img id="tree" src={illustration} alt="tree illustration" />

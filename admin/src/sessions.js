@@ -14,12 +14,18 @@ import Expand_left_double from "./images/Expand_left_double.svg"
 import Expand_left from "./images/Expand_left.svg"
 import Expand_right from "./images/Expand_right.svg"
 import Expand_right_double from "./images/Expand_right_double.svg"
-
+import SessionsViewer from "./sessionsViewer";
+import PlayersPage from "./playersPage";
+import CreateSessionPage from "./createSessionPage";
+import CreateGroupPage from "./createGroupPage";
+import GroupPage from "./groupPage";
 
 class SessionsComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      display:"",
+      displayComp:<SessionsViewer toggleSession={this.toggleSession}/>,
       sessionsList: [
         {
           id: 1,
@@ -230,15 +236,39 @@ class SessionsComp extends React.Component {
   createGroup() {
     console.log(this.state.newGroupName);
   }
-  componentDidMount() {
-    this.displaySessions(this.state.sessionsList);
-    this.displayGroups(this.state.groupList);
+  toggleSession = (e)=>{
+    let value = (typeof e === 'string')?e:e.currentTarget.getAttribute("value");
+    console.log(value)
+    let displayComp;
+    switch(value){
+      case "sessionViewer":
+      default:
+        displayComp = <SessionsViewer toggleSession={this.toggleSession}/>
+        break;
+      case "playersPage":
+        displayComp = <PlayersPage toggleSession={this.toggleSession}/>
+        break;
+      case "createSessionPage":
+        displayComp = <CreateSessionPage toggleSession={this.toggleSession}/>
+        break;
+      case "createGroupPage":
+        displayComp = <CreateGroupPage toggleSession={this.toggleSession}/>
+        break;
+      case "groupPage":
+        displayComp = <GroupPage toggleSession={this.toggleSession}/>
+        break;
+    }
+    this.setState({"displayComp":displayComp})
   }
+  // componentDidMount() {
+  //   this.displaySessions(this.state.sessionsList);
+  //   this.displayGroups(this.state.groupList);
+  // }
   render() {
     return (
       <div id="sessionMain">
-        
-        <div id="sessionsViewer">
+        {this.state.displayComp}
+        {/* <div id="sessionsViewer">
           <div id="top">
             <div id="searchDiv">
               <img src={search} alt="search icon" />
@@ -413,7 +443,7 @@ class SessionsComp extends React.Component {
           </div>
 
           <div id="groupsList"></div>
-        </div>
+        </div> */}
       </div>
     );
   }
