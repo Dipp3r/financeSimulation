@@ -103,11 +103,36 @@ class StocksComp extends React.Component{
                     totalPrice:5000,
                     changedTotalPrice:200,
                     singlePrice:100,
-                    singlePercent:2
+                    singlePercent:5
                 }
             ],
-            mutualFund:[],
-            commodities:[],
+            mutualFund:[
+                {
+                    id:0,
+                    name:"Tar Tar",
+                    totalPrice:800,
+                    changedTotalPrice:10,
+                    singlePrice:900,
+                    singlePercent:10
+                },
+                {
+                    id:1,
+                    name:"Ram dom",
+                    totalPrice:5000,
+                    changedTotalPrice:200,
+                    singlePrice:100,
+                    singlePercent:2
+                },
+                {
+                    id:2,
+                    name:"Ram dom",
+                    totalPrice:5000,
+                    changedTotalPrice:200,
+                    singlePrice:100,
+                    singlePercent:5
+                }
+            ],
+            commodities: [],
             content:[]
         }
     }
@@ -183,7 +208,7 @@ class StocksComp extends React.Component{
                             totalPrice={element.totalPrice}
                             singlePrice={element.singlePrice}
                             singlePercent={element.singlePercent}
-                            position={index%2==0?"top":"bottom"}
+                            position={index%2===0?"top":"bottom"}
                             toggleMainDisplay={this.props.toggleMainDisplay}
                             />
 

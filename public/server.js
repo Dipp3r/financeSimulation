@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3001;
+const port = 3000;
 // const db = require("./queries");
 const path = require("path")
 
@@ -40,5 +40,5 @@ setInterval(()=>{
 },5000)
 
 server.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
+  console.log(`Server is listening on port https://localhost:${port}`);
 });

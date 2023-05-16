@@ -10,10 +10,11 @@ import dot4 from "./images/dot4.svg"
 import loss from "./images/loss.svg"
 import gain from "./images/gain.svg"
 import coin from "./images/coin.svg"
-import upArrow from "./images/upArrow.svg"
+// import upArrow from "./images/upArrow.svg"
 import downArrow from "./images/downArrow.svg"
 
-import AssetsComp from "./components/assestsComp"
+import AssetsComp from "./components/assestsComp";
+
 import {PieChart,Pie, Cell, Tooltip, Legend } from "recharts"
 // import { Pie } from 'react-chartjs-2';
 
@@ -130,6 +131,15 @@ class PortfolioComp extends React.Component{
         this.toggleExpand = this.toggleExpand.bind(this)
     }
     toggleExpand(e){
+        try {
+            let element = e.currentTarget.getAttribute("id");
+            let last_card = document.querySelector("#"+element);
+            last_card.style.marginBottom = "0px";
+            
+        } catch (error) {
+            console.log(error);
+            //we get error for all the cases except for the last card
+        }
         let name  = e.currentTarget.getAttribute("name")
         let target = document.querySelector("#"+name)
         let arrow = e.currentTarget.querySelector(".arrow")
@@ -306,7 +316,7 @@ class PortfolioComp extends React.Component{
                             singlePercent={stock.singlePercent}/>
                         })}
                     </div>
-                    <div className="card final" name="commoditiesExpand" onClick={this.toggleExpand}>
+                    <div className="card final" id="final" name="commoditiesExpand" onClick={this.toggleExpand}>
                         <div id="left">
                             <p>Commodities</p>
                         </div>

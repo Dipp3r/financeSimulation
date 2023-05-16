@@ -9,7 +9,10 @@ import Group from "./images/Group.svg"
 import Vector from "./images/Vector.svg"
 import User_fill from "./images/User_fill.svg"
 import Chart_alt from "./images/Chart_alt.svg"
-import Message from "./images/Message.svg"
+import Message from "./images/Message.svg";
+
+
+
 class ProfileComp extends React.Component{
     constructor(props){
         super(props)
