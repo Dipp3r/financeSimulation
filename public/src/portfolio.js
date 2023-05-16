@@ -13,7 +13,8 @@ import coin from "./images/coin.svg"
 import upArrow from "./images/upArrow.svg"
 import downArrow from "./images/downArrow.svg"
 
-import AssetsComp from "./components/assestsComp"
+import AssetsComp from "./components/assestsComp";
+
 import {PieChart,Pie, Cell, Tooltip, Legend } from "recharts"
 // import { Pie } from 'react-chartjs-2';
 
