@@ -180,18 +180,14 @@ class StocksComp extends React.Component{
                 </div>
                 <div id="main">
                     <div id="stockInfo">
-                        <div>
-                            <p>Ram | ₹100 |</p><a class="gain">2%</a>
-                        </div>
-                       <div>
-                            <p>tar tar | ₹50 |</p> <a class="loss">2%</a>
-                       </div>
-                        <div>
-                            <p>Rip | ₹150 |</p> <a class="loss">2%</a>
-                        </div>
-                        <div>
-                            <p>tar tar | ₹50 |</p> <a class="loss">2%</a>
-                        </div>                        
+                        <div id="marquee">
+                            {this.state.content.map((element,index)=>{
+                                // console.log(element,index)
+                                return <div>
+                                        <p>{element.name} | {element.singlePrice} |</p><a class="gain">{element.singlePercent}%</a>
+                                    </div>
+                            })}
+                        </div>       
                     </div>
                     <div id="about">
                         <div id="statusButton">
