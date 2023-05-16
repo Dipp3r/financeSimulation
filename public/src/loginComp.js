@@ -1,40 +1,42 @@
-import React from "react";
+import React , {Fragment} from "react";
 import './styles/login.css';
 import coin from "./images/coin.svg"
+import FormLogin from "./components/loginForm";
 class LoginComp extends React.Component{
     constructor(props){
         super(props)
-        this.login = this.login.bind(this)
+        // this.login = this.login.bind(this);
     }
-    login(){
-        let obj = {}
-        for (let input of document.querySelectorAll(".formInput")){
-            obj[input.getAttribute("name")] = input.value
-        }
-        obj.link = ""
-        fetch("http://localhost:3003/login", {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(obj)
-          })
-            .then(response => {
-                if(response.status == 200 || response.status == 201) {
-                    // this.props.toggleMainDisplay("dashboard")
-                }
-                return response.json()
-            })   
-            .then(data => {
-              // Handle the response data
-              console.log(data);
-            })
-            .catch(error => {
-              // Handle any errors
-              console.error('Error:', error);
-            });
-            this.props.toggleMainDisplay("dashboard")
-    }
+
+    // login(){
+    //     let obj = {}
+    //     for (let input of document.querySelectorAll(".formInput")){
+    //         obj[input.getAttribute("name")] = input.value
+    //     }
+    //     // obj.link = ""
+    //     fetch("http://localhost:3003/login", {
+    //         method: 'POST',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(obj)
+    //       })
+    //         .then(response => {
+    //             if(response.status == 200 || response.status == 201) {
+    //                 // this.props.toggleMainDisplay("dashboard")
+    //             }
+    //             return response.json()
+    //         })   
+    //         .then(data => {
+    //           // Handle the response data
+    //           console.log(data);
+    //         })
+    //         .catch(error => {
+    //           // Handle any errors
+    //           console.error('Error:', error);
+    //         });
+    //         this.props.toggleMainDisplay("dashboard")
+    // }
     render(){
         return(
             <div id='login' >
@@ -46,12 +48,7 @@ class LoginComp extends React.Component{
                     </div>
                     <img src={coin} alt="coin"/>
                 </div>
-                <input className="formInput" name="name" type="text" placeholder="Name"/>
-                <input className="formInput" name="mobile" type="number" placeholder="1234567890"/>
-                <input className="formInput" name="password" type="password" placeholder="password"/>
-                <button id="loginButton" onClick={this.login}>
-                    Login
-                </button>
+                <FormLogin toggleMainDisplay={this.props.toggleMainDisplay}></FormLogin>
             </div>
         )
     }
