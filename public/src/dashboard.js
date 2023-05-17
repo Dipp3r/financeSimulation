@@ -14,36 +14,52 @@ class Dashboard extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            display:<ProfileComp toggleMainDisplay={this.props.toggleMainDisplay}/>
+            display:<ProfileComp toggleMainDisplay={this.props.toggleMainDisplay}/>,
+            displayName:"ProfileComp"
         }
-        this.changeDisplay = this.changeDisplay.bind(this)
     }
-    changeDisplay(e){
-        let display;
+    changeDisplay = (e)=>{
+        let display,displayName;
         console.log(this.state)
+        let value = e.currentTarget?e.currentTarget.value:e
         let navImg = document.querySelectorAll(".navImg")
         navImg[0].src = User_circle
         navImg[1].src = Chart_alt
         navImg[2].src = Message
 
-        switch( e.currentTarget.value){
+        switch(value){
             case "ProfileComp":
             default:
                 display = <ProfileComp toggleMainDisplay={this.props.toggleMainDisplay}/>
                 navImg[0].src = User_fill
+                displayName = "ProfileComp"
                 break;
             case "StocksComp":
                 display =   <StocksComp toggleMainDisplay={this.props.toggleMainDisplay}/>
                 navImg[1].src = Chart_alt_fill
+                displayName = "StocksComp"
                 break;
             case "NotifComp":
                 display = <NotifComp/>
                 navImg[2].src = Message_alt_fill
+                displayName = "NotifComp"
                 break;
         }
-        this.setState({display:display},()=>{
+        this.setState({display:display,displayName:displayName},()=>{
+            this.props.setItem("dashboard",this.state)
             console.log(this.state.display)
         })
+    }
+    componentDidMount(){
+        let state = this.props.getItem("dashboard")
+        if (!state){
+            state = {}
+            state.display = <ProfileComp toggleMainDisplay={this.props.toggleMainDisplay}/>
+            state.displayName = "ProfileComp"
+        }
+        console.log(state)
+        this.changeDisplay(state.displayName)
+        this.setState(state)
     }
     render(){
         {console.log(this.props)}

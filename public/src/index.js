@@ -21,6 +21,14 @@ class IndexComp extends React.Component{
       mainDisplay:<LoginComp toggleMainDisplay={this.toggleMainDisplay}/>
     }
   }
+  setItem = (name,value)=>{
+    this.setState({[name]:value},()=>{
+      console.log(this.state)
+    })
+  }
+  getItem=(name)=>{
+    return this.state[name]
+  }
   toggleMainDisplay = (e)=>{
     let value = (typeof e === 'string')?e:e.currentTarget.getAttribute("value");
     console.log(value)
@@ -28,16 +36,16 @@ class IndexComp extends React.Component{
     switch(value){
       case "dashboard":
       default:
-        displayComp = <Dashboard toggleMainDisplay={this.toggleMainDisplay}/>
+        displayComp = <Dashboard toggleMainDisplay={this.toggleMainDisplay} setItem={this.setItem} getItem={this.getItem}/>
         break;
       case "portfolio":
-        displayComp = <PortfolioComp toggleMainDisplay={this.toggleMainDisplay} />
+        displayComp = <PortfolioComp toggleMainDisplay={this.toggleMainDisplay} setItem={this.setItem} getItem={this.getItem}/>
         break;  
       case "team":
-        displayComp = <TeamComp toggleMainDisplay={this.toggleMainDisplay}/>
+        displayComp = <TeamComp toggleMainDisplay={this.toggleMainDisplay} setItem={this.setItem} getItem={this.getItem}/>
         break;
       case "purchase":
-        displayComp = <SellComp toggleMainDisplay={this.toggleMainDisplay}/>
+        displayComp = <SellComp toggleMainDisplay={this.toggleMainDisplay} setItem={this.setItem} getItem={this.getItem}/>
         break;
     }
     console.log(displayComp)
