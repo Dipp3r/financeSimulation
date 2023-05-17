@@ -2,11 +2,19 @@ const { request } = require("express");
 
 const Pool = require("pg").Pool;
 
+// const pool = new Pool({
+//   user: "postgres",
+//   host: "localhost",
+//   database: "finance",
+//   password: "arun",
+//   port: 5432,
+// });
+
 const pool = new Pool({
-  user: "postgres",
+  user: "vaaghu",
   host: "localhost",
   database: "finance",
-  password: "arun",
+  password: "123456",
   port: 5432,
 });
 

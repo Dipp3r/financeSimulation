@@ -17,6 +17,31 @@ class ProfileComp extends React.Component{
     constructor(props){
         super(props)
     }
+    updateProfileInfo =()=>{
+        let obj = {}
+        obj.userid = 1
+        fetch("http://localhost:3003/profile", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(obj)
+          })
+            .then(response => {
+                if(response.status == 200 || response.status == 201) {
+                    // this.props.toggleMainDisplay("dashboard")
+                }
+                return response.json()
+            })   
+            .then(data => {
+              // Handle the response data
+              console.log(data);
+            })
+        
+    }
+    componentDidMount(){
+        this.updateProfileInfo()
+    }
     render(){
         {console.log()}
         return(

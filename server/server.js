@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
-const port = 3000;
+const port = 3003;
 const db = require("./queries");
 const cors = require("cors");
 
@@ -19,8 +19,8 @@ app.get("/", (request, response) => {
     response.json({ info: "Node.js, Express, and Postgres API" });
   });
   
-  app.get("/login", db.getUser);
-  app.get("/profile",db.getStarCount);
+  app.post("/login", db.getUser);
+  app.post("/profile",db.getStarCount);
   app.post("/createSession",db.addSession);
   app.get("/sessions",db.getSessions);
   app.get("/groups",db.getGroups);
