@@ -64,7 +64,7 @@ class ProfileComp extends React.Component{
                     <hr/>
                     <div className="option">
                         <img src={Vector} alt="logout logo" />
-                        <p>Log out</p>
+                        <p>Logout</p>
                     </div>
                 </div>
                 </div>
