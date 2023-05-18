@@ -260,10 +260,18 @@ class SessionsComp extends React.Component {
     }
     this.setState({"displayComp":displayComp})
   }
-  // componentDidMount() {
-  //   this.displaySessions(this.state.sessionsList);
-  //   this.displayGroups(this.state.groupList);
-  // }
+  componentDidMount() {
+    fetch("http://localhost:3003/session", {
+      method: 'GET'
+    })
+      .then(response => {
+          return response.json()
+      })   
+      .then(data => {
+        // Handle the response data
+        console.log(data);
+      })
+  }
   render() {
     return (
       <div id="sessionMain">
