@@ -138,6 +138,17 @@
                     @include flex(row,space-between,center);
                     background: rgba(34, 63, 128, 0.1);
                     border-radius: 34px;
+                    input[type=file]{
+                        width: 110%;
+                        position: relative;
+                        // left: -10%;
+                        top: -110%;
+                        /* display: inline-block; */
+                        height: 110%;
+                        // visibility: hidden;
+                        opacity: 0;
+                        z-index: 1;
+                    }
                     #first{
                         margin:10px;
                         @include flex(column,center,center);
@@ -190,9 +201,10 @@
                         }
                         button{
                             width: 110px;
-                            height: auto;
+                            height: 40px;
                             background: #223F80;
                             border-radius: 7px;
+                            
                             div{
                                 @include flex(row,center,center);
                                 p{
