@@ -47,7 +47,6 @@
     align-items: space-between;
     height: -moz-fit-content;
     height: fit-content;
-    width: 400px;
     padding: 40px 60px;
   }
 }
@@ -206,7 +205,7 @@ button:focus {
   height: 100vh;
 }
 #home #main #editMain #topNav {
-  margin-top: 120px;
+  margin-top: 20px;
   width: 70%;
   height: 55px;
   background: rgba(132, 132, 132, 0.2);
@@ -282,6 +281,10 @@ button:focus {
 }
 #home #main #editMain #news .newsComp {
   margin-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   background: rgba(34, 63, 128, 0.1);
   border-radius: 34px;
 }
@@ -348,7 +351,7 @@ button:focus {
 }
 #home #main #editMain #news .newsComp .newsUpdate button {
   width: 110px;
-  height: 27px;
+  height: auto;
   background: #223F80;
   border-radius: 7px;
 }

@@ -47,7 +47,7 @@
     .newsComp{
         @include flex(column,flex-start,space-between);
         height:fit-content;
-        width:400px;
+        // width:400px;
         padding:40px 60px;
     }
 }

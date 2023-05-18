@@ -47,7 +47,6 @@
     align-items: space-between;
     height: -moz-fit-content;
     height: fit-content;
-    width: 400px;
     padding: 40px 60px;
   }
 }

@@ -2,7 +2,7 @@ admin/build/*
 admin/node_modules/*
 public/build/*
 public/node_modules/*
-
+*/node_modules/*
 build/*
 node_modules/*
 package.json
