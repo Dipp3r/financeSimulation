@@ -18,6 +18,8 @@ const pool = new Pool({
 //   port: 5432,
 // });
 
+//API for testing
+
 const test = async (req, res) => {
   try {
     const sessions = await pool.query('SELECT * FROM "group"');
@@ -27,6 +29,8 @@ const test = async (req, res) => {
   }
 };
 
+//API(s) FOR ADMIN
+
 const addSession = async (request, response) => {
   let id = Math.floor(100000 + Math.random() * 900000);
   const [title] = Object.values(request.body);
@@ -35,7 +39,7 @@ const addSession = async (request, response) => {
       "INSERT INTO session(sessionid,title,excelLink,players,groups) VALUES($1,$2,$3,$4,$5)",
       [id, title, "", 0, 0]
     );
-    response.status(200).send({status:true});
+    response.status(200).send({ status: true });
   } catch (error) {
     console.log("Error: " + error.message);
     response.status(500).send("Error");
@@ -48,8 +52,8 @@ const addGroup = async (request, response) => {
   const [name, limit, sessionid] = Object.values(request.body);
   try {
     await pool.query(
-      'INSERT INTO "group"(groupid,name,_limit,networth,stocks,commodities,cash,mutual_funds, sessionid,players) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)',
-      [id, name, limit, 0, 0, 0, 0, 0, sessionid, 0]
+      'INSERT INTO "group"(groupid,name,_limit,networth,stocks,commodities,cash,mutual_funds, sessionid,players,star) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)',
+      [id, name, limit, 0, 0, 0, 0, 0, sessionid, 0, 0]
     );
     const group_count = await pool.query(
       "SELECT groups FROM session WHERE sessionid = $1",
@@ -61,7 +65,7 @@ const addGroup = async (request, response) => {
       "UPDATE session SET groups = $1 WHERE sessionid = $2 RETURNING *",
       [new_count, sessionid]
     );
-    response.status(200).send({status:true});
+    response.status(200).send({ status: true });
   } catch (error) {
     console.log(error);
     response.status(400).send("Error: " + err.message);
@@ -107,7 +111,7 @@ const deleteGroup = async (request, response) => {
   const [groupid] = Object.values(request.body);
   try {
     await pool.query("DELETE FROM group WHERE groupid=$1", [groupid]);
-    response.status(200).send({status:true});
+    response.status(200).send({ status: true });
   } catch (error) {
     response.status(400).send("Error: " + err.message);
   }
@@ -117,11 +121,29 @@ const removeUser = async (request, response) => {
   const [userid] = Object.values(request.body);
   try {
     await pool.query("DELETE FROM users WHERE userid=$1", [userid]);
-    response.status(200).send({status:true});
+    response.status(200).send({ status: true });
   } catch (error) {
     response.status(400).send("Error: " + err.message);
   }
 };
+
+const alterRole = async (request, response) => {
+  const [userid, role] = Object.values(request.body);
+  try {
+    await pool.query("UPDATE users SET role = $1 WHERE userid = $2", [
+      role,
+      userid,
+    ]);
+    response.status(200).send({ status: true });
+  } catch (error) {
+    response.status(400).send("Error: " + error.message);
+  }
+};
+
+//API(s) FOR PUBLIC
+
+
+
 
 
 module.exports = {
@@ -132,5 +154,6 @@ module.exports = {
   getGroups,
   getPlayers,
   deleteGroup,
-  removeUser
+  removeUser,
+  alterRole
 };
