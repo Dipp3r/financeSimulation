@@ -195,6 +195,23 @@ const addUser = async (request, response) => {
   }
 };
 
+const getChart = async (request,response) =>{
+  const groupid = request.params.id;
+  const ratio  = (numerator,base)=>{
+    if(numerator!==0){
+      return Number.parseInt(Math.round((numerator/base)*100));
+    }
+    return 0;
+  }
+  try {
+    const products = await pool.query('SELECT networth, stocks, commodities, cash, mutual_funds FROM "group" WHERE groupid = $1',[groupid]);
+    const [networth,stocks,commodities,funds] = Object.values(products.rows[0]);
+    response.status(200).send({networth:networth,stocks:ratio(stocks,commodities),commodities:ratio(commodities,networth),mutual_funds:ratio(funds,networth)});
+  } catch (error) {
+    console.log("Error: " + error.message);
+  }
+}
+
 module.exports = {
   test,
   addSession,
@@ -206,4 +223,5 @@ module.exports = {
   removeUser,
   alterRole,
   addUser,
+  getChart
 };

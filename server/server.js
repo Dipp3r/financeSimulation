@@ -29,6 +29,7 @@ app.delete("/deleteGroup",db.deleteGroup);
 app.delete("/removeUser",db.removeUser);
 app.put("/assignrole",db.alterRole);
 app.post("/login/:id", db.addUser);
+app.get("/portfolio/:id",db.getChart);
 
 
 app.listen(port, () => {
