@@ -25,6 +25,7 @@ app.post("/addGroup",db.addGroup);
 app.get("/sessions",db.getSessions);
 app.get("/groups",db.getGroups);
 app.get("/players",db.getPlayers);
+app.delete("/deleteGroup",db.deleteGroup);
 
 app.listen(port, () => {
   console.log(`App running on port http://localhost:${port}.`);
