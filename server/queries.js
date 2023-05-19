@@ -35,7 +35,7 @@ const addSession = async (request, response) => {
       "INSERT INTO session(sessionid,title,excelLink,players,groups) VALUES($1,$2,$3,$4,$5)",
       [id, title, "", 0, 0]
     );
-    response.status(200).send("sucess");
+    response.status(200).send({status:true});
   } catch (error) {
     console.log("Error: " + error.message);
     response.status(500).send("Error");
@@ -61,7 +61,7 @@ const addGroup = async (request, response) => {
       "UPDATE session SET groups = $1 WHERE sessionid = $2 RETURNING *",
       [new_count, sessionid]
     );
-    response.status(200).send("sucess");
+    response.status(200).send({status:true});
   } catch (error) {
     console.log(error);
     response.status(400).send("Error: " + err.message);
@@ -107,11 +107,22 @@ const deleteGroup = async (request, response) => {
   const [groupid] = Object.values(request.body);
   try {
     await pool.query("DELETE FROM group WHERE groupid=$1", [groupid]);
-    response.status(200).send("sucess");
+    response.status(200).send({status:true});
   } catch (error) {
     response.status(400).send("Error: " + err.message);
   }
 };
+
+const removeUser = async (request, response) => {
+  const [userid] = Object.values(request.body);
+  try {
+    await pool.query("DELETE FROM users WHERE userid=$1", [userid]);
+    response.status(200).send({status:true});
+  } catch (error) {
+    response.status(400).send("Error: " + err.message);
+  }
+};
+
 
 module.exports = {
   test,
@@ -120,5 +131,6 @@ module.exports = {
   getSessions,
   getGroups,
   getPlayers,
-  deleteGroup
+  deleteGroup,
+  removeUser
 };
