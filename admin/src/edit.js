@@ -10,7 +10,7 @@ class EditComp extends React.Component{
             MutualFundList:['RIP','Ram ','Dom'],
             CommoditiesList:['B.O.Thai','home home','Tar Tar'],
             currentActiveAssetButton:"0",
-            currentActiveSection:'0',
+            editMainSection:'0',
             newsList:[{year:2000},{year:2001},{year:2002}]
         }
         this.toggleAssetSection = this.toggleAssetSection.bind(this)
@@ -41,14 +41,15 @@ class EditComp extends React.Component{
         }
     }
     toggleMainSection(e){
-        let value = "0"
-        if(e != undefined){
+        let value = e | 0
+        if(e)
+        if(e.currentTarget){
             value = e.currentTarget.getAttribute('value')
         }
         let sectionButtons = document.querySelector("#editMain").querySelector("#topNav").children
         
-        sectionButtons[this.state.currentActiveSection].style.background = "transparent"
-        sectionButtons[this.state.currentActiveSection].style.color = "#223F80"
+        sectionButtons[this.state.editMainSection].style.background = "transparent"
+        sectionButtons[this.state.editMainSection].style.color = "#223F80"
         sectionButtons[value].style.backgroundColor = "#223f80bf"
         sectionButtons[value].style.color = "#FFF"
         
@@ -57,7 +58,8 @@ class EditComp extends React.Component{
             section.style.display = "none"
         })
         sections[value].style.display = "unset"
-        this.setState({currentActiveSection:value})
+        this.setState({editMainSection:value})
+        sessionStorage.setItem("editMainSection",value)
     }
     displayList(list){
         if(list.length  <= 0) return
@@ -78,7 +80,7 @@ class EditComp extends React.Component{
         }
     }
     componentDidMount(){
-        this.toggleMainSection()
+        this.toggleMainSection(sessionStorage.getItem("editMainSection"))
         this.toggleAssetSection()
         this.displayList(this.state.StockList)
     }

@@ -15,7 +15,8 @@ class IndexComp extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-      mainPage:0
+      mainPage:0,
+      mainPageValue:0
     }
     this.getItem = this.getItem.bind(this)
     this.setItem = this.setItem.bind(this)
@@ -31,10 +32,11 @@ class IndexComp extends React.Component{
   }
   toggleMainPage(e){
     
-    let value = "0" 
-    if(e != undefined) value = e.currentTarget.getAttribute("value")
+    let value = e
+    let mainPage
+    if(e.currentTarget) value = e.currentTarget.getAttribute("value")
     
-    this.setState({mainPage:value})
+    
     let options = document.querySelector("#options").childNodes
     console.log(options)
     
@@ -45,31 +47,34 @@ class IndexComp extends React.Component{
     switch(value){
       case "0":
       default:
+        mainPage = <SessionsComp/>
         document.querySelector("#imgGroup").src = Group_white
-
         document.querySelector("#imgEdit").src = Edit
         break;
       case "1":
+        mainPage = <EditComp/>
         document.querySelector("#imgEdit").src = Edit_white
         document.querySelector("#imgGroup").src = Group
         break;
     }
     options[value].style.backgroundColor = "#223f80"
     options[value].style.color = "#FFF"
+    this.setState({"mainPage":mainPage,"mainPageValue":value})
+    sessionStorage.setItem("mainPageValue",value)
   }
   componentDidMount(){
-    this.toggleMainPage()
+    this.toggleMainPage(sessionStorage.getItem("mainPageValue"))
   }
   render(){
     console.log(this.state);
     let mainPage
     switch(this.state.mainPage){
       case '1':
-        mainPage = <EditComp/>
+       
         break;
       case '0':
       default:
-        mainPage = <SessionsComp/>
+        
         break;
     }
 
@@ -90,7 +95,7 @@ class IndexComp extends React.Component{
         <img id="tree" src={illustration} alt="tree illustration" />
       </nav>
       <div id='main'>
-        {mainPage}
+        {this.state.mainPage}
         {/* <SessionsComp /> */}
       </div>
     </section>
