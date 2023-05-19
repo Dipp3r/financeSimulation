@@ -90,6 +90,19 @@ const getGroups = async (request, response) => {
   }
 };
 
+const getPlayers = async (request, response) => {
+  const [groupid] = Object.values(request.body);
+  try {
+    const players = await pool.query(
+      "SELECT userid,name,mobile,role from users WHERE groupid=$1",
+      [groupid]
+    );
+    response.send(players.rows);
+  } catch (error) {
+    response.status(400).send("Error: " + error.message);
+  }
+};
+
 
 module.exports = {
   test,
@@ -97,4 +110,5 @@ module.exports = {
   addGroup,
   getSessions,
   getGroups,
+  getPlayers,
 };
