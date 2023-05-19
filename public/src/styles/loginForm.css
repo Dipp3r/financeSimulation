@@ -1,0 +1,48 @@
+form {
+  width: 270px;
+}
+form input {
+  margin-top: 40px;
+  width: 270px;
+  border: none;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  border-bottom: 2px solid #D9D9D9;
+}
+form input ::-moz-placeholder {
+  color: #8A8A8A;
+}
+form input ::placeholder {
+  color: #8A8A8A;
+}
+form input:focus {
+  outline: none;
+}
+form #loginButton {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  padding: 5px 10px;
+  width: 124px;
+  height: 49px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #FFFFFF;
+  background: #223F80;
+  border-radius: 35px;
+}
+form #loginButton:focus {
+  opacity: 0.8;
+}
+form .error {
+  font-size: 12px;
+  font-family: "Inter";
+  color: rgb(246, 37, 37);
+  margin: 0px;
+  margin-top: 5px;
+}/*# sourceMappingURL=loginForm.css.map */
