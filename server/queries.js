@@ -22,15 +22,11 @@ const pool = new Pool({
 
 
 const test = async (req,res)=>{
-  const [sessionid] = Object.values(req.body);
   try {
-    const group_count = await pool.query( 'SELECT groups FROM session WHERE sessionid = $1',[sessionid]);
-    const [num] = Object.values(group_count.rows[0])
-    const new_count = Number.parseInt(num)+1;
-    const upd_session = await pool.query("UPDATE session SET groups = $1 WHERE sessionid = $2 RETURNING *",[new_count,sessionid]);
-    res.send(upd_session.rows[0]);
+    const sessions = await pool.query('SELECT * FROM "group"');
+    res.send(sessions.rows);
   } catch (error) {
-    res.sendStatus(500).send(error.message)
+    res.sendStatus(400).send("Error: " + error.message);
   }
 };
 
@@ -57,8 +53,8 @@ const addGroup = async (request, response) => {
   const [name, limit, sessionid] = Object.values(request.body);
   try {
     await pool.query(
-      'INSERT INTO "group"(groupid,name,_limit,networth,stocks,commodities,cash,mutual_funds, sessionid) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)',
-      [id, name, limit, 0, 0, 0, 0, 0, sessionid]
+      'INSERT INTO "group"(groupid,name,_limit,networth,stocks,commodities,cash,mutual_funds, sessionid,players) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)',
+      [id, name, limit, 0, 0, 0, 0, 0, sessionid,0]
     );
     const group_count = await pool.query( 'SELECT groups FROM session WHERE sessionid = $1',[sessionid]);
     const [num] = Object.values(group_count.rows[0])
@@ -71,8 +67,18 @@ const addGroup = async (request, response) => {
   }
 };
 
+const getSessions = async (request, response) => {
+  try {
+    await pool.query("SELECT * FROM session");
+    response.send(result.rows);
+  } catch (error) {
+    response.status(400).send("Error: " + error.message);
+  }
+};
+
 module.exports = {
   test,
   addSession,
-  addGroup
+  addGroup,
+  getSessions
 };
