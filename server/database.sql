@@ -18,6 +18,7 @@ CREATE TABLE "group"(
     cash INT,
     mutual_funds INT,
     sessionid INT,
+    players INT,
     FOREIGN KEY (sessionid) REFERENCES "session"(sessionid)
 ); 
 
