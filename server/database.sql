@@ -3,7 +3,9 @@ CREATE DATABASE finance;
 CREATE TABLE "session"(
     sessionid SERIAL PRIMARY KEY,
     title VARCHAR(255),
-    excelLink VARCHAR(255)
+    excelLink VARCHAR(255),
+    players INT,
+    groups INT
 );
 
 CREATE TABLE "group"(
@@ -15,11 +17,10 @@ CREATE TABLE "group"(
     commodities INT,
     cash INT,
     mutual_funds INT,
-    link VARCHAR(255),
     sessionid INT,
+    players INT,
     FOREIGN KEY (sessionid) REFERENCES "session"(sessionid)
 ); 
-
 
 CREATE TABLE "users"(
     userid SERIAL PRIMARY KEY,

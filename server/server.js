@@ -16,20 +16,15 @@ app.use(
 );
 
 app.get("/", (request, response) => {
-    response.json({ info: "Node.js, Express, and Postgres API" });
-  });
-  
-  app.post("/login", db.getUser);
-  app.post("/profile",db.getStarCount);
-  app.post("/createSession",db.addSession);
-  app.get("/sessions",db.getSessions);
-  app.get("/groups",db.getGroups);
-  app.get("/players",db.getPlayers);
-  app.post("/assign_role",db.alterRole);
-  app.post("/addGroup",db.addGroup);
-  app.post("/removeUser",db.removeUser);
-  app.post("/deleteGroup",db.deleteGroup);
-  
-  app.listen(port, () => {
-    console.log(`App running on port http://localhost:${port}.`);
+  response.json({ info: "Node.js, Express, and Postgres API" });
+});
+
+app.get("/test", db.test);
+app.post("/createSession", db.addSession);
+app.post("/addGroup",db.addGroup);
+app.get("/sessions",db.getSessions);
+app.get("/groups",db.getGroups);
+
+app.listen(port, () => {
+  console.log(`App running on port http://localhost:${port}.`);
 });
