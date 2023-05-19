@@ -16,12 +16,13 @@ app.use(
 );
 
 app.get("/", (request, response) => {
-    response.json({ info: "Node.js, Express, and Postgres API" });
-  });
-  
+  response.json({ info: "Node.js, Express, and Postgres API" });
+});
 
-  app.get("/test",db.test);
+app.get("/test", db.test);
+app.post("/createSession", db.addSession);
+// app.post("/addGroup",db.addGroup);
 
-  app.listen(port, () => {
-    console.log(`App running on port http://localhost:${port}.`);
+app.listen(port, () => {
+  console.log(`App running on port http://localhost:${port}.`);
 });

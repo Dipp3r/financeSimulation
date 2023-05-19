@@ -18,8 +18,7 @@ const pool = new Pool({
 //   port: 5432,
 // });
 
-//assign grp-id based on the unique link
-//FORMAT request.body = {"name":"Narayanan", "mobile":"0987654321","password":"yan#123"}
+
 
 
 const test = async (req,res)=>{
@@ -35,6 +34,24 @@ const test = async (req,res)=>{
   }
 };
 
+
+const addSession = async (request, response) => {
+  let id = Math.floor(100000 + Math.random() * 900000);
+  const [title] = Object.values(request.body);
+  try {
+    await pool.query(
+      "INSERT INTO session(sessionid,title,excelLink,players,groups) VALUES($1,$2,$3,$4,$5)",
+      [id, title, "", 0, 0]
+    );
+    response.status(200).send("sucess");
+  } catch (error) {
+    console.log("Error: " + error.message);
+    response.status(500).send("Error");
+  }
+  console.log(request.body);
+};
+
 module.exports = {
-  test
+  test,
+  addSession,
 };
