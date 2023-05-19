@@ -1,5 +1,3 @@
-const { request } = require("express");
-
 const Pool = require("pg").Pool;
 
 const pool = new Pool({
@@ -142,9 +140,60 @@ const alterRole = async (request, response) => {
 
 //API(s) FOR PUBLIC
 
+//assign grp-id based on the unique link
+//FORMAT request.body = {"name":"Narayanan", "mobile":"0987654321","password":"yan#123"}
 
-
-
+const addUser = async (request, response) => {
+  const [name, mobile, password] = Object.values(request.body);
+  var groupid = Number.parseInt(request.params.id);
+  try {
+    const user = await pool.query(
+      "SELECT userid, name, password FROM users WHERE mobile=$1",
+      [mobile]
+    );
+    if (user.rowCount == 0) {
+      let id = Math.floor(100000 + Math.random() * 900000);
+      try {
+        await pool.query(
+          "INSERT INTO users (userid,name,mobile,password,groupid,role,created_on) VALUES ($1, $2, $3, $4, $5, $6,$7)",
+          [
+            id,
+            name,
+            mobile,
+            password,
+            groupid,
+            "",
+            new Date().toLocaleDateString(),
+          ]
+        );
+        response.status(200).send({ userid: id, star_count: 0 });
+      } catch (error) {
+        console.log("Error: "+error.message);
+        response.status(400).send({ status: false });
+      }
+    } else {
+      let [userid, db_name, db_password] = Object.values(
+        user.rows[0]
+      );
+      try {
+        const group = await pool.query('SELECT star FROM "group" WHERE groupid = $1',[groupid]);
+        const [star_count] = Object.values(group.rows[0]);
+        if (db_name == name && db_password == password) {
+          response.status(200).send({ userid: userid, star_count: star_count });
+        } else {
+          response.status(401).send({status:false,invalid:true});
+        }
+      } catch (error) {
+        console.log(
+          "Error: " + error.message 
+        )
+      }
+      
+    }
+  } catch (error) {
+    console.log("error"+error.message)
+  }
+};
 
 module.exports = {
   test,
@@ -155,5 +204,6 @@ module.exports = {
   getPlayers,
   deleteGroup,
   removeUser,
-  alterRole
+  alterRole,
+  addUser,
 };
