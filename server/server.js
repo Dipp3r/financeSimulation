@@ -23,6 +23,7 @@ app.get("/test", db.test);
 app.post("/createSession", db.addSession);
 app.post("/addGroup",db.addGroup);
 app.get("/sessions",db.getSessions);
+app.get("/groups",db.getGroups);
 
 app.listen(port, () => {
   console.log(`App running on port http://localhost:${port}.`);
