@@ -1,7 +1,7 @@
 function validator([name, mobile, password]) {
     const nameRegex = /^[a-zA-Z_]+[a-zA-Z0-9]*$/;
     const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/;
-    const mobileRegex = /^[0-9]+.{9}$/;
+    const mobileRegex = /^([0-9]+){10}$/;
     return {
       name: nameRegex.test(name),
       mobile: mobileRegex.test(mobile),
