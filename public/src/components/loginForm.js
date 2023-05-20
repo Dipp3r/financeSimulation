@@ -69,7 +69,7 @@ const FormLogin = ({toggleMainDisplay}) => {
       if (!isValid.mobile) {
         setFormData((prevFormData) => ({
           ...prevFormData,
-          mobileError: "*Must contain 10 digits",
+          mobileError: "*Enter a valid mobile number",
         }));
       } else {
         setFormData((prevFormData) => ({
