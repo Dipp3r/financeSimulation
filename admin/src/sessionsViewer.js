@@ -98,9 +98,9 @@ export default class SessionsViewer extends React.Component {
           card.appendChild(nameDiv);
           card.appendChild(infoDiv);
   
-          name.innerText = session.name;
-          groupInfo.innerText = session.groupsCount;
-          playerInfo.innerText = session.playersCount;
+          name.innerText = session.title;
+          groupInfo.innerText = session.groups;
+          playerInfo.innerText = session.players;
   
           container.appendChild(card);
         }
@@ -111,7 +111,25 @@ export default class SessionsViewer extends React.Component {
       }
     }
     componentDidMount(){
-      this.displaySessions(this.state.sessionsList)
+      let sessionsList = this.props.getItem("sessionsList")
+      if (sessionsList){
+        this.displaySessions(sessionsList)
+        this.setState({"sessionsList":sessionsList})
+      }else{
+        fetch("http://localhost:3003/sessions", {
+          method: 'GET'
+        })
+        .then(response => {
+            return response.json()
+        })   
+        .then(data => {
+          // Handle the response data
+          console.log(data);
+          this.displaySessions(data)
+          this.props.setItem("sessionsList",data)
+          this.setState({"sessionsList":data})
+        })
+      }
     }
     render(){
       console.log(this.props)

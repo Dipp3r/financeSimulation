@@ -1,20 +1,20 @@
 const Pool = require("pg").Pool;
 
-const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "finance",
-  password: "arun",
-  port: 5432,
-});
-
 // const pool = new Pool({
-//   user: "vaaghu",
+//   user: "postgres",
 //   host: "localhost",
 //   database: "finance",
-//   password: "123456",
+//   password: "arun",
 //   port: 5432,
 // });
+
+const pool = new Pool({
+  user: "vittaex",
+  host: "localhost",
+  database: "finance",
+  password: "123456",
+  port: 5432,
+});
 
 //API for testing
 
@@ -72,7 +72,7 @@ const addGroup = async (request, response) => {
 
 const getSessions = async (request, response) => {
   try {
-    await pool.query("SELECT * FROM session");
+    let result = await pool.query("SELECT * FROM session");
     response.send(result.rows);
   } catch (error) {
     response.status(400).send("Error: " + error.message);
