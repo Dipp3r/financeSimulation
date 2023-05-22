@@ -32,8 +32,9 @@ class IndexComp extends React.Component{
   }
   toggleMainPage(e){
     
-    let value = e
+    let value = e | "0"
     let mainPage
+    if(e)
     if(e.currentTarget) value = e.currentTarget.getAttribute("value")
     
     
