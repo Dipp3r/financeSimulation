@@ -70,7 +70,7 @@
     
     #main{
         @include flex(column,flex-start,center);
-        height:800px;
+        height:100vh;
         overflow-y:scroll;
         #about{
             position:relative;
@@ -128,11 +128,11 @@
                 input{
                     margin-left:5px;
                     height:44px;
-                    width:100px;
+                    width:150px;
                     font-family: 'Inter';
                     font-style: normal;
-                    font-weight: 400;
-                    font-size: 36px;
+                    font-weight: 300;
+                    font-size: 28px;
                     color: #282828;
                     border:none;
                     &:focus{
@@ -145,20 +145,25 @@
         #fixed{
             position:fixed;
             bottom:0px;
-            z-index:-1;
-            button{
-                margin:40px;
+            // z-index:0;
+            .sell-button {
+                margin: 40px;
                 width: 282px;
                 height: 42px;
-                background: #33A05F;
+                background: #33a05f;
                 border-radius: 4px;
                 font-family: 'Montserrat';
                 font-style: normal;
                 font-weight: 600;
                 font-size: 20px;
-                color: #FFFFFF;
-
-            }
+                color: #ffffff;
+                transition: transform 0.3s ease;
+              
+                &.clicked {
+                  transform: scale(0.9);
+                }
+              }
+            
         }
     }
 
