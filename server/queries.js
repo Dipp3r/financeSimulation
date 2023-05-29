@@ -66,7 +66,7 @@ const addGroup = async (request, response) => {
     response.status(200).send({ status: true });
   } catch (error) {
     console.log(error);
-    response.status(400).send("Error: " + err.message);
+    response.status(400).send("Error: " + error.message);
   }
 };
 

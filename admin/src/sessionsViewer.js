@@ -32,8 +32,12 @@ export default class SessionsViewer extends React.Component {
           downloadIcon;
         for (let session of list) {
           card = document.createElement("button");
-          card.onclick = this.props.toggleSession;
-          console.log(card)
+          console.log(session.sessionid)
+          card.onclick = ()=>{
+            this.props.toggleSession("groupPage")
+            sessionStorage.setItem("currentSessionID",session.sessionid)
+          };
+          // console.log(card)
           card.value = "groupPage"
           card.className = "sessionCards"
           nameDiv = document.createElement("div");

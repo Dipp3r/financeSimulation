@@ -68,7 +68,25 @@ export default class GroupPage extends React.Component {
       }
     }
     componentDidMount(){
-      this.displayGroups(this.state.groupList)
+      let groupList = this.props.getItem("groupList")
+      if (groupList){
+        this.displayGroups(groupList)
+        this.setState({groupList:groupList})
+      }else{
+        fetch("http://localhost:3003/groups", {
+          method: 'GET'
+        })
+        .then(response => {
+            return response.json()
+        })   
+        .then(data => {
+          // Handle the response data
+          console.log(data);
+          this.displayGroups(data)
+          this.props.setItem({"groupList":data})
+          this.setState({groupList:data})
+        })
+      }
     }
     render(){
       return(

@@ -170,7 +170,7 @@ class SessionsComp extends React.Component {
         displayComp = <SessionsViewer toggleSession={this.toggleSession} setItem={this.props.setItem} getItem={this.props.getItem}/>
         break;
       case "playersPage":
-        displayComp = <PlayersPage toggleSession={this.toggleSession}/>
+        displayComp = <PlayersPage toggleSession={this.toggleSession} />
         break;
       case "createSessionPage":
         displayComp = <CreateSessionPage toggleSession={this.toggleSession}/>
@@ -179,7 +179,7 @@ class SessionsComp extends React.Component {
         displayComp = <CreateGroupPage toggleSession={this.toggleSession}/>
         break;
       case "groupPage":
-        displayComp = <GroupPage toggleSession={this.toggleSession}/>
+        displayComp = <GroupPage toggleSession={this.toggleSession} setItem={this.props.setItem} getItem={this.props.getItem}/>
         break;
     }
     this.setState({"displayComp":displayComp})
