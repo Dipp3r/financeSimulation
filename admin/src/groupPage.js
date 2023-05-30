@@ -74,8 +74,12 @@ export default class GroupPage extends React.Component {
         this.setState({groupList:groupList})
       }else{
         fetch("http://localhost:3003/groups", {
-          method: 'GET'
-        })
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({"sessionid":Number.parseInt(sessionStorage.getItem("currentSessionID"))})
+          })
         .then(response => {
             return response.json()
         })   

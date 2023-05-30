@@ -33,7 +33,7 @@ app.get("/test", db.test);
 app.post("/createSession", db.addSession);
 app.post("/addGroup",db.addGroup);
 app.get("/sessions",db.getSessions);
-app.get("/groups",db.getGroups);
+app.post("/groups",db.getGroups);
 app.get("/players",db.getPlayers);
 app.delete("/deleteGroup",db.deleteGroup);
 app.delete("/removeUser",db.removeUser);
