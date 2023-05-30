@@ -34,8 +34,8 @@ const addSession = async (request, response) => {
   const [title] = Object.values(request.body);
   try {
     await pool.query(
-      "INSERT INTO session(sessionid,title,excelLink) VALUES($1,$2,$3)",
-      [id, title, ""]
+      "INSERT INTO session(sessionid,title,excelLink,time_created) VALUES($1,$2,$3,$4)",
+      [id, title, "",new Date()]
     );
     response.status(200).send({ status: true });
   } catch (error) {
@@ -56,8 +56,8 @@ const addGroup = async (request, response) => {
     }
 
     await pool.query(
-      'INSERT INTO "group"(groupid, name, _limit, networth, stocks, commodities, cash, mutual_funds, sessionid, players, star) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
-      [id, name, limit, 0, 0, 0, 0, 0, sessionid, 0, 0]
+      'INSERT INTO "group"(groupid, name, _limit, networth, stocks, commodities, cash, mutual_funds, sessionid, players, star,time_created) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)',
+      [id, name, limit, 0, 0, 0, 0, 0, sessionid, 0, 0,new Date()]
     );
 
     // const group_count = await pool.query(
@@ -81,7 +81,7 @@ const addGroup = async (request, response) => {
 
 const getSessions = async (request, response) => {
   try {
-    var sessions = await pool.query("SELECT * FROM session");
+    var sessions = await pool.query("SELECT * FROM session ORDER BY time_created DESC");
     const players =
       await pool.query(`SELECT "group".sessionid, SUM("group".players)
       FROM "group"
@@ -114,7 +114,7 @@ const getGroups = async (request, response) => {
   const [sessionid] = Object.values(request.body);
   try {
     const groups = await pool.query(
-      'SELECT groupid,name,players FROM "group" WHERE sessionid=$1',
+      'SELECT groupid,name,players FROM "group" WHERE sessionid=$1 ORDER BY time_created DESC',
       [sessionid]
     );
     response.send(groups.rows);
