@@ -3,7 +3,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const port = 3003;
-const db = require("./queries");
 const cors = require("cors");
 const Pool = require("pg").Pool;
 const http = require("http");
@@ -11,7 +10,7 @@ const server = http.createServer(app);
 const WebSocket = require("ws");
 const wss = new WebSocket.Server({ server });
 const upload = require("express-fileupload");
-const fs = require("fs");
+// const fs = require("fs");
 const path = require("path");
 
 // const uploadFolderPath = `./upload`;
@@ -80,7 +79,7 @@ wss.on("connection", (ws) => {
 });
 
 wss.broadcast = function (data) {
-  jsonData = JSON.stringify(data)
+  jsonData = JSON.stringify(data);
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
       client.send(jsonData);
@@ -88,8 +87,7 @@ wss.broadcast = function (data) {
   });
 };
 
-
-const addInt = async (phase = 1,year = 1,lastYear = 0,session) => {
+const addInt = async (phase = 1, year = 1, lastYear = 0, session) => {
   if (phase >= 5) {
     phase = 1;
     year++;
@@ -100,85 +98,382 @@ const addInt = async (phase = 1,year = 1,lastYear = 0,session) => {
       const result = await pool.query(query, [year]);
       const time = result.rows[0][`phase${phase}`];
       const [hours, minutes, seconds] = time.split(":");
-      const totalSeconds = Number.parseInt((hours * 3600) + (minutes * 60) + (seconds))
-      await pool.query(`
+      const totalSeconds = Number.parseInt(
+        hours * 3600 + minutes * 60 + seconds
+      );
+      await pool.query(
+        `
         UPDATE "session" SET year = $1, phase = $2 where sessionid = $3
-      `,[year,phase,session]);
-      console.log("year: ",year," phase:", phase," sec: ", totalSeconds);
+      `,
+        [year, phase, session]
+      );
+      console.log("year: ", year, " phase:", phase, " sec: ", totalSeconds);
       let obj = {};
-      obj.msgType = "phaseChange";
+      obj.msgType = "GameChg";
       obj.year = year;
       obj.phase = phase;
       obj.time = time;
 
       wss.broadcast(obj);
 
-      setTimeout(() => addInt(phase + 1,year, lastYear,session), Number.parseInt(totalSeconds) * 1000);
+      setTimeout(
+        () => addInt(phase + 1, year, lastYear, session),
+        Number.parseInt(totalSeconds) * 1000
+      );
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 };
 
-app.post("/start",async (req,res)=>{
+app.post("/start", async (req, res) => {
   const [sessionid] = Object.values(req.body);
   console.log(sessionid);
   let result = await pool.query("select year from gameData ORDER BY year ASC");
-  let [firstyear,lastYear] = [result.rows[0].year,result.rows.pop().year];
-  addInt(1,firstyear,lastYear,sessionid);
+  let [firstyear, lastYear] = [result.rows[0].year, result.rows.pop().year];
+  addInt(1, firstyear, lastYear, sessionid);
   res.status(200).end();
-})
-
+});
 
 app.get("/", (request, response) => {
   response.json({ info: "Node.js, Express, and Postgres API" });
 });
 
-app.get("/test", db.test);
-app.post("/createSession", db.addSession);
-app.post("/addGroup", db.addGroup);
-app.get("/sessions", db.getSessions);
-app.post("/groups", db.getGroups);
-app.get("/players", db.getPlayers);
-app.delete("/deleteGroup", db.deleteGroup);
-app.delete("/removeUser", db.removeUser);
-app.put("/assignrole", db.alterRole);
-app.post("/signup/:id", db.addUser);
-app.get("/portfolio/:id", db.getChart);
+//API for testing
 
+app.get("/test", async (req, res) => {
+  try {
+    const sessions = await pool.query('SELECT * FROM "group"');
+    res.send(sessions.rows);
+  } catch (error) {
+    res.sendStatus(400).send("Error: " + error.message);
+  }
+});
 
-app.get("/login/:id",async (req,res)=>{
+//API(s) FOR ADMIN
+
+app.post("/createSession", async (request, response) => {
+  let id = Math.floor(100000 + Math.random() * 900000);
+  const [title] = Object.values(request.body);
+  if (title.length > 0) {
+    try {
+      await pool.query(
+        "INSERT INTO session(sessionid,title,excelLink,time_created) VALUES($1,$2,$3,$4)",
+        [id, title, "", new Date()]
+      );
+      response.status(200).send({ status: true });
+    } catch (error) {
+      console.log("Error: " + error.message);
+      response.status(500).send("Error");
+    }
+  } else {
+    response.status(200).send({ status: true });
+  }
+});
+
+app.post("/addGroup", async (request, response) => {
+  let id = Math.floor(100000 + Math.random() * 900000);
+  const { name, limit, sessionid } = request.body;
+  if (name.length > 0) {
+    try {
+      if (!Number.isInteger(limit)) {
+        throw new Error("Invalid limit. Please provide a valid integer value.");
+      }
+      await pool.query(
+        'INSERT INTO "group"(groupid, name, _limit, networth, stocks, commodities, cash, mutual_funds, sessionid, players, star,time_created) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)',
+        [id, name, limit, 0, 0, 0, 0, 0, sessionid, 0, 0, new Date()]
+      );
+      response.status(200).send({ status: true });
+    } catch (error) {
+      console.log(error);
+      response.status(400).send("Error: " + error.message);
+    }
+  } else {
+    response.status(200).send({ status: true });
+  }
+});
+
+app.get("/sessions", async (request, response) => {
+  try {
+    var sessions = await pool.query(
+      "SELECT * FROM session ORDER BY time_created DESC"
+    );
+    const players =
+      await pool.query(`SELECT "group".sessionid, SUM("group".players)
+      FROM "group"
+      JOIN "session" ON "session".sessionid = "group".sessionid
+      GROUP BY "group".sessionid`);
+    const groups = await pool.query(
+      `select "group".sessionid,count(sessionid) from "group" group by "group".sessionid;`
+    );
+    sessions.rows.forEach((element) => {
+      element.players = "0";
+      element.groups = "0";
+      players.rows.forEach((player) => {
+        if (element.sessionid == player.sessionid) {
+          element.players = player.sum;
+        }
+      });
+      groups.rows.forEach((group) => {
+        if (element.sessionid == group.sessionid) {
+          element.groups = group.count;
+        }
+      });
+    });
+    response.send(sessions.rows);
+  } catch (error) {
+    response.status(400).send("Error: " + error.message);
+  }
+});
+
+app.post("/groups", async (request, response) => {
+  const [sessionid] = Object.values(request.body);
+  try {
+    const groups = await pool.query(
+      'SELECT groupid,name,players FROM "group" WHERE sessionid=$1 ORDER BY time_created DESC',
+      [sessionid]
+    );
+    response.send(groups.rows);
+  } catch (error) {
+    response.status(400).send("Error: " + error.message);
+  }
+});
+
+app.get("/players", async (request, response) => {
+  const [groupid] = Object.values(request.body);
+  try {
+    const players = await pool.query(
+      "SELECT userid,name,mobile,role from users WHERE groupid=$1",
+      [groupid]
+    );
+    response.send(players.rows);
+  } catch (error) {
+    response.status(400).send("Error: " + error.message);
+  }
+});
+
+app.delete("/deleteGroup", async (request, response) => {
+  const [groupid] = Object.values(request.body);
+  try {
+    let users = await pool.query(
+      `
+        SELECT userid FROM users WHERE groupid = $1
+      `,
+      [groupid]
+    );
+    if (users.rowCount > 0) {
+      users = users.rows;
+      const userPromises = [];
+      for (let j = 0; j < users.length; j++) {
+        let userid = users[j].userid;
+        let userPromise = pool.query(`DELETE FROM users WHERE userid = $1`, [
+          userid,
+        ]);
+        userPromises.push(userPromise);
+      }
+      await Promise.all(userPromises);
+      try {
+        await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
+      } catch (err) {
+        response.status(400).send("Error: " + err.message);
+      }
+    } else {
+      try {
+        await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
+      } catch (err) {
+        response.status(400).send("Error: " + err.message);
+      }
+    }
+    response.status(200).send({ status: true });
+  } catch (err) {
+    response.status(400).send("Error: " + err.message);
+  }
+});
+
+app.delete("/removeUser", async (request, response) => {
+  const [userid] = Object.values(request.body);
+  try {
+    await pool.query(
+      `
+    UPDATE "group"
+    SET players = players - 1
+    WHERE groupid = (SELECT groupid FROM users WHERE userid = $1);
+    `,
+      [userid]
+    );
+    await pool.query("DELETE FROM users WHERE userid=$1", [userid]);
+
+    response.status(200).send({ status: true });
+  } catch (error) {
+    response.status(400).send("Error: " + err.message);
+  }
+});
+
+app.put("/assignrole", async (request, response) => {
+  const { userid, role } = request.body;
+  try {
+    if (role == "0") {
+      const exe = await pool.query(
+        `
+      UPDATE users SET role = '' WHERE userid = (SELECT userid FROM users WHERE groupid = (SELECT groupid FROM users WHERE userid = $1) AND role = '0')
+    `,
+        [userid]
+      );
+    }
+    await pool.query("UPDATE users SET role = $1 WHERE userid = $2", [
+      role,
+      userid,
+    ]);
+    let groupid = await pool.query(
+      `
+      select groupid from users where userid = $1
+    `,
+      [userid]
+    );
+    let userName = await pool.query(
+      `
+      select name from users where userid = $1
+    `,
+      [userid]
+    );
+    groupid = groupid.rows[0].groupid;
+    userName = userName.rows[0].name;
+    wss.broadcast({
+      userid: userid,
+      groupid: groupid,
+      name: userName,
+      role: role,
+      msgType: "RoleChg",
+    });
+    response.status(200).send({ status: true });
+  } catch (error) {
+    response.status(400).send("Error: " + error.message);
+  }
+});
+
+//API(s) FOR PUBLIC
+
+//assign grp-id based on the unique link
+//FORMAT request.body = {"name":"Narayanan", "mobile":"0987654321","password":"yan#123"}
+
+app.post("/signup/:id", async (request, response) => {
+  const [name, mobile, password] = Object.values(request.body);
+  console.log(name, mobile, password);
+  var groupid = Number.parseInt(request.params.id);
+  try {
+    const user = await pool.query("SELECT groupid FROM users WHERE mobile=$1", [
+      mobile,
+    ]);
+    console.log(user.rowCount);
+    if (user.rowCount == 0) {
+      let id = Math.floor(100000 + Math.random() * 900000);
+      try {
+        console.log(name, mobile, password);
+        let res = await pool.query(
+          "INSERT INTO users (userid,name,mobile,password,groupid,role,created_on) VALUES ($1, $2, $3, $4, $5, $6,$7)",
+          [id, name, mobile, password, groupid, "", new Date()]
+        );
+        let player_count = await pool.query(
+          'select players from "group" where groupid=$1',
+          [groupid]
+        );
+        await pool.query('update "group" set players=$1 where groupid=$2', [
+          player_count.rows[0].players + 1,
+          groupid,
+        ]);
+        response.status(200).send({ userid: id, star_count: 0 });
+      } catch (error) {
+        console.log("Error: " + error.message);
+        response.status(400).send({ status: false });
+      }
+    } else {
+      let [id] = Object.values(user.rows[0]);
+      console.log(id);
+      id == groupid
+        ? response
+            .status(400)
+            .send({ status: false, msg: "You are already a registered user" })
+        : response
+            .status(400)
+            .send({
+              status: false,
+              msg: "You are not authorized to enter this group",
+            });
+    }
+  } catch (error) {
+    console.log("error" + error.message);
+  }
+});
+
+app.get("/portfolio/:id", async (request, response) => {
+  const groupid = request.params.id;
+  // const ratio  = (numerator,base)=>{
+  //   if(numerator!==0){
+  //     return Number.parseInt(Math.round((numerator/base)*100));
+  //   }
+  //   return 0;
+  // }
+  try {
+    const products = await pool.query(
+      'SELECT networth, stocks, commodities, cash, mutual_funds FROM "group" WHERE groupid = $1',
+      [groupid]
+    );
+    const [networth, stocks, commodities, funds] = Object.values(
+      products.rows[0]
+    );
+    response.status(200).send({
+      networth: networth,
+      stocks: stocks,
+      commodities: commodities,
+      mutual_funds: funds,
+    });
+  } catch (error) {
+    console.log("Error: " + error.message);
+  }
+});
+
+app.get("/login/:id", async (req, res) => {
   const [mobile, password] = Object.values(req.body);
   var groupid = Number.parseInt(req.params.id);
   try {
-    let result = await pool.query(`
+    let result = await pool.query(
+      `
       SELECT password,groupid,userid FROM users WHERE mobile = $1
-    `,[mobile]);
-    if(result.rowCount>0){
-      const [db_password,db_groupid,userid] = Object.values(result.rows[0]);
-      if(db_groupid==groupid){
-        if(db_password==password){
+    `,
+      [mobile]
+    );
+    if (result.rowCount > 0) {
+      const [db_password, db_groupid, userid] = Object.values(result.rows[0]);
+      if (db_groupid == groupid) {
+        if (db_password == password) {
           try {
             const group = await pool.query(
               'SELECT star FROM "group" WHERE groupid = $1',
               [groupid]
             );
             const [star_count] = Object.values(group.rows[0]);
-            res.send({ userid: userid, star_count: star_count }); 
+            res.send({ userid: userid, star_count: star_count });
           } catch (error) {
             console.log("Error: " + error.message);
           }
-        }else{
-          res.status(401).send({ status: false, msg:"Invalid password" });
+        } else {
+          res.status(401).send({ status: false, msg: "Invalid password" });
         }
-      }else{
-        res.status(400).send({status:false,msg:"You are not a registered user of this group"})
+      } else {
+        res
+          .status(400)
+          .send({
+            status: false,
+            msg: "You are not a registered user of this group",
+          });
       }
-    }else{
-      res.status(200).send({status:false,msg:"You are not a registered user"})
+    } else {
+      res
+        .status(200)
+        .send({ status: false, msg: "You are not a registered user" });
     }
   } catch (err) {
-    res.status(400).send({status:false,err:err.message})
+    res.status(400).send({ status: false, err: err.message });
   }
 });
 
@@ -188,13 +483,13 @@ app.get("/team/:id", async (req, res) => {
     const players = await pool.query(
       "SELECT userid,name,mobile,role FROM users WHERE groupid = $1 ORDER BY created_on DESC, name ASC",
       [groupid]
-      );
-      res.status(200).send(players.rows);
+    );
+    res.status(200).send(players.rows);
   } catch (error) {
-      console.log("Error: " + error.message);
+    console.log("Error: " + error.message);
   }
 });
-  
+
 app.get("/news", async (req, res) => {
   try {
     const news = await pool.query("SELECT * FROM gameData");
@@ -260,7 +555,7 @@ app.get("/download/:sessionId", (req, res) => {
 // });
 
 app.put("/renameAsset", async (req, res) => {
-  const {assetId, new_name} = req.body;
+  const { assetId, new_name } = req.body;
   try {
     const result = await pool.query(
       `UPDATE assets SET asset_name = $1 WHERE id = $2`,
@@ -339,10 +634,12 @@ app.delete("/deleteSession", async (req, res) => {
 
 app.get("/getAssets", async (req, res) => {
   try {
-    const result = await pool.query('SELECT id, asset_type, asset_name FROM assets ORDER BY asset_type, asset_name');
+    const result = await pool.query(
+      "SELECT id, asset_type, asset_name FROM assets ORDER BY asset_type, asset_name"
+    );
     const assets = {};
 
-    result.rows.forEach(row => {
+    result.rows.forEach((row) => {
       const { id, asset_type, asset_name } = row;
       if (!assets.hasOwnProperty(asset_type)) {
         assets[asset_type] = [];
@@ -351,14 +648,14 @@ app.get("/getAssets", async (req, res) => {
     });
 
     // Sort assets swithin each type alphabetically
-    Object.keys(assets).forEach(assetType => {
+    Object.keys(assets).forEach((assetType) => {
       assets[assetType].sort((a, b) => a.name.localeCompare(b.name));
     });
 
     res.status(200).json(assets);
   } catch (error) {
-    console.error('Error retrieving assets:', error);
-    res.status(500).send('Internal Server Error');
+    console.error("Error retrieving assets:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
