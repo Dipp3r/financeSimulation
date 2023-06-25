@@ -60,6 +60,7 @@ const FormLogin = ({toggleMainDisplay}) => {
         }));
       }
     }
+
     if (formData.mobile.trim() === "") {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -80,11 +81,13 @@ const FormLogin = ({toggleMainDisplay}) => {
     }
     try {
         if(isValid.name && isValid.mobile && isValid.password){
+          console.log("hello working")
             const response = await fetch("http://localhost:3003/login/576397",{
                 method:"POST",
                 headers:{"Content-type":"application/json"},
                 body:JSON.stringify(Object.fromEntries(Object.entries(formData).slice(0, 3)))
             });
+            console.log(response)
             if(response.ok){
                 const data = await response.json().then(data=>{console.log(data)});
                 toggleMainDisplay("dashboard",data);
