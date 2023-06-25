@@ -603,8 +603,8 @@ button:focus {
 }
 #home #main #sessionMain #createGroupPage #createGroupMenu {
   position: relative;
-  width: 410px;
-  height: 250px;
+  width: 427px;
+  height: 371px;
 }
 #home #main #sessionMain #createGroupPage #createGroupMenu div {
   font-family: "Montserrat";
@@ -853,7 +853,7 @@ button:focus {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: calc(100% - 310px);
+  width: calc(100% - 322px);
   height: 100vh;
   position: absolute;
   top: 0px;
@@ -920,6 +920,7 @@ button:focus {
   align-items: center;
 }
 #home #main #sessionMain #groupPage #topBar #top #create div p {
+  margin: 0px;
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 500;
