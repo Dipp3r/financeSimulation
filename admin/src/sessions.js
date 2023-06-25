@@ -261,7 +261,7 @@ class SessionsComp extends React.Component {
     this.setState({"displayComp":displayComp})
   }
   componentDidMount() {
-    fetch("http://localhost:3003/session", {
+    fetch("http://localhost:3003/sessions", {
       method: 'GET'
     })
       .then(response => {

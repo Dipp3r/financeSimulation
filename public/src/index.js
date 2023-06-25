@@ -12,7 +12,7 @@ import ProfileComp from './profile';
 import StocksComp from './stocks';
 import TeamComp from './team';
 
-const socket = new WebSocket('ws://localhost:3001');
+const socket = new WebSocket('ws://localhost:3003');
 
 class IndexComp extends React.Component{
   constructor(props){
@@ -53,9 +53,9 @@ class IndexComp extends React.Component{
   }
   componentDidMount(){
     // When the WebSocket connection is opened
-    // socket.addEventListener('open', function (event) {
-    //   console.log('WebSocket connection opened');
-    // });
+    socket.addEventListener('open', function (event) {
+      console.log('WebSocket connection opened');
+    });
 
     // When a message is received from the WebSocket server
     socket.addEventListener('message', function (event) {

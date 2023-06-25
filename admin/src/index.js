@@ -32,9 +32,9 @@ class IndexComp extends React.Component{
   }
   toggleMainPage(e){
     
-    let value = e
-    let mainPage
-    if(e.currentTarget) value = e.currentTarget.getAttribute("value")
+    let value = e | '0';
+    let mainPage;
+    if(e) if(e.currentTarget) value = e.currentTarget.getAttribute("value")
     
     
     let options = document.querySelector("#options").childNodes
@@ -83,11 +83,11 @@ class IndexComp extends React.Component{
       <nav id="sideBar">
         <img src={vittae_logo_color} alt="vittae logo" />
         <div id="options">
-          <div class="button" value='0'onClick={this.toggleMainPage}>
+          <div className="button" value='0'onClick={this.toggleMainPage}>
             <img id="imgGroup" src={Group} alt="groupIcon"/>
             Sessions
           </div>
-          <div class="button" value='1' onClick={this.toggleMainPage}>
+          <div className="button" value='1' onClick={this.toggleMainPage}>
             <img id="imgEdit" src={Edit} alt="editIcon"/>  
             Edit
           </div>
