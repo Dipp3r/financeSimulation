@@ -9,31 +9,13 @@ export default class SessionsViewer extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-          sessionsList: [
-            {
-              id: 1,
-              name: "SSN College | IT Dept",
-              groupsCount: 50,
-              playersCount: 600,
-            },
-            {
-              id: 2,
-              name: "Vels university | MBA dept",
-              groupsCount: 12,
-              playersCount: 120,
-            },
-            {
-              id: 123,
-              name: "YYY clg | YYY dept",
-              groupsCount: 100,
-              playersCount: 1000,
-            },
-          ]
+          sessionsList: []
         }
         
     }
     displaySessions = (list)=>{
       let container = document.querySelector("#sessionList");
+      container.innerHTML=""
       if (list.length > 0) {
         let card,
           nameDiv,
@@ -50,8 +32,12 @@ export default class SessionsViewer extends React.Component {
           downloadIcon;
         for (let session of list) {
           card = document.createElement("button");
-          card.onclick = this.props.toggleSession;
-          console.log(card)
+          console.log(session.sessionid)
+          card.onclick = ()=>{
+            this.props.toggleSession("groupPage")
+            sessionStorage.setItem("currentSessionID",session.sessionid)
+          };
+          // console.log(card)
           card.value = "groupPage"
           card.className = "sessionCards"
           nameDiv = document.createElement("div");
@@ -98,9 +84,9 @@ export default class SessionsViewer extends React.Component {
           card.appendChild(nameDiv);
           card.appendChild(infoDiv);
   
-          name.innerText = session.name;
-          groupInfo.innerText = session.groupsCount;
-          playerInfo.innerText = session.playersCount;
+          name.innerText = session.title;
+          groupInfo.innerText = session.groups;
+          playerInfo.innerText = session.players;
   
           container.appendChild(card);
         }
@@ -110,17 +96,47 @@ export default class SessionsViewer extends React.Component {
         container.appendChild(p);
       }
     }
+    searchSession = (e)=>{
+      let list = this.state.sessionsList
+      console.log(list)
+      if (e.currentTarget.value == "") {
+        this.displaySessions(list)
+      }
+      let reg = new RegExp(e.currentTarget.value,"i");
+      list = list.filter((session)=>{
+        return reg.test(session.title)
+      })
+      this.displaySessions(list)
+    }
     componentDidMount(){
-      this.displaySessions(this.state.sessionsList)
+      let sessionsList = this.props.getItem("sessionsList")
+      if (sessionsList){
+        this.displaySessions(sessionsList)
+        this.setState({sessionsList:sessionsList})
+      }else{
+        fetch("http://localhost:3003/sessions", {
+          method: 'GET'
+        })
+        .then(response => {
+            return response.json()
+        })   
+        .then(data => {
+          // Handle the response data
+          console.log(data);
+          this.displaySessions(data)
+          this.props.setItem({"sessionsList":data})
+          this.setState({sessionsList:data})
+        })
+      }
     }
     render(){
-      console.log(this.props)
+      console.log(this.state)
       return(
         <div id="sessionsViewer">
           <div id="top">
             <div id="searchDiv">
               <img src={search} alt="search icon" />
-              <input type="text" id="searchBar" />
+              <input type="text" id="searchBar" onChange={this.searchSession} />
             </div>
             <button id="create" onClick={this.props.toggleSession} value="createSessionPage">
               <div>

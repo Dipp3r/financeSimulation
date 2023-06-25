@@ -25,7 +25,7 @@ class SessionsComp extends React.Component {
     super(props);
     this.state = {
       display:"",
-      displayComp:<SessionsViewer toggleSession={this.toggleSession}/>,
+      displayComp:<SessionsViewer toggleSession={this.toggleSession}  setItem={this.props.setItem} getItem={this.props.getItem}/>,
       sessionsList: [
         {
           id: 1,
@@ -65,7 +65,6 @@ class SessionsComp extends React.Component {
       newSessionName: "",
       newGroupName: "",
     };
-    this.displaySessions = this.displaySessions.bind(this);
     this.changeInVal = this.changeInVal.bind(this);
     this.createSession = this.createSession.bind(this);
     this.createGroup = this.createGroup.bind(this);
@@ -80,82 +79,7 @@ class SessionsComp extends React.Component {
     obj[e.currentTarget.name] = e.currentTarget.value;
     this.setState(obj);
   }
-  displaySessions(list) {
-    let container = document.querySelector("#sessionList");
-    if (list.length > 0) {
-      let card,
-        nameDiv,
-        coinIcon,
-        name,
-        infoDiv,
-        groupBox,
-        playerBox,
-        groupLabel,
-        playerLabel,
-        groupInfo,
-        playerInfo,
-        excelDownload,
-        downloadIcon;
-      for (let session of list) {
-        card = document.createElement("button");
-        card.onclick = this.toggleGroupPage;
-        card.className = "sessionCards"
-        nameDiv = document.createElement("div");
-        nameDiv.id="nameDiv"
-        name = document.createElement("p");
-        name.id = "name"
-        coinIcon = document.createElement("img")
-        coinIcon.src = coin;
-        coinIcon.alt = 'coin';
-        nameDiv.appendChild(coinIcon);
-        nameDiv.appendChild(name);
 
-        infoDiv = document.createElement("div");
-        infoDiv.id="infoDiv"
-        groupBox = document.createElement("div");
-        
-        playerBox = document.createElement("div");
-
-        groupLabel = document.createElement("p");
-        groupLabel.id = "groupLabel"
-        groupLabel.innerText = "Groups";
-        groupInfo = document.createElement("p");
-        groupInfo.id = "groupInfo"
-        playerLabel = document.createElement("p");
-        playerLabel.id = "playerLabel"
-        playerLabel.innerText = "Players";
-        playerInfo = document.createElement("p");
-        playerInfo.id = "playerInfo"
-        groupBox.appendChild(groupLabel);
-        groupBox.appendChild(groupInfo);
-
-        playerBox.appendChild(playerLabel);
-        playerBox.appendChild(playerInfo);
-
-        excelDownload = document.createElement("button");
-        downloadIcon = document.createElement("img");
-        downloadIcon.src= downIcon;
-        excelDownload.innerText = "download";
-        excelDownload.appendChild(downloadIcon);
-        excelDownload.style= "margin-left:50px;"
-        infoDiv.appendChild(groupBox);
-        infoDiv.appendChild(playerBox);
-        infoDiv.appendChild(downloadIcon);
-        card.appendChild(nameDiv);
-        card.appendChild(infoDiv);
-
-        name.innerText = session.name;
-        groupInfo.innerText = session.groupsCount;
-        playerInfo.innerText = session.playersCount;
-
-        container.appendChild(card);
-      }
-    } else {
-      let p = document.createElement("p");
-      p.innerText = "no sessions";
-      container.appendChild(p);
-    }
-  }
   displayGroups(list) {
     let container = document.querySelector("#groupsList");
     container.innerHTML = "";
@@ -196,7 +120,7 @@ class SessionsComp extends React.Component {
   }
   toggleCreateSessionMenu() {
     let temp = "none";
-    if (this.state.createSessionMenu == "none") {
+    if (this.state.createSessionMenu === "none") {
       temp = "flex";
     }
     this.setState({ createSessionMenu: temp });
@@ -204,7 +128,7 @@ class SessionsComp extends React.Component {
 
   toggleCreateGroupMenu() {
     let temp = "none";
-    if (this.state.createGroupMenu == "none") {
+    if (this.state.createGroupMenu === "none") {
       temp = "flex";
     }
     this.setState({ createGroupMenu: temp });
@@ -212,7 +136,7 @@ class SessionsComp extends React.Component {
 
   toggleGroupPage() {
     let temp = "none";
-    if (this.state.groupPage == "none") {
+    if (this.state.groupPage === "none") {
       temp = "flex";
     }
     this.setState({ groupPage: temp });
@@ -221,10 +145,10 @@ class SessionsComp extends React.Component {
   togglePlayersPage() {
     let temp = "none";
     this.setState({groupPage:"none"});
-    if (this.state.groupPage == 'none'){
+    if (this.state.groupPage === 'none'){
       this.setState({groupPage: "flex"});
     }
-    if (this.state.playersPage == "none") {
+    if (this.state.playersPage === "none") {
       temp = "flex";
     }
     this.setState({ playersPage: temp });
@@ -243,10 +167,10 @@ class SessionsComp extends React.Component {
     switch(value){
       case "sessionViewer":
       default:
-        displayComp = <SessionsViewer toggleSession={this.toggleSession}/>
+        displayComp = <SessionsViewer toggleSession={this.toggleSession} setItem={this.props.setItem} getItem={this.props.getItem}/>
         break;
       case "playersPage":
-        displayComp = <PlayersPage toggleSession={this.toggleSession}/>
+        displayComp = <PlayersPage toggleSession={this.toggleSession} />
         break;
       case "createSessionPage":
         displayComp = <CreateSessionPage toggleSession={this.toggleSession}/>
@@ -255,22 +179,25 @@ class SessionsComp extends React.Component {
         displayComp = <CreateGroupPage toggleSession={this.toggleSession}/>
         break;
       case "groupPage":
-        displayComp = <GroupPage toggleSession={this.toggleSession}/>
+        displayComp = <GroupPage toggleSession={this.toggleSession} setItem={this.props.setItem} getItem={this.props.getItem}/>
         break;
     }
     this.setState({"displayComp":displayComp})
   }
   componentDidMount() {
-    fetch("http://localhost:3003/sessions", {
-      method: 'GET'
+
+  fetch("http://localhost:3003/sessions", {
+    method: 'GET'
+  })
+    .then(response => {
+        return response.json()
+    })   
+    .then(data => {
+      // Handle the response data
+      console.log(data);
     })
-      .then(response => {
-          return response.json()
-      })   
-      .then(data => {
-        // Handle the response data
-        console.log(data);
-      })
+
+
   }
   render() {
     return (

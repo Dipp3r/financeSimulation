@@ -32,11 +32,11 @@ class IndexComp extends React.Component{
   }
   toggleMainPage(e){
     
-    let value = e | '0';
-    let mainPage;
-    if(e) if(e.currentTarget) value = e.currentTarget.getAttribute("value")
-    
-    
+  let value = e | '0';
+  let mainPage;
+  if(e) if(e.currentTarget) value = e.currentTarget.getAttribute("value")
+
+
     let options = document.querySelector("#options").childNodes
     console.log(options)
     
@@ -47,7 +47,7 @@ class IndexComp extends React.Component{
     switch(value){
       case "0":
       default:
-        mainPage = <SessionsComp/>
+        mainPage = <SessionsComp setItem={this.setItem} getItem={this.getItem}/>
         document.querySelector("#imgGroup").src = Group_white
         document.querySelector("#imgEdit").src = Edit
         break;
@@ -67,17 +67,6 @@ class IndexComp extends React.Component{
   }
   render(){
     console.log(this.state);
-    let mainPage
-    switch(this.state.mainPage){
-      case '1':
-       
-        break;
-      case '0':
-      default:
-        
-        break;
-    }
-
   return(
     <section id="home">
       <nav id="sideBar">
