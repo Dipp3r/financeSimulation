@@ -7,9 +7,9 @@
         padding-top:30px;
         position:relative;
         @include flex(column,flex-start,center);
-        margin:20px 10px;
-        width: 286px;
-        height: 95%;
+        margin: 20px 20px;
+        width: 307px;
+        height: 94%;
         background: rgba(34, 63, 128, 0.2);
         border-radius: 35px;
         #options{
@@ -24,13 +24,12 @@
                 font-size: 20px;
                 border-radius: 12px;
                 color: #223F80;
-                @include flex(row,flex-start,center);
-                svg{
-                    margin:8px;
-                    circle{stroke:#223F80;}
-
+                @include flex(row,flex-center,center);
+                img{
+                    margin:10px;
+                    // circle{stroke:#223F80;}
                 }
-                button{
+                p{
                     margin-left:55px;
                 }
                 // &:hover{
@@ -62,7 +61,7 @@
             width:100%;
             height:100vh;
             #topNav{
-                margin-top:20px;
+                margin-top:150px;
                 width: 70%;
                 height: 55px;
                 background: rgba(132, 132, 132, 0.2);
@@ -89,7 +88,7 @@
                 padding:10px 35px;
                 margin-top:60px;
                 width: 70%;
-                height: 70%;
+                max-height: 75%;
                 background: rgba(34, 63, 128, 0.1);
                 border-radius: 34px;
                 #top{
@@ -109,7 +108,7 @@
                     }
                 }
                 #editMainSection{
-                    height:90%;
+                    height:80%;
                     padding:50px 40px;
                     overflow-y:scroll;
                     div{
@@ -153,6 +152,7 @@
                         margin:10px;
                         @include flex(column,center,center);
                         p{
+                            margin:3px;
                             font-family: 'Montserrat';
                             font-style: normal;
                             font-weight: 500;
@@ -182,6 +182,7 @@
                         margin:10px;
                         @include flex(column,center,center);
                         p{
+                            margin:0px;
                             font-family: 'Montserrat';
                             font-style: normal;
                             font-weight: 500;
@@ -206,6 +207,8 @@
                             border-radius: 7px;
                             
                             div{
+                                height:100%;
+                                width:100%;
                                 @include flex(row,center,center);
                                 p{
                                     margin-left:10px;
@@ -252,7 +255,7 @@
                     flex-direction:row;
                     justify-content:space-between;
                     align-items:center;
-                    width:100%;
+                    width:68%;
                     #nameDiv{
                         display:flex;
                         flex-direction:row;
@@ -273,7 +276,11 @@
                         justify-content:flex-end;
                         align-items:center;
                         div{
-                            margin-right:10px
+                            @include flex(column,center,center);
+                            margin-right:10px;
+                            p{
+                                margin:0px;
+                            }
                         }
                         #groupLabel,#playerLabel{
                             margin:10px;
@@ -285,13 +292,13 @@
                             color: #8A8A8A;
                         }
                         #groupInfo,#playerInfo{
+                            margin-top:7px;
                             font-family: 'Montserrat';
                             font-style: normal;
                             font-weight: 500;
                             font-size: 18px;
                             color: #414141;
                         }
-                        
                     }
                 }
                 #top{
@@ -303,10 +310,11 @@
                         border: 2.5px solid #ACACAC;
                         border-radius: 8px;
                         height: 44px;
-                        padding:5px;
+                        padding:0px 5px;
                         
                         @include flex(row,space-between,center);
                         input{
+                            border:none;
                             width:100%;
                             margin-left:10px;
                             font-family: 'Montserrat';
@@ -314,6 +322,7 @@
                             font-weight: 500;
                             font-size: 20px;
                             &:focus{
+                                border:none;
                                 outline:none;
                             }
                         }
@@ -326,15 +335,17 @@
                         background: #223F80;
                         border-radius: 8px;
                         div{
-                            padding:5px;
+                            height:44px;
                             @include flex(row,space-around,center);
-                        p{
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 20px;
-                            color: #FFFFFF;
-                        }}
+                            p{
+                                padding:0px;
+                                font-family: 'Montserrat';
+                                font-style: normal;
+                                font-weight: 500;
+                                font-size: 20px;
+                                color: #FFFFFF;
+                            }
+                        }
                     }
                 }
                 
@@ -664,6 +675,7 @@
                             
                             @include flex(row,space-between,center);
                             input{
+                                border:none;
                                 width:100%;
                                 margin-left:10px;
                                 font-family: 'Montserrat';
@@ -671,6 +683,7 @@
                                 font-weight: 500;
                                 font-size: 20px;
                                 &:focus{
+                                    border:none;
                                     outline:none;
                                 }
                             }
