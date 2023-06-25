@@ -424,9 +424,9 @@
                 background: rgba(0, 0, 0, 0.9);
                 @include flex(column,center,center);
                 #createGroupMenu{
-                    position:relative;
-                    width:410px;
-                    height:250px;
+                    position: relative;
+                    width: 427px;
+                    height: 371px;
                     div{
                         font-family: 'Montserrat';
                         font-style: normal;
@@ -648,7 +648,7 @@
                 @include flex(column,flex-start,center);
                 // display:none;
                 // padding:40px;
-                width:calc(100% - 310px);
+                width:calc(100% - 322px);
                 height: 100vh;
                 position: absolute;
                 top:0px;
@@ -696,9 +696,11 @@
                             background: #223F80;
                             border-radius: 8px;
                             div{
+                                
                                 padding:5px;
                                 @include flex(row,space-around,center);
                             p{
+                                margin:0px;
                                 font-family: 'Montserrat';
                                 font-style: normal;
                                 font-weight: 500;
