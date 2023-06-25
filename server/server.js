@@ -6,6 +6,10 @@ const port = 3003;
 const db = require("./queries");
 const cors = require("cors");
 const Pool = require("pg").Pool;
+const http = require('http');
+const server = http.createServer(app);
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ server });
 
 const pool = new Pool({
   user: "postgres",
@@ -24,6 +28,23 @@ app.use(
     extended: true,
   })
 );
+
+// WebSocket server
+wss.on('connection', (ws) => {
+  console.log('WebSocket client connected');
+  ws.on('message', (message) => {
+    console.log(`Received message: ${message}`);
+    ws.send(`You sent: ${message}`);
+  });
+});
+
+wss.broadcast = function (data) {
+  wss.clients.forEach(function each(client) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(data);
+    }
+  });
+};
 
 app.get("/", (request, response) => {
   response.json({ info: "Node.js, Express, and Postgres API" });
@@ -53,8 +74,10 @@ async (req,res)=>{
 }
 );
 
+setInterval(()=>{
+  wss.broadcast(JSON.stringify({type:"time",message:"new news"}))
+},5000)
 
-
-app.listen(port, () => {
+server.listen(port,() => {
   console.log(`App running on port http://localhost:${port}.`);
 });

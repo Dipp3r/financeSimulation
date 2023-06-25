@@ -71,9 +71,11 @@ const addGroup = async (request, response) => {
 };
 
 const getSessions = async (request, response) => {
+  console.log("Tried fetcing sessions");
   try {
-    let result = await pool.query("SELECT * FROM session");
-    response.send(result.rows);
+    const sessions = await pool.query("SELECT * FROM session");
+    response.send(sessions.rows);
+
   } catch (error) {
     response.status(400).send("Error: " + error.message);
   }
@@ -197,16 +199,16 @@ const addUser = async (request, response) => {
 
 const getChart = async (request,response) =>{
   const groupid = request.params.id;
-  const ratio  = (numerator,base)=>{
-    if(numerator!==0){
-      return Number.parseInt(Math.round((numerator/base)*100));
-    }
-    return 0;
-  }
+  // const ratio  = (numerator,base)=>{
+  //   if(numerator!==0){
+  //     return Number.parseInt(Math.round((numerator/base)*100));
+  //   }
+  //   return 0;
+  // }
   try {
     const products = await pool.query('SELECT networth, stocks, commodities, cash, mutual_funds FROM "group" WHERE groupid = $1',[groupid]);
     const [networth,stocks,commodities,funds] = Object.values(products.rows[0]);
-    response.status(200).send({networth:networth,stocks:ratio(stocks,commodities),commodities:ratio(commodities,networth),mutual_funds:ratio(funds,networth)});
+    response.status(200).send({networth:networth,stocks:stocks,commodities:commodities,mutual_funds:funds});
   } catch (error) {
     console.log("Error: " + error.message);
   }

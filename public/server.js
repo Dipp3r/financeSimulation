@@ -4,10 +4,7 @@ const port = 3000;
 // const db = require("./queries");
 const path = require("path")
 
-const http = require('http');
-const server = http.createServer(app);
-const WebSocket = require('ws');
-const wss = new WebSocket.Server({ server });
+
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -17,6 +14,11 @@ app.use(express.static(path.join(__dirname, '/build')))
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/build/index.html'));
 });
+
+const http = require('http');
+const server = http.createServer(app);
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ server });
 
 // WebSocket server
 wss.on('connection', (ws) => {

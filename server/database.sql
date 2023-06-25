@@ -3,9 +3,7 @@ CREATE DATABASE finance;
 CREATE TABLE "session"(
     sessionid SERIAL PRIMARY KEY,
     title VARCHAR(255),
-    excelLink VARCHAR(255),
-    players INT,
-    groups INT
+    excelLink VARCHAR(255)
 );
 
 CREATE TABLE "group"(

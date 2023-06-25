@@ -120,7 +120,7 @@ class SessionsComp extends React.Component {
   }
   toggleCreateSessionMenu() {
     let temp = "none";
-    if (this.state.createSessionMenu == "none") {
+    if (this.state.createSessionMenu === "none") {
       temp = "flex";
     }
     this.setState({ createSessionMenu: temp });
@@ -128,7 +128,7 @@ class SessionsComp extends React.Component {
 
   toggleCreateGroupMenu() {
     let temp = "none";
-    if (this.state.createGroupMenu == "none") {
+    if (this.state.createGroupMenu === "none") {
       temp = "flex";
     }
     this.setState({ createGroupMenu: temp });
@@ -136,7 +136,7 @@ class SessionsComp extends React.Component {
 
   toggleGroupPage() {
     let temp = "none";
-    if (this.state.groupPage == "none") {
+    if (this.state.groupPage === "none") {
       temp = "flex";
     }
     this.setState({ groupPage: temp });
@@ -145,10 +145,10 @@ class SessionsComp extends React.Component {
   togglePlayersPage() {
     let temp = "none";
     this.setState({groupPage:"none"});
-    if (this.state.groupPage == 'none'){
+    if (this.state.groupPage === 'none'){
       this.setState({groupPage: "flex"});
     }
-    if (this.state.playersPage == "none") {
+    if (this.state.playersPage === "none") {
       temp = "flex";
     }
     this.setState({ playersPage: temp });
@@ -185,6 +185,18 @@ class SessionsComp extends React.Component {
     this.setState({"displayComp":displayComp})
   }
   componentDidMount() {
+
+  fetch("http://localhost:3003/sessions", {
+    method: 'GET'
+  })
+    .then(response => {
+        return response.json()
+    })   
+    .then(data => {
+      // Handle the response data
+      console.log(data);
+    })
+
 
   }
   render() {
