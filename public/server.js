@@ -14,10 +14,12 @@ app.use(express.static(path.join(__dirname, '/build')))
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/build/index.html'));
 });
+
 const http = require('http');
 const server = http.createServer(app);
 const WebSocket = require('ws');
 const wss = new WebSocket.Server({ server });
+
 // WebSocket server
 wss.on('connection', (ws) => {
   console.log('WebSocket client connected');
