@@ -225,7 +225,7 @@ button:focus {
   padding: 10px 35px;
   margin-top: 60px;
   width: 70%;
-  max-height: 75%;
+  max-height: calc(100% - 300px);
   background: rgba(34, 63, 128, 0.1);
   border-radius: 34px;
 }
@@ -249,8 +249,8 @@ button:focus {
   border-bottom: 5px solid #223F80;
 }
 #home #main #editMain #assets #editMainSection {
-  height: 80%;
-  padding: 50px 40px;
+  height: 70%;
+  padding: 30px 40px;
   overflow-y: scroll;
 }
 #home #main #editMain #assets #editMainSection div {
