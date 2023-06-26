@@ -65,6 +65,7 @@ export default class GroupPage extends React.Component {
           card.appendChild(playerBox);
           card.onclick = () => this.props.toggleSession("playersPage")
           container.appendChild(card);
+          
         }
       }
     }
