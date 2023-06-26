@@ -88,7 +88,7 @@
                 padding:10px 35px;
                 margin-top:60px;
                 width: 70%;
-                max-height: 75%;
+                max-height: calc(100% - 300px);
                 background: rgba(34, 63, 128, 0.1);
                 border-radius: 34px;
                 #top{
@@ -108,8 +108,8 @@
                     }
                 }
                 #editMainSection{
-                    height:80%;
-                    padding:50px 40px;
+                    height:70%;
+                    padding:30px 40px;
                     overflow-y:scroll;
                     div{
                         @include flex(row,flex-start,center);
@@ -508,10 +508,10 @@
                 }
             }
             #playersPage{
-                margin-top:150px;
+                margin-top:100px;
                 @include flex(column,flex-start,center);
                 padding:40px;
-                width:calc(100% - 310px);
+                width:calc(100% - 400px);
                 height: 100vh;
                 position: absolute;
                 top:0px;
@@ -520,7 +520,7 @@
                 background-color: white;
                 overflow:hidden scroll ;
                 #topBar{
-                    width:80%;
+                    width:90%;
                     @include flex(column,center,center);
                     #top{
                         width:100%;
@@ -531,6 +531,7 @@
                         }
                         #topLabel{
                             width:100%;
+                            height:44px;
                             @include flex(row,space-between,center);
                             div{
                                 #trash{
@@ -565,18 +566,20 @@
                         }
                     }
                     hr{
-                        width:calc(100% - 40px);
-                        margin-left:50px;
-                        border: 3px solid rgba(34, 63, 128, 0.4);
+                        width:calc(100% - 62px);
+                        margin:0px;
+                        margin-left:54px;
+                        border: 2px solid rgba(34, 63, 128, 0.4);
                     }
                 }
                 #playersList{
                     margin-top:30px;
-                    width: 70%;
+                    width: 84%;
+                    max-width:1150px;
                     @include flex(column,center,center);
                     .row{
-                        margin-top:40px;
-                        width:100%;
+                        margin-top:20px;
+                        width:90%;
                         @include flex(row,space-between,center);
                         
                         #remove{
@@ -591,8 +594,8 @@
                             @include flex(column,center,center);
                             .checkbox-round {
                                 position:absolute;
-                                top:4.5px;
-                                left:5.4px;
+                                top:3px;
+                                left:7px;
                                 box-sizing: border-box;
                                 width: 18px;
                                 height: 18px;                     
