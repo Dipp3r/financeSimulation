@@ -853,7 +853,7 @@ button:focus {
   color: #223F80;
 }
 #home #main #sessionMain #groupPage {
-  margin-top: 150px;
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -957,6 +957,7 @@ button:focus {
   color: #AAAAAA;
 }
 #home #main #sessionMain #groupPage #topBar #second #navBar #portion1 {
+  height: 40px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -991,9 +992,9 @@ button:focus {
 }
 #home #main #sessionMain #groupPage #groupsList {
   overflow-y: scroll;
-  height: 800px;
   padding: 50px;
-  margin: 30px 20px;
+  margin-top: 30px;
+  padding-top: 0px;
 }
 #home #main #sessionMain #groupPage #groupsList .card {
   transition: all 0.3s ease-in-out;
@@ -1110,7 +1111,10 @@ button:focus {
     margin-top: 30px;
   }
 }
-@media only screen and (max-width: 1480px) {
+@media only screen and (max-width: 1620px) {
+  #groupsList {
+    height: calc(100% - 350px);
+  }
   #navBar {
     display: flex;
     flex-direction: column;
@@ -1121,12 +1125,16 @@ button:focus {
     width: 100%;
   }
 }
-@media only screen and (min-width: 1480px) {
+@media only screen and (min-width: 1620px) {
+  #groupsList {
+    height: calc(100% - 300px);
+  }
   #navBar {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+    height: 44px;
   }
   #portion1 {
     width: 70%;
