@@ -57,8 +57,8 @@ export default class GroupPage extends React.Component {
           playerBox.id = "playerBox"
           players_count = document.createElement("p");
           players_count.style = "margin-left:15px;font-family: 'Montserrat';font-style: normal;font-weight: 500;font-size: 18px;color: #3F3F3F;"
-          players_count.innerText = `${group.playersCount}`;
-          groupInfo.innerText = `Group 0${group.id}`;
+          players_count.innerText = `${group.players}`;
+          groupInfo.innerText = `${group.name}`;
           playerBox.innerText = 'players';
           playerBox.appendChild(players_count);
           card.appendChild(groupBox);
@@ -67,13 +67,8 @@ export default class GroupPage extends React.Component {
         }
       }
     }
-    componentDidMount(){
-      let groupList = this.props.getItem("groupList")
-      if (groupList){
-        this.displayGroups(groupList)
-        this.setState({groupList:groupList})
-      }else{
-        fetch("http://localhost:3003/groups", {
+    fetchGroupList = ()=>{
+      fetch("http://localhost:3003/groups", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -90,7 +85,15 @@ export default class GroupPage extends React.Component {
           this.props.setItem({"groupList":data})
           this.setState({groupList:data})
         })
-      }
+    }
+    componentDidMount(){
+      // let groupList = this.props.getItem("groupList")
+      // if (groupList && groupList.length > 0){
+      //   this.displayGroups(groupList)
+      //   this.setState({groupList:groupList})
+      // } else {
+      this.fetchGroupList()
+      // }
     }
     render(){
       return(

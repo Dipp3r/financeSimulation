@@ -47,28 +47,38 @@ const addSession = async (request, response) => {
 
 const addGroup = async (request, response) => {
   let id = Math.floor(100000 + Math.random() * 900000);
-  const [name, limit, sessionid] = Object.values(request.body);
+  const { name, limit, sessionid } = request.body;
+  
   try {
+    // Check if the limit is a valid integer
+    if (!Number.isInteger(limit)) {
+      throw new Error("Invalid limit. Please provide a valid integer value.");
+    }
+
     await pool.query(
-      'INSERT INTO "group"(groupid,name,_limit,networth,stocks,commodities,cash,mutual_funds, sessionid,players,star) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)',
+      'INSERT INTO "group"(groupid, name, _limit, networth, stocks, commodities, cash, mutual_funds, sessionid, players, star) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
       [id, name, limit, 0, 0, 0, 0, 0, sessionid, 0, 0]
     );
+
     const group_count = await pool.query(
       "SELECT groups FROM session WHERE sessionid = $1",
       [sessionid]
     );
     const [num] = Object.values(group_count.rows[0]);
     const new_count = Number.parseInt(num) + 1;
+
     await pool.query(
       "UPDATE session SET groups = $1 WHERE sessionid = $2 RETURNING *",
       [new_count, sessionid]
     );
+
     response.status(200).send({ status: true });
   } catch (error) {
     console.log(error);
     response.status(400).send("Error: " + error.message);
   }
 };
+
 
 const getSessions = async (request, response) => {
   console.log("Tried fetcing sessions");
