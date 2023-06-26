@@ -8,10 +8,11 @@ import grad_checkbox from "./images/grad_checkbox.svg"
 export default class PlayersPage extends React.Component {
     constructor(props){
         super(props)
+
     }
     render(){
       return(
-      <div id="playersPage" style={{ display: this.state.playersPage }}>
+      <div id="playersPage" style={{ display: "flex" }}>
       <div id="topBar">
         <div id="top">
           <button id="back" onClick={this.togglePlayersPage}><img src={arrow_left} alt="back arrow"/></button>

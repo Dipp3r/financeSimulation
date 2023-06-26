@@ -63,6 +63,9 @@ export default class GroupPage extends React.Component {
           playerBox.appendChild(players_count);
           card.appendChild(groupBox);
           card.appendChild(playerBox);
+
+          card.onclick = () => this.props.toggleSession("playersPage")
+
           container.appendChild(card);
         }
       }
@@ -117,8 +120,8 @@ export default class GroupPage extends React.Component {
         <div id="second">
           <div id="navBar">
            <div id="portion1">
-            <div class="navComp">
-                <img src={Date_range} alt="Date_range"/>
+            <div className="navComp">
+                <img src={Date_range} alt="Date_range"/> 
                 <p>2100</p>
               </div>
               <p>|</p>
@@ -126,7 +129,7 @@ export default class GroupPage extends React.Component {
                 <p>open phase</p>
               </div>
               <p>|</p>
-              <div class="navComp">
+              <div className="navComp">
                 <img src={Alarmclock_grey} alt="alarmclock"/>
                 <p>5:00</p>
               </div>
