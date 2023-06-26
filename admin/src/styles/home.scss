@@ -334,8 +334,10 @@
                         height: 44px;
                         background: #223F80;
                         border-radius: 8px;
+                        @include flex(row,center,center);
                         div{
-                            height:44px;
+                            width:100%;
+                            height:100%;
                             @include flex(row,space-around,center);
                             p{
                                 padding:0px;
@@ -691,12 +693,13 @@
                         #create{
                             margin-left:20px;
                             margin-top:0px;
-                            width: 210px;
                             height: 44px;
                             background: #223F80;
                             border-radius: 8px;
+                            @include flex(row,center,center);
                             div{
-                                
+                                height:100%;
+                                width:100%;
                                 padding:5px;
                                 @include flex(row,space-around,center);
                             p{
@@ -704,7 +707,6 @@
                                 font-family: 'Montserrat';
                                 font-style: normal;
                                 font-weight: 500;
-                                font-size: 20px;
                                 color: #FFFFFF;
                             }}
                         }
@@ -741,8 +743,7 @@
     
                         }   
                         #gameStatus{
-                            margin-left:25px;
-                            width: 202px;
+                            margin-left:25px;      
                             height: 44px;
                             border: 2px solid #223F80;
                             border-radius: 8px;
@@ -760,28 +761,42 @@
                 }
                 #groupsList{
                     overflow-y:scroll;
-                    height:700px;
+                    height:800px;
                     padding:50px;
                     margin: 30px 20px;
                     .card{
-                        padding:15px;
-                        
+                        transition: all .3s  ease-in-out;
+                        &:hover{
+                            transform: scale(1.1);
+                        }
+                        width:200px;
+                        height:100px;
+                        padding:15px; 
                         background: white;
-                        box-shadow: 0px 2px 23px -1px rgba(0, 0, 0, 0.09);
+                        box-shadow: 2px 5px 10px 4px rgba(0, 0, 0, 0.08);
                         border-radius: 10px;
+                        position:relative;
                         #groupBox{
                             display:flex;
                             flex-direction:row;
                             justify-content:space-between;
                             align-items:center;
                             #groupInfo{
+                                margin:0px;
+                                margin-left:10px;
                                 font-family: 'Montserrat';
                                 font-style: normal;
                                 font-weight: 600;
-                                font-size: 25px;
-                                text-align: center;
+                                font-size: 23px;
                                 color: #3F3F3F;
                             }
+                        }
+                        #playerBox{
+                            position:absolute;
+                            bottom: 0;
+                            left:10;
+                            margin:0px;
+                            @include flex(row,space-around,center);
                         }
                     }
                 }
@@ -790,45 +805,76 @@
     }
 }
 
-@media only screen and (max-width:1200px){
+@media only screen and (max-width:1390px){
     #groupsList{
         display:grid;
         grid-template-columns: auto auto;
     }
     .card{
-        width: 230px;
-        height: 127px;
+
         margin:15px 40px;
     }
     #playerBox{
         margin-top:30px;
     }
+    #gameStatus{
+        width:150px;
+    }
+    #create{
+        width: 130px;
+        div{
+            #add{
+                height:20px;
+            }
+            padding:5px;
+            @include flex(row,space-around,center);
+            p{
+                font-size: 13px;
+            }
+        }
+    }
 }
 
-@media only screen and (min-width:1200px) and (max-width:1600px){
+@media only screen and (min-width:1390px){
+    #gameStatus{
+        width:202px;
+    }
+    #create{
+        width: 210px;
+        div{
+            #add{
+                height:36px;
+            }
+            padding:5px;
+            @include flex(row,space-around,center);
+            p{
+                font-size: 20px;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width:1390px) and (max-width:1790px){
     #groupsList{
         display:grid;
         grid-template-columns: auto auto auto;
     }
     .card{
-        width: 230px;
-        height: 127px;
         margin:15px 50px;
     }
     #playerBox{
         margin-top:30px;
     }
+
 }
 
-@media only screen and (min-width:1600px){
+@media only screen and (min-width:1790px){
     #groupsList{
         display:grid;
         grid-template-columns: auto auto auto auto;
     }
     .card{
-        width: 230px;
-        height: 137px;
-        margin:20px 55px;
+        margin:15px 40px;
     }
     #playerBox{
         margin-top:30px;
