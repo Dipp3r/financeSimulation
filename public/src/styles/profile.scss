@@ -77,6 +77,7 @@
             border-radius: 11px;
         }
         #desc{
+            z-index: -2;
             width: 164px;
             height: 30px;
             font-family: 'Montserrat';
@@ -99,7 +100,21 @@
                 height:60px;
                 width:40px;
                 margin:0px;
+                position:relative;
                 @include flex(column,center,center);
+                .animate{
+                    height:50px;
+                    margin:0px;
+                    position:absolute;
+                    top:0px;
+                    z-index: -1;
+                    transition: all 0.3s 0.1s ease;
+
+                }
+                &:hover .animate{
+                    transform:translate(0px,-50px);
+                    
+                }
                 img{
                     margin-top:5px;
                 }

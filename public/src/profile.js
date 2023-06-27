@@ -10,6 +10,7 @@ import Vector from "./images/Vector.svg"
 import User_fill from "./images/User_fill.svg"
 import Chart_alt from "./images/Chart_alt.svg"
 import Message from "./images/Message.svg";
+import Coin from "./images/coin.svg"
 
 
 
@@ -75,18 +76,21 @@ class ProfileComp extends React.Component{
                 <p id="desc">Will unlock once all the badges have been collected</p>
                 <div id="options">
                     <div className="option" onClick={this.props.toggleMainDisplay} value="portfolio">
+                        <img src={Coin} class="animate" alt="coin" />
                         <img src={pie_chart} alt="portfolio logo" />
                         <p>Portfolio</p>
                     </div>
                     <hr/>
 
                     <div className="option" id="team" onClick={this.props.toggleMainDisplay} value="team">
+                        <img src={Coin} class="animate" alt="coin" />
                         <img src={Group} alt="team logo" />
                         <p>Team</p>
                     </div>
 
                     <hr/>
                     <div className="option">
+                        <img src={Coin} class="animate" alt="coin" />
                         <img src={Vector} alt="logout logo" />
                         <p>Logout</p>
                     </div>

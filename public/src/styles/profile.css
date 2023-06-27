@@ -164,6 +164,7 @@ button:focus {
   border-radius: 11px;
 }
 #profile #main #desc {
+  z-index: -2;
   width: 164px;
   height: 30px;
   font-family: "Montserrat";
@@ -189,10 +190,22 @@ button:focus {
   height: 60px;
   width: 40px;
   margin: 0px;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+#profile #main #options .option .animate {
+  height: 50px;
+  margin: 0px;
+  position: absolute;
+  top: 0px;
+  z-index: -1;
+  transition: all 0.3s 0.1s ease;
+}
+#profile #main #options .option:hover .animate {
+  transform: translate(0px, -50px);
 }
 #profile #main #options .option img {
   margin-top: 5px;
