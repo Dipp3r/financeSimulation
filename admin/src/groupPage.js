@@ -49,6 +49,10 @@ export default class GroupPage extends React.Component {
           linkIcon.src = link;
           groupBox.appendChild(groupInfo);
           linkButton.appendChild(linkIcon);
+          linkButton.onclick = (e)=>{
+            e.stopPropagation();
+            navigator.clipboard.writeText(process.env.REACT_APP_PUBLIC_URL+`/login/${group.groupid}`)
+          }
           groupBox.appendChild(linkButton);
   
   
@@ -63,7 +67,13 @@ export default class GroupPage extends React.Component {
           playerBox.appendChild(players_count);
           card.appendChild(groupBox);
           card.appendChild(playerBox);
-          card.onclick = () => this.props.toggleSession("playersPage")
+          card.onclick = () => {
+            // for(let key in group){
+            //   localStorage.setItem(key , group[key])
+            // }
+            localStorage.setItem("groupInfo",JSON.stringify(group))
+            this.props.toggleSession("playersPage")
+          }
           container.appendChild(card);
           
         }

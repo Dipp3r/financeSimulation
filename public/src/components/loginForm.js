@@ -81,8 +81,8 @@ const FormLogin = ({toggleMainDisplay}) => {
     }
     try {
         if(isValid.name && isValid.mobile && isValid.password){
-          console.log("hello working")
-            const response = await fetch("http://localhost:3003/login/576397",{
+          console.log(window.location.href.split('/').pop())
+            const response = await fetch("http://localhost:3003/login/"+(window.location.href.split('/').pop()),{
                 method:"POST",
                 headers:{"Content-type":"application/json"},
                 body:JSON.stringify(Object.fromEntries(Object.entries(formData).slice(0, 3)))
@@ -104,6 +104,7 @@ const FormLogin = ({toggleMainDisplay}) => {
     }
   };
 
+  
   return (
     <form onSubmit={handleSubmit}>
       <input

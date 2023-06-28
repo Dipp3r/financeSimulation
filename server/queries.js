@@ -175,7 +175,7 @@ const addUser = async (request, response) => {
             password,
             groupid,
             "",
-            new Date().toLocaleString(),
+            new Date(),
           ]
         );
         response.status(200).send({ userid: id, star_count: 0 });

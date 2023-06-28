@@ -22,7 +22,7 @@ export default class CreateGroupPage extends React.Component {
           })
             .then(response => {
                 if(response.status == 200 || response.status == 201) {
-                    // this.props.toggleMainDisplay("dashboard")
+                  this.props.toggleSession("groupPage")
                 }
                 return response.json()
             })   
