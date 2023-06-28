@@ -47,6 +47,9 @@ class IndexComp extends React.Component{
       case "purchase":
         displayComp = <SellComp toggleMainDisplay={this.toggleMainDisplay} setItem={this.setItem} getItem={this.getItem}/>
         break;
+      case "login":
+        displayComp = <LoginComp toggleMainDisplay={this.toggleMainDisplay}/>
+        break;
     }
     console.log(displayComp)
     this.setState({"mainDisplay":displayComp})

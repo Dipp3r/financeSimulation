@@ -19,14 +19,12 @@ class ProfileComp extends React.Component{
     //     super(props);
     // }
     updateProfileInfo =()=>{
-        let obj = {}
-        obj.userid = 1
-        fetch("http://localhost:3003/profile", {
-            method: 'POST',
+        fetch("http://localhost:3003/portfolio/"+localStorage.getItem("groupid"), {
+            method: 'GET',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(obj)
+            // body: JSON.stringify({"userid":localStorage.getItem('userid')})
           })
             .then(response => {
                 if(response.status === 200 || response.status === 201) {
@@ -39,6 +37,10 @@ class ProfileComp extends React.Component{
               console.log(data);
             })
         
+    }
+    logout = ()=>{
+      localStorage.clear()
+      this.props.toggleMainDisplay("login")
     }
     componentDidMount(){
         this.updateProfileInfo()
@@ -89,7 +91,7 @@ class ProfileComp extends React.Component{
                     </div>
 
                     <hr/>
-                    <div className="option">
+                    <div className="option" onClick={this.logout}>
                         <img src={Coin} class="animate" alt="coin" />
                         <img src={Vector} alt="logout logo" />
                         <p>Logout</p>

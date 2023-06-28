@@ -5,38 +5,13 @@ import FormLogin from "./components/loginForm";
 class LoginComp extends React.Component{
     constructor(props){
         super(props)
-        // this.login = this.login.bind(this);
     }
+    componentDidMount(){
+      if(localStorage.getItem("userid")) this.props.toggleMainDisplay("dashboard")
 
-    // login(){
-    //     let obj = {}
-    //     for (let input of document.querySelectorAll(".formInput")){
-    //         obj[input.getAttribute("name")] = input.value
-    //     }
-    //     // obj.link = ""
-    //     fetch("http://localhost:3003/login", {
-    //         method: 'POST',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(obj)
-    //       })
-    //         .then(response => {
-    //             if(response.status == 200 || response.status == 201) {
-    //                 // this.props.toggleMainDisplay("dashboard")
-    //             }
-    //             return response.json()
-    //         })   
-    //         .then(data => {
-    //           // Handle the response data
-    //           console.log(data);
-    //         })
-    //         .catch(error => {
-    //           // Handle any errors
-    //           console.error('Error:', error);
-    //         });
-    //         this.props.toggleMainDisplay("dashboard")
-    // }
+      let groupid = window.location.href.split('/').pop()
+      localStorage.setItem("groupid",groupid)
+    }
     render(){
         return(
             <div id='login' >

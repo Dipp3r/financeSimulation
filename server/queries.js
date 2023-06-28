@@ -138,7 +138,9 @@ const removeUser = async (request, response) => {
 };
 
 const alterRole = async (request, response) => {
-  const [userid, role] = Object.values(request.body);
+  const {userid, role} = Object.values(request.body);
+  // if someOne in group already in executive role 
+  // role of that person -> accountant or null
   try {
     await pool.query("UPDATE users SET role = $1 WHERE userid = $2", [
       role,
@@ -156,17 +158,19 @@ const alterRole = async (request, response) => {
 //FORMAT request.body = {"name":"Narayanan", "mobile":"0987654321","password":"yan#123"}
 
 const addUser = async (request, response) => {
-  const [name, mobile, password] = Object.values(request.body);
+  const {name, mobile, password} = Object.values(request.body);
   var groupid = Number.parseInt(request.params.id);
   try {
+    console.log(name,mobile,password,groupid);
     const user = await pool.query(
       "SELECT userid, name, password FROM users WHERE mobile=$1",
       [mobile]
     );
     if (user.rowCount == 0) {
       let id = Math.floor(100000 + Math.random() * 900000);
+      
       try {
-        await pool.query(
+        let res = await pool.query(
           "INSERT INTO users (userid,name,mobile,password,groupid,role,created_on) VALUES ($1, $2, $3, $4, $5, $6,$7)",
           [
             id,
@@ -175,7 +179,7 @@ const addUser = async (request, response) => {
             password,
             groupid,
             "",
-            new Date(),
+            new Date().toLocaleString(),
           ]
         );
         response.status(200).send({ userid: id, star_count: 0 });

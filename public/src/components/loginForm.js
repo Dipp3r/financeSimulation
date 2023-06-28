@@ -82,14 +82,19 @@ const FormLogin = ({toggleMainDisplay}) => {
     try {
         if(isValid.name && isValid.mobile && isValid.password){
           console.log(window.location.href.split('/').pop())
-            const response = await fetch("http://localhost:3003/login/"+(window.location.href.split('/').pop()),{
+            const response = await fetch("http://localhost:3003/login/"+(localStorage.getItem("groupid")),{
                 method:"POST",
                 headers:{"Content-type":"application/json"},
                 body:JSON.stringify(Object.fromEntries(Object.entries(formData).slice(0, 3)))
             });
             console.log(response)
             if(response.ok){
-                const data = await response.json().then(data=>{console.log(data)});
+                const data = await response.json().then(data=>{
+                  console.log(data)
+                  for(let i in data){
+                    localStorage.setItem(i,data[i]);
+                  }
+                });
                 toggleMainDisplay("dashboard",data);
             }
             else{
