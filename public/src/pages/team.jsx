@@ -50,17 +50,15 @@ class TeamComp extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        let teamCompList = [];
+        data.map((player, index) => {
+          teamCompList.push(<TeamCardComp key={index} player={player} />);
+        });
+        this.setState({ teamComp: teamCompList });
       })
       .catch((error) => {
         throw new Error(error);
       });
-    let teamCompList = [];
-    {
-      this.state.team.map((player, index) => {
-        teamCompList.push(<TeamCardComp key={index} player={player} />);
-      });
-    }
-    this.setState({ teamComp: teamCompList });
   }
   render() {
     return (
