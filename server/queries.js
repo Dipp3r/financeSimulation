@@ -161,7 +161,6 @@ const addUser = async (request, response) => {
   const {name, mobile, password} = Object.values(request.body);
   var groupid = Number.parseInt(request.params.id);
   try {
-    console.log(name,mobile,password,groupid);
     const user = await pool.query(
       "SELECT userid, name, password FROM users WHERE mobile=$1",
       [mobile]
@@ -179,7 +178,7 @@ const addUser = async (request, response) => {
             password,
             groupid,
             "",
-            new Date().toLocaleString(),
+            new Date(),
           ]
         );
         response.status(200).send({ userid: id, star_count: 0 });

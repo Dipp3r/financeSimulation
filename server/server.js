@@ -1,5 +1,5 @@
 const express = require("express");
-const EventEmitter = require("events");
+
 const bodyParser = require("body-parser");
 const app = express();
 const port = 3003;
