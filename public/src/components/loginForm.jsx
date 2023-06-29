@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import "@pages/styles/loginForm.scss";
+import PropTypes from "prop-types";
+
+import "@assets/styles/loginForm.scss";
 import validator from "@utils/validator";
 
-const FormLogin = ({toggleMainDisplay}) => {
+const FormLogin = ({ toggleMainDisplay }) => {
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -80,36 +82,41 @@ const FormLogin = ({toggleMainDisplay}) => {
       }
     }
     try {
-        if(isValid.name && isValid.mobile && isValid.password){
-          console.log(window.location.href.split('/').pop())
-            const response = await fetch(import.meta.env.VITE_API_SERVER_URL+"login/"+(localStorage.getItem("groupid")),{
-                method:"POST",
-                headers:{"Content-type":"application/json"},
-                body:JSON.stringify(Object.fromEntries(Object.entries(formData).slice(0, 3)))
-            });
-            console.log(response)
-            if(response.ok){
-                const data = await response.json().then(data=>{
-                  console.log(data)
-                  for(let i in data){
-                    localStorage.setItem(i,data[i]);
-                  }
-                });
-                toggleMainDisplay("dashboard",data);
+      if (isValid.name && isValid.mobile && isValid.password) {
+        console.log(window.location.href.split("/").pop());
+        const response = await fetch(
+          import.meta.env.VITE_API_SERVER_URL +
+            "login/" +
+            localStorage.getItem("groupid"),
+          {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(
+              Object.fromEntries(Object.entries(formData).slice(0, 3))
+            ),
+          }
+        );
+        console.log(response);
+        if (response.ok) {
+          const data = await response.json().then((data) => {
+            console.log(data);
+            for (let i in data) {
+              localStorage.setItem(i, data[i]);
             }
-            else{
-                setFormData((prevFormData) => ({
-                    ...prevFormData,
-                    passwordError: "*Incorrect Password or username",
-                  }));
-            }
+          });
+          toggleMainDisplay("dashboard", data);
+        } else {
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            passwordError: "*Incorrect Password or username",
+          }));
         }
+      }
     } catch (error) {
       console.error(error.message);
     }
   };
 
-  
   return (
     <form onSubmit={handleSubmit}>
       <input
@@ -144,5 +151,7 @@ const FormLogin = ({toggleMainDisplay}) => {
     </form>
   );
 };
-
+FormLogin.propTypes = {
+  toggleMainDisplay: PropTypes.func.isRequired,
+};
 export default FormLogin;

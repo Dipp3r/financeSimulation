@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import User_circle from "@assets/images/User.svg";
 import User_fill from "@assets/images/User_fill.svg";
@@ -92,5 +93,9 @@ class Dashboard extends React.Component {
     );
   }
 }
-
+Dashboard.propTypes = {
+  toggleMainDisplay: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
+  setItem: PropTypes.func.isRequired,
+};
 export default Dashboard;

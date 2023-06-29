@@ -9,6 +9,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0",
+    "recharts": "^2.7.2",
     "sass": "^1.63.4",
     "serve": "^14.2.0",
     "web-vitals": "^2.1.4",
@@ -26,7 +27,7 @@
     "workbox-streams": "^6.5.4"
   },
   "scripts": {
-    "start": "vite",
+    "start": "vite --port 3001",
     "build": "vite build",
     "lint": "eslint . --ext .js,.jsx",
     "prepare": "husky install"
