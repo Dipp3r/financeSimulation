@@ -8,6 +8,7 @@ import Alarmclock from "@assets/images/Alarmclock.svg";
 import QR from "@assets/images/QR.svg";
 
 import TeamCardComp from "@components/teamCard";
+import QRComp from "./QRComp";
 
 class TeamComp extends React.Component {
   constructor(props) {
@@ -38,6 +39,11 @@ class TeamComp extends React.Component {
       teamComp: [],
     };
   }
+  toggleQR = () => {
+    let display = document.querySelector("#QRCompPage").style.display;
+    display = display == "none" ? "flex" : "none";
+    document.querySelector("#QRCompPage").style.display = display;
+  };
   componentDidMount() {
     fetch(
       import.meta.env.VITE_API_SERVER_URL +
@@ -77,7 +83,11 @@ class TeamComp extends React.Component {
           </div>
         </div>
         <div id="main">
-          <button id="fixed">
+          <div id="QRCompPage" style={{ display: "none" }}>
+            <QRComp />
+          </div>
+
+          <button id="fixed" onClick={this.toggleQR}>
             <img src={QR} alt="qr" />
             <p>Invite team</p>
           </button>
