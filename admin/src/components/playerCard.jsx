@@ -17,19 +17,19 @@ export default class PlayerComp extends React.Component {
       body: JSON.stringify(obj),
     });
     this.setState({ role: obj.role });
-    const checkbox = document.querySelector("#checkbox-round");
-    checkbox.checked = obj.role === "0" ? true : false;
+    // const checkbox = document.querySelector("#checkbox-round");
+    // checkbox.checked = obj.role === "0" ? true : false;
   };
   removePlayer = () => {};
-  componentDidMount() {
-    const checkbox = document.querySelector("#checkbox-round");
-    checkbox.checked = this.state.role === "0" ? true : false;
-  }
+  // componentDidMount() {
+  //   const checkbox = document.querySelector("#checkbox-round");
+  //   checkbox.checked = this.state.role === "0" ? true : false;
+  // }
   render() {
     console.log(this.props.playerObj);
     return (
       <div className="row">
-        <button>
+        {/* <button>
           <img src={grad_checkbox} alt="checkbox" />
           <input
             type="checkbox"
@@ -37,7 +37,7 @@ export default class PlayerComp extends React.Component {
             className="checkbox-round"
             disabled
           />
-        </button>
+        </button> */}
         <p>{this.state.name}</p>
         <p>{this.state.mobile}</p>
         <select

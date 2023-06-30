@@ -4,6 +4,7 @@ import search from "@assets/images/Search.svg";
 import add_round from "@assets/images/Add_round.svg";
 import coin from "@assets/images/coin.svg";
 import downIcon from "@assets/images/Download.svg";
+import trash from "@assets/images/Trash.svg";
 
 export default class SessionsViewer extends React.Component {
   constructor(props) {
@@ -28,6 +29,9 @@ export default class SessionsViewer extends React.Component {
         groupInfo,
         playerInfo,
         excelDownload,
+        deleteSession,
+        deleteDiv,
+        downloadDiv,
         downloadIcon;
       for (let session of list) {
         card = document.createElement("button");
@@ -72,14 +76,23 @@ export default class SessionsViewer extends React.Component {
         playerBox.appendChild(playerInfo);
 
         excelDownload = document.createElement("button");
+        downloadDiv = document.createElement("div");
+        downloadDiv.id = "excel";
         downloadIcon = document.createElement("img");
         downloadIcon.src = downIcon;
         excelDownload.innerText = "download";
         excelDownload.appendChild(downloadIcon);
         excelDownload.style = "margin-left:50px;";
+        deleteDiv = document.createElement("div");
+        deleteDiv.id = "trash";
+        deleteSession = document.createElement("img");
+        deleteSession.src = trash;
+        downloadDiv.appendChild(downloadIcon);
+        deleteDiv.appendChild(deleteSession);
         infoDiv.appendChild(groupBox);
         infoDiv.appendChild(playerBox);
-        infoDiv.appendChild(downloadIcon);
+        infoDiv.appendChild(downloadDiv);
+        infoDiv.appendChild(deleteDiv);
         card.appendChild(nameDiv);
         card.appendChild(infoDiv);
 
@@ -91,7 +104,8 @@ export default class SessionsViewer extends React.Component {
       }
     } else {
       let p = document.createElement("p");
-      p.innerText = "no sessions";
+      p.id = "emptySessions";
+      p.innerText = "No sessions";
       container.appendChild(p);
     }
   };
