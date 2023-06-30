@@ -433,6 +433,11 @@
             font-weight: 500;
             font-size: 20px;
             color: #ffffff;
+            transition: all .3s ease-out;
+            &:hover{
+              
+              transform: scale(0.9);
+            }
           }
         }
       }

@@ -12,7 +12,7 @@ const WebSocket = require("ws");
 const wss = new WebSocket.Server({ server });
 const upload = require("express-fileupload");
 const fs = require("fs");
-const path = require('path');
+// const path = require("path");
 
 const uploadFolderPath = `./upload`;
 fs.mkdir(uploadFolderPath, { recursive: true }, (err) => {});
@@ -159,7 +159,7 @@ app.get('/download/:sessionId', (req, res) => {
 //     const [year, phase] = Object.keys(req.files)[0].split("_");
 //     const name_ = year + "_" + phase;
 //     var file = req.files[name_];
-    
+
 //     const parentDir = `./upload/${year}`;
 //     const destination = `./upload/${year}/${phase}`;
 //     if (!fs.existsSync(parentDir)) {
@@ -176,6 +176,76 @@ app.get('/download/:sessionId', (req, res) => {
 //     res.status(400).send("false");
 //   }
 // });
+
+app.put("/renameAsset", async (req, res) => {
+  const [assetId, new_name] = Object.values(req.body);
+  try {
+    const result = await pool.query(
+      `UPDATE assets SET asset_name = $1 WHERE id = $2`,
+      [new_name, assetId]
+    );
+    res.status(200).send({ status: true });
+  } catch (err) {
+    console.log("Error: " + err.message);
+    res.status(400).send({ status: false });
+  }
+});
+
+app.delete("/deleteSession", async (req, res) => {
+  const [sessionId] = Object.values(req.body);
+  try {
+    const promises = [];
+    let groups = await pool.query(
+      `
+      SELECT groupid FROM "group" WHERE sessionid = $1
+    `,
+      [sessionId]
+    );
+
+    if (groups.rowCount === 0) {
+      await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionId]);
+      res.status(200).send({ status: true });
+    } else {
+      groups = groups.rows;
+      for (let i = 0; i < groups.length; i++) {
+        let groupid = groups[i].groupid;
+
+        let users = await pool.query(
+          `
+          SELECT userid FROM users WHERE groupid = $1
+        `,
+          [groupid]
+        );
+
+        if (users.rowCount > 0) {
+          users = users.rows;
+          const userPromises = [];
+          for (let j = 0; j < users.length; j++) {
+            let userid = users[j].userid;
+            let userPromise = pool.query(`DELETE FROM users WHERE userid = $1`, [userid]);
+            userPromises.push(userPromise);
+          }
+          await Promise.all(userPromises);
+
+          let groupPromise = pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
+          promises.push(groupPromise);
+        } else {
+          let groupPromise = pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
+          promises.push(groupPromise);
+        }
+      }
+
+      await Promise.all(promises);
+
+      await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionId]);
+      res.status(200).send({ status: true });
+    }
+  } catch (err) {
+    console.log("Error: " + err.message);
+    res.status(400).send({ status: false });
+  }
+});
+
 
 setInterval(() => {
   wss.broadcast(JSON.stringify({ type: "time", message: "new news" }));
