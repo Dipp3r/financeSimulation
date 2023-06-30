@@ -17,21 +17,21 @@ const path = require('path');
 const uploadFolderPath = `./upload`;
 fs.mkdir(uploadFolderPath, { recursive: true }, (err) => {});
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -44,31 +44,31 @@ app.use(
   })
 );
 
-function deleteDirectory(directoryPath) {
-  if (fs.existsSync(directoryPath)) {
-    fs.readdirSync(directoryPath).forEach((file) => {
-      const filePath = path.join(directoryPath, file);
+// function deleteDirectory(directoryPath) {
+//   if (fs.existsSync(directoryPath)) {
+//     fs.readdirSync(directoryPath).forEach((file) => {
+//       const filePath = path.join(directoryPath, file);
 
-      if (fs.lstatSync(filePath).isDirectory()) {
-        // Recursively delete subdirectories
-        deleteDirectory(filePath);
-      } else {
-        // Delete file
-        fs.unlinkSync(filePath);
-      }
-    });
+//       if (fs.lstatSync(filePath).isDirectory()) {
+//         // Recursively delete subdirectories
+//         deleteDirectory(filePath);
+//       } else {
+//         // Delete file
+//         fs.unlinkSync(filePath);
+//       }
+//     });
 
-    // Delete the empty directory
-    try {
-      fs.rmdirSync(directoryPath);
-      console.log(`Directory ${directoryPath} deleted successfully.`);
-    } catch (err) {
-      console.error(`Error deleting directory ${directoryPath}:`, err);
-    }
-  } else {
-    console.log(`Directory ${directoryPath} does not exist.`);
-  }
-}
+//     // Delete the empty directory
+//     try {
+//       fs.rmdirSync(directoryPath);
+//       console.log(`Directory ${directoryPath} deleted successfully.`);
+//     } catch (err) {
+//       console.error(`Error deleting directory ${directoryPath}:`, err);
+//     }
+//   } else {
+//     console.log(`Directory ${directoryPath} does not exist.`);
+//   }
+// }
 
 // WebSocket server
 wss.on("connection", (ws) => {
@@ -137,33 +137,33 @@ app.put("/editTime", async (req, res) => {
       ? res.status(200).send({ status: true })
       : res.status(400).send({ status: false });
   } catch (err) {
-    console.log("Error: blablabla" + err.message);
+    console.log("Error:" + err.message);
     res.status(400).send({ status: false });
   }
 });
 
-app.post("/upload", async (req, res) => {
-  if (req.files) {
-    const [year, phase] = Object.keys(req.files)[0].split("_");
-    const name_ = year + "_" + phase;
-    var file = req.files[name_];
+// app.post("/upload", async (req, res) => {
+//   if (req.files) {
+//     const [year, phase] = Object.keys(req.files)[0].split("_");
+//     const name_ = year + "_" + phase;
+//     var file = req.files[name_];
     
-    const parentDir = `./upload/${year}`;
-    const destination = `./upload/${year}/${phase}`;
-    if (!fs.existsSync(parentDir)) {
-      await fs.mkdir(parentDir, { recursive: true }, (err) => {});
-    }
-    if(fs.existsSync(destination)) {
-      await deleteDirectory(destination);
-    }
-    fs.mkdir(destination, { recursive: true }, (err) => {
-      !err?file.mv(`${destination}/`+file.name.split(" ").join(""),(err)=>{
-      err?console.log(err):res.status(200).send(true);}):res.status(400).send("Error while uploading the file!");
-    });
-  } else {
-    res.status(400).send("false");
-  }
-});
+//     const parentDir = `./upload/${year}`;
+//     const destination = `./upload/${year}/${phase}`;
+//     if (!fs.existsSync(parentDir)) {
+//       await fs.mkdir(parentDir, { recursive: true }, (err) => {});
+//     }
+//     if(fs.existsSync(destination)) {
+//       await deleteDirectory(destination);
+//     }
+//     fs.mkdir(destination, { recursive: true }, (err) => {
+//       !err?file.mv(`${destination}/`+file.name.split(" ").join(""),(err)=>{
+//       err?console.log(err):res.status(200).send(true);}):res.status(400).send("Error while uploading the file!");
+//     });
+//   } else {
+//     res.status(400).send("false");
+//   }
+// });
 
 setInterval(() => {
   wss.broadcast(JSON.stringify({ type: "time", message: "new news" }));

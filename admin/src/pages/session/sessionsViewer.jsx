@@ -4,6 +4,9 @@ import search from "@assets/images/Search.svg";
 import add_round from "@assets/images/Add_round.svg";
 import coin from "@assets/images/coin.svg";
 import downIcon from "@assets/images/Download.svg";
+import trash from "@assets/images/Trash.svg";
+import close from "@assets/images/cross.svg";
+import deleteIcon from "@assets/images/delete.png";
 
 export default class SessionsViewer extends React.Component {
   constructor(props) {
@@ -28,6 +31,9 @@ export default class SessionsViewer extends React.Component {
         groupInfo,
         playerInfo,
         excelDownload,
+        deleteSession,
+        deleteDiv,
+        downloadDiv,
         downloadIcon;
       for (let session of list) {
         card = document.createElement("button");
@@ -72,14 +78,23 @@ export default class SessionsViewer extends React.Component {
         playerBox.appendChild(playerInfo);
 
         excelDownload = document.createElement("button");
+        downloadDiv = document.createElement("div");
+        downloadDiv.id = "excel";
         downloadIcon = document.createElement("img");
         downloadIcon.src = downIcon;
         excelDownload.innerText = "download";
         excelDownload.appendChild(downloadIcon);
         excelDownload.style = "margin-left:50px;";
+        deleteDiv = document.createElement("div");
+        deleteDiv.id = "trash";
+        deleteSession = document.createElement("img");
+        deleteSession.src = trash;
+        downloadDiv.appendChild(downloadIcon);
+        deleteDiv.appendChild(deleteSession);
         infoDiv.appendChild(groupBox);
         infoDiv.appendChild(playerBox);
-        infoDiv.appendChild(downloadIcon);
+        infoDiv.appendChild(downloadDiv);
+        infoDiv.appendChild(deleteDiv);
         card.appendChild(nameDiv);
         card.appendChild(infoDiv);
 
@@ -91,7 +106,8 @@ export default class SessionsViewer extends React.Component {
       }
     } else {
       let p = document.createElement("p");
-      p.innerText = "no sessions";
+      p.id = "emptySessions";
+      p.innerText = "No sessions";
       container.appendChild(p);
     }
   };
@@ -132,6 +148,31 @@ export default class SessionsViewer extends React.Component {
     console.log(this.state);
     return (
       <div id="sessionsViewer">
+        <div id="deletePrompt">
+          <div id="deleteBox">
+            <div id="first">
+              <p>Delete SessionName</p>
+              <button>
+                <img src={close} alt="" />
+              </button>
+            </div>
+            <hr />
+            <div id="second">
+              <img src={deleteIcon} alt="" id="deleteIcon" />
+              <p>
+                The excel sheet cannot be recovered once the session is deleted
+              </p>
+            </div>
+            <hr />
+            <div id="third">
+              <p>To confirm, type " sessionName " in the box below</p>
+              <input type="text" />
+              <button>
+                <p>Delete this Session</p>
+              </button>
+            </div>
+          </div>
+        </div>
         <div id="top">
           <div id="searchDiv">
             <img src={search} alt="search icon" />

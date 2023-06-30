@@ -1,20 +1,20 @@
 const Pool = require("pg").Pool;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //API for testing
 
@@ -179,7 +179,7 @@ const alterRole = async (request, response) => {
 //FORMAT request.body = {"name":"Narayanan", "mobile":"0987654321","password":"yan#123"}
 
 const addUser = async (request, response) => {
-  const {name, mobile, password} = Object.values(request.body);
+  const [name, mobile, password] = Object.values(request.body);
   var groupid = Number.parseInt(request.params.id);
   try {
     const user = await pool.query(
@@ -190,6 +190,7 @@ const addUser = async (request, response) => {
       let id = Math.floor(100000 + Math.random() * 900000);
       
       try {
+        console.log(name,mobile,password);
         let res = await pool.query(
           "INSERT INTO users (userid,name,mobile,password,groupid,role,created_on) VALUES ($1, $2, $3, $4, $5, $6,$7)",
           [
@@ -203,11 +204,11 @@ const addUser = async (request, response) => {
           ]
         );
         let player_count = await pool.query('select players from "group" where groupid=$1',[groupid]);
-        await pool.query('update "group" set players=$1 where groupid=$2',[player_count+1,groupid]);
+        await pool.query('update "group" set players=$1 where groupid=$2',[player_count.rows[0].players+1,groupid]);
 
         response.status(200).send({ userid: id, star_count: 0 });
       } catch (error) {
-        console.log("Error: "+error.message);
+        console.log("Error: aksdgyjas"+error.message);
         response.status(400).send({ status: false });
       }
     } else {
