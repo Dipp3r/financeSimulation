@@ -30,7 +30,8 @@ const pool = new Pool({
   port: 5432,
 });
 
-const assets  = require("./assetsName.json")
+const assets  = require("./assetsName.json");
+const data = require("./info.json");
 
 async function addAssets() {
   try {
@@ -41,6 +42,7 @@ async function addAssets() {
       asset_type VARCHAR(255)
     );
     `);
+
 
     const promises = [];
 
@@ -53,10 +55,23 @@ async function addAssets() {
         promises.push(promise);
       });
     }
+    
+
+    await pool.query(`
+      create table if not exists gameData ( year integer  primary key, phase1 time,phase2 time,phase3 time,phase4 time)
+    `)
+    for (years in data){
+      data[years].forEach(year=>{
+        const promise = pool.query(`insert into gameData(year,phase1,phase2,phase3,phase4) values($1,$2,$2,$2,$2)`,[year,'00:05:00']);
+        promises.push(promise);
+      });
+    }
+
     await Promise.all(promises)
     .then(async ()=>{
       await pool.end()
     })
+
     console.log('Assets inserted successfully');
   } catch (error) {
     pool.end()
@@ -152,7 +167,12 @@ async function deleteAssetPriceTables() {
     await pool.query(`
       DROP TABLE IF EXISTS assetsPrice1, assetsPrice2, assetsPrice3, assetsPrice4, assetsPrice5, assetsPrice6, assetsPrice7;
     `);
-
+    await pool.query(`
+      DROP TABLE IF EXISTS assets;
+    `);
+    await pool.query(`
+      DROP TABLE IF EXISTS gameData;
+    `);
     console.log('Asset price tables deleted successfully');
   } catch (error) {
     console.error('Error deleting asset price tables:', error);
@@ -162,6 +182,5 @@ async function deleteAssetPriceTables() {
 }
 
 // addAssets();
-
 addCreateSampleTables()
 // deleteAssetPriceTables()

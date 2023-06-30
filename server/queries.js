@@ -34,8 +34,8 @@ const addSession = async (request, response) => {
   const [title] = Object.values(request.body);
   try {
     await pool.query(
-      "INSERT INTO session(sessionid,title,excelLink,players,groups) VALUES($1,$2,$3,$4,$5)",
-      [id, title, "", 0, 0]
+      'INSERT INTO "session"(sessionid,title,excelLink) VALUES($1,$2,$3)',
+      [id, title, ""]
     );
     response.status(200).send({ status: true });
   } catch (error) {
@@ -81,7 +81,6 @@ const addGroup = async (request, response) => {
 
 
 const getSessions = async (request, response) => {
-  console.log("Tried fetcing sessions");
   try {
     var sessions = await pool.query("SELECT * FROM session");
     const players = await pool.query(`SELECT "group".sessionid, SUM("group".players)
@@ -103,7 +102,6 @@ const getSessions = async (request, response) => {
           element.groups = group.count;
         }
       });
-      console.log("sessions: ",sessions.rows);
     });
     response.send(sessions.rows);
 
