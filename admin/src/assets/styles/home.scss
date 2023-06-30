@@ -167,8 +167,12 @@
                             color: #454545;
                         }
                         div{
+                            margin-top:10px;
                             @include flex(row,center,center);
                             p{
+                                margin-left:3px;
+                                margin-top:3px;
+                                text-align: center;
                                 font-family: 'Montserrat';
                                 font-style: normal;
                                 font-weight: 500;
@@ -190,8 +194,12 @@
                             color: #3F3F3F;
                         }
                         div{
+                            margin-top:10px;
                             @include flex(row,center,center);
                             p{
+                                margin-left:3px;
+                                margin-top:3px;
+                                text-align: center;
                                 font-family: 'Montserrat';
                                 font-style: normal;
                                 font-weight: 500;

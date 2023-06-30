@@ -1,20 +1,20 @@
 const Pool = require("pg").Pool;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //API for testing
 
@@ -60,17 +60,17 @@ const addGroup = async (request, response) => {
       [id, name, limit, 0, 0, 0, 0, 0, sessionid, 0, 0]
     );
 
-    const group_count = await pool.query(
-      "SELECT groups FROM session WHERE sessionid = $1",
-      [sessionid]
-    );
-    const [num] = Object.values(group_count.rows[0]);
-    const new_count = Number.parseInt(num) + 1;
+    // const group_count = await pool.query(
+    //   "SELECT groups FROM session WHERE sessionid = $1",
+    //   [sessionid]
+    // );
+    // const [num] = Object.values(group_count.rows[0]);
+    // const new_count = Number.parseInt(num) + 1;
 
-    await pool.query(
-      "UPDATE session SET groups = $1 WHERE sessionid = $2 RETURNING *",
-      [new_count, sessionid]
-    );
+    // await pool.query(
+    //   "UPDATE session SET groups = $1 WHERE sessionid = $2 RETURNING *",
+    //   [new_count, sessionid]
+    // );
 
     response.status(200).send({ status: true });
   } catch (error) {
@@ -83,7 +83,28 @@ const addGroup = async (request, response) => {
 const getSessions = async (request, response) => {
   console.log("Tried fetcing sessions");
   try {
-    const sessions = await pool.query("SELECT * FROM session");
+    var sessions = await pool.query("SELECT * FROM session");
+    const players = await pool.query(`SELECT "group".sessionid, SUM("group".players)
+      FROM "group"
+      JOIN "session" ON "session".sessionid = "group".sessionid
+      GROUP BY "group".sessionid`
+    );
+    const groups = await pool.query(`select "group".sessionid,count(sessionid) from "group" group by "group".sessionid;`);
+    sessions.rows.forEach(element => {
+      element.players = '0';
+      element.groups = '0';
+      players.rows.forEach(player=>{
+        if(element.sessionid==player.sessionid){
+          element.players = player.sum;
+        }
+      });
+      groups.rows.forEach(group=>{
+        if(element.sessionid==group.sessionid){
+          element.groups = group.count;
+        }
+      });
+      console.log("sessions: ",sessions.rows);
+    });
     response.send(sessions.rows);
 
   } catch (error) {
@@ -181,6 +202,9 @@ const addUser = async (request, response) => {
             new Date(),
           ]
         );
+        let player_count = await pool.query('select players from "group" where groupid=$1',[groupid]);
+        await pool.query('update "group" set players=$1 where groupid=$2',[player_count+1,groupid]);
+
         response.status(200).send({ userid: id, star_count: 0 });
       } catch (error) {
         console.log("Error: "+error.message);
