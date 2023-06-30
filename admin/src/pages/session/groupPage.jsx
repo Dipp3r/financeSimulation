@@ -16,20 +16,20 @@ export default class GroupPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      groupList: [
-        { id: 1, playersCount: 10 },
-        { id: 2, playersCount: 15 },
-        { id: 3, playersCount: 18 },
-        { id: 4, playersCount: 8 },
-        { id: 5, playersCount: 5 },
-        { id: 6, playersCount: 10 },
-        { id: 7, playersCount: 15 },
-        { id: 8, playersCount: 18 },
-        { id: 9, playersCount: 8 },
-        { id: 10, playersCount: 5 },
-      ],
+      groupList: [],
     };
   }
+  searchGroup = (e) => {
+    let list = this.state.groupList;
+    if (e.currentTarget.value == "") {
+      this.displayGroups(list);
+    }
+    let reg = new RegExp(e.currentTarget.value, "i");
+    list = list.filter((group) => {
+      return reg.test(group.name);
+    });
+    this.displayGroups(list);
+  };
   displayGroups = (list) => {
     let container = document.querySelector("#groupsList");
     container.innerHTML = "";
@@ -132,7 +132,7 @@ export default class GroupPage extends React.Component {
             </button>
             <div id="searchDiv">
               <img src={search} alt="search icon" />
-              <input type="text" id="searchBar" />
+              <input type="text" id="searchBar" onInput={this.searchGroup} />
             </div>
             <button
               id="create"

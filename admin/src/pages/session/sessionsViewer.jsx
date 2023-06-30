@@ -175,7 +175,7 @@ export default class SessionsViewer extends React.Component {
         <div id="top">
           <div id="searchDiv">
             <img src={search} alt="search icon" />
-            <input type="text" id="searchBar" onChange={this.searchSession} />
+            <input type="text" id="searchBar" onInput={this.searchSession} />
           </div>
           <button
             id="create"
