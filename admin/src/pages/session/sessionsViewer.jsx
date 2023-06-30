@@ -5,14 +5,17 @@ import add_round from "@assets/images/Add_round.svg";
 import coin from "@assets/images/coin.svg";
 import downIcon from "@assets/images/Download.svg";
 import trash from "@assets/images/Trash.svg";
-import close from "@assets/images/cross.svg";
-import deleteIcon from "@assets/images/delete.png";
+
+import DeletePrompt from "./deletePrompt";
 
 export default class SessionsViewer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       sessionsList: [],
+      deleteSessionName: "",
+      deleteSessionId: 0,
+      DeletePrompDisplay: false,
     };
   }
   displaySessions = (list) => {
@@ -87,6 +90,10 @@ export default class SessionsViewer extends React.Component {
         excelDownload.style = "margin-left:50px;";
         deleteDiv = document.createElement("div");
         deleteDiv.id = "trash";
+        deleteDiv.onclick = (event) => {
+          event.stopImmediatePropagation();
+          this.toggleDeletePromp(session.sessionid, session.title);
+        };
         deleteSession = document.createElement("img");
         deleteSession.src = trash;
         downloadDiv.appendChild(downloadIcon);
@@ -110,6 +117,15 @@ export default class SessionsViewer extends React.Component {
       p.innerText = "No sessions";
       container.appendChild(p);
     }
+  };
+  toggleDeletePromp = (sessionid = 0, sessionName = "session name") => {
+    let display = this.state.DeletePrompDisplay;
+    display = !display;
+    this.setState({
+      DeletePrompDisplay: display,
+      deleteSessionName: sessionName,
+      deleteSessionId: sessionid,
+    });
   };
   searchSession = (e) => {
     let list = this.state.sessionsList;
@@ -148,31 +164,14 @@ export default class SessionsViewer extends React.Component {
     console.log(this.state);
     return (
       <div id="sessionsViewer">
-        <div id="deletePrompt">
-          <div id="deleteBox">
-            <div id="first">
-              <p>Delete SessionName</p>
-              <button>
-                <img src={close} alt="" />
-              </button>
-            </div>
-            <hr />
-            <div id="second">
-              <img src={deleteIcon} alt="" id="deleteIcon" />
-              <p>
-                The excel sheet cannot be recovered once the session is deleted
-              </p>
-            </div>
-            <hr />
-            <div id="third">
-              <p>To confirm, type " sessionName " in the box below</p>
-              <input type="text" />
-              <button>
-                <p>Delete this Session</p>
-              </button>
-            </div>
-          </div>
-        </div>
+        {this.state.DeletePrompDisplay && (
+          <DeletePrompt
+            type="session"
+            id={this.state.deleteSessionId}
+            name={this.state.deleteSessionName}
+            toggleDeletePromp={this.toggleDeletePromp}
+          />
+        )}
         <div id="top">
           <div id="searchDiv">
             <img src={search} alt="search icon" />
