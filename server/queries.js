@@ -179,7 +179,7 @@ const alterRole = async (request, response) => {
 //FORMAT request.body = {"name":"Narayanan", "mobile":"0987654321","password":"yan#123"}
 
 const addUser = async (request, response) => {
-  const {name, mobile, password} = Object.values(request.body);
+  const [name, mobile, password] = Object.values(request.body);
   var groupid = Number.parseInt(request.params.id);
   try {
     const user = await pool.query(
@@ -190,6 +190,7 @@ const addUser = async (request, response) => {
       let id = Math.floor(100000 + Math.random() * 900000);
       
       try {
+        console.log(name,mobile,password);
         let res = await pool.query(
           "INSERT INTO users (userid,name,mobile,password,groupid,role,created_on) VALUES ($1, $2, $3, $4, $5, $6,$7)",
           [
