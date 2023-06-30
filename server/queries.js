@@ -34,8 +34,8 @@ const addSession = async (request, response) => {
   const [title] = Object.values(request.body);
   try {
     await pool.query(
-      "INSERT INTO session(sessionid,title,excelLink,players,groups) VALUES($1,$2,$3,$4,$5)",
-      [id, title, "", 0, 0]
+      'INSERT INTO "session"(sessionid,title,excelLink) VALUES($1,$2,$3)',
+      [id, title, ""]
     );
     response.status(200).send({ status: true });
   } catch (error) {
