@@ -1,941 +1,1053 @@
 @import "main";
 
-#home{
-    overflow:hidden;
-    @include flex(row,flex-start,flex-start); 
-    #sideBar{
-        padding-top:30px;
-        position:relative;
-        @include flex(column,flex-start,center);
-        margin: 20px 20px;
-        width: 307px;
-        height: 94%;
-        background: rgba(34, 63, 128, 0.2);
-        border-radius: 35px;
-        #options{
-            margin-top:60px;
-            .button{
-                margin:20px;
-                width: 235px;
-                height: 44px;
-                font-family: 'Montserrat';
+#home {
+  overflow: hidden;
+  @include flex(row, flex-start, flex-start);
+  #sideBar {
+    padding-top: 30px;
+    position: relative;
+    @include flex(column, flex-start, center);
+    margin: 20px 20px;
+    width: 307px;
+    height: 94%;
+    background: rgba(34, 63, 128, 0.2);
+    border-radius: 35px;
+    #options {
+      margin-top: 60px;
+      .button {
+        margin: 20px;
+        width: 235px;
+        height: 44px;
+        font-family: "Montserrat";
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+        border-radius: 12px;
+        color: #223f80;
+        @include flex(row, flex-center, center);
+        img {
+          margin: 10px;
+          // circle{stroke:#223F80;}
+        }
+        p {
+          margin-left: 55px;
+        }
+        // &:hover{
+        //     // color: #FFFFFF;
+        //     // background: #223F80;
+        //     svg{
+        //         circle{
+        //             stroke:white;
+        //         }
+        //         #p1,#p2,#p5{
+        //             stroke:white;
+        //         }
+        //         #p3,#p4 {
+        //             fill:white;
+        //         }
+        //     }
+        // }
+      }
+    }
+    #tree {
+      position: absolute;
+      bottom: -3px;
+    }
+  }
+  #main {
+    width: calc(100% - 310px);
+    #editMain {
+      @include flex(column, flex-start, center);
+      width: 100%;
+      height: 100vh;
+      #topNav {
+        margin-top: 150px;
+        width: 70%;
+        height: 55px;
+        background: rgba(132, 132, 132, 0.2);
+        border-radius: 8px;
+        @include flex(row, space-around, center);
+        button {
+          width: 50%;
+          height: 55px;
+          border-radius: 8px;
+          font-family: "Montserrat";
+          color: #223f80;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 20px;
+          // &:focus{
+          //     color:white;
+          //     background: #223f80bf;
+          // }
+        }
+      }
+      #assets {
+        // display:none;
+
+        padding: 10px 35px;
+        margin-top: 60px;
+        width: 70%;
+        max-height: calc(100% - 300px);
+        background: rgba(34, 63, 128, 0.1);
+        border-radius: 34px;
+        #top {
+          @include flex(row, space-around, center);
+          button {
+            padding: 10px;
+            width: 33.333%;
+            border-bottom: 5px solid #8492b3;
+            font-family: "Montserrat";
+            font-style: normal;
+            font-weight: 500;
+            font-size: 18px;
+            color: #223f80;
+            &:focus {
+              border-bottom: 5px solid #223f80;
+            }
+          }
+        }
+        #editMainSection {
+          height: 70%;
+          padding: 30px 40px;
+          overflow-y: scroll;
+          div {
+            @include flex(row, flex-start, center);
+            p {
+              margin: 8px 15px;
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 18px;
+              color: #626262;
+            }
+          }
+        }
+      }
+      #news {
+        display: none;
+        padding: 10px 35px;
+        margin-top: 60px;
+        max-width: 1500px;
+        // width: 60%;
+        height: 100%;
+        overflow-y: scroll;
+        .newsComp {
+          margin-bottom: 30px;
+          @include flex(row, space-between, center);
+          background: rgba(34, 63, 128, 0.1);
+          border-radius: 34px;
+          input[type="file"] {
+            width: 110%;
+            position: relative;
+            // left: -10%;
+            top: -110%;
+            /* display: inline-block; */
+            height: 110%;
+            // visibility: hidden;
+            opacity: 0;
+            z-index: 1;
+          }
+          #first {
+            margin: 10px;
+            @include flex(column, center, center);
+            p {
+              margin: 3px;
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 20px;
+              color: #3f3f3f;
+            }
+            #year {
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 40px;
+              color: #454545;
+            }
+            div {
+              margin-top: 10px;
+              @include flex(row, center, center);
+              p {
+                margin-left: 3px;
+                margin-top: 3px;
+                text-align: center;
+                font-family: "Montserrat";
+                font-style: normal;
+                font-weight: 500;
+                font-size: 15px;
+                color: #223f80;
+              }
+            }
+          }
+          .newsUpdate {
+            margin: 10px;
+            @include flex(column, center, center);
+            p {
+              margin: 0px;
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 20px;
+              color: #3f3f3f;
+            }
+            div {
+              margin-top: 10px;
+              @include flex(row, center, center);
+              p {
+                margin-left: 3px;
+                margin-top: 3px;
+                text-align: center;
+                font-family: "Montserrat";
+                font-style: normal;
+                font-weight: 500;
+                font-size: 15px;
+                color: #223f80;
+              }
+            }
+            button {
+              width: 110px;
+              height: 40px;
+              background: #223f80;
+              border-radius: 7px;
+
+              div {
+                height: 100%;
+                width: 100%;
+                @include flex(row, center, center);
+                p {
+                  margin-left: 10px;
+                  font-family: "Montserrat";
+                  font-style: normal;
+                  font-weight: 500;
+                  font-size: 15px;
+                  color: #ffffff;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #sessionMain {
+      width: 100%;
+      height: 100vh;
+      @include flex(column, flex-start, center);
+      #sessionsViewer {
+        #deletePrompt {
+          position: fixed;
+          top: 0;
+          left: 0;
+          @include flex(column, center, center);
+          display: none;
+          height: 100vh;
+          width: 100vw;
+          background-color: rgba(0, 0, 0, 0.242);
+          backdrop-filter: blur(1.5px);
+          #deleteBox {
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            width: 456px;
+            background-color: white;
+            border-radius: 20px;
+            @include flex(column, center, center);
+            #first {
+              border-radius: 20px 20px 0px 00px;
+              padding: 10px;
+              width: calc(100% - 20px);
+              background-color: #395695;
+              @include flex(row, space-between, center);
+              p {
+                font-family: "Montserrat";
+                font-size: 16px;
+                font-weight: 700;
+                color: white;
+                margin: 0px;
+                margin-left: 20px;
+              }
+              button {
+                margin: 0px;
+                width: fit-content;
+                img {
+                  height: 25px;
+                  transition: all 0.2s ease-in;
+                }
+
+                &:hover img {
+                  transform: scale(0.8);
+                }
+              }
+            }
+            hr {
+              margin: 0px;
+              width: calc(100% - 2px);
+            }
+            #second {
+              padding: 20px 30px;
+              @include flex(column, center, center);
+              #deleteIcon {
+                height: 40px;
+              }
+              p {
+                text-align: center;
+                font-family: "Montserrat";
+                font-size: 14px;
+                font-weight: 500;
+                color: #395695;
+                margin: 10px;
+              }
+            }
+            #third {
+              @include flex(column, center, center);
+              margin-top: 10px;
+              width: 100%;
+              p {
+                margin: 0px;
+                text-align: center;
+                font-family: "Montserrat";
+                font-size: 14px;
+                font-weight: 500;
+                color: #395695;
+              }
+              input {
+                padding-left:20px;
+                margin: 5px;
+                border-radius: 5px;
+                border: 2px solid #3956959c;
+                width: 80%;
+                height: 30px;
+              }
+              button {
+                width: 85%;
+                margin: 5px;
+                height: 40px;
+                border-radius: 5px;
+                padding: 5px;
+                margin: 10px;
+                background-color: white;
+                border: 1px solid #223f80;
+                margin-bottom: 20px;
+                transition: all 0.3s ease;
+                p {
+                  font-family: "Montserrat";
+                  font-size: 16px;
+                  font-weight: 400;
+                  color: rgb(180, 80, 80);
+                  margin: 0px;
+                  margin-left: 20px;
+                }
+                &:hover p {
+                  color: white;
+                }
+                &:hover {
+                  background-color: #223f80;
+                }
+              }
+            }
+          }
+        }
+        #sessionList {
+          width: 80%;
+          @include flex(column, center, center);
+        }
+        margin-top: 150px;
+        @include flex(column, center, center);
+        // display:none;
+        padding: 40px;
+        width: 100%;
+        button {
+          margin-top: 15px;
+          width: 80%;
+          max-width: 1500px;
+        }
+        #emptySessions {
+          font-family: "Montserrat";
+          font-size: 20px;
+        }
+        .sessionCards {
+          padding: 25px;
+          height: 84px;
+          background: #ffffff;
+          border: 2px solid #d4d4d4;
+          border-radius: 13px;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          width: 68%;
+          #nameDiv {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            #name {
+              margin: 10px 20px;
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 18px;
+              color: #414141;
+            }
+          }
+          #infoDiv {
+            @include flex(row, space-between, center);
+            width: 40%;
+            div {
+              @include flex(column, center, center);
+              margin-right: 10px;
+              p {
+                margin: 0px;
+              }
+            }
+            #excel,
+            #trash {
+              @include flex(column, center, center);
+              margin: 0px;
+              img {
+                height: 30px;
+                // margin-left:30px;
+              }
+            }
+            #groupLabel,
+            #playerLabel {
+              margin: 10px;
+              margin-top: 0px;
+              margin-bottom: 0px;
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 20px;
+              color: #8a8a8a;
+            }
+            #groupInfo,
+            #playerInfo {
+              margin-top: 7px;
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 18px;
+              color: #414141;
+            }
+          }
+        }
+        #top {
+          width: 100%;
+          @include flex(row, center, center);
+          margin-bottom: 20px;
+          #searchDiv {
+            width: 50%;
+            border: 2.5px solid #acacac;
+            border-radius: 8px;
+            height: 44px;
+            padding: 0px 5px;
+
+            @include flex(row, space-between, center);
+            input {
+              border: none;
+              width: 100%;
+              margin-left: 10px;
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 20px;
+              &:focus {
+                border: none;
+                outline: none;
+              }
+            }
+          }
+          #create {
+            margin-left: 20px;
+            margin-top: 0px;
+            width: 210px;
+            height: 44px;
+            background: #223f80;
+            border-radius: 8px;
+            @include flex(row, center, center);
+            div {
+              width: 100%;
+              height: 100%;
+              @include flex(row, space-around, center);
+              p {
+                padding: 0px;
+                font-family: "Montserrat";
                 font-style: normal;
                 font-weight: 500;
                 font-size: 20px;
-                border-radius: 12px;
-                color: #223F80;
-                @include flex(row,flex-center,center);
-                img{
-                    margin:10px;
-                    // circle{stroke:#223F80;}
-                }
-                p{
-                    margin-left:55px;
-                }
-                // &:hover{
-                //     // color: #FFFFFF;
-                //     // background: #223F80;
-                //     svg{
-                //         circle{
-                //             stroke:white;
-                //         }
-                //         #p1,#p2,#p5{
-                //             stroke:white;
-                //         }
-                //         #p3,#p4 {
-                //             fill:white;
-                //         }
-                //     } 
-                // }
+                color: #ffffff;
+              }
             }
+          }
         }
-        #tree{
-            position:absolute;
-            bottom:-3px;
+      }
+
+      #createSessionPage {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0px;
+        left: 0px;
+        background: rgba(0, 0, 0, 0.9);
+        @include flex(column, center, center);
+        #createSessionMenu {
+          position: relative;
+          width: 410px;
+          height: 250px;
+          div {
+            font-family: "Montserrat";
+            font-style: normal;
+            font-weight: 500;
+            font-size: 32px;
+            color: #ffffff;
+            @include flex(row, space-between, center);
+            #close {
+              top: 0px;
+              right: 0px;
+              border-radius: 100%;
+              @include flex(column, center, center);
+              padding: 10px;
+              img {
+                height: 30px;
+              }
+              &:focus {
+                background-color: #224080c3;
+              }
+            }
+          }
+          input {
+            width: 406px;
+            height: 49px;
+            background: #151515;
+            border: 2px solid #8c8c8c;
+            border-radius: 8px;
+            font-family: "Montserrat";
+            font-style: normal;
+            font-weight: 400;
+            font-size: 20px;
+            padding-left: 14px;
+            color: #8c8c8c;
+            &:focus {
+              outline: none;
+            }
+          }
+          #save {
+            position: absolute;
+            width: 131px;
+            height: 49px;
+            bottom: 0px;
+            left: 0px;
+            background: #223f80;
+            border-radius: 8px;
+            font-family: "Montserrat";
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            color: #ffffff;
+          }
         }
-    }
-    #main{
-        width:calc(100% - 310px);
-        #editMain{
-            @include flex(column,flex-start,center);
-            width:100%;
-            height:100vh;
-            #topNav{
-                margin-top:150px;
-                width: 70%;
-                height: 55px;
-                background: rgba(132, 132, 132, 0.2);
-                border-radius: 8px;
-                @include flex(row,space-around,center);
-                button{
-                    width:50%;
-                    height:55px;
-                    border-radius: 8px;
-                    font-family: 'Montserrat';
-                    color: #223F80;
+      }
+
+      #createGroupPage {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0px;
+        z-index: 2;
+        left: 0px;
+        background: rgba(0, 0, 0, 0.9);
+        @include flex(column, center, center);
+        #createGroupMenu {
+          position: relative;
+          width: 427px;
+          height: 371px;
+          div {
+            font-family: "Montserrat";
+            font-style: normal;
+            font-weight: 500;
+            font-size: 32px;
+            color: #ffffff;
+            @include flex(row, space-between, center);
+            #close {
+              top: 0px;
+              right: 0px;
+              border-radius: 100%;
+              @include flex(column, center, center);
+              padding: 10px;
+              img {
+                height: 30px;
+              }
+              &:focus {
+                background-color: #224080c3;
+              }
+            }
+          }
+          input {
+            margin-top: 30px;
+            width: 406px;
+            height: 49px;
+            background: #151515;
+            border: 2px solid #8c8c8c;
+            border-radius: 8px;
+            font-family: "Montserrat";
+            font-style: normal;
+            font-weight: 400;
+            font-size: 20px;
+            padding-left: 14px;
+            color: #8c8c8c;
+            &:focus {
+              outline: none;
+            }
+          }
+          #groupLimit {
+            margin-top: 30px;
+            float: right;
+            @include flex(row, center, center);
+            p {
+              margin: 10px 20px;
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 20px;
+              color: #8c8c8c;
+            }
+            select {
+              width: 92px;
+              height: 49px;
+              background: #151515;
+              border: 2px solid #8c8c8c;
+              border-radius: 8px;
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 400;
+              font-size: 20px;
+              padding-left: 14px;
+              color: #8c8c8c;
+              &:focus {
+                outline: none;
+              }
+            }
+          }
+          #save {
+            position: absolute;
+            width: 131px;
+            height: 49px;
+            bottom: 0px;
+            left: 0px;
+            background: #223f80;
+            border-radius: 8px;
+            font-family: "Montserrat";
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            color: #ffffff;
+          }
+        }
+      }
+      #playersPage {
+        margin-top: 100px;
+        @include flex(column, flex-start, center);
+        padding: 40px;
+        width: calc(100% - 400px);
+        height: 100vh;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        z-index: 1;
+        background-color: white;
+        overflow: hidden scroll;
+        #topBar {
+          width: 90%;
+          @include flex(column, center, center);
+          #top {
+            width: 100%;
+            @include flex(row, space-between, center);
+            margin-bottom: 10px;
+            #back {
+              margin-right: 10px;
+            }
+            #topLabel {
+              width: 100%;
+              height: 44px;
+              @include flex(row, space-between, center);
+              div {
+                #trash {
+                  margin-right: 60px;
+                }
+                @include flex(row, space-between, center);
+                #groupNum {
+                  font-family: "Montserrat";
+                  font-style: normal;
+                  font-weight: 600;
+                  font-size: 30px;
+                  line-height: 37px;
+                  text-align: center;
+                  color: #223f80;
+                }
+                #players {
+                  margin-left: 100px;
+                  font-family: "Montserrat";
+                  font-style: normal;
+                  font-weight: 500;
+                  font-size: 20px;
+                  color: rgba(34, 63, 128, 0.4);
+                  #playerCount {
+                    font-family: "Montserrat";
                     font-style: normal;
                     font-weight: 500;
                     font-size: 20px;
-                    // &:focus{
-                    //     color:white;
-                    //     background: #223f80bf;
-                    // }
+                    color: #3f3f3f;
+                  }
                 }
+              }
             }
-            #assets{
-                // display:none;
-                
-                padding:10px 35px;
-                margin-top:60px;
-                width: 70%;
-                max-height: calc(100% - 300px);
-                background: rgba(34, 63, 128, 0.1);
-                border-radius: 34px;
-                #top{
-                    @include flex(row,space-around,center);
-                    button{
-                        padding:10px;
-                        width:33.333%;
-                        border-bottom: 5px solid #8492B3;
-                        font-family: 'Montserrat';
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 18px;
-                        color: #223F80;
-                        &:focus{
-                            border-bottom:5px solid #223F80;
-                        }
-                    }
-                }
-                #editMainSection{
-                    height:70%;
-                    padding:30px 40px;
-                    overflow-y:scroll;
-                    div{
-                        @include flex(row,flex-start,center);
-                        p{
-                            margin:8px 15px;
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 18px;
-                            color: #626262;                              
-                        }
-                    }
-                }
-            }
-            #news{
-                display:none;
-                padding:10px 35px;
-                margin-top:60px;
-                max-width:1500px;
-                // width: 60%;
-                height: 100%;
-                overflow-y:scroll;
-                .newsComp{
-                    margin-bottom:30px;
-                    @include flex(row,space-between,center);
-                    background: rgba(34, 63, 128, 0.1);
-                    border-radius: 34px;
-                    input[type=file]{
-                        width: 110%;
-                        position: relative;
-                        // left: -10%;
-                        top: -110%;
-                        /* display: inline-block; */
-                        height: 110%;
-                        // visibility: hidden;
-                        opacity: 0;
-                        z-index: 1;
-                    }
-                    #first{
-                        margin:10px;
-                        @include flex(column,center,center);
-                        p{
-                            margin:3px;
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 20px;
-                            color: #3F3F3F;
-                        }
-                        #year{
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 40px;
-                            color: #454545;
-                        }
-                        div{
-                            margin-top:10px;
-                            @include flex(row,center,center);
-                            p{
-                                margin-left:3px;
-                                margin-top:3px;
-                                text-align: center;
-                                font-family: 'Montserrat';
-                                font-style: normal;
-                                font-weight: 500;
-                                font-size: 15px;
-                                color: #223F80;
-
-                            }
-                        }
-                    }
-                    .newsUpdate{
-                        margin:10px;
-                        @include flex(column,center,center);
-                        p{
-                            margin:0px;
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 20px;
-                            color: #3F3F3F;
-                        }
-                        div{
-                            margin-top:10px;
-                            @include flex(row,center,center);
-                            p{
-                                margin-left:3px;
-                                margin-top:3px;
-                                text-align: center;
-                                font-family: 'Montserrat';
-                                font-style: normal;
-                                font-weight: 500;
-                                font-size: 15px;
-                                color: #223F80;
-
-                            }
-                        }
-                        button{
-                            width: 110px;
-                            height: 40px;
-                            background: #223F80;
-                            border-radius: 7px;
-                            
-                            div{
-                                height:100%;
-                                width:100%;
-                                @include flex(row,center,center);
-                                p{
-                                    margin-left:10px;
-                                    font-family: 'Montserrat';
-                                    font-style: normal;
-                                    font-weight: 500;
-                                    font-size: 15px;
-                                    color: #FFFFFF;
-
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+          }
+          hr {
+            width: calc(100% - 62px);
+            margin: 0px;
+            margin-left: 54px;
+            border: 2px solid rgba(34, 63, 128, 0.4);
+          }
         }
+        #playersList {
+          margin-top: 30px;
+          width: 75%;
+          max-width: 1150px;
+          @include flex(column, center, center);
+          .row {
+            margin-top: 20px;
+            width: 90%;
+            @include flex(row, space-between, center);
 
-        #sessionMain{
-            width:100%;
-            height:100vh;
-            @include flex(column,flex-start,center);
-            #sessionsViewer{
-                #sessionList{
-                    width:80%;
-                    @include flex(column,center,center);
-                }
-                margin-top:150px;
-                @include flex(column,center,center);
-                // display:none;
-                padding:40px;
-                width:100%;
-                button{
-                    margin-top:15px;
-                    width:80%;
-                    max-width:1500px;
-                }
-                #emptySessions{
-                    font-family: "Montserrat";
-                    font-size: 20px;;
-                }
-                .sessionCards{
-                    padding:25px;
-                    height: 84px;
-                    background: #FFFFFF;
-                    border: 2px solid #D4D4D4;
-                    border-radius: 13px;
-                    display:flex;
-                    flex-direction:row;
-                    justify-content:space-between;
-                    align-items:center;
-                    width:68%;
-                    #nameDiv{
-                        display:flex;
-                        flex-direction:row;
-                        align-items:center;
-                        #name{
-                            margin:10px 20px;
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 18px;
-                            color: #414141;
-                        }
-                    }
-                    #infoDiv{
-                        @include flex(row,space-between,center);
-                        width:40%;
-                        div{
-                            @include flex(column,center,center);
-                            margin-right:10px;
-                            p{
-                                margin:0px;
-                            }
-                        }
-                        #excel,#trash{
-                            @include flex(column,center,center);
-                            margin:0px;
-                            img{
-                                height:30px;
-                                // margin-left:30px;
-                            }
-                        }
-                        #groupLabel,#playerLabel{
-                            margin:10px;
-                            margin-top:0px;
-                            margin-bottom:0px;
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 20px;
-                            color: #8A8A8A;
-                        }
-                        #groupInfo,#playerInfo{
-                            margin-top:7px;
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 18px;
-                            color: #414141;
-                        }
-                    }
-                }
-                #top{
-                    width:100%;
-                    @include flex(row,center,center);
-                    margin-bottom:20px;
-                    #searchDiv{
-                        width:50%;
-                        border: 2.5px solid #ACACAC;
-                        border-radius: 8px;
-                        height: 44px;
-                        padding:0px 5px;
-                        
-                        @include flex(row,space-between,center);
-                        input{
-                            border:none;
-                            width:100%;
-                            margin-left:10px;
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 20px;
-                            &:focus{
-                                border:none;
-                                outline:none;
-                            }
-                        }
-                    }
-                    #create{
-                        margin-left:20px;
-                        margin-top:0px;
-                        width: 210px;
-                        height: 44px;
-                        background: #223F80;
-                        border-radius: 8px;
-                        @include flex(row,center,center);
-                        div{
-                            width:100%;
-                            height:100%;
-                            @include flex(row,space-around,center);
-                            p{
-                                padding:0px;
-                                font-family: 'Montserrat';
-                                font-style: normal;
-                                font-weight: 500;
-                                font-size: 20px;
-                                color: #FFFFFF;
-                            }
-                        }
-                    }
-                }
-                
-                
+            #remove {
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 20px;
+              color: #a43936;
             }
-
-            #createSessionPage{
-                position:fixed;
-                width:100vw;
-                height: 100vh;
-                top:0px;
-                left:0px;
-                background: rgba(0, 0, 0, 0.9);
-                @include flex(column,center,center);
-                #createSessionMenu{
-                    position:relative;
-                    width:410px;
-                    height:250px;
-                    div{
-                        font-family: 'Montserrat';
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 32px;
-                        color: #FFFFFF;
-                        @include flex(row,space-between,center);
-                        #close{
-                            top:0px;
-                            right:0px;
-                            border-radius: 100%;
-                            @include flex(column,center,center);
-                            padding:10px;
-                            img{
-                                height:30px;
-                            }
-                            &:focus{
-                                background-color: #224080c3;
-                            }
-                        }
-                    }
-                    input{
-                        width: 406px;
-                        height: 49px;
-                        background: #151515;
-                        border: 2px solid #8C8C8C;
-                        border-radius: 8px;
-                        font-family: 'Montserrat';
-                        font-style: normal;
-                        font-weight: 400;
-                        font-size: 20px;
-                        padding-left:14px;
-                        color: #8C8C8C;
-                        &:focus{
-                            outline:none;
-                        }
-                    }
-                    #save{
-                        position: absolute;
-                        width: 131px;
-                        height: 49px;
-                        bottom:0px;
-                        left:0px;
-                        background: #223F80;
-                        border-radius: 8px;
-                        font-family: 'Montserrat';
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 20px;
-                        color: #FFFFFF;
-                    }
-                }
-            }
-
-            #createGroupPage{
-                position:fixed;
-                width:100vw;
-                height: 100vh;
-                top:0px;
-                z-index: 2;
-                left:0px;
-                background: rgba(0, 0, 0, 0.9);
-                @include flex(column,center,center);
-                #createGroupMenu{
-                    position: relative;
-                    width: 427px;
-                    height: 371px;
-                    div{
-                        font-family: 'Montserrat';
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 32px;
-                        color: #FFFFFF;
-                        @include flex(row,space-between,center);
-                        #close{
-                            top:0px;
-                            right:0px;
-                            border-radius: 100%;
-                            @include flex(column,center,center);
-                            padding:10px;
-                            img{
-                                height:30px;
-                            }
-                            &:focus{
-                                background-color: #224080c3;
-                            }
-                        }
-                    }
-                    input{
-                        margin-top:30px;
-                        width: 406px;
-                        height: 49px;
-                        background: #151515;
-                        border: 2px solid #8C8C8C;
-                        border-radius: 8px;
-                        font-family: 'Montserrat';
-                        font-style: normal;
-                        font-weight: 400;
-                        font-size: 20px;
-                        padding-left:14px;
-                        color: #8C8C8C;
-                        &:focus{
-                            outline:none;
-                        }
-                    }
-                    #groupLimit{
-                        margin-top:30px;
-                        float: right;
-                        @include flex(row,center,center);
-                        p{
-                            margin:10px 20px;
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 20px;
-                            color: #8C8C8C;
-                        }
-                        select{
-                            width: 92px;
-                            height: 49px;
-                            background: #151515;
-                            border: 2px solid #8C8C8C;
-                            border-radius: 8px;
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 400;
-                            font-size: 20px;
-                            padding-left:14px;
-                            color: #8C8C8C;
-                            &:focus{
-                                outline:none;
-                            }
-                        }
-                    }
-                    #save{
-                        position: absolute;
-                        width: 131px;
-                        height: 49px;
-                        bottom:0px;
-                        left:0px;
-                        background: #223F80;
-                        border-radius: 8px;
-                        font-family: 'Montserrat';
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 20px;
-                        color: #FFFFFF;
-                    }
-                }
-            }
-            #playersPage{
-                margin-top:100px;
-                @include flex(column,flex-start,center);
-                padding:40px;
-                width:calc(100% - 400px);
-                height: 100vh;
+            button {
+              position: relative;
+              @include flex(column, center, center);
+              .checkbox-round {
                 position: absolute;
-                top:0px;
-                right: 0px;
-                z-index: 1;
-                background-color: white;
-                overflow:hidden scroll ;
-                #topBar{
-                    width:90%;
-                    @include flex(column,center,center);
-                    #top{
-                        width:100%;
-                        @include flex(row,space-between,center);
-                        margin-bottom:10px;
-                        #back{
-                            margin-right:10px;
-                        }
-                        #topLabel{
-                            width:100%;
-                            height:44px;
-                            @include flex(row,space-between,center);
-                            div{
-                                #trash{
-                                    margin-right:60px;
-                                }
-                                @include flex(row,space-between,center);
-                                #groupNum{
-                                    font-family: 'Montserrat';
-                                    font-style: normal;
-                                    font-weight: 600;
-                                    font-size: 30px;
-                                    line-height: 37px;
-                                    text-align: center;
-                                    color: #223F80;
-                                }
-                                #players{
-                                    margin-left:100px;
-                                    font-family: 'Montserrat';
-                                    font-style: normal;
-                                    font-weight: 500;
-                                    font-size: 20px;
-                                    color: rgba(34, 63, 128, 0.4);
-                                    #playerCount{
-                                        font-family: 'Montserrat';
-                                        font-style: normal;
-                                        font-weight: 500;
-                                        font-size: 20px;
-                                        color: #3F3F3F;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    hr{
-                        width:calc(100% - 62px);
-                        margin:0px;
-                        margin-left:54px;
-                        border: 2px solid rgba(34, 63, 128, 0.4);
-                    }
-                }
-                #playersList{
-                    margin-top:30px;
-                    width: 75%;
-                    max-width:1150px;
-                    @include flex(column,center,center);
-                    .row{
-                        margin-top:20px;
-                        width:90%;
-                        @include flex(row,space-between,center);
-                        
-                        #remove{
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 20px;
-                            color: #A43936;
-                        }
-                        button{
-                            position:relative;
-                            @include flex(column,center,center);
-                            .checkbox-round {
-                                position:absolute;
-                                top:3px;
-                                left:7px;
-                                box-sizing: border-box;
-                                width: 18px;
-                                height: 18px;                     
-                                border-radius: 50%;
-                                vertical-align: middle;
-                                appearance: none;
-                                -webkit-appearance: none;
-                                outline: none;
-                                cursor: pointer;
-                            }
-                            
-                            .checkbox-round:checked {
-                                background: linear-gradient(39.67deg, #D9D9D9 -3.78%, #223F80 -3.77%, #444584 46.57%, #A43936 101.3%);
-                            }
-                        }
-                        p{
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 20px;
+                top: 3px;
+                left: 7px;
+                box-sizing: border-box;
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                vertical-align: middle;
+                appearance: none;
+                -webkit-appearance: none;
+                outline: none;
+                cursor: pointer;
+              }
 
-                            color: #3F3F3F;
-                        }
-                        select{
-                            width: 208px;
-                            height: 35px;
-                            left: 892px;
-                            top: 240px;
-                            border: 1.5px solid #B0B0B0;
-                            border-radius: 7px;
-                            padding:5px;
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 20px;
-                            color: #B0B0B0;
-                            option:checked{
-                                color: #223F80;
-                            }
-                            &:focus{
-                                outline:none;
-                                font-family: 'Montserrat';
-                                font-style: normal;
-                                font-weight: 500;
-                                font-size: 20px;
-                                color: #223F80;
-                            }
-                        }
-                    }
-                }
+              .checkbox-round:checked {
+                background: linear-gradient(
+                  39.67deg,
+                  #d9d9d9 -3.78%,
+                  #223f80 -3.77%,
+                  #444584 46.57%,
+                  #a43936 101.3%
+                );
+              }
             }
-            
-            #groupPage{
-                margin-top:100px;
-                @include flex(column,flex-start,center);
-                // display:none;
-                // padding:40px;
-                width:calc(100% - 322px);
-                height: 100vh;
-                position: absolute;
-                top:0px;
-                right: 0px;
-                z-index: 1;
-                background-color: white;
-                overflow:hidden scroll ;
-                #topBar{
-                    width:100%;
-                    @include flex(column,center,center);
-                    #top{
-                        width:100%;
-                        @include flex(row,center,center);
-                        margin-bottom:30px;
-                        #back{
-                            margin-right:10px;
-                        }
-                        #searchDiv{
-                            width:70%;
-                            border: 2.5px solid #ACACAC;
-                            border-radius: 8px;
-                            height: 44px;
-                            padding:5px;
-                            
-                            @include flex(row,space-between,center);
-                            input{
-                                border:none;
-                                width:100%;
-                                margin-left:10px;
-                                font-family: 'Montserrat';
-                                font-style: normal;
-                                font-weight: 500;
-                                font-size: 20px;
-                                &:focus{
-                                    border:none;
-                                    outline:none;
-                                }
-                            }
-                        }
-                        #create{
-                            margin-left:20px;
-                            margin-top:0px;
-                            height: 44px;
-                            background: #223F80;
-                            border-radius: 8px;
-                            @include flex(row,center,center);
-                            div{
-                                height:100%;
-                                width:100%;
-                                padding:5px;
-                                @include flex(row,space-around,center);
-                            p{
-                                margin:0px;
-                                font-family: 'Montserrat';
-                                font-style: normal;
-                                font-weight: 500;
-                                color: #FFFFFF;
-                            }}
-                        }
-                    }
-                    #second{
-                        @include flex(row,center,center);
-                        width:100%;
-                        margin-left:30px;
-                        #navBar{
-                            width: 66%;
-                            margin-left:55px;
-                            background: #434343;
-                            border-radius: 8px;
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 20px;
-                            padding:5px;
-                            color: #AAAAAA;
-                            #portion1{
-                                height:40px;
-                                @include flex(row,space-around,center);
-                                .navComp{
-                                    @include flex(row,center,center);
-                                    img{
-                                        margin:5px;
-                                    }
-                                }
-                            }
-                            #navigate{
-                                button{
-                                    margin:10px;
-                                }
-                            }
-    
-                        }   
-                        #gameStatus{
-                            margin-left:25px;      
-                            height: 44px;
-                            border: 2px solid #223F80;
-                            border-radius: 8px;
-                            font-family: 'Montserrat';
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 20px;
-                            color: #223F80;
-                            &:hover{
-                                color:white;
-                                background: #223F80;
-                            }
-                        }
-                    }
-                }
-                #groupsList{
-                    overflow-y:scroll;
-                    padding:50px;
-                    margin-top:30px;
-                    padding-top:0px;
-                    min-width:70%;
-                    // margin: 30px 20px;
-                    .card{
-                        transition: all .3s  ease-in-out;
-                        &:hover{
-                            transform: scale(1.1);
-                        }
-                        width:200px;
-                        height:100px;
-                        padding:15px; 
-                        background: white;
-                        box-shadow: 2px 5px 10px 4px rgba(0, 0, 0, 0.08);
-                        border-radius: 10px;
-                        position:relative;
-                        #groupBox{
-                            display:flex;
-                            flex-direction:row;
-                            justify-content:space-between;
-                            align-items:center;
-                            #groupInfo{
-                                margin:0px;
-                                margin-left:10px;
-                                font-family: 'Montserrat';
-                                font-style: normal;
-                                font-weight: 600;
-                                font-size: 23px;
-                                color: #3F3F3F;
-                            }
-                        }
-                        #playerBox{
-                            position:absolute;
-                            bottom: 0;
-                            left:10;
-                            margin:0px;
-                            @include flex(row,space-around,center);
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+            p {
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 20px;
 
-@media only screen and (max-width:1390px){
-    #groupsList{
-        display:grid;
-        grid-template-columns: auto auto;
-    }
-    .card{
-
-        margin:15px 40px;
-    }
-    #playerBox{
-        margin-top:30px;
-    }
-    #gameStatus{
-        width:150px;
-    }
-    #create{
-        width: 130px;
-        div{
-            #add{
-                height:20px;
+              color: #3f3f3f;
             }
-            padding:5px;
-            @include flex(row,space-around,center);
-            p{
-                font-size: 13px;
-            }
-        }
-    }
-}
-
-@media only screen and (min-width:1390px){
-    #gameStatus{
-        width:202px;
-    }
-    #create{
-        width: 210px;
-        div{
-            #add{
-                height:36px;
-            }
-            padding:5px;
-            @include flex(row,space-around,center);
-            p{
+            select {
+              width: 208px;
+              height: 35px;
+              left: 892px;
+              top: 240px;
+              border: 1.5px solid #b0b0b0;
+              border-radius: 7px;
+              padding: 5px;
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 20px;
+              color: #b0b0b0;
+              option:checked {
+                color: #223f80;
+              }
+              &:focus {
+                outline: none;
+                font-family: "Montserrat";
+                font-style: normal;
+                font-weight: 500;
                 font-size: 20px;
+                color: #223f80;
+              }
             }
+          }
         }
+      }
+
+      #groupPage {
+        margin-top: 100px;
+        @include flex(column, flex-start, center);
+        // display:none;
+        // padding:40px;
+        width: calc(100% - 322px);
+        height: 100vh;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        z-index: 1;
+        background-color: white;
+        overflow: hidden scroll;
+        #topBar {
+          width: 100%;
+          @include flex(column, center, center);
+          #top {
+            width: 100%;
+            @include flex(row, center, center);
+            margin-bottom: 30px;
+            #back {
+              margin-right: 10px;
+            }
+            #searchDiv {
+              width: 70%;
+              border: 2.5px solid #acacac;
+              border-radius: 8px;
+              height: 44px;
+              padding: 5px;
+
+              @include flex(row, space-between, center);
+              input {
+                border: none;
+                width: 100%;
+                margin-left: 10px;
+                font-family: "Montserrat";
+                font-style: normal;
+                font-weight: 500;
+                font-size: 20px;
+                &:focus {
+                  border: none;
+                  outline: none;
+                }
+              }
+            }
+            #create {
+              margin-left: 20px;
+              margin-top: 0px;
+              height: 44px;
+              background: #223f80;
+              border-radius: 8px;
+              @include flex(row, center, center);
+              div {
+                height: 100%;
+                width: 100%;
+                padding: 5px;
+                @include flex(row, space-around, center);
+                p {
+                  margin: 0px;
+                  font-family: "Montserrat";
+                  font-style: normal;
+                  font-weight: 500;
+                  color: #ffffff;
+                }
+              }
+            }
+          }
+          #second {
+            @include flex(row, center, center);
+            width: 100%;
+            margin-left: 30px;
+            #navBar {
+              width: 66%;
+              margin-left: 55px;
+              background: #434343;
+              border-radius: 8px;
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 20px;
+              padding: 5px;
+              color: #aaaaaa;
+              #portion1 {
+                height: 40px;
+                @include flex(row, space-around, center);
+                .navComp {
+                  @include flex(row, center, center);
+                  img {
+                    margin: 5px;
+                  }
+                }
+              }
+              #navigate {
+                button {
+                  margin: 10px;
+                }
+              }
+            }
+            #gameStatus {
+              margin-left: 25px;
+              height: 44px;
+              border: 2px solid #223f80;
+              border-radius: 8px;
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 20px;
+              color: #223f80;
+              &:hover {
+                color: white;
+                background: #223f80;
+              }
+            }
+          }
+        }
+        #groupsList {
+          overflow-y: scroll;
+          padding: 50px;
+          margin-top: 30px;
+          padding-top: 0px;
+          min-width: 70%;
+          // margin: 30px 20px;
+          .card {
+            transition: all 0.3s ease-in-out;
+            &:hover {
+              transform: scale(1.1);
+            }
+            width: 200px;
+            height: 100px;
+            padding: 15px;
+            background: white;
+            box-shadow: 2px 5px 10px 4px rgba(0, 0, 0, 0.08);
+            border-radius: 10px;
+            position: relative;
+            #groupBox {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              align-items: center;
+              #groupInfo {
+                margin: 0px;
+                margin-left: 10px;
+                font-family: "Montserrat";
+                font-style: normal;
+                font-weight: 600;
+                font-size: 23px;
+                color: #3f3f3f;
+              }
+            }
+            #playerBox {
+              position: absolute;
+              bottom: 0;
+              left: 10;
+              margin: 0px;
+              @include flex(row, space-around, center);
+            }
+          }
+        }
+      }
     }
+  }
 }
 
-@media only screen and (min-width:1390px) and (max-width:1790px){
-    #groupsList{
-        display:grid;
-        grid-template-columns: auto auto auto;
+@media only screen and (max-width: 1390px) {
+  #groupsList {
+    display: grid;
+    grid-template-columns: auto auto;
+  }
+  .card {
+    margin: 15px 40px;
+  }
+  #playerBox {
+    margin-top: 30px;
+  }
+  #gameStatus {
+    width: 150px;
+  }
+  #create {
+    width: 130px;
+    div {
+      #add {
+        height: 20px;
+      }
+      padding: 5px;
+      @include flex(row, space-around, center);
+      p {
+        font-size: 13px;
+      }
     }
-    .card{
-        margin:15px 50px;
-    }
-    #playerBox{
-        margin-top:30px;
-    }
-
+  }
 }
 
-@media only screen and (min-width:1790px){
-    #groupsList{
-        display:grid;
-        grid-template-columns: auto auto auto auto;
+@media only screen and (min-width: 1390px) {
+  #gameStatus {
+    width: 202px;
+  }
+  #create {
+    width: 210px;
+    div {
+      #add {
+        height: 36px;
+      }
+      padding: 5px;
+      @include flex(row, space-around, center);
+      p {
+        font-size: 20px;
+      }
     }
-    .card{
-        margin:15px 40px;
-    }
-    #playerBox{
-        margin-top:30px;
-    }
+  }
 }
 
-@media only screen and (max-width:1620px){
-    #groupsList{
-        height:calc(100% - 350px);
-    }
-    #navBar{
-        @include flex(column,center,center);
-    }
-    #portion1{
-        width:100%;
-    }
+@media only screen and (min-width: 1390px) and (max-width: 1790px) {
+  #groupsList {
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+  .card {
+    margin: 15px 50px;
+  }
+  #playerBox {
+    margin-top: 30px;
+  }
 }
 
-@media only screen and (min-width:1620px){
-    #groupsList{
-        height:calc(100% - 300px);
-    }
-    #navBar{
-        @include flex(row,space-around,center);
-        height:44px;
-    }
-    #portion1{
-        width:70%;
-    }
+@media only screen and (min-width: 1790px) {
+  #groupsList {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+  }
+  .card {
+    margin: 15px 40px;
+  }
+  #playerBox {
+    margin-top: 30px;
+  }
 }
 
+@media only screen and (max-width: 1620px) {
+  #groupsList {
+    height: calc(100% - 350px);
+  }
+  #navBar {
+    @include flex(column, center, center);
+  }
+  #portion1 {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 1620px) {
+  #groupsList {
+    height: calc(100% - 300px);
+  }
+  #navBar {
+    @include flex(row, space-around, center);
+    height: 44px;
+  }
+  #portion1 {
+    width: 70%;
+  }
+}

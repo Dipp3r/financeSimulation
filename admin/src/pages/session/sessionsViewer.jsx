@@ -5,6 +5,8 @@ import add_round from "@assets/images/Add_round.svg";
 import coin from "@assets/images/coin.svg";
 import downIcon from "@assets/images/Download.svg";
 import trash from "@assets/images/Trash.svg";
+import close from "@assets/images/cross.svg";
+import deleteIcon from "@assets/images/delete.png";
 
 export default class SessionsViewer extends React.Component {
   constructor(props) {
@@ -146,6 +148,31 @@ export default class SessionsViewer extends React.Component {
     console.log(this.state);
     return (
       <div id="sessionsViewer">
+        <div id="deletePrompt">
+          <div id="deleteBox">
+            <div id="first">
+              <p>Delete SessionName</p>
+              <button>
+                <img src={close} alt="" />
+              </button>
+            </div>
+            <hr />
+            <div id="second">
+              <img src={deleteIcon} alt="" id="deleteIcon" />
+              <p>
+                The excel sheet cannot be recovered once the session is deleted
+              </p>
+            </div>
+            <hr />
+            <div id="third">
+              <p>To confirm, type " sessionName " in the box below</p>
+              <input type="text" />
+              <button>
+                <p>Delete this Session</p>
+              </button>
+            </div>
+          </div>
+        </div>
         <div id="top">
           <div id="searchDiv">
             <img src={search} alt="search icon" />

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import grad_checkbox from "@assets/images/grad_checkbox.svg";
+// import grad_checkbox from "@assets/images/grad_checkbox.svg";
 
 export default class PlayerComp extends React.Component {
   constructor(props) {
