@@ -236,7 +236,119 @@
       height: 100vh;
       @include flex(column, flex-start, center);
       #sessionsViewer {
-       
+        #deletePrompt {
+          position: fixed;
+          top: 0;
+          left: 0;
+          @include flex(column, center, center);
+          height: 100vh;
+          width: 100vw;
+          background-color: rgba(0, 0, 0, 0.242);
+          backdrop-filter: blur(1.5px);
+          #deleteBox {
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            width: 456px;
+            background-color: white;
+            border-radius: 20px;
+            @include flex(column, center, center);
+            #first {
+              border-radius: 20px 20px 0px 00px;
+              padding: 10px;
+              width: calc(100% - 20px);
+              background-color: #395695;
+              @include flex(row, space-between, center);
+              p {
+                font-family: "Montserrat";
+                font-size: 16px;
+                font-weight: 600;
+                color: white;
+                margin: 0px;
+                margin-left: 18px;
+              }
+              #closeButton {
+                margin: 0px;
+                width:fit-content;
+                img {
+                  height: 25px;
+                  transition: all 0.2s ease-in;
+                }
+        
+                &:hover img {
+                  transform: scale(0.8);
+                }
+              }
+            }
+            hr {
+              margin: 0px;
+              width: calc(100% - 2px);
+            }
+            #second {
+              padding: 20px 30px;
+              @include flex(column, center, center);
+              #deleteIcon {
+                height: 40px;
+              }
+              p {
+                text-align: center;
+                font-family: "Montserrat";
+                font-size: 14px;
+                font-weight: 500;
+                color: #395695;
+                margin: 10px;
+              }
+            }
+            #third {
+              @include flex(column, center, center);
+              margin-top: 10px;
+              width: 100%;
+              p {
+                margin: 5px 0px;
+                text-align: center;
+                font-family: "Montserrat";
+                font-size: 14px;
+                font-weight: 500;
+                color: #395695;
+              }
+              input {
+                padding-left:20px;
+                margin: 5px;
+                border-radius: 5px;
+                border: 2px solid #3956959c;
+                width: 80%;
+                height: 30px;
+                &:focus{
+                  outline: none;
+                }
+              }
+              #deleteButton {
+                width: 85%;
+                margin: 5px;
+                height: 40px;
+                border-radius: 5px;
+                padding: 5px;
+                margin: 10px;
+                background-color: rgb(197, 31, 31);
+                border: 1px solid #223f80;
+                margin-bottom: 20px;
+                transition: all 0.3s ease;
+                p {
+                  font-family: "Montserrat";
+                  font-size: 16px;
+                  font-weight: 500;
+                  color: white;
+                  margin: 0px;
+                  margin-left: 20px;
+                }
+                &:hover p {
+                  color: rgb(197, 31, 31);
+                }
+                &:hover {
+                  background-color: white;
+                }
+              }
+            }
+          }
+        }
         #sessionList {
           width: 80%;
           @include flex(column, center, center);
@@ -910,6 +1022,11 @@
 }
 
 @media only screen and (min-width: 1790px) {
+  #excel,#trash {
+    img {
+      margin-left:30px;
+    }
+  }
   #groupsList {
     display: grid;
     grid-template-columns: auto auto auto auto;
@@ -947,116 +1064,3 @@
   }
 }
 
-#deletePrompt {
-  position: fixed;
-  top: 0;
-  left: 0;
-  @include flex(column, center, center);
-  height: 100vh;
-  width: 100vw;
-  background-color: rgba(0, 0, 0, 0.242);
-  backdrop-filter: blur(1.5px);
-  #deleteBox {
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    width: 456px;
-    background-color: white;
-    border-radius: 20px;
-    @include flex(column, center, center);
-    #first {
-      border-radius: 20px 20px 0px 00px;
-      padding: 10px;
-      width: calc(100% - 20px);
-      background-color: #395695;
-      @include flex(row, space-between, center);
-      p {
-        font-family: "Montserrat";
-        font-size: 16px;
-        font-weight: 700;
-        color: white;
-        margin: 0px;
-        margin-left: 20px;
-      }
-      #closeButton {
-        margin: 0px;
-        width:15px;
-        img {
-          height: 25px;
-          transition: all 0.2s ease-in;
-        }
-
-        &:hover img {
-          transform: scale(0.8);
-        }
-      }
-    }
-    hr {
-      margin: 0px;
-      width: calc(100% - 2px);
-    }
-    #second {
-      padding: 20px 30px;
-      @include flex(column, center, center);
-      #deleteIcon {
-        height: 40px;
-      }
-      p {
-        text-align: center;
-        font-family: "Montserrat";
-        font-size: 14px;
-        font-weight: 500;
-        color: #395695;
-        margin: 10px;
-      }
-    }
-    #third {
-      @include flex(column, center, center);
-      margin-top: 10px;
-      width: 100%;
-      p {
-        margin: 0px;
-        text-align: center;
-        font-family: "Montserrat";
-        font-size: 14px;
-        font-weight: 500;
-        color: #395695;
-      }
-      input {
-        padding-left:20px;
-        margin: 5px;
-        border-radius: 5px;
-        border: 2px solid #3956959c;
-        width: 80%;
-        height: 30px;
-        &:focus{
-          outline: none;
-        }
-      }
-      button {
-        width: 85%;
-        margin: 5px;
-        height: 40px;
-        border-radius: 5px;
-        padding: 5px;
-        margin: 10px;
-        background-color: rgb(180, 80, 80);
-        border: 1px solid #223f80;
-        margin-bottom: 20px;
-        transition: all 0.3s ease;
-        p {
-          font-family: "Montserrat";
-          font-size: 16px;
-          font-weight: 800;
-          color: white;
-          margin: 0px;
-          margin-left: 20px;
-        }
-        &:hover p {
-          color: white;
-        }
-        &:hover {
-          background-color: #ff0000;
-        }
-      }
-    }
-  }
-}

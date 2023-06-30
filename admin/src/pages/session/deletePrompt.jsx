@@ -53,7 +53,7 @@ export default class DeletePrompt extends React.Component {
               To confirm, type {'"' + this.props.name + '"'} in the box below
             </p>
             <input type="text" />
-            <button onClick={this.deleteSession}>
+            <button id="deleteButton" onClick={this.deleteSession}>
               <p>Delete this Session</p>
             </button>
           </div>
