@@ -159,7 +159,7 @@ const removeUser = async (request, response) => {
 };
 
 const alterRole = async (request, response) => {
-  const {userid, role} = Object.values(request.body);
+  const {userid, role} = request.body;
   // if someOne in group already in executive role 
   // role of that person -> accountant or null
   try {
