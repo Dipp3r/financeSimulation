@@ -18,6 +18,15 @@ export default class SessionsViewer extends React.Component {
       DeletePrompDisplay: false,
     };
   }
+  downloadFile = (id, title) => {
+    const fileName = "session_" + title + ".xlsx";
+    const downloadUrl = import.meta.env.VITE_API_SERVER_URL + "download/" + id;
+
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.setAttribute("download", fileName);
+    link.click();
+  };
   displaySessions = (list) => {
     let container = document.querySelector("#sessionList");
     container.innerHTML = "";
@@ -83,6 +92,11 @@ export default class SessionsViewer extends React.Component {
         excelDownload = document.createElement("button");
         downloadDiv = document.createElement("div");
         downloadDiv.id = "excel";
+        downloadDiv.onclick = (event) => {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          this.downloadFile(session.sessionid, session.title);
+        };
         downloadIcon = document.createElement("img");
         downloadIcon.src = downIcon;
         excelDownload.innerText = "download";
