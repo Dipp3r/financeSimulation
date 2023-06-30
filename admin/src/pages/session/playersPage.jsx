@@ -6,6 +6,7 @@ import trash from "@assets/images/Trash.svg";
 import arrow_left from "@assets/images/Arrow_left.svg";
 
 import PlayerComp from "@components/playerCard";
+import DeletePrompt from "./deletePrompt";
 
 export default class PlayersPage extends React.Component {
   constructor(props) {
@@ -13,16 +14,21 @@ export default class PlayersPage extends React.Component {
     this.state = {
       groupInfo: JSON.parse(localStorage.getItem("groupInfo")),
       playersList: [],
+      DeletePrompDisplay: false,
     };
   }
+  toggleDeletePromp = () => {
+    let display = this.state.DeletePrompDisplay;
+    display = !display;
+    this.setState({
+      DeletePrompDisplay: display,
+    });
+  };
   copyLink = (event) => {
     event.stopPropagation();
     navigator.clipboard.writeText(
       import.meta.env.VITE_API_PUBLIC_URL + `/${this.state.groupInfo.groupid}`
     );
-  };
-  deleteGroup = () => {
-    console.log("delete clicked");
   };
   fetchPlayerList = () => {
     fetch(
@@ -66,7 +72,7 @@ export default class PlayersPage extends React.Component {
                 </p>
               </div>
               <div>
-                <button id="trash" onClick={this.deleteGroup}>
+                <button id="trash" onClick={this.toggleDeletePromp}>
                   <img src={trash} alt="trashIcon" />
                 </button>
                 <button onClick={this.copyLink}>
@@ -78,6 +84,14 @@ export default class PlayersPage extends React.Component {
           <hr />
         </div>
         <div id="playersList">
+          {this.state.DeletePrompDisplay && (
+            <DeletePrompt
+              type="group"
+              id={this.state.groupInfo.groupid}
+              name={this.state.groupInfo.name}
+              toggleDeletePromp={this.toggleDeletePromp}
+            />
+          )}
           {this.state.playersList.map((element) => element)}
         </div>
       </div>

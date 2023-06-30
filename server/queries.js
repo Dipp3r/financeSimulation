@@ -1,20 +1,20 @@
 const Pool = require("pg").Pool;
 
-const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "finance",
-  password: "arun",
-  port: 5432,
-});
-
 // const pool = new Pool({
-//   user: "vittaex",
+//   user: "postgres",
 //   host: "localhost",
 //   database: "finance",
-//   password: "123456",
+//   password: "arun",
 //   port: 5432,
 // });
+
+const pool = new Pool({
+  user: "vittaex",
+  host: "localhost",
+  database: "finance",
+  password: "123456",
+  port: 5432,
+});
 
 //API for testing
 
@@ -157,7 +157,7 @@ const removeUser = async (request, response) => {
 };
 
 const alterRole = async (request, response) => {
-  const {userid, role} = Object.values(request.body);
+  const {userid, role} = request.body;
   // if someOne in group already in executive role 
   // role of that person -> accountant or null
   try {
