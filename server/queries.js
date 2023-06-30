@@ -1,20 +1,20 @@
 const Pool = require("pg").Pool;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //API for testing
 
@@ -203,11 +203,11 @@ const addUser = async (request, response) => {
           ]
         );
         let player_count = await pool.query('select players from "group" where groupid=$1',[groupid]);
-        await pool.query('update "group" set players=$1 where groupid=$2',[player_count+1,groupid]);
+        await pool.query('update "group" set players=$1 where groupid=$2',[player_count.rows[0].players+1,groupid]);
 
         response.status(200).send({ userid: id, star_count: 0 });
       } catch (error) {
-        console.log("Error: "+error.message);
+        console.log("Error: aksdgyjas"+error.message);
         response.status(400).send({ status: false });
       }
     } else {

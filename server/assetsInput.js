@@ -14,13 +14,22 @@ const upload = require("express-fileupload");
 const fs = require("fs");
 const path = require('path');
 
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
+
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
 const assets  = require("./assetsName.json")
 
 async function addAssets() {
@@ -104,7 +113,7 @@ async function addCreateSampleTables() {
           pricesDiff[index] =
             tableNumber === 1 && previousPhasePrice === 0
               ? 0
-              : Math.ceil(((newPrice / previousPhasePrice) - 1) * 100);
+              : Math.round(((newPrice / previousPhasePrice) - 1) * 100);
           previousPhasePrice = newPrice;
         }
 
@@ -151,5 +160,8 @@ async function deleteAssetPriceTables() {
     await pool.end();
   }
 }
+
+// addAssets();
+
 addCreateSampleTables()
 // deleteAssetPriceTables()
