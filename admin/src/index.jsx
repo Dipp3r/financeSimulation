@@ -15,8 +15,8 @@ class IndexComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mainPage: 0,
-      mainPageValue: 0,
+      mainPage: 1,
+      mainPageValue: 1,
     };
     this.getItem = this.getItem.bind(this);
     this.setItem = this.setItem.bind(this);
@@ -31,7 +31,7 @@ class IndexComp extends React.Component {
     this.setState(obj);
   }
   toggleMainPage(e) {
-    let value = e | "0";
+    let value = e | "1";
     let mainPage;
     if (e) if (e.currentTarget) value = e.currentTarget.getAttribute("value");
 
@@ -43,7 +43,7 @@ class IndexComp extends React.Component {
       element.style.color = "#223F80";
     });
     switch (value) {
-      case "0":
+      case "1":
       default:
         mainPage = (
           <SessionsComp setItem={this.setItem} getItem={this.getItem} />
@@ -51,7 +51,7 @@ class IndexComp extends React.Component {
         document.querySelector("#imgGroup").src = Group_white;
         document.querySelector("#imgEdit").src = Edit;
         break;
-      case "1":
+      case "0":
         mainPage = <EditComp />;
         document.querySelector("#imgEdit").src = Edit_white;
         document.querySelector("#imgGroup").src = Group;
@@ -73,12 +73,12 @@ class IndexComp extends React.Component {
           <img src={vittae_logo_color} alt="vittae logo" />
           <div id="options">
             <div className="button" value="0" onClick={this.toggleMainPage}>
-              <img id="imgGroup" src={Group} alt="groupIcon" />
-              <p>Sessions</p>
-            </div>
-            <div className="button" value="1" onClick={this.toggleMainPage}>
               <img id="imgEdit" src={Edit} alt="editIcon" />
               <p>Edit</p>
+            </div>
+            <div className="button" value="1" onClick={this.toggleMainPage}>
+              <img id="imgGroup" src={Group} alt="groupIcon" />
+              <p>Sessions</p>
             </div>
           </div>
           <img id="tree" src={illustration} alt="tree illustration" />

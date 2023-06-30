@@ -6,7 +6,7 @@ export default class NewsComp extends React.Component {
     return (
       <div className="newsComp">
         <div id="first">
-          <p id="year">{this.state.year}</p>
+          <p id="year">{2001}</p>
           <p>Open phase</p>
           <div>
             <img src={Alarmclock} alt="alarmclock" />
