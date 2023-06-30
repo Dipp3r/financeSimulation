@@ -12,7 +12,7 @@ const WebSocket = require("ws");
 const wss = new WebSocket.Server({ server });
 const upload = require("express-fileupload");
 const fs = require("fs");
-// const path = require("path");
+const path = require("path");
 
 const uploadFolderPath = `./upload`;
 fs.mkdir(uploadFolderPath, { recursive: true }, (err) => {});
