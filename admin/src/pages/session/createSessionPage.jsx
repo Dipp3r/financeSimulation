@@ -15,18 +15,12 @@ export default class CreateSessionPage extends React.Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ title: value }),
-    })
-      .then((response) => {
-        if (response.status == 200 || response.status == 201) {
-          // this.props.toggleMainDisplay("dashboard")
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // Handle the response data
-        console.log(data);
-      });
-    console.log(value);
+    }).then((response) => {
+      if (response.status == 200 || response.status == 201) {
+        this.props.toggleSession("sessionViewer");
+      }
+      return response.json();
+    });
   };
   render() {
     return (
@@ -39,8 +33,7 @@ export default class CreateSessionPage extends React.Component {
               onClick={this.props.toggleSession}
               value="sessionViewer"
             >
-              {" "}
-              <img src={close} alt="close icon" />{" "}
+              <img src={close} alt="close icon" />
             </button>
           </div>
           <input id="newSessionName" placeholder="Enter session name" />

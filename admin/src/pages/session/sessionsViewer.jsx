@@ -135,6 +135,7 @@ export default class SessionsViewer extends React.Component {
   toggleDeletePromp = (sessionid = 0, sessionName = "session name") => {
     let display = this.state.DeletePrompDisplay;
     display = !display;
+    if (!display) this.fetchSessionsList();
     this.setState({
       DeletePrompDisplay: display,
       deleteSessionName: sessionName,
@@ -153,26 +154,31 @@ export default class SessionsViewer extends React.Component {
     });
     this.displaySessions(list);
   };
-  componentDidMount() {
-    let sessionsList = this.props.getItem("sessionsList");
-    if (sessionsList) {
-      this.displaySessions(sessionsList);
-      this.setState({ sessionsList: sessionsList });
-    } else {
-      fetch(import.meta.env.VITE_API_SERVER_URL + "sessions", {
-        method: "GET",
+  fetchSessionsList = () => {
+    fetch(import.meta.env.VITE_API_SERVER_URL + "sessions", {
+      method: "GET",
+    })
+      .then((response) => {
+        return response.json();
       })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          // Handle the response data
-          console.log(data);
-          this.displaySessions(data);
-          this.props.setItem({ sessionsList: data });
-          this.setState({ sessionsList: data });
-        });
-    }
+      .then((data) => {
+        // Handle the response data
+        console.log(data);
+        this.displaySessions(data);
+        this.props.setItem({ sessionsList: data });
+        this.setState({ sessionsList: data });
+      });
+  };
+  componentDidMount() {
+    this.fetchSessionsList();
+
+    // let sessionsList = this.props.getItem("sessionsList");
+    // if (sessionsList) {
+    //   this.displaySessions(sessionsList);
+    //   this.setState({ sessionsList: sessionsList });
+    // } else {
+    //   this.fetchSessionsList();
+    // }
   }
   render() {
     console.log(this.state);

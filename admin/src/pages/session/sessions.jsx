@@ -63,7 +63,6 @@ class SessionsComp extends React.Component {
   }
 }
 SessionsComp.propTypes = {
-  toggleSession: PropTypes.func.isRequired,
   setItem: PropTypes.func.isRequired,
   getItem: PropTypes.func.isRequired,
 };
