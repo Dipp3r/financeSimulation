@@ -167,7 +167,12 @@ async function deleteAssetPriceTables() {
     await pool.query(`
       DROP TABLE IF EXISTS assetsPrice1, assetsPrice2, assetsPrice3, assetsPrice4, assetsPrice5, assetsPrice6, assetsPrice7;
     `);
-
+    await pool.query(`
+      DROP TABLE IF EXISTS assets;
+    `);
+    await pool.query(`
+      DROP TABLE IF EXISTS gameData;
+    `);
     console.log('Asset price tables deleted successfully');
   } catch (error) {
     console.error('Error deleting asset price tables:', error);
@@ -176,7 +181,6 @@ async function deleteAssetPriceTables() {
   }
 }
 
-addAssets();
-
-// addCreateSampleTables()
+// addAssets();
+addCreateSampleTables()
 // deleteAssetPriceTables()

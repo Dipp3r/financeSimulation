@@ -81,7 +81,6 @@ const addGroup = async (request, response) => {
 
 
 const getSessions = async (request, response) => {
-  console.log("Tried fetcing sessions");
   try {
     var sessions = await pool.query("SELECT * FROM session");
     const players = await pool.query(`SELECT "group".sessionid, SUM("group".players)
@@ -103,7 +102,6 @@ const getSessions = async (request, response) => {
           element.groups = group.count;
         }
       });
-      console.log("sessions: ",sessions.rows);
     });
     response.send(sessions.rows);
 
