@@ -369,6 +369,7 @@
         }
         .sessionCards {
           padding: 25px;
+          padding-right:10px;
           height: 84px;
           background: #ffffff;
           border: 2px solid #d4d4d4;
@@ -401,10 +402,9 @@
                 margin: 0px;
               }
             }
-            #excel,
-            #trash {
+            #excel, #trash {
+              width:fit-content;
               @include flex(column, center, center);
-              margin: 0px;
               img {
                 height: 30px;
                 // margin-left:30px;
@@ -1022,10 +1022,8 @@
 }
 
 @media only screen and (min-width: 1790px) {
-  #excel,#trash {
-    img {
-      margin-left:30px;
-    }
+  #excel,#trash{
+    margin-left:30px;
   }
   #groupsList {
     display: grid;
