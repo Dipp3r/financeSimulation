@@ -202,6 +202,7 @@
                     @include flex(column,center,center);
                     p{  
                         margin:0px;
+                        color:#474747;
                         font-family: 'Inter';
                         font-style: normal;
                         font-weight: 400;
@@ -210,18 +211,29 @@
                     div{
                         @include flex(row,center,center);
                         img{
+                            height: 8px;
                             margin:5px;
+                        }
+                        .loss,.gain{
+                            font-size: 12px;
+                        }
+                        .gain{
+                            color: #6BC640;
+                        }
+                        .loss{
+                            color: #FB5151;
                         }
                     }
                     
                 }
+                hr{
+                    margin-top:15px;
+                    width: 330px;
+                    height: 1px;
+                    background: rgba(34, 63, 128, 0.2);
+                }
             }
-            hr{
-                margin-top:15px;
-                width: 330px;
-                height: 1px;
-                background: rgba(34, 63, 128, 0.2);
-            }
+            
         }
         #title{
             margin:0px;
