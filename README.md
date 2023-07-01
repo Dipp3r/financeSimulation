@@ -11,3 +11,28 @@ CREATE TABLE public.session (
     time_created TIMESTAMP
 );
 ```
+```
+alter table "session" add column time_created timestamp;
+```
+<h4>GROUP TABLE</h4>
+
+```
+CREATE TABLE "group" (
+    groupid INTEGER PRIMARY KEY,
+    name VARCHAR(255),
+    _limit INTEGER,
+    networth INTEGER,
+    stocks INTEGER,
+    commodities INTEGER,
+    cash INTEGER,
+    star INTEGER,
+    mutual_funds INTEGER,
+    sessionid INTEGER,
+    players INTEGER,
+    time_created TIMESTAMP,
+    CONSTRAINT group_sessionid_fkey FOREIGN KEY (sessionid) REFERENCES "session"(sessionid)
+);
+```
+```
+alter table "group" add column time_created timestamp;
+```
