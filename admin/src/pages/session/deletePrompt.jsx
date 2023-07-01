@@ -21,7 +21,7 @@ export default class DeletePrompt extends React.Component {
         import.meta.env.VITE_API_SERVER_URL +
           (this.props.type == "session" ? "deleteSession" : "deleteGroup"),
         {
-          method: "PUT",
+          method: "DELETE",
           headers: { "Content-type": "application/json" },
           body: JSON.stringify(obj),
         }
@@ -30,6 +30,9 @@ export default class DeletePrompt extends React.Component {
       target.style.borderColor = "red";
     }
   };
+  componentDidMount() {
+    document.querySelector("#deletePrompt").querySelector("input").focus();
+  }
   render() {
     return (
       <div id="deletePrompt">

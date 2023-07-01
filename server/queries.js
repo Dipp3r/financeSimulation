@@ -34,7 +34,7 @@ const addSession = async (request, response) => {
   const [title] = Object.values(request.body);
   try {
     await pool.query(
-      'INSERT INTO "session"(sessionid,title,excelLink) VALUES($1,$2,$3)',
+      "INSERT INTO session(sessionid,title,excelLink) VALUES($1,$2,$3)",
       [id, title, ""]
     );
     response.status(200).send({ status: true });
@@ -139,9 +139,9 @@ const getPlayers = async (request, response) => {
 const deleteGroup = async (request, response) => {
   const [groupid] = Object.values(request.body);
   try {
-    await pool.query("DELETE FROM group WHERE groupid=$1", [groupid]);
+    await pool.query(`DELETE FROM "group" WHERE groupid=$1`, [groupid]);
     response.status(200).send({ status: true });
-  } catch (error) {
+  } catch (err) {
     response.status(400).send("Error: " + err.message);
   }
 };

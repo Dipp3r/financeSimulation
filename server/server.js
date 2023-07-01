@@ -12,7 +12,7 @@ const WebSocket = require("ws");
 const wss = new WebSocket.Server({ server });
 const upload = require("express-fileupload");
 const fs = require("fs");
-// const path = require("path");
+const path = require("path");
 
 const uploadFolderPath = `./upload`;
 fs.mkdir(uploadFolderPath, { recursive: true }, (err) => {});
@@ -142,6 +142,18 @@ app.put("/editTime", async (req, res) => {
   }
 });
 
+
+
+app.get('/download/:sessionId', (req, res) => {
+  const { sessionId } = req.params;
+  const filePath = path.join(__dirname, 'excelSheets', sessionId + ".xlsx");
+  
+
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.setHeader('Content-Disposition', `attachment; filename=${sessionId}.xlsx`);
+  
+  res.sendFile(filePath);
+});
 // app.post("/upload", async (req, res) => {
 //   if (req.files) {
 //     const [year, phase] = Object.keys(req.files)[0].split("_");
