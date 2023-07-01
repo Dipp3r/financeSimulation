@@ -142,16 +142,19 @@ app.put("/editTime", async (req, res) => {
   }
 });
 
-
-
-app.get('/download/:sessionId', (req, res) => {
+app.get("/download/:sessionId", (req, res) => {
   const { sessionId } = req.params;
-  const filePath = path.join(__dirname, 'excelSheets', sessionId + ".xlsx");
-  
+  const filePath = path.join(__dirname, "excelSheets", sessionId + ".xlsx");
 
-  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-  res.setHeader('Content-Disposition', `attachment; filename=${sessionId}.xlsx`);
-  
+  res.setHeader(
+    "Content-Type",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  );
+  res.setHeader(
+    "Content-Disposition",
+    `attachment; filename=${sessionId}.xlsx`
+  );
+
   res.sendFile(filePath);
 });
 // app.post("/upload", async (req, res) => {
@@ -222,15 +225,24 @@ app.delete("/deleteSession", async (req, res) => {
           const userPromises = [];
           for (let j = 0; j < users.length; j++) {
             let userid = users[j].userid;
-            let userPromise = pool.query(`DELETE FROM users WHERE userid = $1`, [userid]);
+            let userPromise = pool.query(
+              `DELETE FROM users WHERE userid = $1`,
+              [userid]
+            );
             userPromises.push(userPromise);
           }
           await Promise.all(userPromises);
 
-          let groupPromise = pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
+          let groupPromise = pool.query(
+            `DELETE FROM "group" WHERE groupid = $1`,
+            [groupid]
+          );
           promises.push(groupPromise);
         } else {
-          let groupPromise = pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
+          let groupPromise = pool.query(
+            `DELETE FROM "group" WHERE groupid = $1`,
+            [groupid]
+          );
           promises.push(groupPromise);
         }
       }
@@ -246,6 +258,31 @@ app.delete("/deleteSession", async (req, res) => {
   }
 });
 
+app.get("/getAssets", async (req, res) => {
+  try {
+    const assets = await pool.query(`
+      SELECT * FROM assets
+    `);
+    res.status(200).send(assets.rows);
+  } catch (err) {
+    res.status(400).send({ status: false });
+  }
+});
+
+app.put("/renameGroup", async (req, res) => {
+  const [groupid, name] = Object.values(req.body);
+  try {
+    await pool.query(
+      `
+      UPDATE "group" SET name = $1 WHERE groupid = $2
+    `,
+      [name, groupid]
+    );
+    res.status(200).send({ status: true });
+  } catch (err) {
+    res.status(400).send({ status: false });
+  }
+});
 
 setInterval(() => {
   wss.broadcast(JSON.stringify({ type: "time", message: "new news" }));
