@@ -19,6 +19,7 @@ class ProfileComp extends React.Component {
   // constructor(props){
   //     super(props);
   // }
+  triggerDelay = 1000;
   updateProfileInfo = () => {
     fetch(
       import.meta.env.VITE_API_SERVER_URL +
@@ -84,7 +85,12 @@ class ProfileComp extends React.Component {
           <div id="options">
             <div
               className="option"
-              onClick={this.props.toggleMainDisplay}
+              onClick={() =>
+                setTimeout(
+                  () => this.props.toggleMainDisplay("portfolio"),
+                  this.triggerDelay
+                )
+              }
               value="portfolio"
             >
               <img src={Coin} className="animate" alt="coin" />
@@ -96,7 +102,12 @@ class ProfileComp extends React.Component {
             <div
               className="option"
               id="team"
-              onClick={this.props.toggleMainDisplay}
+              onClick={() =>
+                setTimeout(
+                  () => this.props.toggleMainDisplay("team"),
+                  this.triggerDelay
+                )
+              }
               value="team"
             >
               <img src={Coin} className="animate" alt="coin" />
@@ -105,7 +116,10 @@ class ProfileComp extends React.Component {
             </div>
 
             <hr />
-            <div className="option" onClick={this.logout}>
+            <div
+              className="option"
+              onClick={() => setTimeout(() => this.logout(), this.triggerDelay)}
+            >
               <img src={Coin} className="animate" alt="coin" />
               <img src={Vector} alt="logout logo" />
               <p>Logout</p>

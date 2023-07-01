@@ -28,14 +28,12 @@ class PortfolioComp extends React.Component {
       commoditiesExpand: false,
       mutualFundsExpand: false,
       pie: undefined,
-      pieData: {
-        data: [
-          { name: "stocks", value: 60, color: "#223F80" },
-          { name: "Mutual funds", value: 10, color: "#406AC8" },
-          { name: "commidities", value: 15, color: "#6F82AB" },
-          { name: "cash", value: 15, color: "#CADAFF" },
-        ],
-      },
+      pieData: [
+        { name: "stocks", value: 0, color: "#223F80" },
+        { name: "Mutual funds", value: 0, color: "#406AC8" },
+        { name: "commidities", value: 0, color: "#6F82AB" },
+        { name: "cash", value: 1, color: "#CADAFF" },
+      ],
       stocks: [
         {
           id: 0,
@@ -165,7 +163,47 @@ class PortfolioComp extends React.Component {
     obj[name] = display;
     this.setState(obj);
   }
-  componentDidMount() {}
+  fetchInfo = () => {
+    fetch(
+      import.meta.env.VITE_API_SERVER_URL +
+        "portfolio/" +
+        localStorage.getItem("groupid"),
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // body: JSON.stringify({"userid":localStorage.getItem('userid')})
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        let pieData = [
+          { name: "stocks", value: data.stocks, color: "#223F80" },
+          { name: "Mutual funds", value: data.mutual_funds, color: "#406AC8" },
+          { name: "commodities", value: data.commodities, color: "#6F82AB" },
+          {
+            name: "cash",
+            value:
+              1 ||
+              data.cash ||
+              data.networth -
+                data.stocks -
+                data.mutual_funds -
+                data.commodities,
+            color: "#CADAFF",
+          },
+        ];
+        this.setState({ pieData: pieData }, () => {
+          console.log(this.state.pieData);
+        });
+      });
+  };
+  componentDidMount() {
+    this.fetchInfo();
+  }
   render() {
     return (
       <div id="portfolio">
@@ -186,7 +224,7 @@ class PortfolioComp extends React.Component {
           {/* <img src={PieChart} alt="piechart"/> */}
           <PieChart width={300} height={300}>
             <Pie
-              data={this.state.pieData.data}
+              data={this.state.pieData}
               color="#000000"
               dataKey="value"
               nameKey="name"
@@ -195,7 +233,7 @@ class PortfolioComp extends React.Component {
               outerRadius={120}
               fill="#8884d8"
             >
-              {this.state.pieData.data.map((entry, index) => {
+              {this.state.pieData.map((entry, index) => {
                 return (
                   <Cell
                     style={{ outline: "none" }}
