@@ -10,8 +10,8 @@ import Expand_left_double from "@assets/images/Expand_left_double.svg";
 import Expand_left from "@assets/images/Expand_left.svg";
 import Expand_right from "@assets/images/Expand_right.svg";
 import Expand_right_double from "@assets/images/Expand_right_double.svg";
-
 import link from "@assets/images/link.svg";
+
 export default class GroupPage extends React.Component {
   constructor(props) {
     super(props);

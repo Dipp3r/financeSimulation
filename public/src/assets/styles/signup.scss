@@ -11,9 +11,10 @@
         margin-top:100px;
         @include flex(row,space-between,center);
         #description{
-            margin:50px;
+            margin:50px 10px 50px 50px;
             @include flex(column,center,flex-start);
             p{
+                width:100%;
                 margin:0px;
                 font-family: 'Montserrat';
                 font-style: normal;
