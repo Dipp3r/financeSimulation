@@ -13,6 +13,8 @@ CREATE TABLE public.session (
 ```
 ```sql
 alter table "session" add column time_created timestamp;
+alter table "session" add column year integer;
+alter table "session" add column phase integer;
 ```
 <h4>GROUP TABLE</h4>
 
