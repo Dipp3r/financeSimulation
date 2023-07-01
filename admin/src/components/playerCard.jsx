@@ -20,11 +20,15 @@ export default class PlayerComp extends React.Component {
     // const checkbox = document.querySelector("#checkbox-round");
     // checkbox.checked = obj.role === "0" ? true : false;
   };
-  removePlayer = () => {};
-  // componentDidMount() {
-  //   const checkbox = document.querySelector("#checkbox-round");
-  //   checkbox.checked = this.state.role === "0" ? true : false;
-  // }
+  removePlayer = () => {
+    let obj = {};
+    obj.userid = this.state.userid;
+    fetch(import.meta.env.VITE_API_SERVER_URL + `removeUser`, {
+      method: "DELETE",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(obj),
+    }).then(this.props.fetchPlayerList);
+  };
   render() {
     console.log(this.props.playerObj);
     return (
@@ -63,4 +67,5 @@ export default class PlayerComp extends React.Component {
 }
 PlayerComp.propTypes = {
   playerObj: PropTypes.object.isRequired,
+  fetchPlayerList: PropTypes.func.isRequired,
 };

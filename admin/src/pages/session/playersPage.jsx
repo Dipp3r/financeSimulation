@@ -43,11 +43,22 @@ export default class PlayersPage extends React.Component {
       .then((data) => {
         let playersList = [];
         data.map((player, index) => {
-          playersList.push(<PlayerComp playerObj={player} key={index} />);
+          playersList.push(
+            <PlayerComp
+              playerObj={player}
+              fetchPlayerList={this.fetchPlayerList}
+              key={index}
+            />
+          );
         });
-        this.setState({ playersList: playersList }, () => {
-          console.log(this.state.playersList);
-        });
+        let groupInfo = this.state.groupInfo;
+        groupInfo.players = data.length;
+        this.setState(
+          { playersList: playersList, groupInfo: groupInfo },
+          () => {
+            console.log(this.state.playersList);
+          }
+        );
       });
   };
   componentDidMount() {

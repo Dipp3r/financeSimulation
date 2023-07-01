@@ -149,7 +149,13 @@ const deleteGroup = async (request, response) => {
 const removeUser = async (request, response) => {
   const [userid] = Object.values(request.body);
   try {
+    await pool.query(`
+    UPDATE "group"
+    SET players = players - 1
+    WHERE groupid = (SELECT groupid FROM users WHERE userid = $1);
+    `, [userid]);
     await pool.query("DELETE FROM users WHERE userid=$1", [userid]);
+    
     response.status(200).send({ status: true });
   } catch (error) {
     response.status(400).send("Error: " + err.message);

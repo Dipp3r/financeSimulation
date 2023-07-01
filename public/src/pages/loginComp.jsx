@@ -8,7 +8,10 @@ class LoginComp extends React.Component {
     super(props);
   }
   componentDidMount() {
-    if (localStorage.getItem("userid"))
+    if (
+      localStorage.getItem("userid") &&
+      localStorage.getItem("groupid") == window.location.href.split("/").pop()
+    )
       this.props.toggleMainDisplay("dashboard");
 
     let groupid = window.location.href.split("/").pop();
