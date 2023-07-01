@@ -301,11 +301,23 @@ app.delete("/removeUser", async (request, response) => {
     `,
       [userid]
     );
+    let groupid = await pool.query(
+      `
+      select groupid from users where userid = $1
+    `,
+      [userid]
+    );
     await pool.query("DELETE FROM users WHERE userid=$1", [userid]);
-
+    
+    groupid = groupid.rows[0].groupid;
+    wss.broadcast({
+      userid: userid,
+      groupid: groupid,
+      msgType: "RemoveUser",
+    });
     response.status(200).send({ status: true });
   } catch (error) {
-    response.status(400).send("Error: " + err.message);
+    response.status(400).send("Error: " + error.message);
   }
 });
 
@@ -381,6 +393,7 @@ app.post("/signup/:id", async (request, response) => {
           player_count.rows[0].players + 1,
           groupid,
         ]);
+        wss.broadcast({userid:id,groupid:groupid,name:name,msgType:"NewUser"});
         response.status(200).send({ userid: id, star_count: 0 });
       } catch (error) {
         console.log("Error: " + error.message);
