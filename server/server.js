@@ -89,7 +89,7 @@ wss.broadcast = function (data) {
 };
 
 
-const addInt = async (phase = 1,year = 1,lastYear = 0) => {
+const addInt = async (phase = 1,year = 1,lastYear = 0,session) => {
   if (phase >= 5) {
     phase = 1;
     year++;
@@ -101,6 +101,9 @@ const addInt = async (phase = 1,year = 1,lastYear = 0) => {
       const time = result.rows[0][`phase${phase}`];
       const [hours, minutes, seconds] = time.split(":");
       const totalSeconds = Number.parseInt((hours * 3600) + (minutes * 60) + (seconds))
+      await pool.query(`
+        UPDATE "session" SET year = $1, phase = $2 where sessionid = $3
+      `,[year,phase,session]);
       console.log("year: ",year," phase:", phase," sec: ", totalSeconds);
       let obj = {};
       obj.msgType = "phaseChange";
@@ -110,7 +113,7 @@ const addInt = async (phase = 1,year = 1,lastYear = 0) => {
 
       wss.broadcast(obj);
 
-      setTimeout(() => addInt(phase + 1,year, lastYear), Number.parseInt(totalSeconds) * 1000);
+      setTimeout(() => addInt(phase + 1,year, lastYear,session), Number.parseInt(totalSeconds) * 1000);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -118,9 +121,11 @@ const addInt = async (phase = 1,year = 1,lastYear = 0) => {
 };
 
 app.post("/start",async (req,res)=>{
+  const [sessionid] = Object.values(req.body);
+  console.log(sessionid);
   let result = await pool.query("select year from gameData ORDER BY year ASC");
   let [firstyear,lastYear] = [result.rows[0].year,result.rows.pop().year];
-  addInt(1,firstyear,lastYear);
+  addInt(1,firstyear,lastYear,sessionid);
   res.status(200).end();
 })
 
