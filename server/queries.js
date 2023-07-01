@@ -215,15 +215,16 @@ const alterRole = async (request, response) => {
 
 const addUser = async (request, response) => {
   const [name, mobile, password] = Object.values(request.body);
+  console.log(name,mobile,password);
   var groupid = Number.parseInt(request.params.id);
   try {
     const user = await pool.query(
-      "SELECT userid, name, password FROM users WHERE mobile=$1",
+      "SELECT groupid FROM users WHERE mobile=$1",
       [mobile]
     );
+    console.log(user.rowCount);
     if (user.rowCount == 0) {
       let id = Math.floor(100000 + Math.random() * 900000);
-
       try {
         console.log(name, mobile, password);
         let res = await pool.query(
@@ -238,28 +239,15 @@ const addUser = async (request, response) => {
           player_count.rows[0].players + 1,
           groupid,
         ]);
-
         response.status(200).send({ userid: id, star_count: 0 });
       } catch (error) {
-        console.log("Error: aksdgyjas" + error.message);
+        console.log("Error: " + error.message);
         response.status(400).send({ status: false });
       }
     } else {
-      let [userid, db_name, db_password] = Object.values(user.rows[0]);
-      try {
-        const group = await pool.query(
-          'SELECT star FROM "group" WHERE groupid = $1',
-          [groupid]
-        );
-        const [star_count] = Object.values(group.rows[0]);
-        if (db_name == name && db_password == password) {
-          response.send({ userid: userid, star_count: star_count });
-        } else {
-          response.status(401).send({ status: false, invalid: true });
-        }
-      } catch (error) {
-        console.log("Error: " + error.message);
-      }
+      let [id] = Object.values(user.rows[0]);
+      console.log(id);
+      (id==groupid)?response.status(400).send({status:false,msg:"You are already a registered user"}):response.status(400).send({status:false,msg:"You are not authorized to enter this group"});
     }
   } catch (error) {
     console.log("error" + error.message);
