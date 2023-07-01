@@ -10,8 +10,19 @@ import Arrow_left from "@assets/images/Arrow_left.svg";
 class SellComp extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isClicked: false,
+    };
   }
+
+  handleClick = () => {
+    this.setState({ isClicked: true });
+    setTimeout(() => {
+      this.setState({ isClicked: false });
+    }, 300);
+  };
   render() {
+    const { isClicked } = this.state;
     return (
       <div id="sell">
         <div id="success">
@@ -49,11 +60,16 @@ class SellComp extends React.Component {
             <p>ENTER AMOUNT</p>
             <div id="amount">
               <p>₹</p>
-              <input type="text" placeholder="0" />
+              <input type="number" placeholder="1,82,00,000" />
             </div>
           </div>
           <div id="fixed">
-            <button>BUY</button>
+            <button
+              className={`sell-button ${isClicked ? "clicked" : ""}`}
+              onClick={this.handleClick}
+            >
+              BUY
+            </button>
           </div>
         </div>
       </div>
