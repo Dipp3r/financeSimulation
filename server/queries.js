@@ -186,15 +186,18 @@ const removeUser = async (request, response) => {
 
 const alterRole = async (request, response) => {
   const { userid, role } = request.body;
-  // if someOne in group already in executive role
-  // role of that person -> accountant or null
-  try {
+  try{
+    if(role == '0'){
+      const exe = await pool.query(`
+      UPDATE users SET role = '' WHERE userid = (SELECT userid FROM users WHERE groupid = (SELECT groupid FROM users WHERE userid = $1) AND role = '0');
+    `,[userid]);
+    } 
     await pool.query("UPDATE users SET role = $1 WHERE userid = $2", [
       role,
       userid,
     ]);
     response.status(200).send({ status: true });
-  } catch (error) {
+  } catch(error){
     response.status(400).send("Error: " + error.message);
   }
 };
