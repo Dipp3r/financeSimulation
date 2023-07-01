@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import SellComp from "@pages/buySell";
 import Dashboard from "@pages/dashboard/dashboard";
-import LoginComp from "@pages/loginComp";
+import SignupComp from "@pages/signupComp";
 import PortfolioComp from "@pages/portfolio";
 import TeamComp from "@pages/team/team";
 import * as serviceWorkerRegistration from "@utils/serviceWorkerRegistration";
@@ -12,7 +12,7 @@ class IndexComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mainDisplay: <LoginComp toggleMainDisplay={this.toggleMainDisplay} />,
+      mainDisplay: <SignupComp toggleMainDisplay={this.toggleMainDisplay} />,
     };
   }
   setItem = (name, value) => {
@@ -68,7 +68,7 @@ class IndexComp extends React.Component {
         );
         break;
       case "login":
-        displayComp = <LoginComp toggleMainDisplay={this.toggleMainDisplay} />;
+        displayComp = <SignupComp toggleMainDisplay={this.toggleMainDisplay} />;
         break;
     }
     console.log(displayComp);

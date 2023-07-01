@@ -2,9 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import "@assets/styles/signup.scss";
 import coin from "@assets/images/coin.svg";
-import FormLogin from "@components/loginForm";
+import FormSignup from "@components/signupForm";
 
-class LoginComp extends React.Component {
+class SignupComp extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -23,18 +23,20 @@ class LoginComp extends React.Component {
       <div id="login">
         <div id="portion1">
           <div id="description">
-            <p>Login</p>
+            <p>Sign Up</p>
             <p>to</p>
             <p>play</p>
           </div>
           <img src={coin} alt="coin" />
         </div>
-        <FormLogin toggleMainDisplay={this.props.toggleMainDisplay}></FormLogin>
+        <FormSignup
+          toggleMainDisplay={this.props.toggleMainDisplay}
+        ></FormSignup>
       </div>
     );
   }
 }
-LoginComp.propTypes = {
+SignupComp.propTypes = {
   toggleMainDisplay: PropTypes.func.isRequired,
 };
-export default LoginComp;
+export default SignupComp;

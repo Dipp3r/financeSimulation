@@ -17,21 +17,21 @@ const path = require("path");
 // const uploadFolderPath = `./upload`;
 // fs.mkdir(uploadFolderPath, { recursive: true }, (err) => {});
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -100,8 +100,44 @@ app.get("/players", db.getPlayers);
 app.delete("/deleteGroup", db.deleteGroup);
 app.delete("/removeUser", db.removeUser);
 app.put("/assignrole", db.alterRole);
-app.post("/login/:id", db.addUser);
+app.post("/signup/:id", db.addUser);
 app.get("/portfolio/:id", db.getChart);
+
+
+app.get("/login/:id",async (req,res)=>{
+  const [mobile, password] = Object.values(req.body);
+  var groupid = Number.parseInt(req.params.id);
+  try {
+    let result = await pool.query(`
+      SELECT password,groupid,userid FROM users WHERE mobile = $1
+    `,[mobile]);
+    if(result.rowCount>0){
+      const [db_password,db_groupid,userid] = Object.values(result.rows[0]);
+      if(db_groupid==groupid){
+        if(db_password==password){
+          try {
+            const group = await pool.query(
+              'SELECT star FROM "group" WHERE groupid = $1',
+              [groupid]
+            );
+            const [star_count] = Object.values(group.rows[0]);
+            res.send({ userid: userid, star_count: star_count }); 
+          } catch (error) {
+            console.log("Error: " + error.message);
+          }
+        }else{
+          res.status(401).send({ status: false, msg:"Invalid password" });
+        }
+      }else{
+        res.status(400).send({status:false,msg:"You are not a registered user of this group"})
+      }
+    }else{
+      res.status(200).send({status:false,msg:"You are not a registered user"})
+    }
+  } catch (err) {
+    res.status(400).send({status:false,err:err.message})
+  }
+});
 
 app.get("/team/:id", async (req, res) => {
   const groupid = Number.parseInt(req.params.id);
@@ -109,13 +145,13 @@ app.get("/team/:id", async (req, res) => {
     const players = await pool.query(
       "SELECT userid,name,mobile,role FROM users WHERE groupid = $1",
       [groupid]
-    );
-    res.status(200).send(players.rows);
-  } catch (error) {
-    console.log("Error: " + error.message);
-  }
-});
-
+      );
+      res.status(200).send(players.rows);
+    } catch (error) {
+      console.log("Error: " + error.message);
+    }
+  });
+  
 app.get("/news", async (req, res) => {
   try {
     const news = await pool.query("SELECT * FROM gameData");
