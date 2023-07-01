@@ -14,8 +14,8 @@ const upload = require("express-fileupload");
 const fs = require("fs");
 const path = require("path");
 
-const uploadFolderPath = `./upload`;
-fs.mkdir(uploadFolderPath, { recursive: true }, (err) => {});
+// const uploadFolderPath = `./upload`;
+// fs.mkdir(uploadFolderPath, { recursive: true }, (err) => {});
 
 const pool = new Pool({
   user: "postgres",

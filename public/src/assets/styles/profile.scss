@@ -112,8 +112,8 @@
 
                 }
                 &:hover .animate{
-                    transform:translate(0px,-50px);
-                    
+                    animation: bounce 0.5s ease-in-out;
+                    transform:translate(0px,-50px); 
                 }
                 img{
                     margin-top:5px;
@@ -157,4 +157,18 @@
         }
     }
 
+}
+
+
+@keyframes bounce {
+    
+    0%{
+        transform:translate(0px,-40px);
+    }
+    50%{
+        transform:translate(0px,-60px);
+    }
+    100%{
+        transform:translate(0px,-50px);
+    }
 }
