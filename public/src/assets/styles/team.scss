@@ -1,119 +1,134 @@
-@import 'main';
+@import "main";
 
-#team{
-    #topBar{
-        border-bottom: 2px solid rgba(34, 63, 128, 0.4);
-        @include flex(row,space-between,center);
-        img{
-            margin-left:10px;
+#team {
+  #topBar {
+    border-bottom: 2px solid rgba(34, 63, 128, 0.4);
+    @include flex(row, space-between, center);
+    img {
+      margin-left: 10px;
+    }
+    p {
+      margin: 15px;
+      margin-left: 50px;
+      margin-bottom: 8px;
+      font-family: "Montserrat";
+      font-style: normal;
+      font-weight: 600;
+      font-size: 18px;
+      color: #6a6a6a;
+    }
+    #timer {
+      @include flex(row, space-between, center);
+      p {
+        margin: 5px 20px 0px 5px;
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        color: #ff473f;
+      }
+    }
+  }
+  #main {
+    @include flex(column, flex-start, center);
+    height: 800px;
+    overflow-y: scroll;
+    #fixed {
+      padding: 5px 20px;
+      @include flex(row, space-between, center);
+      position: fixed;
+      bottom: 30px;
+      width: 185px;
+      height: 44px;
+      background: #223f80;
+      border-radius: 10px;
+    //   transition: all .4s ease-out;
+      &:focus{
+        animation: click 0.3s ease;
+      }
+      p {
+        margin-right: 10px;
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 18px;
+        color: #ffffff;
+      }
+    }
+    .row {
+      width: 390px;
+      @include flex(row, space-between, center);
+      #portion1 {
+        @include flex(row, space-around, center);
+        img {
+          margin: 20px;
         }
-        p{
-            margin:15px;
-            margin-left:50px;
-            margin-bottom:8px;
-            font-family: 'Montserrat';
+        #info {
+          p {
+            padding: 0px;
+            margin: 5px;
+            font-family: "Inter";
             font-style: normal;
-            font-weight: 600;
-            font-size: 18px;
-            color: #6A6A6A;
+            font-weight: 400;
+            font-size: 19px;
+            color: #2d2d2d;
+          }
+          .num {
+            color: #6a6a6a;
+            font-size: 14px;
+          }
         }
-        #timer{
-            @include flex(row,space-between,center);
-            p{
-                margin:5px 20px 0px 5px;
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 700;
-                font-size: 16px;
-                color: #FF473F;
-
-            }
-        }
+      }
+      #portion2 {
+        padding-right: 40px;
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 500;
+        font-size: 15px;
+        color: #2d2d2d;
+      }
     }
-    #main{
-        @include flex(column,flex-start,center);
-        height:800px;
-        overflow-y:scroll;
-        #fixed{
-            padding:5px 20px;
-            @include flex(row,space-between,center);
-            position:fixed;
-            bottom:30px;
-            width: 185px;
-            height: 44px;
-            background: #223F80;
-            border-radius: 10px;
-            p{           
-                margin-right:10px;
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 400;
-                font-size: 18px;
-                color: #FFFFFF;
-            }
-        }
-        .row{
-            width:390px;
-            @include flex(row,space-between,center);
-            #portion1{
-                @include flex(row,space-around,center);
-                img{
-                    margin: 20px;
-                }
-                #info{
-                    p{
-                        padding:0px;
-                        margin:5px;
-                        font-family: 'Inter';
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 18px;
-                        color: #2D2D2D;
-                    }
-                    .num{
-                        font-size: 15px;
-                    }
-                }
-            }
-            #portion2{
-                padding-right:40px;
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 500;
-                font-size: 15px;
-                color: #2D2D2D;
-            }
-        }
-    }
-
+  }
 }
 
 #QRCompPage {
-  display:none;
-  @include flex(column,center,center);
+  display: none;
+  @include flex(column, center, center);
   background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(2px);
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
-  #QRComp{
-    background-color: #223F80;
+  #QRComp {
+    background-color: #223f80;
     border-radius: 10px;
     padding: 20px;
-    canvas{
+    canvas {
       padding: 10px;
       border: 10px solid white;
       border-radius: 10px;
-      background-color: #FFFFFF;
+      background-color: #ffffff;
     }
-    h2{
-      color: #FFFFFF;
+    h2 {
+      margin: 10px 0px 0px 0px; 
+      color: #ffffff;
       text-align: center;
-      font-family: 'Inter';
+      font-family: "Inter";
       font-style: normal;
       font-weight: 500;
       font-size: 22px;
     }
   }
+}
 
+
+@keyframes click {
+	from {
+		transform: scale(0.9);
+	}
+	to {
+		transform: translateY(1);
+	}
 }

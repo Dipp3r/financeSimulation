@@ -48,7 +48,7 @@ const addSession = async (request, response) => {
 const addGroup = async (request, response) => {
   let id = Math.floor(100000 + Math.random() * 900000);
   const { name, limit, sessionid } = request.body;
-  
+
   try {
     // Check if the limit is a valid integer
     if (!Number.isInteger(limit)) {
@@ -79,32 +79,32 @@ const addGroup = async (request, response) => {
   }
 };
 
-
 const getSessions = async (request, response) => {
   try {
     var sessions = await pool.query("SELECT * FROM session");
-    const players = await pool.query(`SELECT "group".sessionid, SUM("group".players)
+    const players =
+      await pool.query(`SELECT "group".sessionid, SUM("group".players)
       FROM "group"
       JOIN "session" ON "session".sessionid = "group".sessionid
-      GROUP BY "group".sessionid`
+      GROUP BY "group".sessionid`);
+    const groups = await pool.query(
+      `select "group".sessionid,count(sessionid) from "group" group by "group".sessionid;`
     );
-    const groups = await pool.query(`select "group".sessionid,count(sessionid) from "group" group by "group".sessionid;`);
-    sessions.rows.forEach(element => {
-      element.players = '0';
-      element.groups = '0';
-      players.rows.forEach(player=>{
-        if(element.sessionid==player.sessionid){
+    sessions.rows.forEach((element) => {
+      element.players = "0";
+      element.groups = "0";
+      players.rows.forEach((player) => {
+        if (element.sessionid == player.sessionid) {
           element.players = player.sum;
         }
       });
-      groups.rows.forEach(group=>{
-        if(element.sessionid==group.sessionid){
+      groups.rows.forEach((group) => {
+        if (element.sessionid == group.sessionid) {
           element.groups = group.count;
         }
       });
     });
     response.send(sessions.rows);
-
   } catch (error) {
     response.status(400).send("Error: " + error.message);
   }
@@ -139,7 +139,38 @@ const getPlayers = async (request, response) => {
 const deleteGroup = async (request, response) => {
   const [groupid] = Object.values(request.body);
   try {
-    await pool.query(`DELETE FROM "group" WHERE groupid=$1`, [groupid]);
+    let users = await pool.query(
+      `
+        SELECT userid FROM users WHERE groupid = $1
+      `,
+      [groupid]
+    );
+    if (users.rowCount > 0) {
+      users = users.rows;
+      const userPromises = [];
+      for (let j = 0; j < users.length; j++) {
+        let userid = users[j].userid;
+        let userPromise = pool.query(`DELETE FROM users WHERE userid = $1`, [
+          userid,
+        ]);
+        userPromises.push(userPromise);
+      }
+      await Promise.all(userPromises);
+      try {
+        await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [
+          groupid,
+        ]);
+      } catch (err) {
+        response.status(400).send("Error: "+err.message);
+      }
+    } else {
+      try {
+        await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
+
+      } catch (err) {
+        response.status(400).send("Error: "+err.message);
+      }
+    }
     response.status(200).send({ status: true });
   } catch (err) {
     response.status(400).send("Error: " + err.message);
@@ -163,8 +194,8 @@ const removeUser = async (request, response) => {
 };
 
 const alterRole = async (request, response) => {
-  const {userid, role} = request.body;
-  // if someOne in group already in executive role 
+  const { userid, role } = request.body;
+  // if someOne in group already in executive role
   // role of that person -> accountant or null
   try {
     await pool.query("UPDATE users SET role = $1 WHERE userid = $2", [
@@ -192,54 +223,50 @@ const addUser = async (request, response) => {
     );
     if (user.rowCount == 0) {
       let id = Math.floor(100000 + Math.random() * 900000);
-      
+
       try {
-        console.log(name,mobile,password);
+        console.log(name, mobile, password);
         let res = await pool.query(
           "INSERT INTO users (userid,name,mobile,password,groupid,role,created_on) VALUES ($1, $2, $3, $4, $5, $6,$7)",
-          [
-            id,
-            name,
-            mobile,
-            password,
-            groupid,
-            "",
-            new Date(),
-          ]
+          [id, name, mobile, password, groupid, "", new Date()]
         );
-        let player_count = await pool.query('select players from "group" where groupid=$1',[groupid]);
-        await pool.query('update "group" set players=$1 where groupid=$2',[player_count.rows[0].players+1,groupid]);
+        let player_count = await pool.query(
+          'select players from "group" where groupid=$1',
+          [groupid]
+        );
+        await pool.query('update "group" set players=$1 where groupid=$2', [
+          player_count.rows[0].players + 1,
+          groupid,
+        ]);
 
         response.status(200).send({ userid: id, star_count: 0 });
       } catch (error) {
-        console.log("Error: aksdgyjas"+error.message);
+        console.log("Error: aksdgyjas" + error.message);
         response.status(400).send({ status: false });
       }
     } else {
-      let [userid, db_name, db_password] = Object.values(
-        user.rows[0]
-      );
+      let [userid, db_name, db_password] = Object.values(user.rows[0]);
       try {
-        const group = await pool.query('SELECT star FROM "group" WHERE groupid = $1',[groupid]);
+        const group = await pool.query(
+          'SELECT star FROM "group" WHERE groupid = $1',
+          [groupid]
+        );
         const [star_count] = Object.values(group.rows[0]);
         if (db_name == name && db_password == password) {
           response.send({ userid: userid, star_count: star_count });
         } else {
-          response.status(401).send({status:false,invalid:true});
+          response.status(401).send({ status: false, invalid: true });
         }
       } catch (error) {
-        console.log(
-          "Error: " + error.message 
-        )
+        console.log("Error: " + error.message);
       }
-      
     }
   } catch (error) {
-    console.log("error"+error.message)
+    console.log("error" + error.message);
   }
 };
 
-const getChart = async (request,response) =>{
+const getChart = async (request, response) => {
   const groupid = request.params.id;
   // const ratio  = (numerator,base)=>{
   //   if(numerator!==0){
@@ -248,13 +275,25 @@ const getChart = async (request,response) =>{
   //   return 0;
   // }
   try {
-    const products = await pool.query('SELECT networth, stocks, commodities, cash, mutual_funds FROM "group" WHERE groupid = $1',[groupid]);
-    const [networth,stocks,commodities,funds] = Object.values(products.rows[0]);
-    response.status(200).send({networth:networth,stocks:stocks,commodities:commodities,mutual_funds:funds});
+    const products = await pool.query(
+      'SELECT networth, stocks, commodities, cash, mutual_funds FROM "group" WHERE groupid = $1',
+      [groupid]
+    );
+    const [networth, stocks, commodities, funds] = Object.values(
+      products.rows[0]
+    );
+    response
+      .status(200)
+      .send({
+        networth: networth,
+        stocks: stocks,
+        commodities: commodities,
+        mutual_funds: funds,
+      });
   } catch (error) {
     console.log("Error: " + error.message);
   }
-}
+};
 
 module.exports = {
   test,
@@ -267,5 +306,5 @@ module.exports = {
   removeUser,
   alterRole,
   addUser,
-  getChart
+  getChart,
 };
