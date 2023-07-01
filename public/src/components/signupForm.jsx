@@ -4,10 +4,13 @@ import PropTypes from "prop-types";
 import "@assets/styles/signupForm.scss";
 import validator from "@utils/validator";
 
-const FormLogin = ({ toggleMainDisplay }) => {
+const FormSignup = ({ toggleMainDisplay }) => {
   const [formData, setFormData] = useState({
+    name: "",
     mobile: "",
     password: "",
+    cpassword: "",
+    nameError: "",
     passwordError: "",
     mobileError: "",
   });
@@ -117,6 +120,13 @@ const FormLogin = ({ toggleMainDisplay }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <input
+        className="formInput"
+        name="name"
+        placeholder="Name"
+        value={formData.name}
+        onChange={handleInputChange}
+      />
       <p className="error">{formData.nameError}</p>
       <input
         className="formInput"
@@ -135,6 +145,14 @@ const FormLogin = ({ toggleMainDisplay }) => {
         value={formData.password}
         onChange={handleInputChange}
       />
+      <input
+        className="formInput"
+        type="password"
+        name="password"
+        placeholder="confirm Password"
+        value={formData.cpassword}
+        onChange={handleInputChange}
+      />
       <p className="error">{formData.passwordError}</p>
       <div>
         <button id="loginButton" type="submit">
@@ -147,8 +165,7 @@ const FormLogin = ({ toggleMainDisplay }) => {
     </form>
   );
 };
-
-FormLogin.propTypes = {
+FormSignup.propTypes = {
   toggleMainDisplay: PropTypes.func.isRequired,
 };
-export default FormLogin;
+export default FormSignup;
