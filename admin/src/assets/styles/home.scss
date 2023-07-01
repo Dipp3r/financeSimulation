@@ -121,6 +121,22 @@
               font-size: 18px;
               color: #626262;
             }
+            input{
+              border: none;
+              background: transparent;
+              margin: 8px 15px;
+              font-family: "Montserrat";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 18px;
+              color: #626262;
+              &:focus {
+                // border: 2px solid black;
+                outline: inset;
+                background-color: rgba(255, 255, 255, 0.6);
+                border-radius: 5px;
+              }
+            }
           }
         }
       }

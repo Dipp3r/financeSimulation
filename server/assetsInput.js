@@ -14,21 +14,21 @@ const upload = require("express-fileupload");
 const fs = require("fs");
 const path = require('path');
 
-// const pool = new Pool({
-//   user: "vittaex",
-//   host: "localhost",
-//   database: "finance",
-//   password: "123456",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "postgres",
+  user: "vittaex",
   host: "localhost",
   database: "finance",
-  password: "arun",
+  password: "123456",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "postgres",
+//   host: "localhost",
+//   database: "finance",
+//   password: "arun",
+//   port: 5432,
+// });
 
 const assets  = require("./assetsName.json");
 const data = require("./info.json");
@@ -42,7 +42,7 @@ async function addAssets() {
       asset_type VARCHAR(255)
     );
     `);
-
+    await pool.query(`truncate table assets;`);
 
     const promises = [];
 
@@ -181,6 +181,6 @@ async function deleteAssetPriceTables() {
   }
 }
 
-// addAssets();
-addCreateSampleTables()
+addAssets();
+// addCreateSampleTables()
 // deleteAssetPriceTables()

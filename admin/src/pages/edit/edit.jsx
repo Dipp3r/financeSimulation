@@ -1,5 +1,6 @@
 import React from "react";
 import NewsComp from "@components/newsComp";
+import AssetsViewer from "./assetsViewer";
 // import Alarmclock from  "./images/Alarmclock.svg"
 // import Export from "./images/Export.svg"
 class EditComp extends React.Component {
@@ -41,33 +42,7 @@ class EditComp extends React.Component {
       editMainSection: "0",
       newsList: [{ year: 2000 }, { year: 2001 }, { year: 2002 }],
     };
-    this.toggleAssetSection = this.toggleAssetSection.bind(this);
     this.toggleMainSection = this.toggleMainSection.bind(this);
-
-    this.displayList = this.displayList.bind(this);
-  }
-  toggleAssetSection(e) {
-    let assetButtons = document.querySelector("#top").children;
-    let currentActiveAssetButton = "0";
-    if (e != undefined) {
-      currentActiveAssetButton = e.currentTarget.getAttribute("value");
-    }
-    assetButtons[this.state.currentActiveAssetButton].style.borderBottomColor =
-      "#8492B3";
-    assetButtons[currentActiveAssetButton].style.borderBottomColor = "#223F80";
-
-    this.setState({ currentActiveAssetButton: currentActiveAssetButton });
-    switch (currentActiveAssetButton) {
-      case "1":
-        this.displayList(this.state.MutualFundList);
-        break;
-      case "2":
-        this.displayList(this.state.CommoditiesList);
-        break;
-      case "0":
-      default:
-        this.displayList(this.state.StockList);
-    }
   }
   toggleMainSection(e) {
     let value = e | 0;
@@ -94,31 +69,8 @@ class EditComp extends React.Component {
     this.setState({ editMainSection: value });
     sessionStorage.setItem("editMainSection", value);
   }
-  displayList(list) {
-    if (list.length <= 0) return;
-    let container = document.querySelector("#editMainSection");
-    let card,
-      p1,
-      p2,
-      num = 1;
-    container.innerHTML = "";
-    for (let item of list) {
-      card = document.createElement("div");
-      p1 = document.createElement("p");
-      p1.innerText = num < 10 ? `0${num}` : num;
-      p2 = document.createElement("p");
-      p2.style.color = "#223F80";
-      p2.innerText = item;
-      card.appendChild(p1);
-      card.appendChild(p2);
-      container.appendChild(card);
-      num += 1;
-    }
-  }
   componentDidMount() {
     this.toggleMainSection(sessionStorage.getItem("editMainSection"));
-    this.toggleAssetSection();
-    this.displayList(this.state.StockList);
   }
   render() {
     return (
@@ -131,20 +83,7 @@ class EditComp extends React.Component {
             News
           </button>
         </div>
-        <div id="assets" className="section">
-          <div id="top">
-            <button value="0" onClick={this.toggleAssetSection}>
-              Stocks
-            </button>
-            <button value="1" onClick={this.toggleAssetSection}>
-              Mutual funds
-            </button>
-            <button value="2" onClick={this.toggleAssetSection}>
-              Commodities
-            </button>
-          </div>
-          <div id="editMainSection">{/* assets list here */}</div>
-        </div>
+        <AssetsViewer />
         <div id="news" className="section row-1">
           {this.state.newsList.map((news, index) => {
             return <NewsComp data={news} key={index} />;

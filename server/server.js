@@ -181,7 +181,7 @@ app.get("/download/:sessionId", (req, res) => {
 // });
 
 app.put("/renameAsset", async (req, res) => {
-  const [assetId, new_name] = Object.values(req.body);
+  const {assetId, new_name} = req.body;
   try {
     const result = await pool.query(
       `UPDATE assets SET asset_name = $1 WHERE id = $2`,
@@ -260,12 +260,26 @@ app.delete("/deleteSession", async (req, res) => {
 
 app.get("/getAssets", async (req, res) => {
   try {
-    const assets = await pool.query(`
-      SELECT * FROM assets
-    `);
-    res.status(200).send(assets.rows);
-  } catch (err) {
-    res.status(400).send({ status: false });
+    const result = await pool.query('SELECT id, asset_type, asset_name FROM assets ORDER BY asset_type, asset_name');
+    const assets = {};
+
+    result.rows.forEach(row => {
+      const { id, asset_type, asset_name } = row;
+      if (!assets.hasOwnProperty(asset_type)) {
+        assets[asset_type] = [];
+      }
+      assets[asset_type].push({ id, name: asset_name });
+    });
+
+    // Sort assets swithin each type alphabetically
+    Object.keys(assets).forEach(assetType => {
+      assets[assetType].sort((a, b) => a.name.localeCompare(b.name));
+    });
+
+    res.status(200).json(assets);
+  } catch (error) {
+    console.error('Error retrieving assets:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
 
