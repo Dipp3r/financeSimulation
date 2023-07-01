@@ -32,56 +32,47 @@ const test = async (req, res) => {
 const addSession = async (request, response) => {
   let id = Math.floor(100000 + Math.random() * 900000);
   const [title] = Object.values(request.body);
-  try {
-    await pool.query(
-      "INSERT INTO session(sessionid,title,excelLink) VALUES($1,$2,$3)",
-      [id, title, ""]
-    );
-    response.status(200).send({ status: true });
-  } catch (error) {
-    console.log("Error: " + error.message);
-    response.status(500).send("Error");
+  if(title.length > 0){
+    try {
+      await pool.query(
+        "INSERT INTO session(sessionid,title,excelLink,time_created) VALUES($1,$2,$3,$4)",
+        [id, title, "",new Date()]
+      );
+      response.status(200).send({ status: true });
+    } catch (error) {
+      console.log("Error: " + error.message);
+      response.status(500).send("Error");
+    }
+  } else{
+    response.status(200).send({status:true});
   }
-  console.log(request.body);
 };
 
 const addGroup = async (request, response) => {
   let id = Math.floor(100000 + Math.random() * 900000);
   const { name, limit, sessionid } = request.body;
-
-  try {
-    // Check if the limit is a valid integer
-    if (!Number.isInteger(limit)) {
-      throw new Error("Invalid limit. Please provide a valid integer value.");
+  if(name.length>0){
+    try {
+      if (!Number.isInteger(limit)) {
+        throw new Error("Invalid limit. Please provide a valid integer value.");
+      }
+      await pool.query(
+        'INSERT INTO "group"(groupid, name, _limit, networth, stocks, commodities, cash, mutual_funds, sessionid, players, star,time_created) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)',
+        [id, name, limit, 0, 0, 0, 0, 0, sessionid, 0, 0,new Date()]
+      );
+      response.status(200).send({ status: true });
+    } catch (error) {
+      console.log(error);
+      response.status(400).send("Error: " + error.message);
     }
-
-    await pool.query(
-      'INSERT INTO "group"(groupid, name, _limit, networth, stocks, commodities, cash, mutual_funds, sessionid, players, star) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
-      [id, name, limit, 0, 0, 0, 0, 0, sessionid, 0, 0]
-    );
-
-    // const group_count = await pool.query(
-    //   "SELECT groups FROM session WHERE sessionid = $1",
-    //   [sessionid]
-    // );
-    // const [num] = Object.values(group_count.rows[0]);
-    // const new_count = Number.parseInt(num) + 1;
-
-    // await pool.query(
-    //   "UPDATE session SET groups = $1 WHERE sessionid = $2 RETURNING *",
-    //   [new_count, sessionid]
-    // );
-
+  }else{
     response.status(200).send({ status: true });
-  } catch (error) {
-    console.log(error);
-    response.status(400).send("Error: " + error.message);
   }
 };
 
 const getSessions = async (request, response) => {
   try {
-    var sessions = await pool.query("SELECT * FROM session");
+    var sessions = await pool.query("SELECT * FROM session ORDER BY time_created DESC");
     const players =
       await pool.query(`SELECT "group".sessionid, SUM("group".players)
       FROM "group"
@@ -114,7 +105,7 @@ const getGroups = async (request, response) => {
   const [sessionid] = Object.values(request.body);
   try {
     const groups = await pool.query(
-      'SELECT groupid,name,players FROM "group" WHERE sessionid=$1',
+      'SELECT groupid,name,players FROM "group" WHERE sessionid=$1 ORDER BY time_created DESC',
       [sessionid]
     );
     response.send(groups.rows);

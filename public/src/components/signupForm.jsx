@@ -148,8 +148,8 @@ const FormSignup = ({ toggleMainDisplay }) => {
       <input
         className="formInput"
         type="password"
-        name="password"
-        placeholder="confirm Password"
+        name="cpassword"
+        placeholder="Confirm Password"
         value={formData.cpassword}
         onChange={handleInputChange}
       />

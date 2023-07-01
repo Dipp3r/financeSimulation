@@ -143,7 +143,7 @@ app.get("/team/:id", async (req, res) => {
   const groupid = Number.parseInt(req.params.id);
   try {
     const players = await pool.query(
-      "SELECT userid,name,mobile,role FROM users WHERE groupid = $1",
+      "SELECT userid,name,mobile,role FROM users WHERE groupid = $1 ORDER BY created_on DESC, name ASC",
       [groupid]
       );
       res.status(200).send(players.rows);
