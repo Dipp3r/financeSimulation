@@ -808,9 +808,9 @@
                   padding: 5px;
                   margin: 10px;
                   background-color: rgb(197, 31, 31);
-                  border: 1px solid #223f80;
+                  border:none;
                   margin-bottom: 20px;
-                  transition: all 0.3s ease;
+                  transition: all 0.2s ease;
                   p {
                     font-family: "Montserrat";
                     font-size: 16px;
@@ -823,6 +823,7 @@
                     color: rgb(197, 31, 31);
                   }
                   &:hover {
+                    border: 1px solid #223f80;
                     background-color: white;
                   }
                 }
@@ -937,7 +938,7 @@
               width: 70%;
               border: 2.5px solid #acacac;
               border-radius: 8px;
-              height: 44px;
+              height: 30px;
               padding: 5px;
 
               @include flex(row, space-between, center);
