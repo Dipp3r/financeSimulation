@@ -8,7 +8,9 @@ CREATE TABLE public.session (
     sessionid INTEGER PRIMARY KEY,
     title VARCHAR(255),
     excellink VARCHAR(255),
-    time_created TIMESTAMP
+    time_created TIMESTAMP,
+    year INTEGER,
+    phase INTEGER
 );
 ```
 ```sql
@@ -37,4 +39,16 @@ CREATE TABLE "group" (
 ```
 ```sql
 alter table "group" add column time_created timestamp;
+```
+<h4>INVESTMENT TABLE</h4>
+
+```sql
+CREATE TABLE investment (
+    Id SERIAL PRIMARY KEY,
+    stockid INTEGER,
+    groupid INTEGER,
+    holdings INTEGER,
+    FOREIGN KEY (groupid) REFERENCES "group" (groupid),
+    FOREIGN KEY (stockid) REFERENCES assets (id)
+);
 ```
