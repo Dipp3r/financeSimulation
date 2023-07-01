@@ -51,8 +51,8 @@ export default class SessionsViewer extends React.Component {
         card = document.createElement("button");
         console.log(session.sessionid);
         card.onclick = () => {
+          localStorage.setItem("currentSessionID", session.sessionid);
           this.props.toggleSession("groupPage");
-          sessionStorage.setItem("currentSessionID", session.sessionid);
         };
         // console.log(card)
         card.value = "groupPage";

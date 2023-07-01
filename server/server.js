@@ -17,21 +17,21 @@ const path = require("path");
 // const uploadFolderPath = `./upload`;
 // fs.mkdir(uploadFolderPath, { recursive: true }, (err) => {});
 
-const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "finance",
-  password: "arun",
-  port: 5432,
-});
-
 // const pool = new Pool({
-//   user: "vittaex",
+//   user: "postgres",
 //   host: "localhost",
 //   database: "finance",
-//   password: "123456",
+//   password: "arun",
 //   port: 5432,
 // });
+
+const pool = new Pool({
+  user: "vittaex",
+  host: "localhost",
+  database: "finance",
+  password: "123456",
+  port: 5432,
+});
 
 //middleware
 app.use(cors());
@@ -80,12 +80,49 @@ wss.on("connection", (ws) => {
 });
 
 wss.broadcast = function (data) {
+  jsonData = JSON.stringify(data)
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(data);
+      client.send(jsonData);
     }
   });
 };
+
+
+const addInt = async (phase = 1,year = 1,lastYear = 0) => {
+  if (phase >= 5) {
+    phase = 1;
+    year++;
+  }
+  if (year <= lastYear) {
+    try {
+      const query = `SELECT phase${phase} FROM gamedata WHERE year = $1`;
+      const result = await pool.query(query, [year]);
+      const time = result.rows[0][`phase${phase}`];
+      const [hours, minutes, seconds] = time.split(":");
+      const totalSeconds = Number.parseInt((hours * 3600) + (minutes * 60) + (seconds))
+      console.log("year: ",year," phase:", phase," sec: ", totalSeconds);
+      let obj = {};
+      obj.messageType = "phaseChange";
+      obj.year = year;
+      obj.phase = phase;
+
+      wss.broadcast(obj);
+
+      setTimeout(() => addInt(phase + 1,year, lastYear), Number.parseInt(totalSeconds) * 1000);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+};
+
+app.post("/start",async (req,res)=>{
+  let result = await pool.query("select year from gameData")
+  let [firstyear,lastYear] = [result.rows[0].year,result.rows.pop().year]
+  addInt(1,firstyear,lastYear);
+  res.status(200).end();
+})
+
 
 app.get("/", (request, response) => {
   response.json({ info: "Node.js, Express, and Postgres API" });
@@ -335,7 +372,7 @@ app.put("/renameGroup", async (req, res) => {
 });
 
 setInterval(() => {
-  wss.broadcast(JSON.stringify({ type: "time", message: "new news" }));
+  wss.broadcast({ type: "time", message: "new news" });
 }, 5000);
 
 server.listen(port, () => {

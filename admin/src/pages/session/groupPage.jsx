@@ -88,6 +88,17 @@ export default class GroupPage extends React.Component {
       }
     }
   };
+  startSession = () => {
+    fetch(import.meta.env.VITE_API_SERVER_URL + "start", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sessionid: Number.parseInt(localStorage.getItem("currentSessionID")),
+      }),
+    });
+  };
   fetchGroupList = () => {
     fetch(import.meta.env.VITE_API_SERVER_URL + "groups", {
       method: "POST",
@@ -95,7 +106,7 @@ export default class GroupPage extends React.Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        sessionid: Number.parseInt(sessionStorage.getItem("currentSessionID")),
+        sessionid: Number.parseInt(localStorage.getItem("currentSessionID")),
       }),
     })
       .then((response) => {
@@ -178,7 +189,9 @@ export default class GroupPage extends React.Component {
                 </button>
               </div>
             </div>
-            <button id="gameStatus">Start</button>
+            <button id="gameStatus" onClick={this.startSession}>
+              Start
+            </button>
           </div>
         </div>
 

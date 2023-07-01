@@ -60,9 +60,11 @@ async function addAssets() {
     await pool.query(`
       create table if not exists gameData ( year integer  primary key, phase1 time,phase2 time,phase3 time,phase4 time)
     `)
+    // Truncate the table to remove existing data
+    await pool.query(`TRUNCATE TABLE gameData`);
     for (years in data){
       data[years].forEach(year=>{
-        const promise = pool.query(`insert into gameData(year,phase1,phase2,phase3,phase4) values($1,$2,$2,$2,$2)`,[year,'00:05:00']);
+        const promise = pool.query(`insert into gameData(year,phase1,phase2,phase3,phase4) values($1,$2,$2,$2,$2)`,[year,'00:00:30']);
         promises.push(promise);
       });
     }

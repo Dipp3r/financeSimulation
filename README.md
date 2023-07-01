@@ -3,7 +3,7 @@ A Forum to practice trading and investing(no deposit needed) by yourself or join
 
 <h4>SESSION TABLE</h4>
 
-```
+```sql
 CREATE TABLE public.session (
     sessionid INTEGER PRIMARY KEY,
     title VARCHAR(255),
@@ -11,12 +11,12 @@ CREATE TABLE public.session (
     time_created TIMESTAMP
 );
 ```
-```
+```sql
 alter table "session" add column time_created timestamp;
 ```
 <h4>GROUP TABLE</h4>
 
-```
+```sql
 CREATE TABLE "group" (
     groupid INTEGER PRIMARY KEY,
     name VARCHAR(255),
@@ -33,6 +33,6 @@ CREATE TABLE "group" (
     CONSTRAINT group_sessionid_fkey FOREIGN KEY (sessionid) REFERENCES "session"(sessionid)
 );
 ```
-```
+```sql
 alter table "group" add column time_created timestamp;
 ```
