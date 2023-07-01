@@ -8,6 +8,6 @@ CREATE TABLE public.session (
     sessionid INTEGER PRIMARY KEY,
     title VARCHAR(255),
     excellink VARCHAR(255),
-    time_created TIME
+    time_created TIMESTAMP
 );
 ```
