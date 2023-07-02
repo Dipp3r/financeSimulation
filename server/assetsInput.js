@@ -1,18 +1,11 @@
 const express = require("express");
-
-const bodyParser = require("body-parser");
-const app = express();
-const port = 3003;
-const db = require("./queries");
-const cors = require("cors");
+// const app = express();
 const Pool = require("pg").Pool;
-const http = require("http");
-const server = http.createServer(app);
-const WebSocket = require("ws");
-const wss = new WebSocket.Server({ server });
-const upload = require("express-fileupload");
-const fs = require("fs");
-const path = require('path');
+// const http = require("http");
+// const server = http.createServer(app);
+// const WebSocket = require("ws");
+
+
 
 // const pool = new Pool({
 //   user: "vittaex",
@@ -62,21 +55,20 @@ async function addAssets() {
     `)
     // Truncate the table to remove existing data
     await pool.query(`TRUNCATE TABLE gameData`);
-    for (years in data){
-      data[years].forEach(year=>{
-        const promise = pool.query(`insert into gameData(year,phase1,phase2,phase3,phase4) values($1,$2,$2,$2,$2)`,[year,'00:00:10']);
-        promises.push(promise);
-      });
-    }
+    data.year.forEach(year=>{
+      const promise = pool.query(`insert into gameData(year,phase1,phase2,phase3,phase4) values($1,$2,$2,$2,$2)`,[year,'00:00:10']);
+      promises.push(promise);
+    });
+
 
     await Promise.all(promises)
     .then(async ()=>{
-      await pool.end()
+      // await pool.end()
     })
 
     console.log('Assets inserted successfully');
   } catch (error) {
-    pool.end()
+    pool.end();
     console.error('Error inserting assets:', error);
   }
 }
@@ -84,9 +76,8 @@ async function addAssets() {
 async function addCreateSampleTables() {
   try {
    
-
-    for (let tableNumber = 1; tableNumber <= 7; tableNumber++) {
-      const tableName = `assetsPrice${tableNumber}`;
+    data.year.forEach(async e=>{
+      const tableName = `price_${e}`;
 
       // Create the table if it doesn't exist
       await pool.query(`
@@ -108,7 +99,7 @@ async function addCreateSampleTables() {
       await pool.query(`TRUNCATE TABLE ${tableName}`);
 
       console.log(`Table ${tableName} created and truncated`);
-    }
+    });
 
     let assetsList = [];
 
@@ -118,8 +109,9 @@ async function addCreateSampleTables() {
 
     for (let asset of assetsList) {
       let previousPhasePrice = 0;
-      for (let tableNumber = 1; tableNumber <= 7; tableNumber++) {
-        const tableName = `assetsPrice${tableNumber}`;
+      for (let e of data.year) {
+        let tableNumber = 1;
+        let tableName = `price_${e}`;
         let prices = Array(4).fill(0);
         let pricesDiff = Array(4).fill(0);
         let newPrice = 0;
@@ -153,7 +145,8 @@ async function addCreateSampleTables() {
         console.log(
           `Data inserted for asset ID ${asset.id} into ${tableName}`
         );
-      }
+        tableNumber++;
+      };
     }
 
     console.log('Sample tables and data created successfully');
@@ -166,9 +159,11 @@ async function addCreateSampleTables() {
 
 async function deleteAssetPriceTables() {
   try {
-    await pool.query(`
-      DROP TABLE IF EXISTS assetsPrice1, assetsPrice2, assetsPrice3, assetsPrice4, assetsPrice5, assetsPrice6, assetsPrice7;
-    `);
+    data.year.forEach(async e=>{
+      await pool.query(`
+        DROP TABLE IF EXISTS price_${e};
+      `);
+    });
     await pool.query(`
       DROP TABLE IF EXISTS assets;
     `);
@@ -183,6 +178,7 @@ async function deleteAssetPriceTables() {
   }
 }
 
-addAssets();
-// addCreateSampleTables()
+
+// addAssets();
+addCreateSampleTables();
 // deleteAssetPriceTables()
