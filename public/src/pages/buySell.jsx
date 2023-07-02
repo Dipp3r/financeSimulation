@@ -22,6 +22,7 @@ class SellComp extends React.Component {
       this.setState({ isClicked: false });
     }, 300);
   };
+
   submit = () => {
     this.handleClick();
     let value = document.querySelector("#amountInput").value;
@@ -35,10 +36,12 @@ class SellComp extends React.Component {
       body: JSON.stringify(obj),
     });
   };
+
   toggleSection(type) {
     sessionStorage.setItem("buySellSectionType", type);
     this.setState({ sectionType: type });
   }
+
   render() {
     const { isClicked } = this.state;
     return (
@@ -116,7 +119,9 @@ class SellComp extends React.Component {
     );
   }
 }
+
 SellComp.propTypes = {
   toggleMainDisplay: PropTypes.func.isRequired,
 };
+
 export default SellComp;
