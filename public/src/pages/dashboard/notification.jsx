@@ -1,10 +1,10 @@
 import React from "react";
 import "@assets/styles/notif.scss";
-import Alarmclock from "@assets/images/Alarmclock.svg";
 import Paper from "@assets/images/Paper.svg";
 import Coin from "@assets/images/coin.svg";
 import Group_fill from "@assets/images/Group_fill.svg";
 import Star from "@assets/images/Star.svg";
+import Time from "@components/time";
 class NotifComp extends React.Component {
   constructor(props) {
     super(props);
@@ -15,10 +15,7 @@ class NotifComp extends React.Component {
         <div id="topBar">
           <div></div>
           <p>Notification</p>
-          <div id="timer">
-            <img src={Alarmclock} alt="timer" />
-            <p>05:00</p>
-          </div>
+          <Time />
         </div>
         <div id="main">
           <div className="notif">

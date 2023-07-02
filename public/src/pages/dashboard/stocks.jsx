@@ -2,10 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import "@assets/styles/stocks.scss";
-import Alarmclock from "@assets/images/Alarmclock.svg";
+// import Alarmclock from "@assets/images/Alarmclock.svg";
 import Coin from "@assets/images/coin.svg";
 // import Gain from "@assets/images/gain.svg"
 import AssetsCompCommon from "@components/assestsCompCommon";
+import Time from "@components/time";
 class StocksComp extends React.Component {
   constructor(props) {
     super(props);
@@ -176,10 +177,7 @@ class StocksComp extends React.Component {
             <p>₹30,000</p>
           </div>
           <p>Buy/Sell</p>
-          <div id="timer">
-            <img src={Alarmclock} alt="timer" />
-            <p>05:00</p>
-          </div>
+          <Time />
         </div>
         <div id="main">
           <div id="stockInfo">

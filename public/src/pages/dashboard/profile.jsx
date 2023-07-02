@@ -1,13 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "@assets/styles/profile.scss";
-import Alarmclock from "@assets/images/Alarmclock.svg";
+// import Alarmclock from "@assets/images/Alarmclock.svg";
 import badge from "@assets/images/badge.svg";
 import emptyBadge from "@assets/images/emptyBadge.svg";
 import pie_chart from "@assets/images/pie_chart.svg";
 import Group from "@assets/images/Group.svg";
 import Vector from "@assets/images/Vector.svg";
 import Coin from "@assets/images/coin.svg";
+import Time from "@components/time";
 /*
 import Arrow_left from "@assets/images/Arrow_left.svg"
 import User_fill from "@assets/images/User_fill.svg"
@@ -45,6 +46,8 @@ class ProfileComp extends React.Component {
       });
   };
   logout = () => {
+    let countDownIntervalKey = localStorage.getItem("countDownIntervalKey");
+    if (countDownIntervalKey) clearInterval(countDownIntervalKey);
     localStorage.clear();
     this.props.toggleMainDisplay("login");
   };
@@ -58,10 +61,7 @@ class ProfileComp extends React.Component {
           {/* <img src={Arrow_left} onClick={this.props.togglePortfolioComp} alt="back_arrow" /> */}
           <div></div>
           <p>profile</p>
-          <div id="timer">
-            <img src={Alarmclock} alt="timer" />
-            <p>05:00</p>
-          </div>
+          <Time />
         </div>
         <div id="main">
           <div id="circle">

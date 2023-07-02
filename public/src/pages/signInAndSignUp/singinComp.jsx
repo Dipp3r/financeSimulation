@@ -75,6 +75,10 @@ class SigninComp extends React.Component {
           for (let i in data) {
             localStorage.setItem(i, data[i]);
           }
+          if (!localStorage.getItem("minute"))
+            localStorage.setItem("minute", 15);
+          if (!localStorage.getItem("second"))
+            localStorage.setItem("second", 0);
           this.props.toggleMainDisplay("dashboard");
         })
         .catch((error) => {

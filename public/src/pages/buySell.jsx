@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 import "@assets/styles/buySell.scss";
 import tick from "@assets/images/tick.svg";
-import Alarmclock from "@assets/images/Alarmclock.svg";
 import Coin from "@assets/images/coin.svg";
 import Arrow_left from "@assets/images/Arrow_left.svg";
+import Time from "@components/time";
 
 class SellComp extends React.Component {
   constructor(props) {
@@ -64,10 +64,7 @@ class SellComp extends React.Component {
             <img className="coin" src={Coin} alt="coin" />
             <p>₹30,000</p>
           </div>
-          <div id="timer">
-            <img src={Alarmclock} alt="timer" />
-            <p>05:00</p>
-          </div>
+          <Time />
         </div>
         <div id="main">
           <div id="about">

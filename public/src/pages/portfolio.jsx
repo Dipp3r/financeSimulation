@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import "@assets/styles/portfolio.scss";
 import Arrow_left from "@assets/images/Arrow_left.svg";
-import Alarmclock from "@assets/images/Alarmclock.svg";
+// import Alarmclock from "@assets/images/Alarmclock.svg";
 // import PieChart from "@assets/images/PieChart.svg"
 import dot1 from "@assets/images/dot1.svg";
 import dot3 from "@assets/images/dot3.svg";
@@ -18,6 +18,7 @@ import downArrow from "@assets/images/downArrow.svg";
 import AssetsComp from "@components/assestsComp";
 
 import { PieChart, Pie, Cell } from "recharts";
+import Time from "@components/time";
 // import { Pie } from 'react-chartjs-2';
 
 class PortfolioComp extends React.Component {
@@ -136,10 +137,7 @@ class PortfolioComp extends React.Component {
             alt="back_arrow"
           />
           <p>Portfolio</p>
-          <div id="timer">
-            <img src={Alarmclock} alt="timer" />
-            <p>05:00</p>
-          </div>
+          <Time />
         </div>
         <div id="main">
           {/* <img src={PieChart} alt="piechart"/> */}

@@ -4,11 +4,12 @@ import PropTypes from "prop-types";
 import "@assets/styles/team.scss";
 
 import Arrow_left from "@assets/images/Arrow_left.svg";
-import Alarmclock from "@assets/images/Alarmclock.svg";
+
 import QR from "@assets/images/QR.svg";
 
 import TeamCardComp from "@components/teamCard";
 import QRComp from "./QRComp";
+import Time from "@components/time";
 
 class TeamComp extends React.Component {
   constructor(props) {
@@ -77,10 +78,7 @@ class TeamComp extends React.Component {
             value="dashboard"
           />
           <p>Team</p>
-          <div id="timer">
-            <img src={Alarmclock} alt="timer" />
-            <p>05:00</p>
-          </div>
+          <Time />
         </div>
         <div id="main">
           <div id="QRCompPage" style={{ display: "none" }}>
