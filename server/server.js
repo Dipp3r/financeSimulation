@@ -761,7 +761,27 @@ app.post("/trade",async(req,res)=>{
   }
 });
 
-
+app.put("/buy",async (req,res)=>{
+  const {groupid,stockid,amount} = req.body;
+  console.log(groupid,stockid,amount);
+  try {
+    await pool.query(`
+      UPDATE "group" SET cash = cash - ${amount} WHERE groupid = ${groupid}
+    `);    
+    const holdings = await pool.query(`
+      SELECT holdings FROM investment WHERE groupid = ${groupid} AND stockid = ${stockid} 
+    `);
+    holdings.rowCount>0? await pool.query(`
+      UPDATE investment SET holdings = holdings + ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
+    `):
+    await pool.query(`
+      INSERT INTO investment(stockid,groupid,holdings) values(${stockid},${groupid},${amount})
+    `);
+    res.status(200).send({status:true});
+  } catch (err) {
+    
+  }
+});
 
 
 setInterval(() => {
