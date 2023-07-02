@@ -16,22 +16,21 @@ const path = require("path");
 // const uploadFolderPath = `./upload`;
 // fs.mkdir(uploadFolderPath, { recursive: true }, (err) => {});
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
 
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -128,7 +127,7 @@ const addInt = async (phase = 1, year = 1, lastYear = 0, session) => {
 };
 
 app.post("/start", async (req, res) => {
-  const [sessionid] = Object.values(req.body);
+  const { sessionid } = req.body;
   console.log(sessionid);
   let result = await pool.query("select year from gameData ORDER BY year ASC");
   let [firstyear, lastYear] = [result.rows[0].year, result.rows.pop().year];
@@ -155,7 +154,7 @@ app.get("/test", async (req, res) => {
 
 app.post("/createSession", async (request, response) => {
   let id = Math.floor(100000 + Math.random() * 900000);
-  const [title] = Object.values(request.body);
+  const { title } = request.body;
   if (title.length > 0) {
     try {
       await pool.query(
@@ -228,7 +227,7 @@ app.get("/sessions", async (request, response) => {
 });
 
 app.post("/groups", async (request, response) => {
-  const [sessionid] = Object.values(request.body);
+  const { sessionid } = request.body;
   try {
     const groups = await pool.query(
       'SELECT groupid,name,players FROM "group" WHERE sessionid=$1 ORDER BY time_created DESC',
@@ -241,7 +240,7 @@ app.post("/groups", async (request, response) => {
 });
 
 app.get("/players", async (request, response) => {
-  const [groupid] = Object.values(request.body);
+  const { groupid } = request.body;
   try {
     const players = await pool.query(
       "SELECT userid,name,mobile,role from users WHERE groupid=$1",
@@ -254,7 +253,7 @@ app.get("/players", async (request, response) => {
 });
 
 app.delete("/deleteGroup", async (request, response) => {
-  const [groupid] = Object.values(request.body);
+  const { groupid } = request.body;
   try {
     let users = await pool.query(
       `
@@ -292,7 +291,7 @@ app.delete("/deleteGroup", async (request, response) => {
 });
 
 app.delete("/removeUser", async (request, response) => {
-  const [userid] = Object.values(request.body);
+  const { userid } = request.body;
   try {
     await pool.query(
       `
@@ -309,7 +308,7 @@ app.delete("/removeUser", async (request, response) => {
       [userid]
     );
     await pool.query("DELETE FROM users WHERE userid=$1", [userid]);
-    
+
     groupid = groupid.rows[0].groupid;
     wss.broadcast({
       userid: userid,
@@ -370,7 +369,7 @@ app.put("/assignrole", async (request, response) => {
 //FORMAT request.body = {"name":"Narayanan", "mobile":"0987654321","password":"yan#123"}
 
 app.post("/signup/:id", async (request, response) => {
-  const [name, mobile, password] = Object.values(request.body);
+  const { name, mobile, password } = request.body;
   console.log(name, mobile, password);
   var groupid = Number.parseInt(request.params.id);
   try {
@@ -394,7 +393,12 @@ app.post("/signup/:id", async (request, response) => {
           player_count.rows[0].players + 1,
           groupid,
         ]);
-        wss.broadcast({userid:id,groupid:groupid,name:name,msgType:"NewUser"});
+        wss.broadcast({
+          userid: id,
+          groupid: groupid,
+          name: name,
+          msgType: "NewUser",
+        });
         response.status(200).send({ userid: id, star_count: 0 });
       } catch (error) {
         console.log("Error: " + error.message);
@@ -407,12 +411,10 @@ app.post("/signup/:id", async (request, response) => {
         ? response
             .status(400)
             .send({ status: false, msg: "You are already a registered user" })
-        : response
-            .status(400)
-            .send({
-              status: false,
-              msg: "You are not authorized to enter this group",
-            });
+        : response.status(400).send({
+            status: false,
+            msg: "You are not authorized to enter this group",
+          });
     }
   } catch (error) {
     console.log("error" + error.message);
@@ -432,13 +434,14 @@ app.get("/portfolio/:id", async (request, response) => {
       'SELECT networth, stocks, commodities, cash, mutual_funds FROM "group" WHERE groupid = $1',
       [groupid]
     );
-    const [networth, stocks, commodities, funds] = Object.values(
+    const [networth, stocks, commodities, cash, funds] = Object.values(
       products.rows[0]
     );
     response.status(200).send({
       networth: networth,
       stocks: stocks,
       commodities: commodities,
+      cash: cash,
       mutual_funds: funds,
     });
   } catch (error) {
@@ -447,7 +450,7 @@ app.get("/portfolio/:id", async (request, response) => {
 });
 
 app.get("/login/:id", async (req, res) => {
-  const [mobile, password] = Object.values(req.body);
+  const { mobile, password } = req.body;
   var groupid = Number.parseInt(req.params.id);
   try {
     let result = await pool.query(
@@ -474,12 +477,10 @@ app.get("/login/:id", async (req, res) => {
           res.status(401).send({ status: false, msg: "Invalid password" });
         }
       } else {
-        res
-          .status(400)
-          .send({
-            status: false,
-            msg: "You are not a registered user of this group",
-          });
+        res.status(400).send({
+          status: false,
+          msg: "You are not a registered user of this group",
+        });
       }
     } else {
       res
@@ -506,7 +507,7 @@ app.get("/team/:id", async (req, res) => {
 
 app.get("/news", async (req, res) => {
   try {
-    const news = await pool.query("SELECT * FROM gameData");
+    const news = await pool.query("SELECT * FROM gameData ORDER BY year ASC");
     res.status(200).send(news.rows);
   } catch (error) {
     console.log("Error: " + error.message);
@@ -515,7 +516,7 @@ app.get("/news", async (req, res) => {
 });
 
 app.put("/editTime", async (req, res) => {
-  const [year, phase, time] = Object.values(req.body);
+  const { year, phase, time } = req.body;
   try {
     const response = await pool.query(
       `UPDATE gameData SET phase${phase} = $1 WHERE year = $2`,
@@ -583,7 +584,7 @@ app.put("/renameAsset", async (req, res) => {
 });
 
 app.delete("/deleteSession", async (req, res) => {
-  const [sessionId] = Object.values(req.body);
+  const { sessionId } = req.body;
   try {
     const promises = [];
     let groups = await pool.query(
@@ -674,7 +675,7 @@ app.get("/getAssets", async (req, res) => {
 });
 
 app.put("/renameGroup", async (req, res) => {
-  const [groupid, name] = Object.values(req.body);
+  const { groupid, name } = req.body;
   try {
     await pool.query(
       `
@@ -685,6 +686,61 @@ app.put("/renameGroup", async (req, res) => {
     res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false });
+  }
+});
+
+app.get("/invest", async (req, res) => {
+  const { groupid } = req.body;
+  try {
+    const data = await pool.query(
+      `
+      SELECT year,phase FROM "session" WHERE sessionid = (SELECT sessionid FROM "group" WHERE groupid = $1);
+    `,
+      [groupid]
+    );
+    const { year, phase } = data.rows[0];
+    const result = await pool.query(`
+      SELECT assets.id,assets.asset_type,assets.asset_name,price_${year}.phase${phase}_price as asset_price,price_${year}.phase${phase}_diff as asset_diff FROM assets,price_${year} WHERE assets.id = price_${year}.asset_id ORDER BY assets.asset_type,assets.asset_name ASC
+    `);
+    const investment = await pool.query(`
+      SELECT stockid,holdings FROM investment WHERE groupid = ${groupid} ORDER BY stockid ASC
+    `);
+    const holdings = {};
+    investment.rows.forEach(e=>{
+      holdings[e["stockid"]]=e["holdings"];
+    }); 
+
+    const assets = {};
+
+    result.rows.forEach((row) => {
+      const { id, asset_type, asset_name, asset_price, asset_diff } = row;
+      if (!assets.hasOwnProperty(asset_type)) {
+        assets[asset_type] = [];
+      }
+      holdings[`${id}`]?
+      assets[asset_type].push({
+        id: id,
+        name: asset_name,
+        price: asset_price,
+        diff: asset_diff,
+        holdings: holdings[`${id}`],
+      }):assets[asset_type].push({
+        id: id,
+        name: asset_name,
+        price: asset_price,
+        diff: asset_diff,
+        holdings:0,
+      });
+    });
+
+    // Sort assets swithin each type alphabetically
+    Object.keys(assets).forEach((assetType) => {
+      assets[assetType].sort((a, b) => a.name.localeCompare(b.name));
+    });
+    res.status(200).send(assets);
+    
+  } catch (err) {
+    res.status(400).send({ status: false, msg: err.message });
   }
 });
 
