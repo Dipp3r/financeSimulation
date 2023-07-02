@@ -779,10 +779,29 @@ app.put("/buy",async (req,res)=>{
     `);
     res.status(200).send({status:true});
   } catch (err) {
-    
+    res.status(400).send({ status: false, msg: err.message });
   }
 });
 
+app.put("/sell",async (req,res)=>{
+  const {groupid,stockid,amount} = req.body;
+  console.log(groupid,stockid,amount);
+  try {
+    await pool.query(`
+      UPDATE "group" SET cash = cash + ${amount} WHERE groupid = ${groupid}
+    `);    
+    const holdings = await pool.query(`
+      SELECT holdings FROM investment WHERE groupid = ${groupid} AND stockid = ${stockid} 
+    `);
+    holdings.rowCount>0? await pool.query(`
+      UPDATE investment SET holdings = holdings - ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
+    `):"";
+
+    res.status(200).send({status:true});
+  } catch (err) {
+    res.status(400).send({ status: false, msg: err.message });
+  }
+});
 
 setInterval(() => {
   wss.broadcast({ type: "time", message: "new news" });
