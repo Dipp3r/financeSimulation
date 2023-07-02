@@ -728,7 +728,9 @@ app.post("/invest", async (req, res) => {
     `,
       [groupid]
     );
-    const { year, phase } = data.rows[0];
+    let { year, phase } = data.rows[0];
+    year ??=2099
+    phase ??=1
     const result = await pool.query(`
       SELECT assets.id,assets.asset_type,assets.asset_name,price_${year}.phase${phase}_price as asset_price,price_${year}.phase${phase}_diff as asset_diff FROM assets,price_${year} WHERE assets.id = price_${year}.asset_id ORDER BY assets.asset_type,assets.asset_name ASC
     `);

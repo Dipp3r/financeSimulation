@@ -11,131 +11,9 @@ class StocksComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      stocks: [
-        {
-          id: 0,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 1,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 2,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 3,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 4,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 5,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 6,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 7,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 8,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 9,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 10,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 11,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 5,
-        },
-      ],
-      mutualFund: [
-        {
-          id: 0,
-          name: "Tar Tar",
-          totalPrice: 800,
-          changedTotalPrice: 10,
-          singlePrice: 900,
-          singlePercent: 10,
-        },
-        {
-          id: 1,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 2,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 5,
-        },
-      ],
-      commodities: [],
+      stock: [],
+      mutualFund: [],
+      commodity: [],
       content: [],
     };
   }
@@ -154,21 +32,41 @@ class StocksComp extends React.Component {
     switch (target.getAttribute("value")) {
       case "stock":
       default:
-        content = this.state.stocks;
+        content = this.state.stock;
         break;
       case "mutualFund":
         content = this.state.mutualFund;
         break;
       case "commodities":
-        content = this.state.commodities;
+        content = this.state.commodity;
         break;
     }
     this.setState({ content: content });
   };
+  fetchList = () => {
+    fetch(import.meta.env.VITE_API_SERVER_URL + "invest", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ groupid: localStorage.getItem("groupid") }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState(data, () => {
+          this.toggleStatusButton();
+        });
+      });
+  };
   componentDidMount() {
-    this.toggleStatusButton();
+    this.fetchList();
   }
   render() {
+    {
+      console.log(this.state);
+    }
     return (
       <div id="stocks">
         <div id="topBar">
@@ -209,15 +107,16 @@ class StocksComp extends React.Component {
             </div>
           </div>
           <div id="content">
-            {this.state.content.map((element, index) => {
+            {this.state.content.map((asset, index) => {
               // console.log(element,index)
               return (
                 <AssetsCompCommon
-                  key={index}
-                  name={element.name}
-                  totalPrice={element.totalPrice}
-                  singlePrice={element.singlePrice}
-                  singlePercent={element.singlePercent}
+                  key={asset.id}
+                  id={asset.id}
+                  name={asset.name}
+                  holdings={asset.holdings}
+                  price={asset.price}
+                  diff={asset.diff}
                   position={index % 2 === 0 ? "top" : "bottom"}
                   toggleMainDisplay={this.props.toggleMainDisplay}
                 />
