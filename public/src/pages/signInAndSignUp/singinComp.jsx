@@ -110,7 +110,7 @@ class SigninComp extends React.Component {
             className="formInput"
             type="password"
             name="password"
-            placeholder="Create Password"
+            placeholder="Password"
             // value={formData.password}
             // onChange={handleInputChange}
           />
@@ -118,10 +118,10 @@ class SigninComp extends React.Component {
           <div>
             <button id="loginButton" onClick={this.props.toggleInitPage}>
               <img src={Arrow_left} />
-              signup
+              Sign up
             </button>
             <button id="loginButton" onClick={this.submit}>
-              login
+              Login
             </button>
           </div>
         </div>

@@ -689,7 +689,7 @@ app.put("/renameGroup", async (req, res) => {
   }
 });
 
-app.get("/invest", async (req, res) => {
+app.post("/invest", async (req, res) => {
   const { groupid } = req.body;
   try {
     const data = await pool.query(
@@ -743,6 +743,46 @@ app.get("/invest", async (req, res) => {
     res.status(400).send({ status: false, msg: err.message });
   }
 });
+
+app.post("/trade",async(req,res)=>{
+  const {groupid,stockid} = req.body;
+  try {
+    let cash = await pool.query(`
+    SELECT cash FROM "group" WHERE groupid = ${groupid} 
+    `);
+    let holding = await pool.query(`
+    SELECT holdings FROM investment WHERE groupid = ${groupid} AND stockid = ${stockid} 
+    `);
+    cash = cash.rows[0]["cash"];
+    holding.rowCount>0? holding = holding.rows[0]["holdings"]: holding = 0;
+    res.status(200).send({cash:cash,holding:holding});
+  } catch (err) {
+    res.status(400).send({ status: false, msg: err.message });
+  }
+});
+
+app.put("/buy",async (req,res)=>{
+  const {groupid,stockid,amount} = req.body;
+  console.log(groupid,stockid,amount);
+  try {
+    await pool.query(`
+      UPDATE "group" SET cash = cash - ${amount} WHERE groupid = ${groupid}
+    `);    
+    const holdings = await pool.query(`
+      SELECT holdings FROM investment WHERE groupid = ${groupid} AND stockid = ${stockid} 
+    `);
+    holdings.rowCount>0? await pool.query(`
+      UPDATE investment SET holdings = holdings + ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
+    `):
+    await pool.query(`
+      INSERT INTO investment(stockid,groupid,holdings) values(${stockid},${groupid},${amount})
+    `);
+    res.status(200).send({status:true});
+  } catch (err) {
+    
+  }
+});
+
 
 setInterval(() => {
   wss.broadcast({ type: "time", message: "new news" });
