@@ -19,6 +19,11 @@ class InitialComp extends React.Component {
     this.setState({ isSignin: isSignin });
   };
   componentDidMount() {
+    if (
+      localStorage.getItem("userid") &&
+      localStorage.getItem("groupid") == window.location.href.split("/").pop()
+    )
+      this.props.toggleMainDisplay("dashboard");
     let groupid = window.location.href.split("/").pop();
     localStorage.setItem("groupid", groupid);
   }
