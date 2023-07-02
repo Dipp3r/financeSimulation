@@ -1,6 +1,6 @@
 @import "main";
 
-form{
+.form{
     width:270px;
     input{
         margin-top:30px;
@@ -18,6 +18,13 @@ form{
         &:focus{
             outline:none;
         }
+        &:-webkit-autofill,
+          &:-webkit-autofill:hover,
+          &:-webkit-autofill:focus,
+          &:-webkit-autofill:active {
+            -webkit-background-clip: text;
+            background-color: transparent !important;
+          }
     }
     div{
         position:absolute;

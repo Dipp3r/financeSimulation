@@ -446,7 +446,7 @@ app.get("/portfolio/:id", async (request, response) => {
   }
 });
 
-app.get("/login/:id", async (req, res) => {
+app.post("/login/:id", async (req, res) => {
   const [mobile, password] = Object.values(req.body);
   var groupid = Number.parseInt(req.params.id);
   try {
