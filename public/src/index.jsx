@@ -86,6 +86,10 @@ class IndexComp extends React.Component {
     socket.addEventListener("message", function (event) {
       console.log("Received message from server:", JSON.parse(event.data));
     });
+
+    //setting the timer
+    if (!localStorage.getItem("minute")) localStorage.setItem("minute", 15);
+    if (!localStorage.getItem("second")) localStorage.setItem("second", 0);
   }
   render() {
     console.log(this.state);

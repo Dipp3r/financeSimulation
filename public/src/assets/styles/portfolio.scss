@@ -188,7 +188,7 @@
                 margin:12px 0px;
                 width: 320px;
                 height: 40px;
-                @include flex(row,space-between,flex-start);
+                @include flex(row,space-between,center);
                 // display: block;
                 #name{
                     margin:0px;

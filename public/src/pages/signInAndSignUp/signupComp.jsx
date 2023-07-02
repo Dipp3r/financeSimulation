@@ -123,7 +123,7 @@ class SignupComp extends React.Component {
           />
           <p className="error">{this.state.confirmPasswordError}</p>
           <div>
-            <button id="loginButton" onClick={this.props.toggleInitPage}>
+            <button onClick={this.props.toggleInitPage}>
               <img src={Arrow_left} />
               Login
             </button>

@@ -44,17 +44,17 @@
             font-style: normal;
             font-weight: 500;
             font-size: 20px;
-            color: #223F80;
+            color: #FFFFFF;
             border-radius: 35px;   
-            img{
-                height:20px;
-            }
-            &:focus{
-                opacity: 0.8;
-                color: #FFFFFF;
-                background: #223F80;
-            } 
-    }
+            background: #223F80;
+          }
+          img{
+              height:15px;
+              padding: 0px 10px;
+          } 
+          button{
+            @include flex(row,space-around,center);
+          }
     }
     .error{
         font-size: 12px;

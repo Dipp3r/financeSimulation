@@ -3,14 +3,16 @@ import PropTypes from "prop-types";
 
 import "@assets/styles/buySell.scss";
 import tick from "@assets/images/tick.svg";
-import Alarmclock from "@assets/images/Alarmclock.svg";
 import Coin from "@assets/images/coin.svg";
 import Arrow_left from "@assets/images/Arrow_left.svg";
+import Time from "@components/time";
 
 class SellComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: "",
+      holdings: 0,
       isClicked: false,
       sectionType: sessionStorage.getItem("buySellSectionType") || "buy",
     };
@@ -41,7 +43,10 @@ class SellComp extends React.Component {
     sessionStorage.setItem("buySellSectionType", type);
     this.setState({ sectionType: type });
   }
-
+  componentDidMount() {
+    let obj = JSON.parse(localStorage.getItem("asset"));
+    this.setState(obj);
+  }
   render() {
     const { isClicked } = this.state;
     return (
@@ -64,14 +69,13 @@ class SellComp extends React.Component {
             <img className="coin" src={Coin} alt="coin" />
             <p>₹30,000</p>
           </div>
-          <div id="timer">
-            <img src={Alarmclock} alt="timer" />
-            <p>05:00</p>
-          </div>
+          <Time />
         </div>
         <div id="main">
           <div id="about">
-            <p>Ram Dam ₹0</p>
+            <p>
+              {this.state.name} ₹{this.state.holdings}
+            </p>
             <div>
               <button
                 onClick={() => {

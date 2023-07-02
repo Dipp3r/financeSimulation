@@ -22,10 +22,12 @@ class InitialComp extends React.Component {
     if (
       localStorage.getItem("userid") &&
       localStorage.getItem("groupid") == window.location.href.split("/").pop()
-    )
+    ) {
       this.props.toggleMainDisplay("dashboard");
-    let groupid = window.location.href.split("/").pop();
-    localStorage.setItem("groupid", groupid);
+    } else {
+      let groupid = window.location.href.split("/").pop();
+      localStorage.setItem("groupid", groupid);
+    }
   }
   render() {
     return (
