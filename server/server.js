@@ -453,6 +453,8 @@ app.post("/signup/:id", async (request, response) => {
 
 app.get("/portfolio/:id", async (request, response) => {
   const groupid = request.params.id;
+  let networth = 0,overall = 0;
+  const result = {};
   // const ratio  = (numerator,base)=>{
   //   if(numerator!==0){
   //     return Number.parseInt(Math.round((numerator/base)*100));
@@ -460,20 +462,51 @@ app.get("/portfolio/:id", async (request, response) => {
   //   return 0;
   // }
   try {
-    const products = await pool.query(
-      'SELECT networth, stocks, commodities, cash, mutual_funds FROM "group" WHERE groupid = $1',
+    let gamedata = await pool.query(`
+      SELECT year,phase FROM "session" WHERE sessionid = (SELECT sessionid FROM "group" WHERE groupid = ${groupid});
+    `);
+    const {year,phase} = gamedata.rows[0];
+
+    let cashAmt = await pool.query(
+      'SELECT cash FROM "group" WHERE groupid = $1',
       [groupid]
-    );
-    const [networth, stocks, commodities, cash, funds] = Object.values(
-      products.rows[0]
-    );
-    response.status(200).send({
-      networth: networth,
-      stocks: stocks,
-      commodities: commodities,
-      cash: cash,
-      mutual_funds: funds,
-    });
+    ); cashAmt = cashAmt.rows[0]; result["cash"]=cashAmt.cash; networth+=cashAmt.cash;
+
+    let products = await pool.query(`
+      SELECT assets.asset_type, SUM(investment.holdings) AS value
+      FROM assets
+      JOIN investment ON assets.id = investment.stockid
+      WHERE investment.groupid = ${groupid}
+      GROUP BY assets.asset_type
+    `); products = products.rows;
+    
+    products.forEach(e=>{
+      result[e.asset_type] = Number.parseInt(e.value);
+      networth = networth + Number.parseInt(e.value); 
+    }); result["networth"] = networth;
+
+    // const {stock, commodity, cash, mutualFund} = result;
+
+    const holding_diff = await pool.query(`
+      SELECT t1.asset_type, SUM(t2.holdings * t3.phase${phase}_diff/100) AS holding_diff
+      FROM assets AS t1
+      JOIN investment AS t2 ON t1.id = t2.stockid
+      JOIN price_${year} t3 ON t2.stockid = t3.asset_id
+      WHERE t2.groupid = ${groupid}
+      GROUP BY t1.asset_type;
+    `);
+    
+    holding_diff.rows.forEach(e=>{
+      result[e.asset_type+"_diff"] = Number.parseInt(e.holding_diff);
+      overall += Number.parseInt(e.holding_diff); 
+    }); result["overall"] = overall; result["overall_diff"] = Math.round(((overall/networth)*100)*100)/100;
+
+    let yearly = await pool.query(`
+      SELECT _${year} from "group" where groupid = ${groupid}
+    `); yearly = yearly.rows[0][`_${year}`]; result["yearly"] = yearly; result["yearly_diff"] = Math.round(((yearly/networth)*100)*100)/100;
+
+    response.status(200).send(result);
+
   } catch (error) {
     console.log("Error: " + error.message);
   }
@@ -796,9 +829,26 @@ app.post("/trade", async (req, res) => {
   }
 });
 
+async function yearlyUpdate(groupid,amount,stockid,OP){
+  try {
+    let gamedata = await pool.query(`
+      SELECT year,phase FROM "session" WHERE sessionid = (SELECT sessionid FROM "group" WHERE groupid = ${groupid});
+    `);
+  const {year,phase} = gamedata.rows[0];
+  pool.query(`
+    UPDATE "group" 
+    SET _${year} = _${year} ${OP} (${amount} * price_${year}.phase${phase}_diff / 100) 
+    FROM price_${year}
+    WHERE groupid = ${groupid} 
+    AND price_${year}.asset_id = ${stockid};
+  `);
+  } catch (err) {
+    res.status(400).send({status:false,err:err.message,msg:"Could not update yearly amount of the group"});
+  }
+}
+
 app.put("/buy", async (req, res) => {
   const { groupid, stockid, amount } = req.body;
-  console.log(groupid, stockid, amount);
   try {
     await pool.query(`
       UPDATE "group" SET cash = cash - ${amount} WHERE groupid = ${groupid}
@@ -813,6 +863,7 @@ app.put("/buy", async (req, res) => {
       : await pool.query(`
       INSERT INTO investment(stockid,groupid,holdings) values(${stockid},${groupid},${amount})
     `);
+    await yearlyUpdate(groupid,amount,stockid,"+");
     res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
@@ -821,7 +872,6 @@ app.put("/buy", async (req, res) => {
 
 app.put("/sell", async (req, res) => {
   const { groupid, stockid, amount } = req.body;
-  console.log(groupid, stockid, amount);
   try {
     await pool.query(`
       UPDATE "group" SET cash = cash + ${amount} WHERE groupid = ${groupid}
@@ -834,7 +884,7 @@ app.put("/sell", async (req, res) => {
       UPDATE investment SET holdings = holdings - ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
     `)
       : "";
-
+      await yearlyUpdate(groupid,amount,stockid,"-");
     res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
