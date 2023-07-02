@@ -34,119 +34,24 @@ class PortfolioComp extends React.Component {
         { name: "commidities", value: 0, color: "#6F82AB" },
         { name: "cash", value: 1, color: "#CADAFF" },
       ],
-      stocks: [
-        {
-          id: 0,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 1,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 2,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 3,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 4,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 5,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 6,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 7,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 8,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 9,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 10,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-        {
-          id: 11,
-          name: "Ram dom",
-          totalPrice: 5000,
-          changedTotalPrice: 200,
-          singlePrice: 100,
-          singlePercent: 2,
-        },
-      ],
+      stock: [],
+      mutualFund: [],
+      commodity: [],
     };
     this.toggleExpand = this.toggleExpand.bind(this);
   }
-  toggleExpand(e) {
+  toggleExpand(event, contentLength) {
     try {
-      let element = e.currentTarget.getAttribute("id");
+      let element = event.currentTarget.getAttribute("id");
       let last_card = document.querySelector("#" + element);
       last_card.style.marginBottom = "0px";
     } catch (error) {
       console.log(error);
       //we get error for all the cases except for the last card
     }
-    let name = e.currentTarget.getAttribute("name");
+    let name = event.currentTarget.getAttribute("name");
     let target = document.querySelector("#" + name);
-    let arrow = e.currentTarget.querySelector(".arrow");
+    let arrow = event.currentTarget.querySelector(".arrow");
     let display = this.state[name];
     console.log(display);
     if (display) {
@@ -155,7 +60,7 @@ class PortfolioComp extends React.Component {
       arrow.style.transform = "rotateX(0deg)";
     } else {
       display = true;
-      target.style.height = `${(this.state.stocks.length - 1) * 70}px`;
+      target.style.height = `${(contentLength + 1) * 70}px`;
       arrow.style.transform = "rotateX(180deg)";
       // target.scrollIntoView({ behavior: "smooth",inline:'center'})
     }
@@ -201,8 +106,24 @@ class PortfolioComp extends React.Component {
         });
       });
   };
+  fetchList = () => {
+    fetch(import.meta.env.VITE_API_SERVER_URL + "invest", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ groupid: localStorage.getItem("groupid") }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState(data);
+      });
+  };
   componentDidMount() {
     this.fetchInfo();
+    this.fetchList();
   }
   render() {
     return (
@@ -300,7 +221,13 @@ class PortfolioComp extends React.Component {
             </div>
           </div>
 
-          <div className="card" name="stocksExpand" onClick={this.toggleExpand}>
+          <div
+            className="card"
+            name="stocksExpand"
+            onClick={(event) => {
+              this.toggleExpand(event, this.state.stock.length);
+            }}
+          >
             <div id="left">
               <p>Stocks</p>
             </div>
@@ -321,15 +248,14 @@ class PortfolioComp extends React.Component {
           </div>
 
           <div id="stocksExpand" className="expand">
-            {this.state.stocks.map((stock) => {
+            {this.state.stock.map((stock) => {
               return (
                 <AssetsComp
                   key={stock.id}
                   name={stock.name}
-                  totalPrice={stock.totalPrice}
-                  changedTotalPrice={stock.changedTotalPrice}
-                  singlePrice={stock.singlePrice}
-                  singlePercent={stock.singlePercent}
+                  holdings={stock.holdings}
+                  price={stock.price}
+                  diff={stock.diff}
                 />
               );
             })}
@@ -338,7 +264,9 @@ class PortfolioComp extends React.Component {
           <div
             className="card"
             name="mutualFundsExpand"
-            onClick={this.toggleExpand}
+            onClick={(event) => {
+              this.toggleExpand(event, this.state.mutualFund.length);
+            }}
           >
             <div id="left">
               <p>Mutual Funds</p>
@@ -359,15 +287,14 @@ class PortfolioComp extends React.Component {
             </div>
           </div>
           <div id="mutualFundsExpand" className="expand">
-            {this.state.stocks.map((stock) => {
+            {this.state.mutualFund.map((stock) => {
               return (
                 <AssetsComp
                   key={stock.id}
                   name={stock.name}
-                  totalPrice={stock.totalPrice}
-                  changedTotalPrice={stock.changedTotalPrice}
-                  singlePrice={stock.singlePrice}
-                  singlePercent={stock.singlePercent}
+                  holdings={stock.holdings}
+                  price={stock.price}
+                  diff={stock.diff}
                 />
               );
             })}
@@ -376,7 +303,9 @@ class PortfolioComp extends React.Component {
             className="card final"
             id="final"
             name="commoditiesExpand"
-            onClick={this.toggleExpand}
+            onClick={(event) => {
+              this.toggleExpand(event, this.state.commodity.length);
+            }}
           >
             <div id="left">
               <p>Commodities</p>
@@ -397,15 +326,14 @@ class PortfolioComp extends React.Component {
             </div>
           </div>
           <div id="commoditiesExpand" className="expand">
-            {this.state.stocks.map((stock) => {
+            {this.state.commodity.map((stock) => {
               return (
                 <AssetsComp
                   key={stock.id}
                   name={stock.name}
-                  totalPrice={stock.totalPrice}
-                  changedTotalPrice={stock.changedTotalPrice}
-                  singlePrice={stock.singlePrice}
-                  singlePercent={stock.singlePercent}
+                  holdings={stock.holdings}
+                  price={stock.price}
+                  diff={stock.diff}
                 />
               );
             })}

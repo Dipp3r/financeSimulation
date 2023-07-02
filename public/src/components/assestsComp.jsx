@@ -4,34 +4,40 @@ import PropTypes from "prop-types";
 import loss from "@assets/images/loss.svg";
 import gain from "@assets/images/gain.svg";
 export default class AssetsComp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: this.props.name,
-      totalPrice: this.props.totalPrice,
-      changedTotalPrice: this.props.changedTotalPrice,
-      singlePrice: this.props.singlePrice,
-      singlePercent: this.props.singlePercent,
-    };
-  }
   render() {
     return (
       <div>
         <div className="row">
-          <p id="name">{this.state.name}</p>
+          <p id="name">{this.props.name}</p>
           <div>
-            <p>₹{this.state.singlePrice}</p>
-            <div>
-              <img src={gain} alt="gain" />
-              <p className="gain">{this.state.singlePercent}%</p>
-            </div>
+            <p>₹{this.props.price}</p>
+            {this.props.diff > 0 && (
+              <div>
+                <img src={gain} alt="gain" />
+                <p className="gain">{this.props.diff}%</p>
+              </div>
+            )}
+            {this.props.diff < 0 && (
+              <div>
+                <img src={loss} alt="loss" />
+                <p className="loss">{-this.props.diff}%</p>
+              </div>
+            )}
           </div>
           <div>
-            <p>₹{this.state.totalPrice}</p>
-            <div>
-              <img src={loss} alt="loss" />
-              <p className="loss">₹{this.state.changedTotalPrice}</p>
-            </div>
+            <p>₹{this.props.holdings}</p>
+            {this.props.holdings > 0 && (
+              <div>
+                <img src={gain} alt="gain" />
+                <p className="gain">{this.props.holdings}%</p>
+              </div>
+            )}
+            {this.props.holdings < 0 && (
+              <div>
+                <img src={loss} alt="loss" />
+                <p className="loss">{-this.props.holdings}%</p>
+              </div>
+            )}
           </div>
         </div>
         <hr />
@@ -41,8 +47,7 @@ export default class AssetsComp extends React.Component {
 }
 AssetsComp.propTypes = {
   name: PropTypes.string.isRequired,
-  totalPrice: PropTypes.number.isRequired,
-  changedTotalPrice: PropTypes.number.isRequired,
-  singlePrice: PropTypes.number.isRequired,
-  singlePercent: PropTypes.number.isRequired,
+  holdings: PropTypes.number.isRequired,
+  price: PropTypes.number.isRequired,
+  diff: PropTypes.number.isRequired,
 };
