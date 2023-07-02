@@ -28,10 +28,9 @@
     }
     div{
         position:absolute;
-        bottom:0;
+        bottom:50px;
         left:0;
         width: 100vw;
-        height:150px;
         @include flex(row,space-around,center);
         #loginButton,#signupButton{
             @include flex(row,space-around,center);
