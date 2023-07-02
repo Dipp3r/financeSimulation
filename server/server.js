@@ -754,13 +754,16 @@ app.post("/invest", async (req, res) => {
             price: asset_price,
             diff: asset_diff,
             holdings: holdings[`${id}`],
+            holdings_diff: holdings[`${id}`] * (asset_diff/100)
           })
+
         : assets[asset_type].push({
             id: id,
             name: asset_name,
             price: asset_price,
             diff: asset_diff,
             holdings: 0,
+            holdings_diff: 0 
           });
     });
 
