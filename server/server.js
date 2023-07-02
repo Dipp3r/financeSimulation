@@ -689,7 +689,7 @@ app.put("/renameGroup", async (req, res) => {
   }
 });
 
-app.get("/invest", async (req, res) => {
+app.post("/invest", async (req, res) => {
   const { groupid } = req.body;
   try {
     const data = await pool.query(
@@ -743,6 +743,26 @@ app.get("/invest", async (req, res) => {
     res.status(400).send({ status: false, msg: err.message });
   }
 });
+
+app.post("/trade",async(req,res)=>{
+  const {groupid,stockid} = req.body;
+  try {
+    let cash = await pool.query(`
+    SELECT cash FROM "group" WHERE groupid = ${groupid} 
+    `);
+    let holding = await pool.query(`
+    SELECT holdings FROM investment WHERE groupid = ${groupid} AND stockid = ${stockid} 
+    `);
+    cash = cash.rows[0]["cash"];
+    holding.rowCount>0? holding = holding.rows[0]["holdings"]: holding = 0;
+    res.status(200).send({cash:cash,holding:holding});
+  } catch (err) {
+    res.status(400).send({ status: false, msg: err.message });
+  }
+});
+
+
+
 
 setInterval(() => {
   wss.broadcast({ type: "time", message: "new news" });
