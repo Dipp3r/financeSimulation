@@ -52,3 +52,7 @@ CREATE TABLE investment (
     FOREIGN KEY (stockid) REFERENCES assets (id)
 );
 ```
+WEB Sockets message types:
+```python
+msgType:  {“GameChg”, “RoleChg”, “NewUser”, ”NewsUpt”, ”RemoveUser”}
+```

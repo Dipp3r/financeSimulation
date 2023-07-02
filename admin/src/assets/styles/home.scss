@@ -109,16 +109,16 @@
         }
         #editMainSection {
           height: 70%;
-          padding: 30px 40px;
+          padding: 30px 20px;
           overflow-y: scroll;
           div {
             @include flex(row, flex-start, center);
             p {
-              margin: 8px 15px;
+              margin: 8px 5px;
               font-family: "Montserrat";
               font-style: normal;
               font-weight: 500;
-              font-size: 18px;
+              font-size: 20px;
               color: #626262;
             }
             input{
@@ -127,9 +127,9 @@
               margin: 8px 15px;
               font-family: "Montserrat";
               font-style: normal;
-              font-weight: 500;
-              font-size: 18px;
-              color: #626262;
+              font-weight: 400;
+              font-size: 20px;
+              color: #223F80;
               &:focus {
                 // border: 2px solid black;
                 outline: inset;
