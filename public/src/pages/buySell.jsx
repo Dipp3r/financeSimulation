@@ -12,6 +12,7 @@ class SellComp extends React.Component {
     super(props);
     this.state = {
       isClicked: false,
+      sectionType: sessionStorage.getItem("buySellSectionType") || "buy",
     };
   }
 
@@ -21,8 +22,23 @@ class SellComp extends React.Component {
       this.setState({ isClicked: false });
     }, 300);
   };
+  submit = () => {
+    let value = document.querySelector("#amountInput").value;
+    let obj = {};
+    obj.value = value;
+    fetch(import.meta.env.VITE_API_SERVER_URL + "createSession", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(obj),
+    });
+  };
+  toggleSection(type) {
+    sessionStorage.setItem("buySellSectionType", type);
+    this.setState({ sectionType: type });
+  }
   render() {
-    const { isClicked } = this.state;
     return (
       <div id="sell">
         <div id="success">
@@ -52,23 +68,43 @@ class SellComp extends React.Component {
           <div id="about">
             <p>Ram Dam ₹0</p>
             <div>
-              <button>BUY</button>
-              <button>SELL</button>
+              <button
+                onClick={() => {
+                  this.toggleSection("buy");
+                }}
+                className={this.state.sectionType == "buy" && "buttonClicked"}
+              >
+                BUY
+              </button>
+              <button
+                onClick={() => {
+                  this.toggleSection("sell");
+                }}
+                className={this.state.sectionType == "sell" && "buttonClicked"}
+              >
+                SELL
+              </button>
             </div>
           </div>
           <div id="content">
             <p>ENTER AMOUNT</p>
             <div id="amount">
               <p>₹</p>
-              <input type="number" placeholder="1,82,00,000" />
+              <input
+                id="amountInput"
+                type="number"
+                placeholder="1000"
+                inputMode="numeric"
+              />
             </div>
+            {this.state.sectionType == "sell" && <button>sell all</button>}
           </div>
           <div id="fixed">
             <button
-              className={`sell-button ${isClicked ? "clicked" : ""}`}
-              onClick={this.handleClick}
+              className={this.state.sectionType + `-button`}
+              onClick={this.submit}
             >
-              BUY
+              {this.state.sectionType.toUpperCase()}
             </button>
           </div>
         </div>

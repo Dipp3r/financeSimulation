@@ -19,7 +19,7 @@ class ProfileComp extends React.Component {
   // constructor(props){
   //     super(props);
   // }
-  triggerDelay = 1000;
+  triggerDelay = 500;
   updateProfileInfo = () => {
     fetch(
       import.meta.env.VITE_API_SERVER_URL +

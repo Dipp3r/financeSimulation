@@ -95,12 +95,11 @@
                     padding:10px;
                     width:50%;
                     color: rgba(34, 63, 128, 0.5);
-                    &:focus{
-                        color: #223F80;
-                        border-bottom:3px solid #223F80;
-                    }
-                    
-                }
+                  }
+                  .buttonClicked{
+                      color: #223F80;
+                      border-bottom:3px solid #223F80;
+                  } 
             }
         }
         #content{
@@ -146,11 +145,28 @@
             position:fixed;
             bottom:0px;
             // z-index:0;
+            .buy-button {
+              margin: 40px;
+              width: 282px;
+              height: 42px;
+              background: #33a05f;
+              border-radius: 4px;
+              font-family: 'Montserrat';
+              font-style: normal;
+              font-weight: 600;
+              font-size: 20px;
+              color: #ffffff;
+              transition: transform 0.3s ease;
+            
+              &.clicked {
+                transform: scale(0.9);
+              }
+            }
             .sell-button {
                 margin: 40px;
                 width: 282px;
                 height: 42px;
-                background: #33a05f;
+                background: #a03333;
                 border-radius: 4px;
                 font-family: 'Montserrat';
                 font-style: normal;
