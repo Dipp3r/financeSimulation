@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "@assets/styles/signup.scss";
 import coin from "@assets/images/coin.svg";
 // import FormLogin from "@components/loginForm";
-import Arrow_left from "@assets/images/Arrow_left.svg";
+import Arrow_left from "@assets/images/backArrow.png";
 
 import validator from "@utils/validator";
 class SigninComp extends React.Component {
