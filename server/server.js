@@ -16,6 +16,10 @@ const path = require("path");
 // const uploadFolderPath = `./upload`;
 // fs.mkdir(uploadFolderPath, { recursive: true }, (err) => {});
 
+//INITIALIZING VITTAE COIN
+
+const COINS = 100;
+
 const pool = new Pool({
   user: "postgres",
   host: "localhost",
@@ -87,9 +91,21 @@ wss.broadcast = function (data) {
   });
 };
 
-const addInt = async (phase = 1, year = 1, lastYear = 0, session) => {
+const updateGame = async (
+  phase = 1,
+  year = 1,
+  lastYear = 0,
+  session,
+  groups
+) => {
   if (phase >= 5) {
     phase = 1;
+    for (let group of groups) {
+      await pool.query(`
+        UPDATE "group" set cash = cash + ${COINS} WHERE groupid = ${group["groupid"]}
+      `);
+    }
+    wss.broadcast({ cash: COINS, msgType: "CashUpt" });
     year++;
   }
   if (year <= lastYear) {
@@ -107,6 +123,7 @@ const addInt = async (phase = 1, year = 1, lastYear = 0, session) => {
       `,
         [year, phase, session]
       );
+
       console.log("year: ", year, " phase:", phase, " sec: ", totalSeconds);
       let obj = {};
       obj.msgType = "GameChg";
@@ -117,7 +134,7 @@ const addInt = async (phase = 1, year = 1, lastYear = 0, session) => {
       wss.broadcast(obj);
 
       setTimeout(
-        () => addInt(phase + 1, year, lastYear, session),
+        () => updateGame(phase + 1, year, lastYear, session,groups),
         Number.parseInt(totalSeconds) * 1000
       );
     } catch (error) {
@@ -131,7 +148,16 @@ app.post("/start", async (req, res) => {
   console.log(sessionid);
   let result = await pool.query("select year from gameData ORDER BY year ASC");
   let [firstyear, lastYear] = [result.rows[0].year, result.rows.pop().year];
-  addInt(1, firstyear, lastYear, sessionid);
+  const groups = await pool.query(`
+    SELECT groupid FROM "group" WHERE sessionid = ${sessionid}
+  `);
+  for (let group of groups.rows) {
+    await pool.query(`
+      UPDATE "group" set cash = cash + ${COINS} WHERE groupid = ${group["groupid"]}
+    `);
+  }
+  wss.broadcast({ cash: COINS, msgType: "CashUpt" });
+  updateGame(1, firstyear, lastYear, sessionid, groups.rows);
   res.status(200).end();
 });
 
@@ -157,9 +183,13 @@ app.post("/createSession", async (request, response) => {
   const { title } = request.body;
   if (title.length > 0) {
     try {
+      let firstYear = await pool.query(`
+        SELECT year FROM gamedata ORDER BY year LIMIT 1
+      `);
+      firstYear = firstYear.rows[0]["year"];
       await pool.query(
-        "INSERT INTO session(sessionid,title,excelLink,time_created) VALUES($1,$2,$3,$4)",
-        [id, title, "", new Date()]
+        "INSERT INTO session(sessionid,title,excelLink,time_created,year,phase) VALUES($1,$2,$3,$4,$5,$6)",
+        [id, title, "", new Date(),firstYear,1]
       );
       response.status(200).send({ status: true });
     } catch (error) {
@@ -584,18 +614,18 @@ app.put("/renameAsset", async (req, res) => {
 });
 
 app.delete("/deleteSession", async (req, res) => {
-  const { sessionId } = req.body;
+  const { sessionid } = req.body;
   try {
     const promises = [];
     let groups = await pool.query(
       `
       SELECT groupid FROM "group" WHERE sessionid = $1
     `,
-      [sessionId]
+      [sessionid]
     );
 
     if (groups.rowCount === 0) {
-      await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionId]);
+      await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionid]);
       res.status(200).send({ status: true });
     } else {
       groups = groups.rows;
@@ -638,7 +668,7 @@ app.delete("/deleteSession", async (req, res) => {
 
       await Promise.all(promises);
 
-      await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionId]);
+      await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionid]);
       res.status(200).send({ status: true });
     }
   } catch (err) {
@@ -706,9 +736,9 @@ app.post("/invest", async (req, res) => {
       SELECT stockid,holdings FROM investment WHERE groupid = ${groupid} ORDER BY stockid ASC
     `);
     const holdings = {};
-    investment.rows.forEach(e=>{
-      holdings[e["stockid"]]=e["holdings"];
-    }); 
+    investment.rows.forEach((e) => {
+      holdings[e["stockid"]] = e["holdings"];
+    });
 
     const assets = {};
 
@@ -717,20 +747,21 @@ app.post("/invest", async (req, res) => {
       if (!assets.hasOwnProperty(asset_type)) {
         assets[asset_type] = [];
       }
-      holdings[`${id}`]?
-      assets[asset_type].push({
-        id: id,
-        name: asset_name,
-        price: asset_price,
-        diff: asset_diff,
-        holdings: holdings[`${id}`],
-      }):assets[asset_type].push({
-        id: id,
-        name: asset_name,
-        price: asset_price,
-        diff: asset_diff,
-        holdings:0,
-      });
+      holdings[`${id}`]
+        ? assets[asset_type].push({
+            id: id,
+            name: asset_name,
+            price: asset_price,
+            diff: asset_diff,
+            holdings: holdings[`${id}`],
+          })
+        : assets[asset_type].push({
+            id: id,
+            name: asset_name,
+            price: asset_price,
+            diff: asset_diff,
+            holdings: 0,
+          });
     });
 
     // Sort assets swithin each type alphabetically
@@ -738,14 +769,13 @@ app.post("/invest", async (req, res) => {
       assets[assetType].sort((a, b) => a.name.localeCompare(b.name));
     });
     res.status(200).send(assets);
-    
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
   }
 });
 
-app.post("/trade",async(req,res)=>{
-  const {groupid,stockid} = req.body;
+app.post("/trade", async (req, res) => {
+  const { groupid, stockid } = req.body;
   try {
     let cash = await pool.query(`
     SELECT cash FROM "group" WHERE groupid = ${groupid} 
@@ -754,50 +784,55 @@ app.post("/trade",async(req,res)=>{
     SELECT holdings FROM investment WHERE groupid = ${groupid} AND stockid = ${stockid} 
     `);
     cash = cash.rows[0]["cash"];
-    holding.rowCount>0? holding = holding.rows[0]["holdings"]: holding = 0;
-    res.status(200).send({cash:cash,holding:holding});
+    holding.rowCount > 0
+      ? (holding = holding.rows[0]["holdings"])
+      : (holding = 0);
+    res.status(200).send({ cash: cash, holding: holding });
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
   }
 });
 
-app.put("/buy",async (req,res)=>{
-  const {groupid,stockid,amount} = req.body;
-  console.log(groupid,stockid,amount);
+app.put("/buy", async (req, res) => {
+  const { groupid, stockid, amount } = req.body;
+  console.log(groupid, stockid, amount);
   try {
     await pool.query(`
       UPDATE "group" SET cash = cash - ${amount} WHERE groupid = ${groupid}
-    `);    
+    `);
     const holdings = await pool.query(`
       SELECT holdings FROM investment WHERE groupid = ${groupid} AND stockid = ${stockid} 
     `);
-    holdings.rowCount>0? await pool.query(`
+    holdings.rowCount > 0
+      ? await pool.query(`
       UPDATE investment SET holdings = holdings + ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
-    `):
-    await pool.query(`
+    `)
+      : await pool.query(`
       INSERT INTO investment(stockid,groupid,holdings) values(${stockid},${groupid},${amount})
     `);
-    res.status(200).send({status:true});
+    res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
   }
 });
 
-app.put("/sell",async (req,res)=>{
-  const {groupid,stockid,amount} = req.body;
-  console.log(groupid,stockid,amount);
+app.put("/sell", async (req, res) => {
+  const { groupid, stockid, amount } = req.body;
+  console.log(groupid, stockid, amount);
   try {
     await pool.query(`
       UPDATE "group" SET cash = cash + ${amount} WHERE groupid = ${groupid}
-    `);    
+    `);
     const holdings = await pool.query(`
       SELECT holdings FROM investment WHERE groupid = ${groupid} AND stockid = ${stockid} 
     `);
-    holdings.rowCount>0? await pool.query(`
+    holdings.rowCount > 0
+      ? await pool.query(`
       UPDATE investment SET holdings = holdings - ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
-    `):"";
+    `)
+      : "";
 
-    res.status(200).send({status:true});
+    res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
   }
