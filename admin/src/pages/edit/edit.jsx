@@ -1,6 +1,7 @@
 import React from "react";
-import NewsComp from "@components/newsComp";
+// import NewsComp from "@components/newsComp";
 import AssetsViewer from "./assetsViewer";
+import NewsViewer from "./newsViewer";
 // import Alarmclock from  "./images/Alarmclock.svg"
 // import Export from "./images/Export.svg"
 class EditComp extends React.Component {
@@ -58,14 +59,6 @@ class EditComp extends React.Component {
     sectionButtons[this.state.editMainSection].style.color = "#223F80";
     sectionButtons[value].style.backgroundColor = "#223f80bf";
     sectionButtons[value].style.color = "#FFF";
-
-    let sections = document
-      .querySelector("#editMain")
-      .querySelectorAll(".section");
-    sections.forEach((section) => {
-      section.style.display = "none";
-    });
-    sections[value].style.display = "unset";
     this.setState({ editMainSection: value });
     sessionStorage.setItem("editMainSection", value);
   }
@@ -83,12 +76,7 @@ class EditComp extends React.Component {
             News
           </button>
         </div>
-        <AssetsViewer />
-        <div id="news" className="section row-1">
-          {this.state.newsList.map((news, index) => {
-            return <NewsComp data={news} key={index} />;
-          })}
-        </div>
+        {this.state.editMainSection == "0" ? <AssetsViewer /> : <NewsViewer />}
       </div>
     );
   }
