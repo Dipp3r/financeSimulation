@@ -158,7 +158,7 @@ const FormSignup = ({ toggleMainDisplay }) => {
         <button id="loginButton" type="submit">
           Login
         </button>
-        <button id="loginButton" type="submit">
+        <button id="signupButton" type="submit">
           Sign Up
         </button>
       </div>

@@ -33,7 +33,7 @@
         width: 100vw;
         height:150px;
         @include flex(row,space-around,center);
-        #loginButton{
+        #loginButton,#signupButton{
             // position:fixed;
             bottom:50px;
             right:50px;

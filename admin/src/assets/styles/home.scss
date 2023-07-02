@@ -505,7 +505,7 @@
         height: 100vh;
         top: 0px;
         left: 0px;
-        background: rgba(0, 0, 0, 0.9);
+        background: rgba(0, 0, 0, 0.85);
         @include flex(column, center, center);
         #createSessionMenu {
           position: relative;
@@ -535,7 +535,7 @@
           input {
             width: 406px;
             height: 49px;
-            background: #151515;
+            background: #15151545;
             border: 2px solid #8c8c8c;
             border-radius: 8px;
             font-family: "Montserrat";
@@ -577,7 +577,7 @@
         top: 0px;
         z-index: 2;
         left: 0px;
-        background: rgba(0, 0, 0, 0.9);
+        background: rgba(0, 0, 0, 0.85);
         @include flex(column, center, center);
         #createGroupMenu {
           position: relative;
@@ -608,7 +608,7 @@
             margin-top: 30px;
             width: 406px;
             height: 49px;
-            background: #151515;
+            background: #15151556;
             border: 2px solid #8c8c8c;
             border-radius: 8px;
             font-family: "Montserrat";
@@ -636,7 +636,7 @@
             select {
               width: 92px;
               height: 49px;
-              background: #151515;
+              background: #15151556;
               border: 2px solid #8c8c8c;
               border-radius: 8px;
               font-family: "Montserrat";
