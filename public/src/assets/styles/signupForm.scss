@@ -34,6 +34,7 @@
         height:150px;
         @include flex(row,space-around,center);
         #loginButton,#signupButton{
+            @include flex(row,space-around,center);
             // position:fixed;
             bottom:50px;
             right:50px;
@@ -46,6 +47,9 @@
             font-size: 20px;
             color: #223F80;
             border-radius: 35px;   
+            img{
+                height:20px;
+            }
             &:focus{
                 opacity: 0.8;
                 color: #FFFFFF;
