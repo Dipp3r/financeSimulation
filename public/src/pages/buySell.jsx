@@ -23,6 +23,7 @@ class SellComp extends React.Component {
     }, 300);
   };
   submit = () => {
+    this.handleClick();
     let value = document.querySelector("#amountInput").value;
     let obj = {};
     obj.value = value;
@@ -39,6 +40,7 @@ class SellComp extends React.Component {
     this.setState({ sectionType: type });
   }
   render() {
+    const { isClicked } = this.state;
     return (
       <div id="sell">
         <div id="success">
@@ -101,7 +103,9 @@ class SellComp extends React.Component {
           </div>
           <div id="fixed">
             <button
-              className={this.state.sectionType + `-button`}
+              className={
+                this.state.sectionType + `-button ${isClicked ? "clicked" : ""}`
+              }
               onClick={this.submit}
             >
               {this.state.sectionType.toUpperCase()}
