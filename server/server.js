@@ -777,13 +777,12 @@ app.post("/invest", async (req, res) => {
 
     result.rows.forEach((row) => {
       const { id, asset_type, asset_name, asset_price, asset_diff } = row;
-      if (!assets.hasOwnProperty(asset_type)) {
-        assets[asset_type] = [];
+      if (!assets.hasOwnProperty(`${asset_type}List`)) {
+        assets[`${asset_type}List`] = [];
       }
-      console.log(holdings[`${id}`] ===undefined);
       if(holdings[`${id}`] === undefined){
-        console.log("true ran")
-        assets[asset_type].push({
+        console.log(assets);
+        assets[`${asset_type}List`].push({
           id: id,
           name: asset_name,
           price: asset_price,
@@ -793,13 +792,13 @@ app.post("/invest", async (req, res) => {
         });
       }else{
         console.log("not true ran")
-        assets[asset_type].push({
+        assets[`${asset_type}List`].push({
           id: id,
           name: asset_name,
           price: asset_price,
           diff: asset_diff,
           holdings: holdings[`${id}`],
-          holdings_diff: holdings[`${id}`] * (asset_diff/100)
+          holdings_diff: Math.round((holdings[`${id}`] * (asset_diff/100)*100))/100
         });
       }
     });
