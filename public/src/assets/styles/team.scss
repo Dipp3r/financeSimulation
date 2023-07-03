@@ -71,6 +71,7 @@
         @include flex(row, space-around, center);
         img {
           margin: 20px;
+          margin-left: 30px;
         }
         #info {
           p {
@@ -92,7 +93,7 @@
         padding-right: 40px;
         font-family: "Inter";
         font-style: normal;
-        font-weight: 500;
+        font-weight: 400;
         font-size: 15px;
         color: #2d2d2d;
       }
