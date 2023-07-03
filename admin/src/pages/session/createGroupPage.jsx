@@ -10,7 +10,7 @@ export default class CreateGroupPage extends React.Component {
     //required data => name, limit, sessionid
     let obj = {
       limit: Number.parseInt(document.querySelector("#limitBox").value),
-      sessionid: Number.parseInt(sessionStorage.getItem("currentSessionID")),
+      sessionid: Number.parseInt(localStorage.getItem("currentSessionID")),
       name: document.querySelector("#groupName").value,
     };
     fetch(import.meta.env.VITE_API_SERVER_URL + "addGroup", {
