@@ -42,31 +42,21 @@ class PortfolioComp extends React.Component {
     this.toggleExpand = this.toggleExpand.bind(this);
   }
   toggleExpand(event, contentLength) {
-    try {
-      let element = event.currentTarget.getAttribute("id");
-      let last_card = document.querySelector("#" + element);
-      last_card.style.marginBottom = "0px";
-    } catch (error) {
-      console.log(error);
-      //we get error for all the cases except for the last card
-    }
     let name = event.currentTarget.getAttribute("name");
     let target = document.querySelector("#" + name);
     let arrow = event.currentTarget.querySelector(".arrow");
     let display = this.state[name];
-    console.log(display);
+    console.log(display, target);
     if (display) {
-      display = false;
       target.style.height = "0px";
       arrow.style.transform = "rotateX(0deg)";
     } else {
-      display = true;
       target.style.height = `${(contentLength + 1) * 70}px`;
       arrow.style.transform = "rotateX(180deg)";
       // target.scrollIntoView({ behavior: "smooth",inline:'center'})
     }
     let obj = {};
-    obj[name] = display;
+    obj[name] = !display;
     this.setState(obj);
   }
   fetchInfo = () => {
@@ -116,7 +106,6 @@ class PortfolioComp extends React.Component {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         this.setState(data);
       });
   };
@@ -292,6 +281,7 @@ class PortfolioComp extends React.Component {
                   holdings={stock.holdings}
                   price={stock.price}
                   diff={stock.diff}
+                  holdings_diff={stock.holdings_diff}
                 />
               );
             })}
@@ -331,6 +321,7 @@ class PortfolioComp extends React.Component {
                   holdings={stock.holdings}
                   price={stock.price}
                   diff={stock.diff}
+                  holdings_diff={stock.holdings_diff}
                 />
               );
             })}
