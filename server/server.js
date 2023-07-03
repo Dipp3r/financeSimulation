@@ -531,14 +531,14 @@ app.get("/portfolio/:id", async (request, response) => {
     }
 
     result["overall"] = overall;
-    result["overall_diff"] = Math.round((overall / networth) * 100 * 100) / 100;
+    overall?result["overall_diff"] = Math.round((overall / networth) * 100 * 100) / 100:result["overall_diff"] = 0;
 
     let yearly = await pool.query(`
       SELECT _${year} from "group" where groupid = ${groupid}
     `);
     yearly = yearly.rows[0][`_${year}`];
     result["yearly"] = yearly;
-    result["yearly_diff"] = Math.round((yearly / networth) * 100 * 100) / 100;
+    yearly?result["yearly_diff"] = Math.round((yearly / networth) * 100 * 100) / 100:result["yearly_diff"] = 0;
 
     response.status(200).send(result);
   } catch (error) {
