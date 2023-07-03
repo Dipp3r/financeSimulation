@@ -20,21 +20,21 @@ const path = require("path");
 
 const COINS = 100;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -761,7 +761,7 @@ app.post("/invest", async (req, res) => {
     `,
       [groupid]
     );
-    const { year, phase } = data.rows[0];
+    let { year, phase } = data.rows[0];
     const result = await pool.query(`
       SELECT assets.id,assets.asset_type,assets.asset_name,price_${year}.phase${phase}_price as asset_price,price_${year}.phase${phase}_diff as asset_diff FROM assets,price_${year} WHERE assets.id = price_${year}.asset_id ORDER BY assets.asset_type,assets.asset_name ASC
     `);
@@ -780,24 +780,28 @@ app.post("/invest", async (req, res) => {
       if (!assets.hasOwnProperty(asset_type)) {
         assets[asset_type] = [];
       }
-      holdings[`${id}`]
-        ? assets[asset_type].push({
-            id: id,
-            name: asset_name,
-            price: asset_price,
-            diff: asset_diff,
-            holdings: holdings[`${id}`],
-            holdings_diff: holdings[`${id}`] * (asset_diff/100)
-          })
-
-        : assets[asset_type].push({
-            id: id,
-            name: asset_name,
-            price: asset_price,
-            diff: asset_diff,
-            holdings: 0,
-            holdings_diff: 0 
-          });
+      console.log(holdings[`${id}`] ===undefined);
+      if(holdings[`${id}`] === undefined){
+        console.log("true ran")
+        assets[asset_type].push({
+          id: id,
+          name: asset_name,
+          price: asset_price,
+          diff: asset_diff,
+          holdings: 0,
+          holdings_diff: 0 
+        });
+      }else{
+        console.log("not true ran")
+        assets[asset_type].push({
+          id: id,
+          name: asset_name,
+          price: asset_price,
+          diff: asset_diff,
+          holdings: holdings[`${id}`],
+          holdings_diff: holdings[`${id}`] * (asset_diff/100)
+        });
+      }
     });
 
     // Sort assets swithin each type alphabetically
@@ -891,9 +895,29 @@ app.put("/sell", async (req, res) => {
   }
 });
 
-// setInterval(() => {
-//   wss.broadcast({ type: "time", message: "new news" });
-// }, 5000);
+// {option:1} -> year
+// {option:0} -> phase
+app.put("/gamechange",async(req,res)=>{
+  const {sessionid,OP,option} = req.body;
+  try {
+    option
+    ?
+      await pool.query(`
+        UPDATE "session" SET year = year ${OP} 1 WHERE sessionid = ${sessionid}
+      `)
+    :
+      await pool.query(`
+        UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
+      `);
+    res.status(200).send({status:true});
+  } catch (err) {
+    res.status(400).send({status:false,err:err.message});
+  }
+});
+
+setInterval(() => {
+  wss.broadcast({ type: "time", message: "new news" });
+}, 5000);
 
 server.listen(port, () => {
   console.log(`App running on port http://localhost:${port}.`);
