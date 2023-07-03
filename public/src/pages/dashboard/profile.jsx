@@ -15,11 +15,14 @@ import User_fill from "@assets/images/User_fill.svg"
 import Chart_alt from "@assets/images/Chart_alt.svg"
 import Message from "@assets/images/Message.svg";
 */
-
+const socket = new WebSocket("ws://localhost:3003");
 class ProfileComp extends React.Component {
-  // constructor(props){
-  //     super(props);
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      year: 2023,
+    };
+  }
   triggerDelay = 500;
   updateProfileInfo = () => {
     fetch(
@@ -53,6 +56,17 @@ class ProfileComp extends React.Component {
   };
   componentDidMount() {
     this.updateProfileInfo();
+
+    socket.addEventListener("message", (event) => {
+      let data = JSON.parse(event.data);
+      switch (data.msgType) {
+        case "GameChg":
+          this.setState({ year: data.year });
+          break;
+        default:
+          break;
+      }
+    });
   }
   render() {
     return (
@@ -67,7 +81,7 @@ class ProfileComp extends React.Component {
           <div id="circle">
             <div id="progress"></div>
             <p id="title">Year</p>
-            <p id="yearNum">2100</p>
+            <p id="yearNum">{this.state.year}</p>
           </div>
           <div id="badgeStart" className="badgeRow">
             <img src={badge} alt="badge1" />
@@ -132,5 +146,6 @@ class ProfileComp extends React.Component {
 }
 ProfileComp.propTypes = {
   toggleMainDisplay: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
 };
 export default ProfileComp;
