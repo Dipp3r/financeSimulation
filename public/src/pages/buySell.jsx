@@ -11,44 +11,67 @@ class SellComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      mainCash: 1000,
+      cash: 1000,
       name: "",
+      mainHoldings: 0,
       holdings: 0,
-      isClicked: false,
       sectionType: sessionStorage.getItem("buySellSectionType") || "buy",
+      value: "",
     };
   }
-
-  handleClick = () => {
-    this.setState({ isClicked: true });
-    setTimeout(() => {
-      this.setState({ isClicked: false });
-    }, 300);
+  inputValue = (event) => {
+    let value = Math.floor(event.currentTarget.value);
+    if (value < 0) value -= value;
+    let cash = this.state.mainCash;
+    let holdings = this.state.mainHoldings;
+    if (this.state.sectionType == "buy") {
+      if (value <= cash) {
+        cash -= value;
+      } else {
+        value = cash;
+        cash = 0;
+      }
+      this.setState({ cash: cash, value: value });
+    } else if (this.state.sectionType == "sell") {
+      if (value <= holdings) {
+        holdings -= value;
+      } else {
+        value = holdings;
+        holdings = 0;
+      }
+      this.setState({ holdings: holdings, value: value });
+    }
   };
-
   submit = () => {
-    this.handleClick();
-    let value = document.querySelector("#amountInput").value;
+    let value = this.state.value;
+    if (value == 0) return;
+
     let obj = {};
     obj.value = value;
-    fetch(import.meta.env.VITE_API_SERVER_URL + "createSession", {
-      method: "POST",
+    obj.groupid = localStorage.getItem("groupid");
+    obj.id = this.state.id;
+    fetch(import.meta.env.VITE_API_SERVER_URL + this.state.sectionType, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(obj),
     });
   };
-
+  sellAll = () => {
+    let holdings = this.state.mainHoldings;
+    this.setState({ value: holdings, holdings: 0 });
+  };
   toggleSection(type) {
     sessionStorage.setItem("buySellSectionType", type);
-    this.setState({ sectionType: type });
+    this.setState({ sectionType: type, value: "" });
   }
   componentDidMount() {
     let obj = JSON.parse(localStorage.getItem("asset"));
     this.setState(obj);
   }
   render() {
-    const { isClicked } = this.state;
     return (
       <div id="sell">
         <div id="success">
@@ -67,7 +90,7 @@ class SellComp extends React.Component {
               value="dashboard"
             />
             <img className="coin" src={Coin} alt="coin" />
-            <p>₹30,000</p>
+            <p>₹{this.state.cash}</p>
           </div>
           <Time />
         </div>
@@ -81,7 +104,9 @@ class SellComp extends React.Component {
                 onClick={() => {
                   this.toggleSection("buy");
                 }}
-                className={this.state.sectionType == "buy" && "buttonClicked"}
+                className={
+                  this.state.sectionType == "buy" ? "buttonClicked" : undefined
+                }
               >
                 BUY
               </button>
@@ -89,7 +114,9 @@ class SellComp extends React.Component {
                 onClick={() => {
                   this.toggleSection("sell");
                 }}
-                className={this.state.sectionType == "sell" && "buttonClicked"}
+                className={
+                  this.state.sectionType == "sell" ? "buttonClicked" : undefined
+                }
               >
                 SELL
               </button>
@@ -102,18 +129,21 @@ class SellComp extends React.Component {
               <input
                 id="amountInput"
                 type="number"
-                placeholder="1000"
+                placeholder="9999"
                 inputMode="numeric"
+                onInput={this.inputValue}
+                value={this.state.value}
               />
             </div>
-            {this.state.sectionType == "sell" && <button>sell all</button>}
+            {this.state.sectionType == "sell" && (
+              <button onClick={this.sellAll}>sell all</button>
+            )}
           </div>
           <div id="fixed">
             <button
-              className={
-                this.state.sectionType + `-button ${isClicked ? "clicked" : ""}`
-              }
+              className={this.state.sectionType + `-button`}
               onClick={this.submit}
+              disabled={!this.state.value || this.state.value <= 0}
             >
               {this.state.sectionType.toUpperCase()}
             </button>

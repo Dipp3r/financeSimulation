@@ -190,7 +190,11 @@
                   transform: scale(0.9);
                 }
               }
-            
+              button[disabled] {
+                opacity: 0.5;
+                background: gray;
+                cursor: not-allowed;
+              }
         }
     }
 
