@@ -420,25 +420,29 @@ app.post("/signup/:id", async (request, response) => {
       let id = Math.floor(100000 + Math.random() * 900000);
       try {
         console.log(name, mobile, password);
-        let res = await pool.query(
-          "INSERT INTO users (userid,name,mobile,password,groupid,role,created_on) VALUES ($1, $2, $3, $4, $5, $6,$7)",
-          [id, name, mobile, password, groupid, "", new Date()]
-        );
-        let player_count = await pool.query(
-          'select players from "group" where groupid=$1',
+        const _limit = await pool.query(
+          'select _limit as limit,players from "group" where groupid=$1',
           [groupid]
         );
-        await pool.query('update "group" set players=$1 where groupid=$2', [
-          player_count.rows[0].players + 1,
-          groupid,
-        ]);
-        wss.broadcast({
-          userid: id,
-          groupid: groupid,
-          name: name,
-          msgType: "NewUser",
-        });
-        response.status(200).send({ userid: id, star_count: 0 });
+        const {limit, players} = _limit.rows[0];
+        if(limit>players){
+          await pool.query(
+            "INSERT INTO users (userid,name,mobile,password,groupid,role,created_on) VALUES ($1, $2, $3, $4, $5, $6,$7)",
+            [id, name, mobile, password, groupid, "", new Date()]
+          );
+          await pool.query('update "group" set players = players + 1 where groupid=$1',[
+            groupid,
+          ]);
+          wss.broadcast({
+            userid: id,
+            groupid: groupid,
+            name: name,
+            msgType: "NewUser",
+          });
+          response.status(200).send({ userid: id, star_count: 0 });
+        }else{
+          response.status(400).send({ status:false,msg:"The group limit exceeded"});
+        }
       } catch (error) {
         console.log("Error: " + error.message);
         response.status(400).send({ status: false });
