@@ -43,9 +43,15 @@ export default class Time extends React.Component {
       <div id="timer">
         <img src={Alarmclock} alt="timer" />
         <p>
-          {this.state.minute.toString().padStart(2, "0") +
-            ":" +
-            this.state.second.toString().padStart(2, "0")}
+          {this.state.minute
+            ? this.state.second
+              ? this.state.minute.toString().padStart(2, "0") +
+                ":" +
+                this.state.second.toString().padStart(2, "0")
+              : this.state.minute.toString().padStart(2, "0") + ":" + "00"
+            : this.state.second
+            ? "00" + ":" + this.state.second.toString().padStart(2, "0")
+            : "00" + ":" + "00"}
         </p>
       </div>
     );

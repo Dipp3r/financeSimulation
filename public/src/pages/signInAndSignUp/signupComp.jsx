@@ -54,8 +54,8 @@ class SignupComp extends React.Component {
       delete obj.confirmPassword;
       fetch(
         import.meta.env.VITE_API_SERVER_URL +
-          "signup/" +
-          localStorage.getItem("groupid"),
+        "signup/" +
+        localStorage.getItem("groupid"),
         {
           method: "POST",
           headers: { "Content-type": "application/json" },
@@ -73,6 +73,10 @@ class SignupComp extends React.Component {
           for (let i in data) {
             localStorage.setItem(i, data[i]);
           }
+          if (!localStorage.getItem("minute"))
+            localStorage.setItem("minute", 15);
+          if (!localStorage.getItem("second"))
+            localStorage.setItem("second", 0);
           this.props.toggleMainDisplay("dashboard");
         })
         .catch((error) => {
