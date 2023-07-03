@@ -494,12 +494,6 @@ app.get("/portfolio/:id", async (request, response) => {
     `);
     products = products.rows;
 
-    products.forEach((e) => {
-      result[e.asset_type] = Number.parseInt(e.value);
-      networth = networth + Number.parseInt(e.value);
-    });
-    result["networth"] = networth;
-
     // const {stock, commodity, cash, mutualFund} = result;
 
     const holding_diff = await pool.query(`
@@ -511,10 +505,31 @@ app.get("/portfolio/:id", async (request, response) => {
       GROUP BY t1.asset_type;
     `);
 
-    holding_diff.rows.forEach((e) => {
-      result[e.asset_type + "_diff"] = Number.parseInt(e.holding_diff);
-      overall += Number.parseInt(e.holding_diff);
-    });
+    console.log(holding_diff.rows);
+    if(products.length>0){
+      products.forEach((e) => {
+        result[e.asset_type] = Number.parseInt(e.value);
+        networth = networth + Number.parseInt(e.value);
+      });
+    }else{
+      let assetsTypes = await pool.query(`
+        SELECT DISTINCT asset_type FROM assets
+      `);
+      assetsTypes = assetsTypes.rows;
+      assetsTypes.forEach((e) => {
+        result[e.asset_type] = 0;
+        result[e.asset_type + "_diff"] = 0;
+      });
+    }
+    
+    result["networth"] = networth;
+    if(holding_diff.rows.length>0){
+      holding_diff.rows.forEach((e) => {
+        result[e.asset_type + "_diff"] = Number.parseInt(e.holding_diff);
+        overall += Number.parseInt(e.holding_diff);
+      });
+    }
+
     result["overall"] = overall;
     result["overall_diff"] = Math.round((overall / networth) * 100 * 100) / 100;
 
