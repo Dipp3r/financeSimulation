@@ -761,9 +761,7 @@ app.post("/invest", async (req, res) => {
     `,
       [groupid]
     );
-    let { year, phase } = data.rows[0];
-    year ??=2099
-    phase ??=1
+    const { year, phase } = data.rows[0];
     const result = await pool.query(`
       SELECT assets.id,assets.asset_type,assets.asset_name,price_${year}.phase${phase}_price as asset_price,price_${year}.phase${phase}_diff as asset_diff FROM assets,price_${year} WHERE assets.id = price_${year}.asset_id ORDER BY assets.asset_type,assets.asset_name ASC
     `);
@@ -893,9 +891,9 @@ app.put("/sell", async (req, res) => {
   }
 });
 
-setInterval(() => {
-  wss.broadcast({ type: "time", message: "new news" });
-}, 5000);
+// setInterval(() => {
+//   wss.broadcast({ type: "time", message: "new news" });
+// }, 5000);
 
 server.listen(port, () => {
   console.log(`App running on port http://localhost:${port}.`);

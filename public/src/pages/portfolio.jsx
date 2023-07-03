@@ -102,8 +102,8 @@ class PortfolioComp extends React.Component {
             color: "#CADAFF",
           },
         ];
-        this.setState({ pieData: pieData }, () => {
-          console.log(this.state.pieData);
+        this.setState({ pieData: pieData, ...data }, () => {
+          console.log(this.state);
         });
       });
   };
