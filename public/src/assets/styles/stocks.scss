@@ -132,7 +132,7 @@
             }
         } 
         #content{
-            height:100%;
+            height:calc(100vh - 200px);
             margin-bottom:69px;
             overflow:hidden;
             overflow-y:scroll;
@@ -153,7 +153,8 @@
                     font-weight: 400;
                     font-size: 16px;
                     color: #292929;
-                    margin-left:20px;
+                    text-align: center;
+                    // margin-left:20px;
                 }
                 div{
                     width: 33.33%;
@@ -171,6 +172,7 @@
                     }
                 }
                 #amount{
+                    text-align: center;
                     width: 33.33%;
                     text-align: center;
                     font-family: 'Inter';
@@ -178,7 +180,6 @@
                     font-weight: 400;
                     font-size: 16px;
                     color: #223F80;
-                    margin-right:20px;
                 }
             }
         }

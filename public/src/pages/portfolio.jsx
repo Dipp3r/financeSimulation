@@ -300,7 +300,7 @@ class PortfolioComp extends React.Component {
           </div>
           <div
             className="card final"
-            id="final"
+            id="final_stock"
             name="commoditiesExpand"
             onClick={(event) => {
               this.toggleExpand(event, this.state.commodity.length);

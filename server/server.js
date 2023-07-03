@@ -780,24 +780,28 @@ app.post("/invest", async (req, res) => {
       if (!assets.hasOwnProperty(asset_type)) {
         assets[asset_type] = [];
       }
-      holdings[`${id}`]
-        ? assets[asset_type].push({
-            id: id,
-            name: asset_name,
-            price: asset_price,
-            diff: asset_diff,
-            holdings: holdings[`${id}`],
-            holdings_diff: holdings[`${id}`] * (asset_diff/100)
-          })
-
-        : assets[asset_type].push({
-            id: id,
-            name: asset_name,
-            price: asset_price,
-            diff: asset_diff,
-            holdings: 0,
-            holdings_diff: 0 
-          });
+      console.log(holdings[`${id}`] ===undefined);
+      if(holdings[`${id}`] === undefined){
+        console.log("true ran")
+        assets[asset_type].push({
+          id: id,
+          name: asset_name,
+          price: asset_price,
+          diff: asset_diff,
+          holdings: 0,
+          holdings_diff: 0 
+        });
+      }else{
+        console.log("not true ran")
+        assets[asset_type].push({
+          id: id,
+          name: asset_name,
+          price: asset_price,
+          diff: asset_diff,
+          holdings: holdings[`${id}`],
+          holdings_diff: holdings[`${id}`] * (asset_diff/100)
+        });
+      }
     });
 
     // Sort assets swithin each type alphabetically
