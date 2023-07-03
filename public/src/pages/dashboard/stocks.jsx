@@ -11,6 +11,7 @@ class StocksComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      cash: 0,
       stock: [],
       mutualFund: [],
       commodity: [],
@@ -72,7 +73,7 @@ class StocksComp extends React.Component {
         <div id="topBar">
           <div>
             <img className="coin" src={Coin} alt="coin" />
-            <p>₹30,000</p>
+            <p>₹{this.state.cash}</p>
           </div>
           <p>Buy/Sell</p>
           <Time />
@@ -85,9 +86,14 @@ class StocksComp extends React.Component {
                 return (
                   <div key={index}>
                     <p>
-                      {element.name} | {element.singlePrice} |
+                      {element.name} | {element.price} |
                     </p>
-                    <a className="gain">{element.singlePercent}%</a>
+                    {element.diff > 0 && (
+                      <a className="gain">{element.diff}%</a>
+                    )}
+                    {element.diff < 0 && (
+                      <a className="loss">{element.diff}%</a>
+                    )}
                   </div>
                 );
               })}
