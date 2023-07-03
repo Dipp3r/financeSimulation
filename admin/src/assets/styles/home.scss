@@ -253,6 +253,7 @@
       @include flex(column, flex-start, center);
       #sessionsViewer {
         #deletePrompt {
+          z-index: 2;
           position: fixed;
           top: 0;
           left: 0;
@@ -384,6 +385,10 @@
           font-size: 20px;
         }
         .sessionCards {
+          transition: transform 0.3s ease-out;
+          &:hover{
+            transform: scale(1.03);
+          }
           padding: 25px;
           padding-right:10px;
           height: 84px;
@@ -422,8 +427,16 @@
               width:fit-content;
               @include flex(column, center, center);
               img {
+                
                 height: 30px;
                 // margin-left:30px;
+              }
+            }
+            #trash{
+              img{
+                &:hover{
+                  animation: shake 0.5s ease-in-out 2;
+                }
               }
             }
             #groupLabel,
@@ -475,6 +488,15 @@
             }
           }
           #create {
+            transition: transform 0.2s ease-out;
+            &:focus{
+              transform: scale(0.95);
+            } 
+            &:hover{
+              div #add{
+                animation:spin 0.5s ease-in-out 1;
+              }
+            }
             margin-left: 20px;
             margin-top: 0px;
             width: 210px;
@@ -1192,3 +1214,31 @@
   }
 }
 
+@keyframes shake {
+  0% {
+    transform: rotateZ(0);
+  }
+  25% {
+    transform: rotateZ(-5deg);
+  }
+  50% {
+    transform: rotateZ(5deg);
+  }
+  75% {
+    transform: rotateZ(-5deg);
+  }
+  100% {
+    transform: rotateZ(0);
+  }
+}
+
+
+
+@keyframes spin {
+  0% {
+    transform: rotateZ(0);
+  }
+  100% {
+    transform: rotateZ(180deg);
+  }
+}
