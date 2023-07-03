@@ -38,6 +38,9 @@ class PortfolioComp extends React.Component {
       stock: 0,
       mutualFund: 0,
       commodity: 0,
+      stock_diff: 0,
+      mutualFund_diff: 0,
+      commodity_diff: 0,
       stockList: [],
       mutualFundList: [],
       commodityList: [],
@@ -141,7 +144,7 @@ class PortfolioComp extends React.Component {
               nameKey="name"
               cx="50%"
               cy="50%"
-              outerRadius={120}
+              outerRadius={100}
               fill="#8884d8"
             >
               {this.state.pieData.map((entry, index) => {
@@ -154,7 +157,6 @@ class PortfolioComp extends React.Component {
                 );
               })}
             </Pie>
-            {/* <Tooltip /> */}
             {/* <Legend /> */}
           </PieChart>
           <div className="row">
@@ -181,22 +183,28 @@ class PortfolioComp extends React.Component {
             </div>
           </div>
           <p id="title">NET WORTH</p>
-          <p id="amount">₹ 10,00,00,000</p>
+          <p id="amount">₹ {this.state.networth}</p>
           <div id="row1">
             <p> This year Gain/Loss</p>
             <p> Overall Gain/Loss</p>
           </div>
           <div id="row2">
             <div className="rowContent">
-              <img src={loss} alt="loss" />
-              <p>20,000</p>
-              <p id="percentage">5%</p>
+              {this.state.yearly < 0 && <img src={loss} alt="loss" />}
+              {this.state.yearly < 0 && <img src={gain} alt="gain" />}
+              <p>₹{this.state.yearly || "0"}</p>
+              {this.state.yearly_diff > 0 && (
+                <p id="percentage">{this.state.yearly_diff}%</p>
+              )}
             </div>
             <hr />
             <div className="rowContent">
-              <img src={gain} alt="gain" />
-              <p>10,000</p>
-              <p id="percentage">2.5%</p>
+              {this.state.overall < 0 && <img src={loss} alt="loss" />}
+              {this.state.overall < 0 && <img src={gain} alt="gain" />}
+              <p>₹{this.state.overall || "0"}</p>
+              {this.state.overall_diff > 0 && (
+                <p id="percentage">{this.state.overall_diff}%</p>
+              )}
             </div>
           </div>
 
@@ -207,7 +215,7 @@ class PortfolioComp extends React.Component {
             </div>
 
             <div id="middle" className="mr-2">
-              <p>₹30,000</p>
+              <p>₹ {this.state.cash}</p>
             </div>
           </div>
 
@@ -223,13 +231,23 @@ class PortfolioComp extends React.Component {
             </div>
 
             <div id="middle">
-              <p>₹1,00,000</p>
+              <p>₹{this.state.stock}</p>
             </div>
 
             <div id="last">
               <div id="amount">
-                <img src={loss} alt="loss" />
-                <p className="loss">12,000</p>
+                {this.state.stock_diff < 0 && (
+                  <>
+                    <img src={loss} alt="loss" />
+                    <p className="loss">{this.state.stock_diff}</p>
+                  </>
+                )}
+                {this.state.stock_diff > 0 && (
+                  <>
+                    <img src={gain} alt="gain" />
+                    <p className="gain">{this.state.stock_diff}</p>
+                  </>
+                )}
                 <button>
                   <img className="arrow" src={downArrow} alt="upArrow" />
                 </button>
@@ -264,13 +282,23 @@ class PortfolioComp extends React.Component {
             </div>
 
             <div id="middle">
-              <p>₹20,000</p>
+              <p>₹{this.state.mutualFund}</p>
             </div>
 
             <div id="last">
               <div id="amount">
-                <img src={gain} alt="gain" />
-                <p className="gain">1000</p>
+                {this.state.mutualFund_diff < 0 && (
+                  <>
+                    <img src={loss} alt="loss" />
+                    <p className="loss">{this.state.mutualFund_diff}</p>
+                  </>
+                )}
+                {this.state.mutualFund_diff > 0 && (
+                  <>
+                    <img src={gain} alt="gain" />
+                    <p className="gain">{this.state.mutualFund_diff}</p>
+                  </>
+                )}
                 <button>
                   <img className="arrow" src={downArrow} alt="downArrow" />
                 </button>
@@ -304,13 +332,23 @@ class PortfolioComp extends React.Component {
             </div>
 
             <div id="middle">
-              <p>₹3,000</p>
+              <p>₹{this.state.commodity}</p>
             </div>
 
             <div id="last">
               <div id="amount">
-                <img src={loss} alt="loss" />
-                <p className="loss">5,000</p>
+                {this.state.commodity_diff < 0 && (
+                  <>
+                    <img src={loss} alt="loss" />
+                    <p className="loss">{this.state.commodity_diff}</p>
+                  </>
+                )}
+                {this.state.commodity_diff > 0 && (
+                  <>
+                    <img src={gain} alt="gain" />
+                    <p className="gain">{this.state.commodity_diff}</p>
+                  </>
+                )}
                 <button>
                   <img className="arrow" src={downArrow} alt="downArrow" />
                 </button>

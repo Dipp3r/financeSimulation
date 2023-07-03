@@ -12,9 +12,9 @@ class StocksComp extends React.Component {
     super(props);
     this.state = {
       cash: 0,
-      stock: [],
-      mutualFund: [],
-      commodity: [],
+      stockList: [],
+      mutualFundList: [],
+      commodityList: [],
       content: [],
     };
   }
@@ -33,13 +33,13 @@ class StocksComp extends React.Component {
     switch (target.getAttribute("value")) {
       case "stock":
       default:
-        content = this.state.stock;
+        content = this.state.stockList;
         break;
       case "mutualFund":
-        content = this.state.mutualFund;
+        content = this.state.mutualFundList;
         break;
       case "commodities":
-        content = this.state.commodity;
+        content = this.state.commodityList;
         break;
     }
     this.setState({ content: content });
