@@ -29,13 +29,13 @@ export default class AssetsComp extends React.Component {
             {this.props.holdings > 0 && (
               <div>
                 <img src={gain} alt="gain" />
-                <p className="gain">{this.props.holdings}%</p>
+                <p className="gain">₹{this.props.holdings_diff}</p>
               </div>
             )}
             {this.props.holdings < 0 && (
               <div>
                 <img src={loss} alt="loss" />
-                <p className="loss">{-this.props.holdings}%</p>
+                <p className="loss">₹{-this.props.holdings_diff}</p>
               </div>
             )}
           </div>
@@ -50,4 +50,5 @@ AssetsComp.propTypes = {
   holdings: PropTypes.number.isRequired,
   price: PropTypes.number.isRequired,
   diff: PropTypes.number.isRequired,
+  holdings_diff: PropTypes.number.isRequired,
 };

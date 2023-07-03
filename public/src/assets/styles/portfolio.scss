@@ -35,6 +35,7 @@
         @include flex(column,flex-start,center);
         // height:800px;
         overflow-y:scroll;
+        height: calc(100vh - 47px);
         img{
             margin-top:40px;
         }
@@ -112,6 +113,7 @@
 
             }
         }
+        
         .card{
             margin-top:10px;
             width: 320px;
@@ -173,6 +175,9 @@
             }
 
         }
+        #final_stock{
+            margin-bottom:20px;
+        }
         .expand{
             margin:0px;
             @include flex(column,flex-start,center);
@@ -188,9 +193,11 @@
                 margin:12px 0px;
                 width: 320px;
                 height: 40px;
+                padding:0px 0px 0px 20px;
                 @include flex(row,space-between,center);
                 // display: block;
                 #name{
+                    width: 33.33%;
                     margin:0px;
                     font-family: 'Inter';
                     font-style: normal;
@@ -199,6 +206,7 @@
                     font-size: 14px;
                 }
                 div{
+                    width: 33.33%;
                     @include flex(column,center,center);
                     p{  
                         margin:0px;

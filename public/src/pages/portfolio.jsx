@@ -254,6 +254,7 @@ class PortfolioComp extends React.Component {
                   holdings={stock.holdings}
                   price={stock.price}
                   diff={stock.diff}
+                  holdings_diff={stock.holdings_diff}
                 />
               );
             })}
@@ -299,7 +300,7 @@ class PortfolioComp extends React.Component {
           </div>
           <div
             className="card final"
-            id="final"
+            id="final_stock"
             name="commoditiesExpand"
             onClick={(event) => {
               this.toggleExpand(event, this.state.commodity.length);
