@@ -254,6 +254,7 @@ class PortfolioComp extends React.Component {
                   holdings={stock.holdings}
                   price={stock.price}
                   diff={stock.diff}
+                  holdings_diff={stock.holdings_diff}
                 />
               );
             })}

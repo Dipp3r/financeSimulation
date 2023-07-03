@@ -53,6 +53,7 @@
               padding: 0px 10px;
           } 
           button{
+            color:#223F80;
             @include flex(row,space-around,center);
           }
     }

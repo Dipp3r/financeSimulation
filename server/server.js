@@ -20,21 +20,21 @@ const path = require("path");
 
 const COINS = 100;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -762,8 +762,6 @@ app.post("/invest", async (req, res) => {
       [groupid]
     );
     let { year, phase } = data.rows[0];
-    year ??=2099
-    phase ??=1
     const result = await pool.query(`
       SELECT assets.id,assets.asset_type,assets.asset_name,price_${year}.phase${phase}_price as asset_price,price_${year}.phase${phase}_diff as asset_diff FROM assets,price_${year} WHERE assets.id = price_${year}.asset_id ORDER BY assets.asset_type,assets.asset_name ASC
     `);
@@ -890,6 +888,30 @@ app.put("/sell", async (req, res) => {
     res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
+  }
+});
+
+app.put("/phase",async(req,res)=>{
+  const {sessionid,OP} = req.body;
+  try {
+    await pool.query(`
+      UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
+    `);
+    res.status(200).send({status:true});
+  } catch (err) {
+    res.status(400).send({status:false,err:err.message});
+  }
+});
+
+app.put("/year",async(req,res)=>{
+  const {sessionid,OP} = req.body;
+  try {
+    await pool.query(`
+      UPDATE "session" SET year = year ${OP} 1 WHERE sessionid = ${sessionid}
+    `);
+    res.status(200).send({status:true});
+  } catch (err) {
+    res.status(400).send({status:false,err:err.message});
   }
 });
 
