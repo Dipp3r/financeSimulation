@@ -895,24 +895,20 @@ app.put("/sell", async (req, res) => {
   }
 });
 
-app.put("/phase",async(req,res)=>{
-  const {sessionid,OP} = req.body;
+// {option:1} -> year
+// {option:0} -> phase
+app.put("/gamechange",async(req,res)=>{
+  const {sessionid,OP,option} = req.body;
   try {
-    await pool.query(`
-      UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
-    `);
-    res.status(200).send({status:true});
-  } catch (err) {
-    res.status(400).send({status:false,err:err.message});
-  }
-});
-
-app.put("/year",async(req,res)=>{
-  const {sessionid,OP} = req.body;
-  try {
-    await pool.query(`
-      UPDATE "session" SET year = year ${OP} 1 WHERE sessionid = ${sessionid}
-    `);
+    option
+    ?
+      await pool.query(`
+        UPDATE "session" SET year = year ${OP} 1 WHERE sessionid = ${sessionid}
+      `)
+    :
+      await pool.query(`
+        UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
+      `);
     res.status(200).send({status:true});
   } catch (err) {
     res.status(400).send({status:false,err:err.message});
