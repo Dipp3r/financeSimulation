@@ -15,7 +15,13 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      display: <ProfileComp toggleMainDisplay={this.props.toggleMainDisplay} />,
+      display: (
+        <ProfileComp
+          toggleMainDisplay={this.props.toggleMainDisplay}
+          setItem={this.props.setItem}
+          getItem={this.props.getItem}
+        />
+      ),
       displayName: "ProfileComp",
     };
   }
@@ -32,7 +38,11 @@ class Dashboard extends React.Component {
       case "ProfileComp":
       default:
         display = (
-          <ProfileComp toggleMainDisplay={this.props.toggleMainDisplay} />
+          <ProfileComp
+            toggleMainDisplay={this.props.toggleMainDisplay}
+            setItem={this.props.setItem}
+            getItem={this.props.getItem}
+          />
         );
         navImg[0].src = User_fill;
         displayName = "ProfileComp";
@@ -60,7 +70,11 @@ class Dashboard extends React.Component {
     if (!state) {
       state = {};
       state.display = (
-        <ProfileComp toggleMainDisplay={this.props.toggleMainDisplay} />
+        <ProfileComp
+          toggleMainDisplay={this.props.toggleMainDisplay}
+          setItem={this.props.setItem}
+          getItem={this.props.getItem}
+        />
       );
       state.displayName = "ProfileComp";
     }

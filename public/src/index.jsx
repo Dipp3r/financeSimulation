@@ -12,7 +12,14 @@ class IndexComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mainDisplay: <InitialComp toggleMainDisplay={this.toggleMainDisplay} />,
+      year: Number.parseInt(localStorage.getItem("year")),
+      mainDisplay: (
+        <InitialComp
+          toggleMainDisplay={this.toggleMainDisplay}
+          setItem={this.setItem}
+          getItem={this.getItem}
+        />
+      ),
     };
   }
   setItem = (name, value) => {
@@ -76,17 +83,32 @@ class IndexComp extends React.Component {
     console.log(displayComp);
     this.setState({ mainDisplay: displayComp });
   };
+
+  checkMessage = (message) => {
+    let minute, second;
+    switch (message.msgType) {
+      case "GameChg":
+        localStorage.setItem("year", message.year);
+        [, minute, second] = message.time.split(":");
+        localStorage.setItem("minute", Number.parseInt(minute));
+        localStorage.setItem("second", Number.parseInt(second) + 1);
+        break;
+      default:
+        break;
+    }
+  };
+
   componentDidMount() {
     // When the WebSocket connection is opened
-    socket.addEventListener("open", function () {
+    socket.addEventListener("open", () => {
       console.log("WebSocket connection opened");
     });
 
     // When a message is received from the WebSocket server
-    socket.addEventListener("message", function (event) {
+    socket.addEventListener("message", (event) => {
+      this.checkMessage(JSON.parse(event.data));
       console.log("Received message from server:", JSON.parse(event.data));
     });
-
     //setting the timer
     if (!localStorage.getItem("minute")) localStorage.setItem("minute", 15);
     if (!localStorage.getItem("second")) localStorage.setItem("second", 0);
