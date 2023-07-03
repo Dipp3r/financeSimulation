@@ -35,9 +35,12 @@ class PortfolioComp extends React.Component {
         { name: "commidities", value: 0, color: "#6F82AB" },
         { name: "cash", value: 1, color: "#CADAFF" },
       ],
-      stock: [],
-      mutualFund: [],
-      commodity: [],
+      stock: 0,
+      mutualFund: 0,
+      commodity: 0,
+      stockList: [],
+      mutualFundList: [],
+      commodityList: [],
     };
     this.toggleExpand = this.toggleExpand.bind(this);
   }
@@ -106,7 +109,9 @@ class PortfolioComp extends React.Component {
         return response.json();
       })
       .then((data) => {
-        this.setState(data);
+        this.setState(data, () => {
+          console.log("state: ", this.state);
+        });
       });
   };
   componentDidMount() {
@@ -210,7 +215,7 @@ class PortfolioComp extends React.Component {
             className="card"
             name="stocksExpand"
             onClick={(event) => {
-              this.toggleExpand(event, this.state.stock.length);
+              this.toggleExpand(event, this.state.stockList.length);
             }}
           >
             <div id="left">
@@ -233,7 +238,7 @@ class PortfolioComp extends React.Component {
           </div>
 
           <div id="stocksExpand" className="expand">
-            {this.state.stock.map((stock) => {
+            {this.state.stockList.map((stock) => {
               return (
                 <AssetsComp
                   key={stock.id}
@@ -251,7 +256,7 @@ class PortfolioComp extends React.Component {
             className="card"
             name="mutualFundsExpand"
             onClick={(event) => {
-              this.toggleExpand(event, this.state.mutualFund.length);
+              this.toggleExpand(event, this.state.mutualFundList.length);
             }}
           >
             <div id="left">
@@ -273,7 +278,7 @@ class PortfolioComp extends React.Component {
             </div>
           </div>
           <div id="mutualFundsExpand" className="expand">
-            {this.state.mutualFund.map((stock) => {
+            {this.state.mutualFundList.map((stock) => {
               return (
                 <AssetsComp
                   key={stock.id}
@@ -291,7 +296,7 @@ class PortfolioComp extends React.Component {
             id="final_stock"
             name="commoditiesExpand"
             onClick={(event) => {
-              this.toggleExpand(event, this.state.commodity.length);
+              this.toggleExpand(event, this.state.commodityList.length);
             }}
           >
             <div id="left">
@@ -313,7 +318,7 @@ class PortfolioComp extends React.Component {
             </div>
           </div>
           <div id="commoditiesExpand" className="expand">
-            {this.state.commodity.map((stock) => {
+            {this.state.commodityList.map((stock) => {
               return (
                 <AssetsComp
                   key={stock.id}
