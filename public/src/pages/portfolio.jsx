@@ -87,18 +87,15 @@ class PortfolioComp extends React.Component {
       })
       .then((data) => {
         let pieData = [
-          { name: "stocks", value: data.stocks, color: "#223F80" },
-          { name: "Mutual funds", value: data.mutual_funds, color: "#406AC8" },
-          { name: "commodities", value: data.commodities, color: "#6F82AB" },
+          { name: "stocks", value: data.stock, color: "#223F80" },
+          { name: "Mutual funds", value: data.mutualFund, color: "#406AC8" },
+          { name: "commodities", value: data.commodity, color: "#6F82AB" },
           {
             name: "cash",
             value:
-              1 ||
               data.cash ||
-              data.networth -
-                data.stocks -
-                data.mutual_funds -
-                data.commodities,
+              data.networth - data.stock - data.mutualFund - data.commodity ||
+              1,
             color: "#CADAFF",
           },
         ];
@@ -119,6 +116,7 @@ class PortfolioComp extends React.Component {
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         this.setState(data);
       });
   };

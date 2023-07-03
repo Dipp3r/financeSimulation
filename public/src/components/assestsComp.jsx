@@ -45,6 +45,11 @@ export default class AssetsComp extends React.Component {
     );
   }
 }
+
+AssetsComp.defaultProps = {
+  holdings_diff: 0, // or any other appropriate default value
+};
+
 AssetsComp.propTypes = {
   name: PropTypes.string.isRequired,
   holdings: PropTypes.number.isRequired,
