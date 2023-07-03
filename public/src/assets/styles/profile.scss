@@ -2,11 +2,21 @@
 
 #profile{
     #topBar{
+        height: 50px;
         border-bottom: 2px solid rgba(34, 63, 128, 0.4);
         @include flex(row,space-between,center);
+        div{
+            width: 33.33%;
+            img{
+                margin-left:10px;
+            }
+        }
         p{
-            margin:15px;
-            margin-left:100px;
+            @include flex(column,center,center);
+            margin:0px;
+            height: 100%;
+            width: 33.33%;
+            text-align: center;
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 600;
@@ -14,9 +24,9 @@
             color: #595959;
         }
         #timer{
-            @include flex(row,space-between,center);
+            @include flex(row,center,center);
             p{
-                margin:5px 20px 0px 5px;
+                margin:5px 0px 0px 5px;
                 font-family: 'Inter';
                 font-style: normal;
                 font-weight: 700;

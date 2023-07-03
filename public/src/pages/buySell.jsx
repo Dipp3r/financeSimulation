@@ -11,6 +11,7 @@ class SellComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isClicked: false,
       mainCash: 1000,
       cash: 1000,
       name: "",
@@ -43,14 +44,21 @@ class SellComp extends React.Component {
       this.setState({ holdings: holdings, value: value });
     }
   };
+  handleClick = () => {
+    this.setState({ isClicked: true });
+    setTimeout(() => {
+      this.setState({ isClicked: false });
+    }, 300);
+  };
   submit = () => {
+    this.handleClick();
     let value = this.state.value;
     if (value == 0) return;
 
     let obj = {};
-    obj.value = value;
+    obj.amount = value;
     obj.groupid = localStorage.getItem("groupid");
-    obj.id = this.state.id;
+    obj.stockid = this.state.id;
     fetch(import.meta.env.VITE_API_SERVER_URL + this.state.sectionType, {
       method: "PUT",
       headers: {
@@ -72,6 +80,7 @@ class SellComp extends React.Component {
     this.setState(obj);
   }
   render() {
+    const { isClicked } = this.state;
     return (
       <div id="sell">
         <div id="success">
@@ -97,7 +106,7 @@ class SellComp extends React.Component {
         <div id="main">
           <div id="about">
             <p>
-              {this.state.name} ₹{this.state.holdings}
+              {this.state.name} &nbsp;&nbsp;₹{this.state.holdings}
             </p>
             <div>
               <button
@@ -141,7 +150,9 @@ class SellComp extends React.Component {
           </div>
           <div id="fixed">
             <button
-              className={this.state.sectionType + `-button`}
+              className={
+                this.state.sectionType + `-button ${isClicked ? "clicked" : ""}`
+              }
               onClick={this.submit}
               disabled={!this.state.value || this.state.value <= 0}
             >
