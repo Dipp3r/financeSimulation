@@ -110,6 +110,7 @@ export default class SessionsViewer extends React.Component {
         };
         deleteSession = document.createElement("img");
         deleteSession.src = trash;
+        deleteSession.id = "trash_icon";
         downloadDiv.appendChild(downloadIcon);
         deleteDiv.appendChild(deleteSession);
         infoDiv.appendChild(groupBox);
@@ -203,7 +204,7 @@ export default class SessionsViewer extends React.Component {
             value="createSessionPage"
           >
             <div>
-              <img src={add_round} alt="add" />
+              <img src={add_round} id="add" alt="add" />
               <p>Create Session</p>
             </div>
           </button>
