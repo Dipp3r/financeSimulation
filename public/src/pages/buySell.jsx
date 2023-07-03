@@ -106,7 +106,7 @@ class SellComp extends React.Component {
         <div id="main">
           <div id="about">
             <p>
-              {this.state.name} ₹{this.state.holdings}
+              {this.state.name} &nbsp;&nbsp;₹{this.state.holdings}
             </p>
             <div>
               <button

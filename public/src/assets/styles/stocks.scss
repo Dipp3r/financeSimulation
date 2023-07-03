@@ -2,21 +2,24 @@
 
 #stocks{
     #topBar{
+        height: 50px;
         border-bottom: 2px solid rgba(34, 63, 128, 0.4);
         @include flex(row,space-between,center);
         
         div{
+            width: 33.33%;
             @include flex(row,flex-start,center);
             img{
                 margin-left:10px;
             }
             .coin{
                 width:23px;
+                margin-left:20px;
                 height:30px;
             }
             p{
-                margin-left:5px;
-                margin-bottom:8px;  
+                margin:0px;
+                margin-top:10px;
                 font-family: 'Inter';
                 font-style: normal;
                 font-weight: 700;
@@ -25,18 +28,23 @@
             }
         }
         p{
-            margin-bottom:8px;
+            @include flex(column,center,center);
+            margin:0px;
+            height: 100%;
+            width: 33.33%;
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 600;
             font-size: 18px;
+            text-align: center;
             color: #595959;
         }
         
         #timer{
-            @include flex(row,space-between,center);
+            width: 33.33%;
+            @include flex(row,center,center);
             p{
-                margin:5px 20px 0px 5px;
+                margin:5px 0px 0px 5px;
                 font-family: 'Inter';
                 font-style: normal;
                 font-weight: 700;

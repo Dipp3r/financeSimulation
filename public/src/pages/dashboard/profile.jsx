@@ -74,7 +74,7 @@ class ProfileComp extends React.Component {
         <div id="topBar">
           {/* <img src={Arrow_left} onClick={this.props.togglePortfolioComp} alt="back_arrow" /> */}
           <div></div>
-          <p>profile</p>
+          <p>Profile</p>
           <Time />
         </div>
         <div id="main">
