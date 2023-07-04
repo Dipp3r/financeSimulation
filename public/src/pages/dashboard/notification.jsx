@@ -1,13 +1,35 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "@assets/styles/notif.scss";
-import Paper from "@assets/images/Paper.svg";
-import Coin from "@assets/images/coin.svg";
-import Group_fill from "@assets/images/Group_fill.svg";
-import Star from "@assets/images/Star.svg";
+
 import Time from "@components/time";
+import NotificationCard from "@components/notificationCard";
+
+const socket = new WebSocket("ws://localhost:3003");
 class NotifComp extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      notificationList: [],
+    };
+  }
+  getList = () => {
+    this.setState(
+      { notificationList: this.props.getItem("notificationList") },
+      () => {
+        console.log(this.state);
+      }
+    );
+  };
+  componentDidMount() {
+    this.getList();
+    socket.addEventListener("message", (event) => {
+      console.log("messge at notification");
+      let notificationList = [...this.state.notificationList];
+      notificationList.push(JSON.parse(event.data));
+      this.setState({ notificationList: notificationList });
+      // this.getList();
+    });
   }
   render() {
     return (
@@ -18,7 +40,10 @@ class NotifComp extends React.Component {
           <Time />
         </div>
         <div id="main">
-          <div className="notif">
+          {this.state.notificationList.map((notification, index) => {
+            return <NotificationCard notification={notification} key={index} />;
+          })}
+          {/* <div className="notif">
             <img src={Paper} alt="paper" />
             <p>Super breaking news | 2100</p>
           </div>
@@ -36,10 +61,15 @@ class NotifComp extends React.Component {
           <div className="notif notif-extend">
             <img className="coin" src={Star} alt="star" />
             <p className="text-thin">You’ve been assigned as an Analyst</p>
-          </div>
+          </div> */}
         </div>
       </div>
     );
   }
 }
+NotifComp.propTypes = {
+  toggleMainDisplay: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
+  setItem: PropTypes.func.isRequired,
+};
 export default NotifComp;

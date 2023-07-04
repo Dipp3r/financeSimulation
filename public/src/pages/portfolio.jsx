@@ -95,6 +95,7 @@ class PortfolioComp extends React.Component {
             color: "#CADAFF",
           },
         ];
+        localStorage.setItem("cash", data.cash);
         this.setState({ pieData: pieData, ...data }, () => {
           console.log(this.state);
         });

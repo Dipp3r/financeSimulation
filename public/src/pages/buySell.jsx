@@ -11,8 +11,8 @@ class SellComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mainCash: 1000,
-      cash: 1000,
+      mainCash: localStorage.getItem("cash"),
+      cash: localStorage.getItem("cash"),
       name: "",
       mainHoldings: 0,
       holdings: 0,

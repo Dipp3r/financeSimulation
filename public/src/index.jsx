@@ -12,6 +12,7 @@ class IndexComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      notificationList: [],
       year: Number.parseInt(localStorage.getItem("year")),
       mainDisplay: (
         <InitialComp
@@ -85,13 +86,23 @@ class IndexComp extends React.Component {
   };
 
   checkMessage = (message) => {
-    let minute, second;
+    let minute, second, cash;
+
+    let notificationList = this.state.notificationList.slice(undefined, 100);
+    message.isread = false;
+    notificationList.push(message);
+    this.setState({ notificationList: notificationList });
+
     switch (message.msgType) {
       case "GameChg":
         localStorage.setItem("year", message.year);
         [, minute, second] = message.time.split(":");
         localStorage.setItem("minute", Number.parseInt(minute));
         localStorage.setItem("second", Number.parseInt(second) + 1);
+        break;
+      case "CashUpt":
+        cash = localStorage.getItem("cash");
+        localStorage.setItem("cash", cash + this.state.cash);
         break;
       default:
         break;

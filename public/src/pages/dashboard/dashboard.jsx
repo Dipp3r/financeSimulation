@@ -27,7 +27,6 @@ class Dashboard extends React.Component {
   }
   changeDisplay = (e) => {
     let display, displayName;
-    console.log(this.state);
     let value = e.currentTarget ? e.currentTarget.value : e;
     let navImg = document.querySelectorAll(".navImg");
     navImg[0].src = User_circle;
@@ -55,14 +54,19 @@ class Dashboard extends React.Component {
         displayName = "StocksComp";
         break;
       case "NotifComp":
-        display = <NotifComp />;
+        display = (
+          <NotifComp
+            toggleMainDisplay={this.props.toggleMainDisplay}
+            setItem={this.props.setItem}
+            getItem={this.props.getItem}
+          />
+        );
         navImg[2].src = Message_alt_fill;
         displayName = "NotifComp";
         break;
     }
     this.setState({ display: display, displayName: displayName }, () => {
       this.props.setItem("dashboard", this.state);
-      console.log(this.state.display);
     });
   };
   componentDidMount() {
@@ -78,12 +82,10 @@ class Dashboard extends React.Component {
       );
       state.displayName = "ProfileComp";
     }
-    console.log(state);
     this.changeDisplay(state.displayName);
     this.setState(state);
   }
   render() {
-    console.log("Dashboard page: ", this.props);
     return (
       <div id="dashboard">
         <div id="main">{this.state.display}</div>

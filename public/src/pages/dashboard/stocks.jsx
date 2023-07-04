@@ -11,7 +11,7 @@ class StocksComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cash: 0,
+      cash: localStorage.getItem("cash"),
       stockList: [],
       mutualFundList: [],
       commodityList: [],

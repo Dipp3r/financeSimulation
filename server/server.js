@@ -914,9 +914,9 @@ app.put("/gamechange",async(req,res)=>{
   }
 });
 
-setInterval(() => {
-  wss.broadcast({ type: "time", message: "new news" });
-}, 5000);
+// setInterval(() => {
+//   wss.broadcast({ type: "time", message: "new news" });
+// }, 5000);
 
 server.listen(port, () => {
   console.log(`App running on port http://localhost:${port}.`);
