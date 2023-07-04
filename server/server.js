@@ -13,6 +13,8 @@ const upload = require("express-fileupload");
 // const fs = require("fs");
 const path = require("path");
 
+const data = require("./info.json");
+
 // const uploadFolderPath = `./upload`;
 // fs.mkdir(uploadFolderPath, { recursive: true }, (err) => {});
 
@@ -20,21 +22,21 @@ const path = require("path");
 
 const COINS = 100;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -134,7 +136,7 @@ const updateGame = async (
       wss.broadcast(obj);
 
       setTimeout(
-        () => updateGame(phase + 1, year, lastYear, session,groups),
+        () => updateGame(phase + 1, year, lastYear, session, groups),
         Number.parseInt(totalSeconds) * 1000
       );
     } catch (error) {
@@ -189,7 +191,7 @@ app.post("/createSession", async (request, response) => {
       firstYear = firstYear.rows[0]["year"];
       await pool.query(
         "INSERT INTO session(sessionid,title,excelLink,time_created,year,phase) VALUES($1,$2,$3,$4,$5,$6)",
-        [id, title, "", new Date(),firstYear,1]
+        [id, title, "", new Date(), firstYear, 1]
       );
       response.status(200).send({ status: true });
     } catch (error) {
@@ -202,16 +204,22 @@ app.post("/createSession", async (request, response) => {
 });
 
 app.post("/addGroup", async (request, response) => {
+  let allYears = "";
+  data.year.forEach((e) => {
+    allYears += `_${e}, `;
+  });
+  allYears = allYears.trim().replace(/,$/, "");
   let id = Math.floor(100000 + Math.random() * 900000);
   const { name, limit, sessionid } = request.body;
+  console.log(request.body);
   if (name.length > 0) {
     try {
       if (!Number.isInteger(limit)) {
         throw new Error("Invalid limit. Please provide a valid integer value.");
       }
       await pool.query(
-        'INSERT INTO "group"(groupid, name, _limit, networth, stocks, commodities, cash, mutual_funds, sessionid, players, star,time_created) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)',
-        [id, name, limit, 0, 0, 0, 0, 0, sessionid, 0, 0, new Date()]
+        `INSERT INTO "group"(groupid, name, _limit, cash, sessionid, players, star, time_created, ${allYears}) VALUES($1, $2, $3, $4, $5, $6, $7, $8, 0, 0, 0, 0, 0, 0, 0)`,
+        [id, name, limit, 0, sessionid, 0, 0, new Date()]
       );
       response.status(200).send({ status: true });
     } catch (error) {
@@ -250,6 +258,7 @@ app.get("/sessions", async (request, response) => {
         }
       });
     });
+    console.log(sessions.rows);
     response.send(sessions.rows);
   } catch (error) {
     response.status(400).send("Error: " + error.message);
@@ -411,25 +420,29 @@ app.post("/signup/:id", async (request, response) => {
       let id = Math.floor(100000 + Math.random() * 900000);
       try {
         console.log(name, mobile, password);
-        let res = await pool.query(
-          "INSERT INTO users (userid,name,mobile,password,groupid,role,created_on) VALUES ($1, $2, $3, $4, $5, $6,$7)",
-          [id, name, mobile, password, groupid, "", new Date()]
-        );
-        let player_count = await pool.query(
-          'select players from "group" where groupid=$1',
+        const _limit = await pool.query(
+          'select _limit as limit,players from "group" where groupid=$1',
           [groupid]
         );
-        await pool.query('update "group" set players=$1 where groupid=$2', [
-          player_count.rows[0].players + 1,
-          groupid,
-        ]);
-        wss.broadcast({
-          userid: id,
-          groupid: groupid,
-          name: name,
-          msgType: "NewUser",
-        });
-        response.status(200).send({ userid: id, star_count: 0 });
+        const {limit, players} = _limit.rows[0];
+        if(limit>players){
+          await pool.query(
+            "INSERT INTO users (userid,name,mobile,password,groupid,role,created_on) VALUES ($1, $2, $3, $4, $5, $6,$7)",
+            [id, name, mobile, password, groupid, "", new Date()]
+          );
+          await pool.query('update "group" set players = players + 1 where groupid=$1',[
+            groupid,
+          ]);
+          wss.broadcast({
+            userid: id,
+            groupid: groupid,
+            name: name,
+            msgType: "NewUser",
+          });
+          response.status(200).send({ userid: id, star_count: 0 });
+        }else{
+          response.status(400).send({ status:false,msg:"The group limit exceeded"});
+        }
       } catch (error) {
         console.log("Error: " + error.message);
         response.status(400).send({ status: false });
@@ -453,7 +466,8 @@ app.post("/signup/:id", async (request, response) => {
 
 app.get("/portfolio/:id", async (request, response) => {
   const groupid = request.params.id;
-  let networth = 0,overall = 0;
+  let networth = 0,
+    overall = 0;
   const result = {};
   // const ratio  = (numerator,base)=>{
   //   if(numerator!==0){
@@ -465,12 +479,15 @@ app.get("/portfolio/:id", async (request, response) => {
     let gamedata = await pool.query(`
       SELECT year,phase FROM "session" WHERE sessionid = (SELECT sessionid FROM "group" WHERE groupid = ${groupid});
     `);
-    const {year,phase} = gamedata.rows[0];
+    const { year, phase } = gamedata.rows[0];
 
     let cashAmt = await pool.query(
       'SELECT cash FROM "group" WHERE groupid = $1',
       [groupid]
-    ); cashAmt = cashAmt.rows[0]; result["cash"]=cashAmt.cash; networth+=cashAmt.cash;
+    );
+    cashAmt = cashAmt.rows[0];
+    result["cash"] = cashAmt.cash;
+    networth += cashAmt.cash;
 
     let products = await pool.query(`
       SELECT assets.asset_type, SUM(investment.holdings) AS value
@@ -478,12 +495,8 @@ app.get("/portfolio/:id", async (request, response) => {
       JOIN investment ON assets.id = investment.stockid
       WHERE investment.groupid = ${groupid}
       GROUP BY assets.asset_type
-    `); products = products.rows;
-    
-    products.forEach(e=>{
-      result[e.asset_type] = Number.parseInt(e.value);
-      networth = networth + Number.parseInt(e.value); 
-    }); result["networth"] = networth;
+    `);
+    products = products.rows;
 
     // const {stock, commodity, cash, mutualFund} = result;
 
@@ -495,18 +508,43 @@ app.get("/portfolio/:id", async (request, response) => {
       WHERE t2.groupid = ${groupid}
       GROUP BY t1.asset_type;
     `);
+
+    console.log(holding_diff.rows);
+    if(products.length>0){
+      products.forEach((e) => {
+        result[e.asset_type] = Number.parseInt(e.value);
+        networth = networth + Number.parseInt(e.value);
+      });
+    }else{
+      let assetsTypes = await pool.query(`
+        SELECT DISTINCT asset_type FROM assets
+      `);
+      assetsTypes = assetsTypes.rows;
+      assetsTypes.forEach((e) => {
+        result[e.asset_type] = 0;
+        result[e.asset_type + "_diff"] = 0;
+      });
+    }
     
-    holding_diff.rows.forEach(e=>{
-      result[e.asset_type+"_diff"] = Number.parseInt(e.holding_diff);
-      overall += Number.parseInt(e.holding_diff); 
-    }); result["overall"] = overall; result["overall_diff"] = Math.round(((overall/networth)*100)*100)/100;
+    result["networth"] = networth;
+    if(holding_diff.rows.length>0){
+      holding_diff.rows.forEach((e) => {
+        result[e.asset_type + "_diff"] = Number.parseInt(e.holding_diff);
+        overall += Number.parseInt(e.holding_diff);
+      });
+    }
+
+    result["overall"] = overall;
+    overall?result["overall_diff"] = Math.round((overall / networth) * 100 * 100) / 100:result["overall_diff"] = 0;
 
     let yearly = await pool.query(`
       SELECT _${year} from "group" where groupid = ${groupid}
-    `); yearly = yearly.rows[0][`_${year}`]; result["yearly"] = yearly; result["yearly_diff"] = Math.round(((yearly/networth)*100)*100)/100;
+    `);
+    yearly = yearly.rows[0][`_${year}`];
+    result["yearly"] = yearly;
+    yearly?result["yearly_diff"] = Math.round((yearly / networth) * 100 * 100) / 100:result["yearly_diff"] = 0;
 
     response.status(200).send(result);
-
   } catch (error) {
     console.log("Error: " + error.message);
   }
@@ -547,7 +585,7 @@ app.post("/login/:id", async (req, res) => {
       }
     } else {
       res
-        .status(200)
+        .status(400)
         .send({ status: false, msg: "You are not a registered user" });
     }
   } catch (err) {
@@ -780,7 +818,7 @@ app.post("/invest", async (req, res) => {
       if (!assets.hasOwnProperty(`${asset_type}List`)) {
         assets[`${asset_type}List`] = [];
       }
-      if(holdings[`${id}`] === undefined){
+      if (holdings[`${id}`] === undefined) {
         console.log(assets);
         assets[`${asset_type}List`].push({
           id: id,
@@ -788,17 +826,18 @@ app.post("/invest", async (req, res) => {
           price: asset_price,
           diff: asset_diff,
           holdings: 0,
-          holdings_diff: 0 
+          holdings_diff: 0,
         });
-      }else{
-        console.log("not true ran")
+      } else {
+        console.log("not true ran");
         assets[`${asset_type}List`].push({
           id: id,
           name: asset_name,
           price: asset_price,
           diff: asset_diff,
           holdings: holdings[`${id}`],
-          holdings_diff: Math.round((holdings[`${id}`] * (asset_diff/100)*100))/100
+          holdings_diff:
+            Math.round(holdings[`${id}`] * (asset_diff / 100) * 100) / 100,
         });
       }
     });
@@ -832,13 +871,13 @@ app.post("/trade", async (req, res) => {
   }
 });
 
-async function yearlyUpdate(groupid,amount,stockid,OP){
+async function yearlyUpdate(groupid, amount, stockid, OP) {
   try {
     let gamedata = await pool.query(`
       SELECT year,phase FROM "session" WHERE sessionid = (SELECT sessionid FROM "group" WHERE groupid = ${groupid});
     `);
-  const {year,phase} = gamedata.rows[0];
-  pool.query(`
+    const { year, phase } = gamedata.rows[0];
+    pool.query(`
     UPDATE "group" 
     SET _${year} = _${year} ${OP} (${amount} * price_${year}.phase${phase}_diff / 100) 
     FROM price_${year}
@@ -846,7 +885,13 @@ async function yearlyUpdate(groupid,amount,stockid,OP){
     AND price_${year}.asset_id = ${stockid};
   `);
   } catch (err) {
-    res.status(400).send({status:false,err:err.message,msg:"Could not update yearly amount of the group"});
+    res
+      .status(400)
+      .send({
+        status: false,
+        err: err.message,
+        msg: "Could not update yearly amount of the group",
+      });
   }
 }
 
@@ -866,7 +911,7 @@ app.put("/buy", async (req, res) => {
       : await pool.query(`
       INSERT INTO investment(stockid,groupid,holdings) values(${stockid},${groupid},${amount})
     `);
-    await yearlyUpdate(groupid,amount,stockid,"+");
+    await yearlyUpdate(groupid, amount, stockid, "+");
     res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
@@ -887,7 +932,7 @@ app.put("/sell", async (req, res) => {
       UPDATE investment SET holdings = holdings - ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
     `)
       : "";
-      await yearlyUpdate(groupid,amount,stockid,"-");
+    await yearlyUpdate(groupid, amount, stockid, "-");
     res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
@@ -896,21 +941,19 @@ app.put("/sell", async (req, res) => {
 
 // {option:1} -> year
 // {option:0} -> phase
-app.put("/gamechange",async(req,res)=>{
-  const {sessionid,OP,option} = req.body;
+app.put("/gamechange", async (req, res) => {
+  const { sessionid, OP, option } = req.body;
   try {
     option
-    ?
-      await pool.query(`
+      ? await pool.query(`
         UPDATE "session" SET year = year ${OP} 1 WHERE sessionid = ${sessionid}
       `)
-    :
-      await pool.query(`
+      : await pool.query(`
         UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
       `);
-    res.status(200).send({status:true});
+    res.status(200).send({ status: true });
   } catch (err) {
-    res.status(400).send({status:false,err:err.message});
+    res.status(400).send({ status: false, err: err.message });
   }
 });
 

@@ -4,15 +4,22 @@
     overflow: auto;
     height: 100vh;
     #topBar{
+        height: 50px;
         border-bottom: 2px solid rgba(34, 63, 128, 0.4);
         @include flex(row,space-between,center);
-        img{
-            margin-left:10px;
-        }
+        div{
+            @include flex(column,center,start);
+            height: 100%;
+            width: 33.33%;
+            img {
+              margin-left: 10px;
+            }
+          }
         p{
-            margin:15px;
-            margin-left:50px;
-            margin-bottom:8px;
+            @include flex(column,center,center);
+            margin:0px;
+            height: 100%;
+            width: 33.33%;
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 600;
@@ -20,9 +27,9 @@
             color: #6A6A6A;
         }
         #timer{
-            @include flex(row,space-between,center);
+            @include flex(row,center,center);
             p{
-                margin:5px 20px 0px 5px;
+                margin:5px 0px 0px 5px;
                 font-family: 'Inter';
                 font-style: normal;
                 font-weight: 700;
@@ -33,13 +40,16 @@
         }
     }
     #main{
+        #chart{
+            margin: 20px 0px;
+        }
         @include flex(column,flex-start,center);
 
         img{
             margin-top:40px;
         }
         .row{
-            margin-top:20px;
+            margin-top:30px;
             @include flex(row,space-between,center);
             height:30px;
             width:288px;

@@ -126,18 +126,20 @@ class PortfolioComp extends React.Component {
     return (
       <div id="portfolio">
         <div id="topBar">
-          <img
-            src={Arrow_left}
-            onClick={this.props.toggleMainDisplay}
-            value="dashboard"
-            alt="back_arrow"
-          />
+          <div>
+            <img
+              src={Arrow_left}
+              onClick={this.props.toggleMainDisplay}
+              value="dashboard"
+              alt="back_arrow"
+            />
+          </div>
           <p>Portfolio</p>
           <Time />
         </div>
         <div id="main">
           {/* <img src={PieChart} alt="piechart"/> */}
-          <PieChart width={300} height={300}>
+          <PieChart id="chart" width={180} height={200}>
             <Pie
               data={this.state.pieData}
               color="#000000"
@@ -145,7 +147,7 @@ class PortfolioComp extends React.Component {
               nameKey="name"
               cx="50%"
               cy="50%"
-              outerRadius={100}
+              outerRadius={90}
               fill="#8884d8"
             >
               {this.state.pieData.map((entry, index) => {

@@ -71,12 +71,14 @@ class TeamComp extends React.Component {
     return (
       <div id="team">
         <div id="topBar">
-          <img
-            src={Arrow_left}
-            alt="back_arrow"
-            onClick={this.props.toggleMainDisplay}
-            value="dashboard"
-          />
+          <div>
+            <img
+              src={Arrow_left}
+              alt="back_arrow"
+              onClick={this.props.toggleMainDisplay}
+              value="dashboard"
+            />
+          </div>
           <p>Team</p>
           <Time />
         </div>

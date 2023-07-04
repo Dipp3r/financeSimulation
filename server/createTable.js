@@ -1,11 +1,4 @@
-const express = require("express");
-// const app = express();
 const Pool = require("pg").Pool;
-// const http = require("http");
-// const server = http.createServer(app);
-// const WebSocket = require("ws");
-
-
 
 // const pool = new Pool({
 //   user: "vittaex",
@@ -14,6 +7,7 @@ const Pool = require("pg").Pool;
 //   password: "123456",
 //   port: 5432,
 // });
+
 
 const pool = new Pool({
   user: "postgres",
@@ -26,8 +20,53 @@ const pool = new Pool({
 const assets  = require("./assetsName.json");
 const data = require("./info.json");
 
-async function addAssets() {
+let groupString = ""
+data.year.forEach(e=>{
+  groupString += `_${e} INTEGER, `
+});
+groupString = groupString.trim().replace(/,$/, '');
+
+async function createTables() {
   try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS "session" (
+        sessionid INTEGER PRIMARY KEY,
+        title VARCHAR(255),
+        excellink VARCHAR(255),
+        time_created TIMESTAMP WITHOUT TIME ZONE,
+        year INTEGER,
+        phase INTEGER
+      )
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS "group" (
+        groupid INTEGER PRIMARY KEY,
+        name VARCHAR(255),
+        _limit INTEGER,
+        cash INTEGER,
+        star INTEGER,
+        sessionid INTEGER,
+        players INTEGER,
+        time_created TIMESTAMP WITHOUT TIME ZONE,
+        ${groupString},
+        CONSTRAINT group_sessionid_fkey FOREIGN KEY (sessionid) REFERENCES "session" (sessionid)
+      )
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        userid INTEGER PRIMARY KEY,
+        name VARCHAR(255),
+        mobile VARCHAR(255),
+        password VARCHAR(255),
+        groupid INTEGER,
+        role VARCHAR(255),
+        created_on TIMESTAMP WITHOUT TIME ZONE,
+        CONSTRAINT users_groupid_fkey FOREIGN KEY (groupid) REFERENCES "group" (groupid)
+      )
+    `);
+    
     await pool.query(`
     CREATE TABLE IF NOT EXISTS assets (
       id SERIAL PRIMARY KEY,
@@ -35,6 +74,7 @@ async function addAssets() {
       asset_type VARCHAR(255)
     );
     `);
+
     await pool.query(`truncate table assets;`);
 
     const promises = [];
@@ -48,10 +88,15 @@ async function addAssets() {
         promises.push(promise);
       });
     }
-    
-
+ 
     await pool.query(`
-      create table if not exists gameData ( year integer  primary key, phase1 time,phase2 time,phase3 time,phase4 time)
+      CREATE TABLE IF NOT EXISTS gameData (
+        year INTEGER PRIMARY KEY,
+        phase1 TIME,
+        phase2 TIME,
+        phase3 TIME,
+        phase4 TIME
+      )
     `)
     // Truncate the table to remove existing data
     await pool.query(`TRUNCATE TABLE gameData`);
@@ -60,27 +105,22 @@ async function addAssets() {
       promises.push(promise);
     });
 
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS investment (
+        id SERIAL PRIMARY KEY,
+        stockid INTEGER,
+        groupid INTEGER,
+        holdings INTEGER,
+        CONSTRAINT investment_groupid_fkey FOREIGN KEY (groupid) REFERENCES "group"(groupid),
+        CONSTRAINT investment_stockid_fkey FOREIGN KEY (stockid) REFERENCES assets(id)
+      )
+    `);
 
-    await Promise.all(promises)
-    .then(async ()=>{
-      // await pool.end()
-    })
-
-    console.log('Assets inserted successfully');
-  } catch (error) {
-    pool.end();
-    console.error('Error inserting assets:', error);
-  }
-}
-
-async function addCreateSampleTables() {
-  try {
-   
     data.year.forEach(async e=>{
       const tableName = `price_${e}`;
 
       // Create the table if it doesn't exist
-      await pool.query(`
+      let promise = await pool.query(`
         CREATE TABLE IF NOT EXISTS ${tableName} (
           id SERIAL PRIMARY KEY,
           asset_id INT,
@@ -94,12 +134,20 @@ async function addCreateSampleTables() {
           phase4_diff FLOAT
         );
       `);
-
+      promises.push(promise);
       // Truncate the table to remove existing data
       await pool.query(`TRUNCATE TABLE ${tableName}`);
-
       console.log(`Table ${tableName} created and truncated`);
     });
+    await Promise.all(promises);
+    console.log('All tables created successfully');
+  } catch (error) {
+    console.error('Error creating tables', error);
+  }
+}
+
+async function addSamples() {
+  try { 
 
     let assetsList = [];
 
@@ -152,33 +200,51 @@ async function addCreateSampleTables() {
     console.log('Sample tables and data created successfully');
   } catch (error) {
     console.error('Error creating sample tables and data:', error);
-  } finally {
-    await pool.end();
   }
 }
 
-async function deleteAssetPriceTables() {
+async function deleteTables() {
   try {
-    data.year.forEach(async e=>{
+    for (const e of data.year) {
       await pool.query(`
         DROP TABLE IF EXISTS price_${e};
       `);
-    });
+    }
+
+    await pool.query(`
+      DROP TABLE IF EXISTS investment;
+    `);
+
+    // Drop parent tables next
     await pool.query(`
       DROP TABLE IF EXISTS assets;
     `);
+
+    // Drop remaining tables
     await pool.query(`
       DROP TABLE IF EXISTS gameData;
     `);
-    console.log('Asset price tables deleted successfully');
+
+    await pool.query(`
+      DROP TABLE IF EXISTS users;
+    `);
+
+    await pool.query(`
+      DROP TABLE IF EXISTS "group";
+    `);
+
+    await pool.query(`
+      DROP TABLE IF EXISTS "session";
+    `);
+
+    console.log('All tables deleted successfully');
   } catch (error) {
-    console.error('Error deleting asset price tables:', error);
-  } finally {
-    await pool.end();
+    console.error('Error deleting tables:', error);
   }
 }
 
 
-// addAssets();
-addCreateSampleTables();
-// deleteAssetPriceTables()
+// deleteTables();
+// createTables();
+addSamples();
+
