@@ -11,8 +11,8 @@ class SellComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mainCash: localStorage.getItem("cash"),
-      cash: localStorage.getItem("cash"),
+      mainCash: Number.parseInt(localStorage.getItem("cash")),
+      cash: Number.parseInt(localStorage.getItem("cash")),
       name: "",
       mainHoldings: 0,
       holdings: 0,
@@ -64,6 +64,25 @@ class SellComp extends React.Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(obj),
+    }).then((respose) => {
+      if (respose.status == 200) {
+        if (this.state.sectionType == "buy") {
+          let holdings = this.state.holdings + value;
+          this.setState({
+            mainHoldings: holdings,
+            holdings: holdings,
+            value: 0,
+          });
+          let mainCash = this.state.mainCash - value;
+          localStorage.setItem("cash", Number.parseInt(mainCash));
+          this.setState({ mainCash: mainCash, cash: mainCash, value: 0 });
+        } else {
+          let mainCash = this.state.mainCash + value;
+          console.log(this.state.mainCash, value, mainCash);
+          localStorage.setItem("cash", Number.parseInt(mainCash));
+          this.setState({ mainCash: mainCash, cash: mainCash, value: 0 });
+        }
+      }
     });
   };
   sellAll = () => {
@@ -72,11 +91,18 @@ class SellComp extends React.Component {
   };
   toggleSection(type) {
     sessionStorage.setItem("buySellSectionType", type);
-    this.setState({ sectionType: type, value: "" });
+    let mainHoldings = this.state.mainHoldings;
+    let mainCash = this.state.mainCash;
+    this.setState({
+      sectionType: type,
+      value: "",
+      cash: mainCash,
+      holdings: mainHoldings,
+    });
   }
   componentDidMount() {
     let obj = JSON.parse(localStorage.getItem("asset"));
-    this.setState(obj);
+    this.setState({ ...obj, mainHoldings: obj.holdings });
   }
   render() {
     const { isClicked } = this.state;

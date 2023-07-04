@@ -22,21 +22,21 @@ const data = require("./info.json");
 
 const COINS = 100;
 
-const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "finance",
-  password: "arun",
-  port: 5432,
-});
-
 // const pool = new Pool({
-//   user: "vittaex",
+//   user: "postgres",
 //   host: "localhost",
 //   database: "finance",
-//   password: "123456",
+//   password: "arun",
 //   port: 5432,
 // });
+
+const pool = new Pool({
+  user: "vittaex",
+  host: "localhost",
+  database: "finance",
+  password: "123456",
+  port: 5432,
+});
 
 //middleware
 app.use(cors());
