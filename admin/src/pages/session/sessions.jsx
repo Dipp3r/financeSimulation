@@ -56,8 +56,14 @@ class SessionsComp extends React.Component {
         displayComp = <GroupPage toggleSession={this.toggleSession} />;
         break;
     }
+    localStorage.setItem("sessionPage", value);
     this.setState({ displayComp: displayComp });
   };
+  componentDidMount() {
+    let sessionPage = localStorage.getItem("sessionPage");
+    console.log(sessionPage);
+    this.toggleSession(sessionPage ? sessionPage : "sessionViewer");
+  }
   render() {
     return <div id="sessionMain">{this.state.displayComp}</div>;
   }

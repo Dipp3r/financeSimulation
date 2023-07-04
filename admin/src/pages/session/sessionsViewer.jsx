@@ -29,6 +29,7 @@ export default class SessionsViewer extends React.Component {
   };
   displaySessions = (list) => {
     let container = document.querySelector("#sessionList");
+    if (!container) return;
     container.innerHTML = "";
     if (list.length > 0) {
       let card,
@@ -172,14 +173,6 @@ export default class SessionsViewer extends React.Component {
   };
   componentDidMount() {
     this.fetchSessionsList();
-
-    // let sessionsList = this.props.getItem("sessionsList");
-    // if (sessionsList) {
-    //   this.displaySessions(sessionsList);
-    //   this.setState({ sessionsList: sessionsList });
-    // } else {
-    //   this.fetchSessionsList();
-    // }
   }
   render() {
     console.log(this.state);

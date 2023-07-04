@@ -734,14 +734,15 @@
                   margin-right: 60px;
                 }
                 @include flex(row, space-between, center);
-                #groupNum {
+                #groupNameInput {
                   font-family: "Montserrat";
                   font-style: normal;
                   font-weight: 600;
                   font-size: 30px;
                   line-height: 37px;
-                  text-align: center;
+                  text-align: left;
                   color: #223f80;
+                  border: none;
                 }
                 #players {
                   margin-left: 100px;

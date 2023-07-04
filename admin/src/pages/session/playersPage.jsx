@@ -31,6 +31,18 @@ export default class PlayersPage extends React.Component {
       import.meta.env.VITE_API_PUBLIC_URL + `/${this.state.groupInfo.groupid}`
     );
   };
+  groupRename = (event) => {
+    let obj = {};
+    obj.groupid = this.state.groupInfo.groupid;
+    obj.name = event.currentTarget.value;
+    fetch(import.meta.env.VITE_API_SERVER_URL + "renameGroup", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(obj),
+    });
+  };
   fetchPlayerList = () => {
     fetch(
       import.meta.env.VITE_API_SERVER_URL +
@@ -78,7 +90,13 @@ export default class PlayersPage extends React.Component {
             </button>
             <div id="topLabel">
               <div>
-                <p id="groupNum">{this.state.groupInfo.name}</p>
+                <input
+                  type="text"
+                  id="groupNameInput"
+                  defaultValue={this.state.groupInfo.name}
+                  onBlur={this.groupRename}
+                />
+                {/* <p id="groupNum">{this.state.groupInfo.name}</p> */}
                 <p id="players">
                   Players <i id="playerCount">{this.state.groupInfo.players}</i>
                 </p>
