@@ -30,10 +30,9 @@ class IndexComp extends React.Component {
     console.log(obj);
     this.setState(obj);
   }
-  toggleMainPage(e) {
-    let value = e | "1";
+  toggleMainPage(value) {
+    value ||= "edit";
     let mainPage;
-    if (e) if (e.currentTarget) value = e.currentTarget.getAttribute("value");
 
     let options = document.querySelector("#options").childNodes;
     console.log(options);
@@ -43,7 +42,7 @@ class IndexComp extends React.Component {
       element.style.color = "#223F80";
     });
     switch (value) {
-      case "1":
+      case "session":
       default:
         mainPage = (
           <SessionsComp setItem={this.setItem} getItem={this.getItem} />
@@ -51,19 +50,19 @@ class IndexComp extends React.Component {
         document.querySelector("#imgGroup").src = Group_white;
         document.querySelector("#imgEdit").src = Edit;
         break;
-      case "0":
+      case "edit":
         mainPage = <EditComp />;
         document.querySelector("#imgEdit").src = Edit_white;
         document.querySelector("#imgGroup").src = Group;
         break;
     }
-    options[value].style.backgroundColor = "#223f80";
-    options[value].style.color = "#FFF";
+    options[value == "edit" ? 0 : 1].style.backgroundColor = "#223f80";
+    options[value == "edit" ? 0 : 1].style.color = "#FFF";
     this.setState({ mainPage: mainPage, mainPageValue: value });
-    sessionStorage.setItem("mainPageValue", value);
+    localStorage.setItem("mainPageValue", value);
   }
   componentDidMount() {
-    this.toggleMainPage(sessionStorage.getItem("mainPageValue"));
+    this.toggleMainPage(localStorage.getItem("mainPageValue"));
   }
   render() {
     console.log(this.state);
@@ -72,11 +71,21 @@ class IndexComp extends React.Component {
         <nav id="sideBar">
           <img src={vittae_logo_color} alt="vittae logo" />
           <div id="options">
-            <div className="button" value="0" onClick={this.toggleMainPage}>
+            <div
+              className="button"
+              onClick={() => {
+                this.toggleMainPage("edit");
+              }}
+            >
               <img id="imgEdit" src={Edit} alt="editIcon" />
               <p>Edit</p>
             </div>
-            <div className="button" value="1" onClick={this.toggleMainPage}>
+            <div
+              className="button"
+              onClick={() => {
+                this.toggleMainPage("session");
+              }}
+            >
               <img id="imgGroup" src={Group} alt="groupIcon" />
               <p>Sessions</p>
             </div>
