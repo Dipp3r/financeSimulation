@@ -47,7 +47,7 @@ export default class NotificationCard extends React.Component {
         );
       case "CashUpt":
         return (
-          <div className="notif">
+          <div className="notif coin-notif">
             <img className="coin" src={Coin} alt="coin" />
             <p className="text-thin">
               ₹{this.state.cash} of vittae coins has
