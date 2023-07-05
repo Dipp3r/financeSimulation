@@ -93,14 +93,15 @@ wss.broadcast = function (data) {
   });
 };
 
-let timer_key;
+let timer_key={},startTime={},delay={},remainingTime={};
 
 const updateGame = async (
   phase = 1,
   year = 1,
   lastYear = 0,
   session,
-  groups
+  groups,
+  time
 ) => {
   if (phase >= 5) {
     phase = 1;
@@ -116,7 +117,8 @@ const updateGame = async (
     try {
       const query = `SELECT phase${phase} FROM gamedata WHERE year = $1 ORDER BY year ASC`;
       const result = await pool.query(query, [year]);
-      const time = result.rows[0][`phase${phase}`];
+      time ??= result.rows[0][`phase${phase}`];
+      console.log(year,phase,time);
       const [hours, minutes, seconds] = time.split(":");
       const totalSeconds = Number.parseInt(
         hours * 3600 + minutes * 60 + seconds
@@ -136,17 +138,31 @@ const updateGame = async (
       obj.time = time;
 
       wss.broadcast(obj);
-
-      timer_key = setTimeout(
-        () => updateGame(phase + 1, year, lastYear, session, groups),
-        Number.parseInt(totalSeconds) * 1000
+      startTime[`${session}`] = new Date().getTime();
+      delay[`${session}`] = Number.parseInt(totalSeconds) * 1000;
+      timer_key[`${session}`] = setTimeout(
+        () => {updateGame(phase + 1, year, lastYear, session, groups)},
+          delay[`${session}`]
       );
-
     } catch (error) {
       console.error("Error:", error);
     }
   }
 };
+
+function secondsToHMS(seconds) {
+  if(!seconds){
+    return
+  }
+  var hours = Math.floor(seconds / 3600);
+  var minutes = Math.floor((seconds % 3600) / 60);
+  var remainingSeconds = Math.floor(seconds % 60);
+
+  var HH = hours < 10 ? "0" + hours : hours;
+  var MM = minutes < 10 ? "0" + minutes : minutes;
+  var SS = remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
+  return HH + ":" + MM + ":" + SS;
+}
 
 
 app.post("/start", async (req, res) => {
@@ -175,30 +191,31 @@ app.post("/start", async (req, res) => {
           UPDATE "group" set cash = cash + ${COINS} WHERE groupid = ${group["groupid"]}
         `);
       } 
-
       wss.broadcast({ cash: COINS, msgType: "CashUpt" });
-      updateGame(currentPhase, currentYear, lastYear, sessionid, groups.rows);
+      updateGame(currentPhase, currentYear, lastYear, sessionid, groups.rows,secondsToHMS(remainingTime[`${sessionid}`]));
       res.status(200).end();
   }
   
 });
 
-app.get("/", (request, response) => {
-  response.json({ info: "Node.js, Express, and Postgres API" });
-});
-
 app.post("/pause",async (req,res)=>{
   const {sessionid} = req.body;
-  clearTimeout(timer_key);
+  clearTimeout(timer_key[`${sessionid}`]);
+  elapsedTime = new Date().getTime() - startTime[`${sessionid}`];
+  remainingTime[`${sessionid}`] = Math.round((delay[`${sessionid}`] - elapsedTime)/1000);
   pool.query(`
     UPDATE "session" SET start = 0 WHERE sessionid = ${sessionid}
   `);
   console.log("paused");
   wss.broadcast({msgType:"GamePause"});
   res.status(200).end();
-
-
 });
+
+app.get("/", (request, response) => {
+  response.json({ info: "Node.js, Express, and Postgres API" });
+});
+
+
 //API for testing
 
 app.get("/test", async (req, res) => {
