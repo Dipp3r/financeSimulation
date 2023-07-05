@@ -4,7 +4,7 @@ A Forum to practice trading and investing(no deposit needed) by yourself or join
 <h4>SESSION TABLE</h4>
 
 ```sql
-CREATE TABLE public.session (
+CREATE TABLE "session" (
     sessionid INTEGER PRIMARY KEY,
     title VARCHAR(255),
     excellink VARCHAR(255),
@@ -17,6 +17,7 @@ CREATE TABLE public.session (
 alter table "session" add column time_created timestamp;
 alter table "session" add column year integer;
 alter table "session" add column phase integer;
+alter table "session" add column start INTEGER;
 ```
 <h4>GROUP TABLE</h4>
 
