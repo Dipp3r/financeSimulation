@@ -45,7 +45,7 @@
     #fixed {
       padding: 5px 20px;
       @include flex(row, space-between, center);
-      position: fixed;
+      position: absolute;
       bottom: 30px;
       width: 185px;
       height: 44px;

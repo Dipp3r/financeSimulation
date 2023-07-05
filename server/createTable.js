@@ -152,7 +152,8 @@ async function createTables() {
 
 async function addSamples() {
   try { 
-
+    let  priceData = require("./price.json");
+    const data = require("./info.json");
     let assetsList = [];
 
     // Fetch the assets list from the assets table
@@ -161,15 +162,15 @@ async function addSamples() {
 
     for (let asset of assetsList) {
       let previousPhasePrice = 0;
-      for (let e of data.year) {
+      for (let year of data.year) {
         let tableNumber = 1;
-        let tableName = `price_${e}`;
+        let tableName = `price_${year}`;
         let prices = Array(4).fill(0);
         let pricesDiff = Array(4).fill(0);
         let newPrice = 0;
 
         for (let index = 0; index < 4; index++) {
-          newPrice = Math.ceil(Math.random() * 10) * 10;
+          newPrice = priceData[year][`${index+1}`]?priceData[year][`${index+1}`][asset.id]:previousPhasePrice;
           prices[index] = newPrice;
           pricesDiff[index] =
             tableNumber === 1 && previousPhasePrice === 0
@@ -177,7 +178,7 @@ async function addSamples() {
               : Math.round(((newPrice / previousPhasePrice) - 1) * 100);
           previousPhasePrice = newPrice;
         }
-
+        // console.log(year,asset.id,prices,pricesDiff)
         await pool.query(
           `INSERT INTO ${tableName} (asset_id, phase1_price, phase1_diff, phase2_price, phase2_diff, phase3_price, phase3_diff, phase4_price, phase4_diff)
            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
@@ -249,5 +250,5 @@ async function deleteTables() {
 
 
 // deleteTables();
-// createTables();
+createTables();
 // addSamples();

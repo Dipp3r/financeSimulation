@@ -83,7 +83,11 @@ class TeamComp extends React.Component {
           <Time />
         </div>
         <div id="main">
-          <div id="QRCompPage" style={{ display: "none" }}>
+          <div
+            id="QRCompPage"
+            style={{ display: "none" }}
+            onClick={this.toggleQR}
+          >
             <QRComp />
           </div>
 

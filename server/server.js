@@ -22,21 +22,21 @@ const DATA = require("./info.json");
 
 const COINS = 500000;
 
-const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "finance",
-  password: "arun",
-  port: 5432,
-});
-
 // const pool = new Pool({
-//   user: "vittaex",
+//   user: "postgres",
 //   host: "localhost",
 //   database: "finance",
-//   password: "123456",
+//   password: "arun",
 //   port: 5432,
 // });
+
+const pool = new Pool({
+  user: "vittaex",
+  host: "localhost",
+  database: "finance",
+  password: "123456",
+  port: 5432,
+});
 
 //middleware
 app.use(cors());
@@ -409,8 +409,8 @@ app.put("/assignrole", async (request, response) => {
 
 app.post("/signup/:id", async (request, response) => {
   const { name, mobile, password } = request.body;
-  console.log(name, mobile, password);
   var groupid = Number.parseInt(request.params.id);
+  console.log(groupid,name, mobile, password);
   try {
     const user = await pool.query("SELECT groupid FROM users WHERE mobile=$1", [
       mobile,
@@ -419,7 +419,7 @@ app.post("/signup/:id", async (request, response) => {
     if (user.rowCount == 0) {
       let id = Math.floor(100000 + Math.random() * 900000);
       try {
-        console.log(name, mobile, password);
+        console.log(groupid,name, mobile, password);
         const _limit = await pool.query(
           'select _limit as limit,players from "group" where groupid=$1',
           [groupid]
