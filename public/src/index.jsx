@@ -90,8 +90,6 @@ class IndexComp extends React.Component {
 
     let notificationList = this.state.notificationList.slice(undefined, 100);
     message.isread = false;
-    notificationList.push(message);
-    this.setState({ notificationList: notificationList });
 
     switch (message.msgType) {
       case "GameChg":
@@ -99,14 +97,24 @@ class IndexComp extends React.Component {
         [, minute, second] = message.time.split(":");
         localStorage.setItem("minute", Number.parseInt(minute));
         localStorage.setItem("second", Number.parseInt(second) + 1);
+        notificationList.push(message);
         break;
       case "CashUpt":
         cash = localStorage.getItem("cash");
         localStorage.setItem("cash", cash + this.state.cash);
+        notificationList.push(message);
+        break;
+      case "RoleChg":
+      case "NewUser":
+      case "RemoveUser":
+        if (message.groupid == localStorage.getItem("groupid")) {
+          notificationList.push(message);
+        }
         break;
       default:
         break;
     }
+    this.setState({ notificationList: notificationList });
   };
 
   componentDidMount() {

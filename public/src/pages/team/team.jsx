@@ -10,7 +10,7 @@ import QR from "@assets/images/QR.svg";
 import TeamCardComp from "@components/teamCard";
 import QRComp from "./QRComp";
 import Time from "@components/time";
-
+const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 class TeamComp extends React.Component {
   constructor(props) {
     super(props);
@@ -45,7 +45,7 @@ class TeamComp extends React.Component {
     display = display == "none" ? "flex" : "none";
     document.querySelector("#QRCompPage").style.display = display;
   };
-  componentDidMount() {
+  fetchTeamInfo = () => {
     fetch(
       import.meta.env.VITE_API_SERVER_URL +
         "team/" +
@@ -57,15 +57,33 @@ class TeamComp extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        let teamCompList = [];
-        data.map((player, index) => {
-          teamCompList.push(<TeamCardComp key={index} player={player} />);
-        });
-        this.setState({ teamComp: teamCompList });
+        this.setState({ teamComp: data });
       })
       .catch((error) => {
         throw new Error(error);
       });
+  };
+  componentDidMount() {
+    socket.addEventListener("message", (event) => {
+      let message = JSON.parse(event.data);
+      console.log(
+        message.msgType == "RoleChg" &&
+          message.groupid == localStorage.getItem("groupid")
+      );
+      if (
+        message.msgType == "RoleChg" &&
+        message.groupid == localStorage.getItem("groupid")
+      ) {
+        let list = this.state.teamComp;
+        list.forEach((player, index) => {
+          if (player.userid == message.userid) {
+            list[index].role = message.role;
+          }
+          this.setState({ teamComp: list });
+        });
+      }
+    });
+    this.fetchTeamInfo();
   }
   render() {
     return (
@@ -95,8 +113,8 @@ class TeamComp extends React.Component {
             <img src={QR} alt="qr" />
             <p>Invite team</p>
           </button>
-          {this.state.teamComp.map((player) => {
-            return player;
+          {this.state.teamComp.map((player, index) => {
+            return <TeamCardComp key={index} player={player} />;
           })}
         </div>
       </div>
