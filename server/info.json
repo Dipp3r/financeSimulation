@@ -1,3 +1,213 @@
 {
-    "year":[2099,2100,2101,2102,2103,2104,2105,2106]
+    "year":[2099,2100,2101,2102,2103,2104,2105,2106],
+    "news":{
+        "2099":{
+            "1":{
+                "assets":[1,2,3,4,5,6,7,8,9,10,12,13,14,15],
+                "news":{}
+            },            
+            "2":{
+                "assets":[1,2,3,4,5,6,7,8,9,10,12,13,14,15],
+                "news":{"asset":"Ahmedabad: Hiroshi Suzuki, the Japanese ambassador to India, was the chief guest at the 11th Japan Festival (Nihon Matsuri) at Ahmedabad Management Association (AMA) on Saturday. Talking to TOI on the sidelines of the event, Suzuki remembered his first visit to the state in 2017 when PM Modi invited the then Japanese PM Shinzo Abe to the city and laid foundation to the bullet train. Suzuki was a close associate of Abe for over 15 years."}
+            },         
+            "3":{
+                "assets":[5,7,9,10],
+                "news":{"asset":"Ahmedabad: Hiroshi Suzuki, the Japanese ambassador to India, was the chief guest at the 11th Japan Festival (Nihon Matsuri) at Ahmedabad Management Association (AMA) on Saturday. Talking to TOI on the sidelines of the event, Suzuki remembered his first visit to the state in 2017 when PM Modi invited the then Japanese PM Shinzo Abe to the city and laid foundation to the bullet train. Suzuki was a close associate of Abe for over 15 years."}
+            },         
+            "4":{
+                "assets":[10],
+                "news":{"asset":"Ahmedabad: Hiroshi Suzuki, the Japanese ambassador to India, was the chief guest at the 11th Japan Festival (Nihon Matsuri) at Ahmedabad Management Association (AMA) on Saturday. "}
+            }      
+        },
+        "2100":{
+            "1":{
+                "assets":[1,2,3,4,5,6,7,8,9,10,12,13,14,15],
+                "news":{}
+            },            
+            "2":{
+                "assets":[1,2,3,4,5,6,7,8,9,10,12,13,14,15],
+                "news":{
+                    "1":["Shares of _asset_ Industries surge 5% on MSO licence news ((MSO) licence to provide cable TV services to households.","_asset_ Dialup service soft launch happened in 2015 for partners and employees."],
+                    "2":["Reck Energy to sell off three Indonesian coal mines."],
+                    "3":["_asset_ director Ishaan Hussan resigns, Clock Out Company appoints Hari Bhatan as director. Brand Custodian of the group and part of multiple boards."],
+                    "4":["The net mobile data customer base has risen to 41.3 million, _asset_ to launch 4G services in 750 towns by H1 next year."],
+                    "5":["_asset_ allowed to directly import precious metals.","_asset_ recommends 32% dividend."],
+                    "6":["_asset_ to foray into mutual fund biz; may buy an AMC ","_asset_ to raise USD 1 billion via issue of equity capital, _asset_ recommends 90% final dividend."],
+                    "7":["_asset_ maintains its store expansion plans for 150 Cone Pizza stores."],
+                    "8":["_asset_ to spend Rs 250 cr for strengthening rural livelihoods."],
+                    "9":["_asset_'s CFO P. Murali resigns, B.O Thai International appoints Mahendra Singh Sharma as additional director."],
+                    "10":["_asset_'s independent director Anuar Abdullah resigns."]
+                }
+            },         
+            "3":{
+                "assets":[5,7,9,10],
+                "news":{
+                    "5":["_asset_ partners California-based Martian Watches."],
+                    "7":["Not too many people eating cone pizzas today: _asset_, The license of a Cone Pizza outlet at Gajraula area on NH-24 here has been revoked by the authorities after its sauce was found to be 'below standard'."],
+                    "9":["_asset_ exits parent company, sells 3.2% stake to Chivas Regal."],
+                    "10":["Top Indian bank launches prepaid medical card with _asset_."]
+                }
+            },         
+            "4":{
+                "assets":[10],
+                "news":{
+                    "10":["_asset_'s subsidiary to raise fund, _asset_ to raise up to Rs 750 cr to fund expansion"]
+                }
+            }      
+        },
+        "2101":{
+            "1":{
+                "assets":[1,2,3,4,5,6,7,8,9,11,12,13,14,15],
+                "news":{}
+            },            
+            "2":{
+                "assets":[1,2,3,4,5,6,7,8,9,11,12,13,14,15],
+                "news":{
+                    "1":["_asset_ Dialup service was made publicly available."],
+                    "2":["Rs 10k-cr Warangal power project may be awarded in Feb to _asset_ "],
+                    "3":["_asset_ unveils its first smartwatch Cuxt; priced up to Rs 19,995 5."],
+                    "4":["Call failures due to points of interconnect unacceptable for _asset_"],
+                    "5":["_asset_ acquires WCC's bridal gold jewellery brand 'AVVA'.","Expect 25% rise in gold sales this Dhanteras: _asset_."],
+                    "6":["_asset_ acquires 5% stake in Institutional Investor Advisory Services, _asset_ appoints Ashoka Chawlai as additional (non-executive) director.","_asset_ to raise over Rs 16,500 cr via equity, debt."],
+                    "7":["_asset_ plans to open 130-140 new Cone Pizza outlets and around 20 new Sweet Buns Bakes restaurants in the current fiscal. There is concern whether Cone pizzas expensive in India?"],
+                    "8":["_asset_ becomes third most valued co; surpasses Infosys, PNB Bank "],
+                    "9":["Matthew (CEO) resigns from _asset_; indicates amicable pact with Diagonal (the multinational alcohol company), _asset_ appoints M P Sharma as new chairman, Matthew exits _asset_ but over 2 lakh investors still stuck in their luxury bus service, KP Travels. "],
+                    "11":["_asset_ to raise Rs 300 cr via issue of NCDs 4."]
+                }
+            },         
+            "3":{
+                "assets":[1,7,9],
+                "news":{
+                    "1":["_asset_ Dialup service was given for free."],
+                    "7":["_asset_ in a downtrend, Block Party Delicacy CEO Ajith Kail resigns, Block Party Delicacy says it won't hike rates for at least a year"]
+                }
+            },         
+            "4":{
+                "assets":[],
+                "news":{}
+            }      
+        },
+        "2102":{
+            "1":{
+                "assets":[1,2,3,4,5,6,7,8,9,11,12,13,14,15],
+                "news":{}
+            },            
+            "2":{
+                "assets":[1,2,3,4,5,6,7,8,9,11,12,13,14,15],
+                "news":{
+                    "1":["_asset_ Dialup Service was not given for free anymore."],
+                    "2":["_asset_ promoter group entity sells shares worth Rs 858 crore"],
+                    "3":["Jewellery business should see growth higher than 20% in FY18: _asset_","Idea shareholders approve scheme of merger with Vodafone India 6. PC Jwellery to open 70th showroom, PC Jwellery to open new showroom at Allahabad, PC Jwellery's turnover may cross Rs 10,000 crore this fiscal."],
+                    "6":["_asset_ raises Rs 4,906.65 crore via QIP issue, _asset_ remains top pick as no meaningful exposure to 12 NPA accounts, _asset_ to decide on stock split in board meeting on July 26 "],
+                    "7":["_asset_ President & CFO quits, _asset_ to pump in Rs 100 cr in its Cone Pizza."],
+                    "8":["_asset_ ventures into value-added dairy products, to launch milk-based drinks soon, _asset_'s food division eyes 10% revenue from chocolates in 5 years, To invest Rs 25,000 crore in next few years across product pipeline: _asset_, _asset_ says biggest headroom for growth in FMCG business."],
+                    "10":["_asset_ plans to raise Rs 200 cr 11. Will not raise more debt, not looking at acquisition currently"]
+                }
+            },         
+            "3":{
+                "assets":[1,2,6],
+                "news":{
+                    "1":["By October 2017, it had about 13 crore (120 million) subscribers. : _asset_"],
+                    "2":["ADB approves $583 mn loan facility to _asset_'s project "],
+                    "6":["RBI penalises _asset_ & IDFC Bank for violations, _asset_ to join S&P BSE Sensex from Monday."]
+                }
+            },         
+            "4":{
+                "assets":[],
+                "news":{}
+            }      
+        },
+        "2103":{
+            "1":{
+                "assets":[1,2,3,4,5,6,7,8,9,11,12,13,14,15],
+                "news":{}
+            },            
+            "2":{
+                "assets":[1,2,3,4,5,6,7,8,9,11,12,13,14,15],
+                "news":{
+                    "1":["_asset_ to acquire 5% stake in Eros International Plc."],
+                    "2":["_asset_ promoter group entity sells shares worth Rs 858 crore"],
+                    "3":["_asset_ eyeing 20-25% annual growth rate, targeting 10% market share: MD"],
+                    "4":["CRISIL downgrades rating of _asset_ Mobile Service's NCDs worth Rs 6K cr, Companies on BSE 500 with high debt default probability rise 220% in 2018: Report, Over 250 million users may cut connections on _asset_, Competitor focus on profitable customers."],
+                    "5":["Rumours of involvement of company in price manipulation are baseless: Vakrangee, PVC Creations loses over 83 percent of investor wealth as stocks crash, One of India’s largest jewellery chains is caught in a stock market spiral _asset_ a falling knife, stay away from the stock: Equity99, _asset_ approves buyback at Rs 350 a share; stock price up nearly 90% in May."],
+                    "6":["_asset_ acquires 17.31% stake in Big time Healthcare "],
+                    "7":["_asset_ to launch Cone Pizza in Bangladesh, Cone Pizza introduces Everyday Value at Rs 99 for small group sizes"],
+                    "8":["_asset_ to enter paneer, milkshakes business in 2 months "],
+                    "9":["Liquor industry to get a new high in UP; _asset_ and Radico to benefit."],
+                    "10":["Exclusive | Fully prepared for rollout with 31 states, 9,000 private hospitals on board: Ayush Bharat CEO on _asset_."]
+                }
+            },         
+            "3":{
+                "assets":[1,11],
+                "news":{
+                    "1":["_asset_ buying controlling stake in Hallway & Den Networks is a 'win-win deal, _asset_ arm acquires substantial stake in media startup NEJ"],
+                    "11":["_asset_ raises Rs 23,600 crore in 2 months, _asset_ raises another Rs 200 cr."]
+                }
+            },         
+            "4":{
+                "assets":[],
+                "news":{}
+            }      
+        },
+        "2104":{
+            "1":{
+                "assets":[2,3,4,5,6,7,8,10,11,12,13,14,15],
+                "news":{}
+            },            
+            "2":{
+                "assets":[2,3,4,5,6,7,8,10,11,12,13,14,15],
+                "news":{
+                    "2":["_asset_ promoters aim Rs 2,500 cr from stake sale, _asset_ net down 32.5% to Rs 189 cr in December quarter "],
+                    "3":["Jewellery industry stares at a dark Diwali: _asset_"],
+                    "4":["Kumar Mangalam Birka to be Chairman of merged _asset_ entity"],
+                    "5":["SEBI fines promoters of _asset_ Rs 8 crore in insider trading case"],
+                    "6":["RBI threatens action against _asset_ for disclosing NIL divergence report"],
+                    "7":["_asset_ reverses decision to pay 0.25% royalty to promoters 8"],
+                    "8":["_asset_ appoints Sanjiv Poori as Chairman"],
+                    "10":["_asset_ to focus on cutting debt, improving operational performance"],
+                    "11":["Softbank invests Rs 2,800 cr in _asset_'s associate OokNorth "]
+                }
+            },         
+            "3":{
+                "assets":[6,11],
+                "news":{
+                    "6":["Moody’s places _asset_ ratings under review for downgrade, _asset_ reduces stake in Fortis Healthcare by 2%, _asset_ co-founder's family may sell stake in mortgage finance company"],
+                    "11":["_asset_ Accused Of Misappropriating Rs 98,000 Crore Of Public Money "]
+                }
+            },         
+            "4":{
+                "assets":[],
+                "news":{}
+            }      
+        },
+        "2105":{
+            "1":{
+                "assets":[1,2,3,4,6,8,10,11,12,13,14,15],
+                "news":{}
+            },            
+            "2":{
+                "assets":[1,2,3,4,6,8,10,11,12,13,14,15],
+                "news":{
+                    "1":["₹1,52,055 crore equity from 13 investors, including 2 of the largest corporations, for a 33 per cent stake in _asset_ Platforms ₹47,215-crore equity raised from nine investors for a 10.52 per cent stake in _asset_ Ventures."],
+                    "2":["_asset_ net profit declines 57% to Rs 49 crore in December quarter, Axis Bank files insolvency plea against _asset_ arm."],
+                    "3":["Despite rise in gold prices customers looking to buy gold, says _asset_ CEO."],
+                    "4":["Franklin Templeton MF marks down _asset_ investment to zero."],
+                    "6":["_asset_ rescue plan: RBI announces draft scheme of reconstruction, _asset_ biggest lender to loan defaulter Cox & Kings, CBI begins probe into 'criminal conspiracy, cheating' by _asset_ co-founder Ranka Kapur, family. SEBI slaps Rs 1 crore fine on Ranka Kapur for disclosure lapses"],
+                    "8":["Demand for health and hygiene products would remain high post pandemic: _asset_'s Sanjiv Poori"],
+                    "10":["COVID-19 impact | Private hospitals hit hard, steep drop in OPD footfalls, Covid-19: _asset_ teams up with OYO, Lemon Tree, Ginger Hotels to create 5,000 isolation rooms"],
+                    "11":["_asset_ sells part of its stake in OakNorth Holdings, raises Rs 93 crore"]
+                }
+            },         
+            "3":{
+                "assets":[4],
+                "news":{
+                    "4":["_asset_'s board approves fundraising up to Rs 25,000 crore"]
+                }
+            },         
+            "4":{
+                "assets":[],
+                "news":{}
+            }      
+        }
+    }
 }

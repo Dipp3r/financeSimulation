@@ -13,7 +13,7 @@ const upload = require("express-fileupload");
 // const fs = require("fs");
 const path = require("path");
 
-const data = require("./info.json");
+const DATA = require("./info.json");
 
 // const uploadFolderPath = `./upload`;
 // fs.mkdir(uploadFolderPath, { recursive: true }, (err) => {});
@@ -205,7 +205,7 @@ app.post("/createSession", async (request, response) => {
 
 app.post("/addGroup", async (request, response) => {
   let allYears = "";
-  data.year.forEach((e) => {
+  DATA.year.forEach((e) => {
     allYears += `_${e}, `;
   });
   allYears = allYears.trim().replace(/,$/, "");
@@ -218,7 +218,7 @@ app.post("/addGroup", async (request, response) => {
         throw new Error("Invalid limit. Please provide a valid integer value.");
       }
       await pool.query(
-        `INSERT INTO "group"(groupid, name, _limit, cash, sessionid, players, star, time_created, ${allYears}) VALUES($1, $2, $3, $4, $5, $6, $7, $8, 0, 0, 0, 0, 0, 0, 0)`,
+        `INSERT INTO "group"(groupid, name, _limit, cash, sessionid, players, star, time_created, ${allYears}) VALUES($1, $2, $3, $4, $5, $6, $7, $8, 0, 0, 0, 0, 0, 0, 0,0)`,
         [id, name, limit, 0, sessionid, 0, 0, new Date()]
       );
       response.status(200).send({ status: true });
@@ -812,33 +812,35 @@ app.post("/invest", async (req, res) => {
     });
 
     const assets = {};
-
+    console.log(result.rows)
     result.rows.forEach((row) => {
       const { id, asset_type, asset_name, asset_price, asset_diff } = row;
       if (!assets.hasOwnProperty(`${asset_type}List`)) {
         assets[`${asset_type}List`] = [];
       }
-      if (holdings[`${id}`] === undefined) {
-        console.log(assets);
-        assets[`${asset_type}List`].push({
-          id: id,
-          name: asset_name,
-          price: asset_price,
-          diff: asset_diff,
-          holdings: 0,
-          holdings_diff: 0,
-        });
-      } else {
-        console.log("not true ran");
-        assets[`${asset_type}List`].push({
-          id: id,
-          name: asset_name,
-          price: asset_price,
-          diff: asset_diff,
-          holdings: holdings[`${id}`],
-          holdings_diff:
-            Math.round(holdings[`${id}`] * (asset_diff / 100) * 100) / 100,
-        });
+      console.log(id,DATA.news[`${year}`][`${phase}`].assets);
+      if(DATA.news[`${year}`][`${phase}`].assets.includes(id)){
+        if (holdings[`${id}`] === undefined) {
+          console.log(assets);
+          assets[`${asset_type}List`].push({
+            id: id,
+            name: asset_name,
+            price: asset_price,
+            diff: asset_diff,
+            holdings: 0,
+            holdings_diff: 0,
+          });
+        } else {
+          assets[`${asset_type}List`].push({
+            id: id,
+            name: asset_name,
+            price: asset_price,
+            diff: asset_diff,
+            holdings: holdings[`${id}`],
+            holdings_diff:
+              Math.round(holdings[`${id}`] * (asset_diff / 100) * 100) / 100,
+          });
+        }
       }
     });
 
