@@ -26,7 +26,19 @@ class NotifComp extends React.Component {
     socket.addEventListener("message", (event) => {
       console.log("messge at notification");
       let notificationList = [...this.state.notificationList];
-      notificationList.push(JSON.parse(event.data));
+      let message = JSON.parse(event.data);
+      message.isRead = false;
+      if (
+        message.msgType == "RoleChg" ||
+        message.msgType == "NewUser" ||
+        message.msgType == "RemoveUser"
+      ) {
+        if (message.groupid == localStorage.getItem("groupid")) {
+          notificationList.push(message);
+        }
+      } else {
+        notificationList.push(message);
+      }
       this.setState({ notificationList: notificationList });
       // this.getList();
     });

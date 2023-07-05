@@ -170,13 +170,14 @@ async function addSamples() {
         let pricesDiff = Array(4).fill(0);
         let newPrice = 0;
 
-        for (let index = 0; index < 4; index++) {
-          newPrice = priceData[year][`${index+1}`]?priceData[year][`${index+1}`][asset.id]:previousPhasePrice;
-          prices[index] = newPrice;
-          pricesDiff[index] =
+        for (let phase = 0; phase < 4; phase++) {
+          newPrice = priceData[year][`${phase+1}`]?priceData[year][`${phase+1}`][asset.id]:previousPhasePrice;
+          prices[phase] = newPrice;
+          pricesDiff[phase] =
             tableNumber === 1 && previousPhasePrice === 0
               ? 0
               : Math.round(((newPrice / previousPhasePrice) - 1) * 100);
+          if(year == "2100" && phase == 0) pricesDiff[phase] = 0
           previousPhasePrice = newPrice;
         }
         // console.log(year,asset.id,prices,pricesDiff)
@@ -249,7 +250,11 @@ async function deleteTables() {
   }
 }
 
-
+// for (const e of data.year) {
+//   pool.query(`
+//     truncate TABLE price_${e};
+//   `);
+// }
 // deleteTables();
-createTables();
-// addSamples();
+// createTables();
+addSamples();
