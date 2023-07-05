@@ -155,7 +155,7 @@
                 height:94px;
                 @include flex(row,space-between,center);
                 #name{
-                    width: 33.33%;
+                    width: 50%;
                     font-family: 'Inter';
                     font-style: normal;
                     font-weight: 400;
@@ -165,7 +165,7 @@
                     // margin-left:20px;
                 }
                 div{
-                    width: 33.33%;
+                    width: 25%;
                     @include flex(column,center,center);
                     p{
                         margin:2px;
@@ -181,7 +181,7 @@
                 }
                 #amount{
                     text-align: center;
-                    width: 33.33%;
+                    width: 25%;
                     text-align: center;
                     font-family: 'Inter';
                     font-style: normal;
