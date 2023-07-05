@@ -35,7 +35,8 @@ async function createTables() {
         excellink VARCHAR(255),
         time_created TIMESTAMP WITHOUT TIME ZONE,
         year INTEGER,
-        phase INTEGER
+        phase INTEGER,
+        start INTEGER
       )
     `);
 
