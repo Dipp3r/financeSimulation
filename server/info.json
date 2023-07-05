@@ -8,15 +8,15 @@
             },            
             "2":{
                 "assets":[1,2,3,4,5,6,7,8,9,10,12,13,14,15],
-                "news":{"asset":"Ahmedabad: Hiroshi Suzuki, the Japanese ambassador to India, was the chief guest at the 11th Japan Festival (Nihon Matsuri) at Ahmedabad Management Association (AMA) on Saturday. Talking to TOI on the sidelines of the event, Suzuki remembered his first visit to the state in 2017 when PM Modi invited the then Japanese PM Shinzo Abe to the city and laid foundation to the bullet train. Suzuki was a close associate of Abe for over 15 years."}
+                "news":{"1":["Ahmedabad: Hiroshi Suzuki, the Japanese ambassador to India, was the chief guest at the 11th Japan Festival (Nihon Matsuri) at Ahmedabad Management Association (AMA) on Saturday. Talking to TOI on the sidelines of the event, Suzuki remembered his first visit to the state in 2017 when PM Modi invited the then Japanese PM Shinzo Abe to the city and laid foundation to the bullet train. Suzuki was a close associate of Abe for over 15 years."]}
             },         
             "3":{
                 "assets":[5,7,9,10],
-                "news":{"asset":"Ahmedabad: Hiroshi Suzuki, the Japanese ambassador to India, was the chief guest at the 11th Japan Festival (Nihon Matsuri) at Ahmedabad Management Association (AMA) on Saturday. Talking to TOI on the sidelines of the event, Suzuki remembered his first visit to the state in 2017 when PM Modi invited the then Japanese PM Shinzo Abe to the city and laid foundation to the bullet train. Suzuki was a close associate of Abe for over 15 years."}
+                "news":{"5":["Ahmedabad: Hiroshi Suzuki, the Japanese ambassador to India, was the chief guest at the 11th Japan Festival (Nihon Matsuri) at Ahmedabad Management Association (AMA) on Saturday. Talking to TOI on the sidelines of the event, Suzuki remembered his first visit to the state in 2017 when PM Modi invited the then Japanese PM Shinzo Abe to the city and laid foundation to the bullet train. Suzuki was a close associate of Abe for over 15 years."]}
             },         
             "4":{
                 "assets":[10],
-                "news":{"asset":"Ahmedabad: Hiroshi Suzuki, the Japanese ambassador to India, was the chief guest at the 11th Japan Festival (Nihon Matsuri) at Ahmedabad Management Association (AMA) on Saturday. "}
+                "news":{"10":["Ahmedabad: Hiroshi Suzuki, the Japanese ambassador to India, was the chief guest at the 11th Japan Festival (Nihon Matsuri) at Ahmedabad Management Association (AMA) on Saturday."]}
             }      
         },
         "2100":{
@@ -101,7 +101,8 @@
                     "6":["_asset_ raises Rs 4,906.65 crore via QIP issue, _asset_ remains top pick as no meaningful exposure to 12 NPA accounts, _asset_ to decide on stock split in board meeting on July 26 "],
                     "7":["_asset_ President & CFO quits, _asset_ to pump in Rs 100 cr in its Cone Pizza."],
                     "8":["_asset_ ventures into value-added dairy products, to launch milk-based drinks soon, _asset_'s food division eyes 10% revenue from chocolates in 5 years, To invest Rs 25,000 crore in next few years across product pipeline: _asset_, _asset_ says biggest headroom for growth in FMCG business."],
-                    "10":["_asset_ plans to raise Rs 200 cr 11. Will not raise more debt, not looking at acquisition currently"]
+                    "10":["_asset_ plans to raise Rs 200 cr 11. Will not raise more debt, not looking at acquisition currently"],
+                    "11":["_asset_ raises Rs 225 cr via bonds, _asset_ raises Rs 600 crore"]
                 }
             },         
             "3":{
