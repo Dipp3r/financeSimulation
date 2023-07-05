@@ -78,16 +78,20 @@ async function createTables() {
     await pool.query(`truncate table assets;`);
 
     const promises = [];
-
+    let index = 1;
     for (let type in assets) {
-      assets[type].forEach(asset => {
+      const assetArray = assets[type];
+      for (let i = 0; i < assetArray.length; i++) {
+        const asset = assetArray[i];
         const promise = pool.query(
-          'INSERT INTO assets (asset_type, asset_name) VALUES ($1, $2)',
-          [type, asset]
+          'INSERT INTO assets (id,asset_type, asset_name) VALUES ($1, $2, $3)',
+          [index,type, asset]
         );
+        index++;
         promises.push(promise);
-      });
+      }
     }
+    
  
     await pool.query(`
       CREATE TABLE IF NOT EXISTS gameData (
@@ -246,5 +250,5 @@ async function deleteTables() {
 
 // deleteTables();
 // createTables();
-addSamples();
+// addSamples();
 
