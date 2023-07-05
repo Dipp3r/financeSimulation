@@ -22,21 +22,21 @@ const DATA = require("./info.json");
 
 const COINS = 500000;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -93,6 +93,8 @@ wss.broadcast = function (data) {
   });
 };
 
+let timer_key;
+
 const updateGame = async (
   phase = 1,
   year = 1,
@@ -135,38 +137,65 @@ const updateGame = async (
 
       wss.broadcast(obj);
 
-      setTimeout(
+      timer_key = setTimeout(
         () => updateGame(phase + 1, year, lastYear, session, groups),
         Number.parseInt(totalSeconds) * 1000
       );
+
     } catch (error) {
       console.error("Error:", error);
     }
   }
 };
 
+
 app.post("/start", async (req, res) => {
   const { sessionid } = req.body;
-  console.log(sessionid);
-  let result = await pool.query("select year from gameData ORDER BY year ASC");
-  let [firstyear, lastYear] = [result.rows[0].year, result.rows.pop().year];
-  const groups = await pool.query(`
-    SELECT groupid FROM "group" WHERE sessionid = ${sessionid}
+  let gameStatus = await pool.query(`
+    SELECT start FROM "session" WHERE sessionid = ${sessionid}
   `);
-  for (let group of groups.rows) {
-    await pool.query(`
-      UPDATE "group" set cash = cash + ${COINS} WHERE groupid = ${group["groupid"]}
-    `);
+  gameStatus = gameStatus.rows[0]["start"];
+  console.log(gameStatus)
+    if(gameStatus==0){
+      await pool.query(`
+        UPDATE "session" SET start = 1 WHERE sessionid = ${sessionid}
+      `);
+      let result = await pool.query("select year from gameData ORDER BY year ASC");
+      let [firstyear, lastYear] = [result.rows[0].year, result.rows.pop().year];
+
+      const groups = await pool.query(`
+        SELECT groupid FROM "group" WHERE sessionid = ${sessionid}
+      `);
+
+      for (let group of groups.rows) {
+        await pool.query(`
+          UPDATE "group" set cash = cash + ${COINS} WHERE groupid = ${group["groupid"]}
+        `);
+      } 
+
+      wss.broadcast({ cash: COINS, msgType: "CashUpt" });
+      updateGame(1, firstyear, lastYear, sessionid, groups.rows);
+      res.status(200).end();
   }
-  wss.broadcast({ cash: COINS, msgType: "CashUpt" });
-  updateGame(1, firstyear, lastYear, sessionid, groups.rows);
-  res.status(200).end();
+  
 });
 
 app.get("/", (request, response) => {
   response.json({ info: "Node.js, Express, and Postgres API" });
 });
 
+app.post("/pause",async (req,res)=>{
+  const {sessionid} = req.body;
+  clearTimeout(timer_key);
+  pool.query(`
+    UPDATE "session" SET start = 0 WHERE sessionid = ${sessionid}
+  `);
+  console.log("paused");
+  wss.broadcast({msgType:"GamePause"});
+  res.status(200).end();
+
+
+});
 //API for testing
 
 app.get("/test", async (req, res) => {
@@ -190,7 +219,7 @@ app.post("/createSession", async (request, response) => {
       `);
       firstYear = firstYear.rows[0]["year"];
       await pool.query(
-        "INSERT INTO session(sessionid,title,excelLink,time_created,year,phase) VALUES($1,$2,$3,$4,$5,$6)",
+        "INSERT INTO session(sessionid,title,excelLink,time_created,year,phase,start) VALUES($1,$2,$3,$4,$5,$6,0)",
         [id, title, "", new Date(), firstYear, 1]
       );
       response.status(200).send({ status: true });

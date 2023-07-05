@@ -103,6 +103,7 @@
 
 #QRCompPage {
   display: none;
+  z-index: 1;
   @include flex(column, center, center);
   background-color: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(2px);
