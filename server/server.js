@@ -606,7 +606,7 @@ app.get("/team/:id", async (req, res) => {
   }
 });
 
-app.get("/news", async (req, res) => {
+app.get("/getNews", async (req, res) => {
   try {
     const news = await pool.query("SELECT * FROM gameData ORDER BY year ASC");
     res.status(200).send(news.rows);
@@ -958,6 +958,35 @@ app.put("/gamechange", async (req, res) => {
     res.status(400).send({ status: false, err: err.message });
   }
 });
+
+app.post("/news",async(req,res)=>{
+  const {groupid} = req.body;
+  try {
+    let gamedata = await pool.query(`
+      SELECT year,phase FROM "session" WHERE sessionid = (SELECT sessionid FROM "group" WHERE groupid = ${groupid});
+    `);
+    const { year, phase } = gamedata.rows[0];
+    const stocks = await pool.query(`
+      SELECT id,asset_name FROM assets
+    `); 
+    const assets = {};
+    stocks.rows.forEach(e=>{
+      assets[`${e.id}`] = e.asset_name;
+    });
+    const news = [];
+    const obj = DATA.news[`${year}`][`${phase}`].news;
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        obj[key].forEach(element=>{
+          news.push(element.replace(/_asset_/g,assets[`${key}`]));
+        });;
+      }
+    }
+    res.status(200).send({news:news});
+  } catch (err) {
+    res.status(400).send({status:false,err:err.message});
+  }
+}); 
 
 // setInterval(() => {
 //   wss.broadcast({ type: "time", message: "new news" });
