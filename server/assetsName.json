@@ -1,5 +1,6 @@
 {
-  "stock": ["stock_1","stock_2","stock_3","stock_4","stock_5","stock_6","stock_7","stock_8","stock_9","stock_10","stock_11","stock_12"],
-  "mutualFund": ["mutualFund_1","mutualFund_2","mutualFund_3","mutualFund_4","mutualFund_5","mutualFund_6","mutualFund_7","mutualFund_8","mutualFund_9","mutualFund_10","mutualFund_11","mutualFund_12"],
-  "commodity": ["commodity_1","commodity_2","commodity_3","commodity_4","commodity_5","commodity_6"]
+  "stock": ["Ran dom Tower","Reck Energy","Clock Out","OOS Dialler","PVC Creations","Saver Bank","Block Party Delicacy","TarTar Industry","B.O Thai International","Rip Aide hospitals","Blade Bull Finance"],
+  "mutualFund": ["CR Bluechip Equity Fund","PMM Mid cap Opportunity Fund","QQ Small Cap Fund"],
+  "commodity": ["Commodities"]
+  
 }
