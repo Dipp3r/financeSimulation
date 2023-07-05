@@ -11,6 +11,10 @@ export default class NotificationCard extends React.Component {
     super(props);
     this.state = { ...this.props.notification };
   }
+  componentDidMount() {
+    let lastNotif = [...document.querySelectorAll(".notif")].pop();
+    lastNotif.scrollIntoView();
+  }
   render() {
     switch (this.state.msgType) {
       case "GameChg":

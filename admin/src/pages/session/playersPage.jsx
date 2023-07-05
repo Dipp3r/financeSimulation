@@ -20,7 +20,7 @@ export default class PlayersPage extends React.Component {
   toggleDeletePromp = () => {
     let display = this.state.DeletePrompDisplay;
     display = !display;
-    if (!display) this.props.toggleSession("groupPage");
+    // if (!display) this.props.toggleSession("groupPage");
     this.setState({
       DeletePrompDisplay: display,
     });
