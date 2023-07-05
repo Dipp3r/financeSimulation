@@ -151,17 +151,20 @@ const updateGame = async (
 
 app.post("/start", async (req, res) => {
   const { sessionid } = req.body;
-  let gameStatus = await pool.query(`
-    SELECT start FROM "session" WHERE sessionid = ${sessionid}
+  const gameStatus = await pool.query(`
+    SELECT start,year,phase FROM "session" WHERE sessionid = ${sessionid}
   `);
-  gameStatus = gameStatus.rows[0]["start"];
-  console.log(gameStatus)
-    if(gameStatus==0){
+  let start = gameStatus.rows[0]["start"];
+  console.log(start)
+
+    if(start==0){
       await pool.query(`
         UPDATE "session" SET start = 1 WHERE sessionid = ${sessionid}
       `);
       let result = await pool.query("select year from gameData ORDER BY year ASC");
-      let [firstyear, lastYear] = [result.rows[0].year, result.rows.pop().year];
+      let lastYear = result.rows.pop().year;
+
+      let [currentYear,currentPhase] = [gameStatus.rows[0]["year"],gameStatus.rows[0]["phase"]];
 
       const groups = await pool.query(`
         SELECT groupid FROM "group" WHERE sessionid = ${sessionid}
@@ -174,7 +177,7 @@ app.post("/start", async (req, res) => {
       } 
 
       wss.broadcast({ cash: COINS, msgType: "CashUpt" });
-      updateGame(1, firstyear, lastYear, sessionid, groups.rows);
+      updateGame(currentPhase, currentYear, lastYear, sessionid, groups.rows);
       res.status(200).end();
   }
   
