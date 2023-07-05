@@ -606,7 +606,7 @@ app.get("/team/:id", async (req, res) => {
   }
 });
 
-app.get("/news", async (req, res) => {
+app.get("/getNews", async (req, res) => {
   try {
     const news = await pool.query("SELECT * FROM gameData ORDER BY year ASC");
     res.status(200).send(news.rows);

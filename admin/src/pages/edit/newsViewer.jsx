@@ -9,7 +9,7 @@ export default class NewsViewer extends React.Component {
     };
   }
   fetchNewsList = () => {
-    fetch(import.meta.env.VITE_API_SERVER_URL + "news", {
+    fetch(import.meta.env.VITE_API_SERVER_URL + "getNews", {
       method: "GET",
     })
       .then((response) => response.json())
