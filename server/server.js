@@ -321,7 +321,19 @@ app.post("/groups", async (request, response) => {
       'SELECT groupid,name,players FROM "group" WHERE sessionid=$1 ORDER BY time_created DESC',
       [sessionid]
     );
-    response.send(groups.rows);
+    const result = {};
+    result.groupList = groups.rows;
+    const gameinfo = await pool.query(`
+      SELECT year,phase,start FROM "session" WHERE sessionid = ${sessionid}
+    `);
+    result.year = gameinfo.rows[0]["year"];
+    result.phase = gameinfo.rows[0]["phase"];
+    result.start = gameinfo.rows[0]["start"];
+    const time = await pool.query(`
+      SELECT phase${result.phase} as time FROM gamedata WHERE year = ${result.year}
+    `);
+    result.time = time.rows[0]["time"];
+    response.send(result);
   } catch (error) {
     response.status(400).send("Error: " + error.message);
   }
