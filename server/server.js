@@ -741,6 +741,11 @@ app.put("/renameAsset", async (req, res) => {
       `UPDATE assets SET asset_name = $1 WHERE id = $2`,
       [new_name, assetId]
     );
+    const asset = await pool.query(`
+      SELECT asset_type as type FROM assets WHERE id = ${assetId}
+    `);
+    console.log({assetid:assetId,name:new_name,type:asset.rows[0]["type"],msgType:"AssetRename"});
+    wss.broadcast({assetid:assetId,name:new_name,type:asset.rows[0]["type"],msgType:"AssetRename"});
     res.status(200).send({ status: true });
   } catch (err) {
     console.log("Error: " + err.message);
@@ -978,6 +983,7 @@ app.put("/buy", async (req, res) => {
       INSERT INTO investment(stockid,groupid,holdings) values(${stockid},${groupid},${amount})
     `);
     await yearlyUpdate(groupid, amount, stockid, "+");
+    wss.broadcast({groupid:groupid, msgType:"Transact"});
     res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
@@ -999,6 +1005,7 @@ app.put("/sell", async (req, res) => {
     `)
       : "";
     await yearlyUpdate(groupid, amount, stockid, "-");
+    wss.broadcast({groupid:groupid, msgType:"Transact"});
     res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
