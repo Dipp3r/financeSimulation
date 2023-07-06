@@ -373,17 +373,14 @@ app.delete("/deleteGroup", async (request, response) => {
         userPromises.push(userPromise);
       }
       await Promise.all(userPromises);
-      try {
-        await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
-      } catch (err) {
-        response.status(400).send("Error: " + err.message);
-      }
+      await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
+      wss.broadcast({
+        groupid:groupid,
+        msgType: "DeleteAction",
+        reason: "This group was either removed by the admin or it's no longer active"
+      });
     } else {
-      try {
-        await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
-      } catch (err) {
-        response.status(400).send("Error: " + err.message);
-      }
+      await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
     }
     response.status(200).send({ status: true });
   } catch (err) {
@@ -414,7 +411,7 @@ app.delete("/removeUser", async (request, response) => {
       userid: userid,
       groupid: info.rows[0].groupid,
       name: info.rows[0].name,
-      msgType: "RemoveUser",
+      msgType: "DeleteAction"
     });
     response.status(200).send({ status: true });
   } catch (error) {
@@ -766,6 +763,7 @@ app.delete("/deleteSession", async (req, res) => {
 
     if (groups.rowCount === 0) {
       await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionid]);
+      wss.broadcast({sessionid:sessionid,msgType:"DeleteAction",reason:"This session is either removed by the admin or it's no longer active"});
       res.status(200).send({ status: true });
     } else {
       groups = groups.rows;
@@ -809,6 +807,7 @@ app.delete("/deleteSession", async (req, res) => {
       await Promise.all(promises);
 
       await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionid]);
+      wss.broadcast({sessionid:sessionid,msgType:"DeleteAction",reason:"This session is either removed by the admin or it's no longer active"});
       res.status(200).send({ status: true });
     }
   } catch (err) {
