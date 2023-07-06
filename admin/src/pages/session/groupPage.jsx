@@ -115,15 +115,16 @@ export default class GroupPage extends React.Component {
       }
     });
   };
-  updateGame = (operation, type) => {
-    fetch(import.meta.env.VITE_API_SERVER_URL + "updateGame", {
-      method: "POST",
+  updateGame = (operation, option) => {
+    fetch(import.meta.env.VITE_API_SERVER_URL + "gamechange", {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        operation: operation,
-        type: type,
+        sessionid: localStorage.getItem("currentSessionID"),
+        OP: operation,
+        option: option == "year" ? true : false,
       }),
     });
   };
