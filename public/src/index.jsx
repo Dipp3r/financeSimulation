@@ -6,6 +6,7 @@ import InitialComp from "@pages/signInAndSignUp/initial";
 import PortfolioComp from "@pages/portfolio";
 import TeamComp from "@pages/team/team";
 import * as serviceWorkerRegistration from "@utils/serviceWorkerRegistration";
+import NewsComp from "@pages/news";
 const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 
 class IndexComp extends React.Component {
@@ -69,6 +70,15 @@ class IndexComp extends React.Component {
       case "purchase":
         displayComp = (
           <SellComp
+            toggleMainDisplay={this.toggleMainDisplay}
+            setItem={this.setItem}
+            getItem={this.getItem}
+          />
+        );
+        break;
+      case "news":
+        displayComp = (
+          <NewsComp
             toggleMainDisplay={this.toggleMainDisplay}
             setItem={this.setItem}
             getItem={this.getItem}

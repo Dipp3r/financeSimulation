@@ -19,7 +19,12 @@ export default class NotificationCard extends React.Component {
     switch (this.state.msgType) {
       case "GameChg":
         return (
-          <div className="notif">
+          <div
+            className="notif"
+            onClick={() => {
+              this.props.toggleMainDisplay("news");
+            }}
+          >
             <img src={Paper} alt="paper" />
             <p>
               phase{this.state.phase} news | {this.state.year}
@@ -28,14 +33,24 @@ export default class NotificationCard extends React.Component {
         );
       case "NewUser":
         return (
-          <div className="notif notif-extend">
+          <div
+            className="notif notif-extend"
+            onClick={() => {
+              this.props.toggleMainDisplay("team");
+            }}
+          >
             <img className="coin" src={Group_fill} alt="group" />
             <p className="text-thin">Arya joined your team</p>
           </div>
         );
       case "RoleChg":
         return (
-          <div className={`notif ${this.state.isRead ? "notif-extend" : ""}`}>
+          <div
+            className={`notif ${this.state.isRead ? "notif-extend" : ""}`}
+            onClick={() => {
+              this.props.toggleMainDisplay("team");
+            }}
+          >
             <img className="coin" src={Star} alt="star" />
             {this.state.userid == localStorage.getItem("userid") ? (
               <p className="text-thin">
@@ -63,5 +78,6 @@ export default class NotificationCard extends React.Component {
   }
 }
 NotificationCard.propTypes = {
+  toggleMainDisplay: PropTypes.func.isRequired,
   notification: PropTypes.object.isRequired,
 };

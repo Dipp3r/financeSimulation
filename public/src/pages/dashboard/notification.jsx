@@ -53,7 +53,13 @@ class NotifComp extends React.Component {
         </div>
         <div id="main">
           {this.state.notificationList.map((notification, index) => {
-            return <NotificationCard notification={notification} key={index} />;
+            return (
+              <NotificationCard
+                notification={notification}
+                toggleMainDisplay={this.props.toggleMainDisplay}
+                key={index}
+              />
+            );
           })}
           {/* <div className="notif">
             <img src={Paper} alt="paper" />

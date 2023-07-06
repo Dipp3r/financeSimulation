@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "@assets/styles/news.scss";
 import Arrow_left from "@assets/images/Arrow_left.svg";
 import Alarmclock from "@assets/images/Alarmclock.svg";
@@ -12,7 +13,13 @@ class NewsComp extends React.Component {
       <div id="news">
         <div id="topBar">
           <div>
-            <img src={Arrow_left} alt="back_arrow" />
+            <img
+              src={Arrow_left}
+              alt="back_arrow"
+              onClick={() => {
+                this.props.toggleMainDisplay("dashboard");
+              }}
+            />
             <p>Super breaking news</p>
           </div>
           <div id="timer">
@@ -34,3 +41,8 @@ class NewsComp extends React.Component {
   }
 }
 export default NewsComp;
+NewsComp.propTypes = {
+  toggleMainDisplay: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
+  setItem: PropTypes.func.isRequired,
+};
