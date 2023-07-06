@@ -69,10 +69,8 @@
                 background-clip: text;
             }
         }
-        #badgeStart{
-             margin-top:10px;
-        }
         .badgeRow{
+            margin-top:5px;
             @include flex(row,space-evenly,center);
             img{
                 margin:2px 10px;
@@ -81,12 +79,13 @@
         #card{
             width: 125px;
             height: 177px;
-            margin-top:25px;
+            margin:15px 0px;
             background: #D9D9D9;
             box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 11px;
         }
         #desc{
+            margin-top:0px;
             z-index: -2;
             width: 164px;
             height: 30px;

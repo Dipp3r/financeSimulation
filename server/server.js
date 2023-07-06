@@ -411,37 +411,39 @@ app.delete("/removeUser", async (request, response) => {
 
 app.put("/assignrole", async (request, response) => {
   const { userid, role } = request.body;
+  console.log(userid,role);
   try {
     if (role == "0") {
-      const exe = await pool.query(
-        `
-      UPDATE users SET role = '' WHERE userid = (SELECT userid FROM users WHERE groupid = (SELECT groupid FROM users WHERE userid = $1) AND role = '0')
-    `,
-        [userid]
-      );
+      const exe = await pool.query(`
+        SELECT userid,name,groupid FROM users WHERE groupid = (SELECT groupid FROM users WHERE userid = $1) AND role = '0'
+      `,[userid]);
+      if(exe.rowCount>0){
+        await pool.query(`UPDATE users SET role = '' WHERE userid = $1`,[exe.rows[0]["userid"]]);
+        wss.broadcast({
+          userid: exe.rows[0]["userid"],
+          groupid: exe.rows[0]["groupid"],
+          name: exe.rows[0]["name"],
+          prev_role:'0',
+          role: "",
+          msgType: "RoleChg",
+        });
+      }
     }
+    const info = await pool.query(
+      `
+      select groupid,name,role from users where userid = $1
+    `,
+      [userid]
+    );
     await pool.query("UPDATE users SET role = $1 WHERE userid = $2", [
       role,
       userid,
     ]);
-    let groupid = await pool.query(
-      `
-      select groupid from users where userid = $1
-    `,
-      [userid]
-    );
-    let userName = await pool.query(
-      `
-      select name from users where userid = $1
-    `,
-      [userid]
-    );
-    groupid = groupid.rows[0].groupid;
-    userName = userName.rows[0].name;
     wss.broadcast({
       userid: userid,
-      groupid: groupid,
-      name: userName,
+      groupid: info.rows[0]["groupid"],
+      name: info.rows[0]["name"],
+      prev_role: info.rows[0]["role"],
       role: role,
       msgType: "RoleChg",
     });
@@ -490,7 +492,7 @@ app.post("/signup/:id", async (request, response) => {
           });
           response.status(200).send({ userid: id, star_count: 0 });
         }else{
-          response.status(400).send({ status:false,msg:"The group limit exceeded"});
+          response.status(400).send({ status:false,msg:"Group limit exceeded"});
         }
       } catch (error) {
         console.log("Error: " + error.message);
@@ -1002,6 +1004,7 @@ app.put("/gamechange", async (req, res) => {
       : await pool.query(`
         UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
       `);
+      // wss.broadcast({msgType:})
     res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false, err: err.message });
