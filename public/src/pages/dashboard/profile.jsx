@@ -10,6 +10,7 @@ import Vector from "@assets/images/Vector.svg";
 import Coin from "@assets/images/coin.svg";
 import Time from "@components/time";
 /*
+
 import Arrow_left from "@assets/images/Arrow_left.svg"
 import User_fill from "@assets/images/User_fill.svg"
 import Chart_alt from "@assets/images/Chart_alt.svg"
@@ -83,13 +84,12 @@ class ProfileComp extends React.Component {
             <p id="title">Year</p>
             <p id="yearNum">{this.state.year}</p>
           </div>
-          <div id="badgeStart" className="badgeRow">
+          <div className="badgeRow">
             <img src={badge} alt="badge1" />
             <img src={emptyBadge} alt="emptyBadge" />
             <img src={emptyBadge} alt="emptyBadge" />
           </div>
           <div className="badgeRow">
-            <img src={emptyBadge} alt="emptyBadge" />
             <img src={emptyBadge} alt="emptyBadge" />
             <img src={emptyBadge} alt="emptyBadge" />
             <img src={emptyBadge} alt="emptyBadge" />

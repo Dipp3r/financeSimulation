@@ -136,6 +136,7 @@ const updateGame = async (
       obj.year = year;
       obj.phase = phase;
       obj.time = time;
+      obj.sessionid = session;
 
       wss.broadcast(obj);
       startTime[`${session}`] = new Date().getTime();
@@ -321,7 +322,19 @@ app.post("/groups", async (request, response) => {
       'SELECT groupid,name,players FROM "group" WHERE sessionid=$1 ORDER BY time_created DESC',
       [sessionid]
     );
-    response.send(groups.rows);
+    const result = {};
+    result.groupList = groups.rows;
+    const gameinfo = await pool.query(`
+      SELECT year,phase,start FROM "session" WHERE sessionid = ${sessionid}
+    `);
+    result.year = gameinfo.rows[0]["year"];
+    result.phase = gameinfo.rows[0]["phase"];
+    result.start = gameinfo.rows[0]["start"];
+    const time = await pool.query(`
+      SELECT phase${result.phase} as time FROM gamedata WHERE year = ${result.year}
+    `);
+    result.time = time.rows[0]["time"];
+    response.send(result);
   } catch (error) {
     response.status(400).send("Error: " + error.message);
   }
@@ -389,18 +402,18 @@ app.delete("/removeUser", async (request, response) => {
     `,
       [userid]
     );
-    let groupid = await pool.query(
+    const info = await pool.query(
       `
-      select groupid from users where userid = $1
+      select name,groupid from users where userid = $1
     `,
       [userid]
     );
     await pool.query("DELETE FROM users WHERE userid=$1", [userid]);
 
-    groupid = groupid.rows[0].groupid;
     wss.broadcast({
       userid: userid,
-      groupid: groupid,
+      groupid: info.rows[0].groupid,
+      name: info.rows[0].name,
       msgType: "RemoveUser",
     });
     response.status(200).send({ status: true });
@@ -411,37 +424,39 @@ app.delete("/removeUser", async (request, response) => {
 
 app.put("/assignrole", async (request, response) => {
   const { userid, role } = request.body;
+  console.log(userid,role);
   try {
     if (role == "0") {
-      const exe = await pool.query(
-        `
-      UPDATE users SET role = '' WHERE userid = (SELECT userid FROM users WHERE groupid = (SELECT groupid FROM users WHERE userid = $1) AND role = '0')
-    `,
-        [userid]
-      );
+      const exe = await pool.query(`
+        SELECT userid,name,groupid FROM users WHERE groupid = (SELECT groupid FROM users WHERE userid = $1) AND role = '0'
+      `,[userid]);
+      if(exe.rowCount>0){
+        await pool.query(`UPDATE users SET role = '' WHERE userid = $1`,[exe.rows[0]["userid"]]);
+        wss.broadcast({
+          userid: exe.rows[0]["userid"],
+          groupid: exe.rows[0]["groupid"],
+          name: exe.rows[0]["name"],
+          prev_role:'0',
+          role: "",
+          msgType: "RoleChg",
+        });
+      }
     }
+    const info = await pool.query(
+      `
+      select groupid,name,role from users where userid = $1
+    `,
+      [userid]
+    );
     await pool.query("UPDATE users SET role = $1 WHERE userid = $2", [
       role,
       userid,
     ]);
-    let groupid = await pool.query(
-      `
-      select groupid from users where userid = $1
-    `,
-      [userid]
-    );
-    let userName = await pool.query(
-      `
-      select name from users where userid = $1
-    `,
-      [userid]
-    );
-    groupid = groupid.rows[0].groupid;
-    userName = userName.rows[0].name;
     wss.broadcast({
       userid: userid,
-      groupid: groupid,
-      name: userName,
+      groupid: info.rows[0]["groupid"],
+      name: info.rows[0]["name"],
+      prev_role: info.rows[0]["role"],
       role: role,
       msgType: "RoleChg",
     });
@@ -490,7 +505,7 @@ app.post("/signup/:id", async (request, response) => {
           });
           response.status(200).send({ userid: id, star_count: 0 });
         }else{
-          response.status(400).send({ status:false,msg:"The group limit exceeded"});
+          response.status(400).send({ status:false,msg:"Group limit exceeded"});
         }
       } catch (error) {
         console.log("Error: " + error.message);
@@ -995,14 +1010,44 @@ app.put("/sell", async (req, res) => {
 app.put("/gamechange", async (req, res) => {
   const { sessionid, OP, option } = req.body;
   try {
-    option
-      ? await pool.query(`
-        UPDATE "session" SET year = year ${OP} 1 WHERE sessionid = ${sessionid}
-      `)
-      : await pool.query(`
-        UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
+    const info = await pool.query(`
+        SELECT year, phase FROM  "session" WHERE sessionid = ${sessionid}
+    `);
+    const year = info.rows[0].year;
+    const phase = info.rows[0].phase;
+    console.log(year,phase);
+    if(option){
+      await pool.query(`
+        UPDATE "session" SET year = year ${OP} 1, phase = 1 WHERE sessionid = ${sessionid}
       `);
-    res.status(200).send({ status: true });
+    } else{
+      if(phase>3 && OP==="+"){
+        await pool.query(`
+          UPDATE "session" SET phase = 1, year = year + 1 WHERE sessionid = ${sessionid}
+        `);
+      } else if(phase<2 && OP==="-"){
+        await pool.query(`
+          UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
+        `);
+      } else{
+        await pool.query(`
+          UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
+        `);
+      }
+    }
+    const result= {};
+    const gameinfo = await pool.query(`
+      SELECT year,phase FROM "session" WHERE sessionid = ${sessionid}
+    `);
+    result.year = gameinfo.rows[0]["year"];
+    result.phase = gameinfo.rows[0]["phase"];
+    const time = await pool.query(`
+      SELECT phase${result.phase} as time FROM gamedata WHERE year = ${result.year}
+    `);
+    result.time = time.rows[0]["time"];
+    console.log({...result,sessionid:sessionid,msgType:"GameChg"});
+    wss.broadcast({...result,sessionid:sessionid,msgType:"GameChg"});
+    res.status(200).send(result);
   } catch (err) {
     res.status(400).send({ status: false, err: err.message });
   }
