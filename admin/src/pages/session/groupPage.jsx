@@ -124,7 +124,7 @@ export default class GroupPage extends React.Component {
       body: JSON.stringify({
         sessionid: localStorage.getItem("currentSessionID"),
         OP: operation,
-        option: option == "year" ? true : false,
+        option: option == "year" ? "1" : "0",
       }),
     });
   };

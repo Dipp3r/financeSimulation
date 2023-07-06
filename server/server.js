@@ -1022,7 +1022,7 @@ app.put("/gamechange", async (req, res) => {
     const year = info.rows[0].year;
     const phase = info.rows[0].phase;
     console.log(year,phase);
-    if(option){
+    if(option == "1"){
       await pool.query(`
         UPDATE "session" SET year = year ${OP} 1, phase = 1 WHERE sessionid = ${sessionid}
       `);
