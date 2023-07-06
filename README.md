@@ -55,5 +55,5 @@ CREATE TABLE investment (
 ```
 WEB Sockets message types:
 ```python
-msgType:  {“GameChg”, “RoleChg”, “NewUser”, ”NewsUpt”, ”RemoveUser”}
+msgType:  {“GameChg”, “RoleChg”, “NewUser”, ”NewsUpt”, ”RemoveUser”, "GamePause"}
 ```
