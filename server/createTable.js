@@ -160,7 +160,6 @@ async function addSamples() {
     // Fetch the assets list from the assets table
     const { rows } = await pool.query('SELECT * FROM assets');
     assetsList = rows;
-
     for (let asset of assetsList) {
       let previousPhasePrice = 0;
       for (let year of data.year) {

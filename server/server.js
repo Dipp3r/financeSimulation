@@ -103,8 +103,20 @@ const updateGame = async (
   groups,
   time
 ) => {
+  const firstYear = await pool.query(`
+    SELECT year FROM gamedata ORDER BY year ASC LIMIT 1
+  `);
+  const trailYear = firstYear.rows[0]["year"];
   if (phase >= 5) {
     phase = 1;
+    if(year===trailYear){
+      await pool.query(`
+        DELETE FROM investment
+      `);
+      await pool.query(`
+        UPDATE "group" SET cash = 0 WHERE sessionid = ${session}
+      `);     
+    }
     for (let group of groups) {
       await pool.query(`
         UPDATE "group" set cash = cash + ${COINS} WHERE groupid = ${group["groupid"]}
@@ -1019,7 +1031,7 @@ app.put("/gamechange", async (req, res) => {
     const years = await pool.query(`
       SELECT year FROM gamedata ORDER BY year ASC
     `);
-    const [firstYear,lastYear] = [years.rows[0]["year"],years.rows.pop()["year"]]
+    const [firstYear,lastYear] = [years.rows[1]["year"],years.rows.pop()["year"]]
     const info = await pool.query(`
         SELECT year, phase FROM  "session" WHERE sessionid = ${sessionid}
     `);
@@ -1090,7 +1102,7 @@ app.post("/news",async(req,res)=>{
     for (let key in obj) {
       if (obj.hasOwnProperty(key)) {
         obj[key].forEach(element=>{
-          news.push(element.replace(/_asset_/g,assets[`${key}`]));
+          news.push(element.replace(/_asset_/g,`<b>${assets[`${key}`]}</b>`));
         });;
       }
     }
