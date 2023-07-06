@@ -98,6 +98,7 @@ class ProfileComp extends React.Component {
             <img src={emptyBadge} alt="emptyBadge" />
           </div>
           <div id="card">
+            <div id="empty"></div>
             <div id="reward">
               <img id="reward" src={reward} alt="reward" />
               <img id="cash" src={cash} alt="cash" />

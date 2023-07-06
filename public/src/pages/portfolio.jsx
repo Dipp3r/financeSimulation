@@ -57,7 +57,7 @@ class PortfolioComp extends React.Component {
       target.style.height = "0px";
       arrow.style.transform = "rotateX(0deg)";
     } else {
-      target.style.height = `${(contentLength + 1) * 70}px`;
+      target.style.height = `${(contentLength + 1) * 70 - 40}px`;
       arrow.style.transform = "rotateX(180deg)";
       // target.scrollIntoView({ behavior: "smooth",inline:'center'})
     }
