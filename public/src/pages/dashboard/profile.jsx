@@ -9,8 +9,11 @@ import Group from "@assets/images/Group.svg";
 import Vector from "@assets/images/Vector.svg";
 import Coin from "@assets/images/coin.svg";
 import Time from "@components/time";
-/*
+import reward from "@assets/images/rewardCard.svg";
+import cash from "@assets/images/cash.svg";
+import share from "@assets/images/share.svg";
 
+/*
 import Arrow_left from "@assets/images/Arrow_left.svg"
 import User_fill from "@assets/images/User_fill.svg"
 import Chart_alt from "@assets/images/Chart_alt.svg"
@@ -94,7 +97,16 @@ class ProfileComp extends React.Component {
             <img src={emptyBadge} alt="emptyBadge" />
             <img src={emptyBadge} alt="emptyBadge" />
           </div>
-          <div id="card"></div>
+          <div id="card">
+            <div id="reward">
+              <img id="reward" src={reward} alt="reward" />
+              <img id="cash" src={cash} alt="cash" />
+              <button id="share">
+                <img src={share} alt="share" />
+                <p>Share</p>
+              </button>
+            </div>
+          </div>
           <p id="desc">Will unlock once all the badges have been collected</p>
           <div id="options">
             <div
