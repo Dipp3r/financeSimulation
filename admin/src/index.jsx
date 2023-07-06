@@ -11,6 +11,7 @@ import Edit_white from "@assets/images/Edit_white.svg";
 import Group_white from "@assets/images/Group_white.svg";
 import vittae_logo_color from "@assets/images/vittae_logo_color.svg";
 import illustration from "@assets/images/illustration.svg";
+const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 class IndexComp extends React.Component {
   constructor(props) {
     super(props);
@@ -63,6 +64,15 @@ class IndexComp extends React.Component {
   }
   componentDidMount() {
     this.toggleMainPage(localStorage.getItem("mainPageValue"));
+    socket.addEventListener("open", () => {
+      console.log("WebSocket connection opened");
+    });
+
+    // When a message is received from the WebSocket server
+    socket.addEventListener("message", (event) => {
+      // this.checkMessage(JSON.parse(event.data));
+      console.log("Received message from server:", JSON.parse(event.data));
+    });
   }
   render() {
     console.log(this.state);

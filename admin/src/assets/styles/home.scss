@@ -1055,6 +1055,13 @@
                   img {
                     margin: 5px;
                   }
+                  input{
+                    border: none;
+                    background: transparent;
+                    color: inherit;
+                    font-size: inherit;
+                    width: 75px;
+                  }
                 }
               }
               #navigate {

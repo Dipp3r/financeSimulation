@@ -6,7 +6,7 @@ import InitialComp from "@pages/signInAndSignUp/initial";
 import PortfolioComp from "@pages/portfolio";
 import TeamComp from "@pages/team/team";
 import * as serviceWorkerRegistration from "@utils/serviceWorkerRegistration";
-const socket = new WebSocket("ws://localhost:3003");
+const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 
 class IndexComp extends React.Component {
   constructor(props) {

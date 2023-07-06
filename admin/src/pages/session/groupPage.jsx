@@ -5,18 +5,24 @@ import search from "@assets/images/Search.svg";
 import add_round from "@assets/images/Add_round.svg";
 import arrow_left from "@assets/images/Arrow_left.svg";
 import Date_range from "@assets/images/Date_range.svg";
-import Alarmclock_grey from "@assets/images/Alarmclock_grey.svg";
+// import Alarmclock_grey from "@assets/images/Alarmclock_grey.svg";
 import Expand_left_double from "@assets/images/Expand_left_double.svg";
 import Expand_left from "@assets/images/Expand_left.svg";
 import Expand_right from "@assets/images/Expand_right.svg";
 import Expand_right_double from "@assets/images/Expand_right_double.svg";
 import link from "@assets/images/link.svg";
-
+import Time from "@components/time";
+const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 export default class GroupPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       groupList: [],
+      isRunning: false,
+      time: "05:00",
+      year: "2099",
+      phase: "1",
+      childState: {},
     };
   }
   searchGroup = (e) => {
@@ -89,13 +95,35 @@ export default class GroupPage extends React.Component {
     }
   };
   startSession = () => {
-    fetch(import.meta.env.VITE_API_SERVER_URL + "start", {
+    fetch(
+      import.meta.env.VITE_API_SERVER_URL +
+        (!this.state.isRunning ? "start" : "pause"),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sessionid: Number.parseInt(localStorage.getItem("currentSessionID")),
+          // time: this.state.time,
+        }),
+      }
+    ).then((response) => {
+      if (response.status == 200) {
+        let isRunning = this.state.isRunning;
+        this.setState({ isRunning: !isRunning });
+      }
+    });
+  };
+  updateGame = (operation, type) => {
+    fetch(import.meta.env.VITE_API_SERVER_URL + "updateGame", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        sessionid: Number.parseInt(localStorage.getItem("currentSessionID")),
+        operation: operation,
+        type: type,
       }),
     });
   };
@@ -113,13 +141,40 @@ export default class GroupPage extends React.Component {
         return response.json();
       })
       .then((data) => {
-        // Handle the response data
-        console.log(data);
-        this.displayGroups(data);
+        this.displayGroups(data.groupList);
         // this.props.setItem({ groupList: data });
-        this.setState({ groupList: data });
+        data.time = data.time.slice(3, undefined);
+        this.setState({ ...data, isRunning: data.start == "1" ? true : false });
       });
   };
+  inputInput = (event) => {
+    if (this.state.isRunning) {
+      event.currentTarget.blur();
+      return;
+    }
+    let value = event.currentTarget.value;
+    value.replace(/[^0-9:]/g, "");
+    let values = value.split(":");
+    let minute, second;
+    if (values.length == 2) [minute, second] = values;
+    minute ??= 0;
+    second ??= 0;
+    if (Number.parseInt(minute) > 60) minute = 60;
+    if (Number.parseInt(second) > 60) second = 60;
+    this.setState({ time: `${minute.toString()}:${second.toString()}` });
+    event.currentTarget.value = `${minute.toString()}:${second.toString()}`;
+  };
+  checkMessage(message) {
+    console.log(message);
+    // msgType: 'GameChg', year: 2106, phase: 4, time: '00:00:10'
+    if (message.msgType == "GameChg") {
+      this.setState({
+        year: message.year,
+        phase: message.phase,
+        time: message.time.slice(3, undefined),
+      });
+    }
+  }
   componentDidMount() {
     // let groupList = this.props.getItem("groupList")
     // if (groupList && groupList.length > 0){
@@ -128,7 +183,14 @@ export default class GroupPage extends React.Component {
     // } else {
     this.fetchGroupList();
     // }
+    socket.addEventListener("message", (event) => {
+      this.checkMessage(JSON.parse(event.data));
+      console.log("Received message from server:", JSON.parse(event.data));
+    });
   }
+  timeChange = (newState) => {
+    this.setState({ time: newState });
+  };
   render() {
     return (
       <div id="groupPage">
@@ -159,38 +221,60 @@ export default class GroupPage extends React.Component {
 
           <div id="second">
             <div id="navBar">
-              <div id="portion1">
+              <div
+                id="portion1"
+                style={{ color: this.state.isRunning ? "#aaaaaa" : "#fff" }}
+              >
                 <div className="navComp">
                   <img src={Date_range} alt="Date_range" />
-                  <p>2100</p>
+                  <p>{this.state.year}</p>
                 </div>
                 <p>|</p>
                 <div>
-                  <p>open phase</p>
+                  <p>{this.state.phase}</p>
                 </div>
                 <p>|</p>
                 <div className="navComp">
-                  <img src={Alarmclock_grey} alt="alarmclock" />
-                  <p>5:00</p>
+                  <Time
+                    timeChange={this.timeChange}
+                    time={this.state.time}
+                    isRunning={this.state.isRunning}
+                  />
                 </div>
               </div>
               <div id="navigate">
                 <button>
-                  <img src={Expand_left_double} alt="expand left" />
+                  <img
+                    src={Expand_left_double}
+                    alt="expand left"
+                    onClick={() => this.updateGame("-", "year")}
+                  />
                 </button>
                 <button>
-                  <img src={Expand_left} alt="left" />
+                  <img
+                    src={Expand_left}
+                    alt="left"
+                    onClick={() => this.updateGame("-", "phase")}
+                  />
                 </button>
                 <button>
-                  <img src={Expand_right} alt="right" />
+                  <img
+                    src={Expand_right}
+                    alt="right"
+                    onClick={() => this.updateGame("+", "phase")}
+                  />
                 </button>
                 <button>
-                  <img src={Expand_right_double} alt="expand right" />
+                  <img
+                    src={Expand_right_double}
+                    alt="expand right"
+                    onClick={() => this.updateGame("+", "year")}
+                  />
                 </button>
               </div>
             </div>
             <button id="gameStatus" onClick={this.startSession}>
-              Start
+              {!this.state.isRunning ? "start" : "pause"}
             </button>
           </div>
         </div>
