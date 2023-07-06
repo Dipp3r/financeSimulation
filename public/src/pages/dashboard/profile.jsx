@@ -11,7 +11,7 @@ import Coin from "@assets/images/coin.svg";
 import Time from "@components/time";
 import reward from "@assets/images/rewardCard.svg";
 import cash from "@assets/images/cash.svg";
-import share from "@assets/images/share.svg";
+// import share from "@assets/images/share.svg";
 
 /*
 import Arrow_left from "@assets/images/Arrow_left.svg"
@@ -19,7 +19,7 @@ import User_fill from "@assets/images/User_fill.svg"
 import Chart_alt from "@assets/images/Chart_alt.svg"
 import Message from "@assets/images/Message.svg";
 */
-const socket = new WebSocket("ws://localhost:3003");
+const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 class ProfileComp extends React.Component {
   constructor(props) {
     super(props);
@@ -28,6 +28,22 @@ class ProfileComp extends React.Component {
     };
   }
   triggerDelay = 500;
+  toShare = async () => {
+    try {
+      const response = await fetch(reward);
+      const blob = await response.blob();
+      const file = new File([blob], "image.jpg", { type: "image/jpeg" });
+      if (!navigator.share) return;
+      if (!navigator.canShare(file)) return;
+      await navigator.share({
+        files: [file],
+      });
+
+      console.log("Successfully shared");
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
+  };
   updateProfileInfo = () => {
     fetch(
       import.meta.env.VITE_API_SERVER_URL +
@@ -100,12 +116,17 @@ class ProfileComp extends React.Component {
           <div id="card">
             <div id="empty"></div>
             <div id="reward">
-              <img id="reward" src={reward} alt="reward" />
+              <img
+                id="reward"
+                src={reward}
+                alt="reward"
+                onClick={this.toShare}
+              />
               <img id="cash" src={cash} alt="cash" />
-              <button id="share">
+              {/* <button id="share">
                 <img src={share} alt="share" />
                 <p>Share</p>
-              </button>
+              </button> */}
             </div>
           </div>
           <p id="desc">Will unlock once all the badges have been collected</p>

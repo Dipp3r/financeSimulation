@@ -3,11 +3,42 @@ import PropTypes from "prop-types";
 import "@assets/styles/news.scss";
 import Arrow_left from "@assets/images/Arrow_left.svg";
 import Time from "@components/time";
-import point from "@assets/images/bullet_point.svg";
+import NewsListComp from "../components/newsListComp";
+
 class NewsComp extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      newsListComps: [],
+    };
   }
+  fetchNews = () => {
+    fetch(import.meta.env.VITE_API_SERVER_URL + "news", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ groupid: localStorage.getItem("groupid") }),
+    })
+      .then(async (response) => {
+        if (response.status == 200) {
+          return response.json();
+        } else {
+          throw new Error();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        let list = [];
+        data.news.forEach((element, index) => {
+          list.push(<NewsListComp info={element} key={index} />);
+        });
+        this.setState({ ...data, newsListComps: list });
+      });
+  };
+  componentDidMount = () => {
+    this.fetchNews();
+  };
   render() {
     return (
       <div id="news">
@@ -30,16 +61,7 @@ class NewsComp extends React.Component {
             <p>Super breaking news</p>
             <p>Super breaking news</p>
           </div>
-          <div id="content">
-            <div className="news">
-              <img src={point} alt="bullet_point" />
-              <p>Shares of Ran Dom Tower Industries surge 5% on MSO licence news ((MSO) licence to provide cable TV services to households.</p>
-            </div>
-            <div className="news">
-              <img src={point} alt="bullet_point" />
-              <p>Ran Dom Tower Dialup service soft launch happened in 2015 for partners and employees.</p>
-            </div>
-          </div>
+          <div id="content">{this.state.newsListComps.map((news) => news)}</div>
           <div id="fixed">
             <div className="clicked"></div>
             <div></div>
