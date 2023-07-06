@@ -27,10 +27,14 @@ export default class PlayerComp extends React.Component {
       method: "DELETE",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(obj),
-    }).then(this.props.fetchPlayerList);
+    });
   };
+  componentDidUpdate(prevProps) {
+    if (prevProps.playerObj.role !== this.props.playerObj.role) {
+      this.setState({ role: this.props.playerObj.role });
+    }
+  }
   render() {
-    console.log(this.props.playerObj);
     return (
       <div className="row">
         {/* <button>
@@ -48,7 +52,7 @@ export default class PlayerComp extends React.Component {
           name="role"
           placeholder="Select"
           id="role"
-          defaultValue={this.state.role !== "" ? this.state.role : "-1"}
+          value={this.state.role !== "" ? this.state.role : "-1"}
           onChange={this.changeRole}
         >
           <option id="select" value="-1">

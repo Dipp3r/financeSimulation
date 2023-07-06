@@ -7,7 +7,7 @@ import arrow_left from "@assets/images/Arrow_left.svg";
 
 import PlayerComp from "@components/playerCard";
 import DeletePrompt from "./deletePrompt";
-
+const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 export default class PlayersPage extends React.Component {
   constructor(props) {
     super(props);
@@ -54,27 +54,35 @@ export default class PlayersPage extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         let playersList = [];
-        data.map((player, index) => {
+        data.map((player) => {
           playersList.push(
             <PlayerComp
               playerObj={player}
               fetchPlayerList={this.fetchPlayerList}
-              key={index}
+              key={player.userid}
             />
           );
         });
         let groupInfo = this.state.groupInfo;
         groupInfo.players = data.length;
-        this.setState(
-          { playersList: playersList, groupInfo: groupInfo },
-          () => {
-            console.log(this.state.playersList);
-          }
-        );
+        this.setState({ playersList: playersList, groupInfo: groupInfo });
       });
+  };
+  checkMessage = (message) => {
+    if (
+      message.msgType == "RoleChg" ||
+      message.msgType == "NewUser" ||
+      message.msgType == "DeleteAction"
+    ) {
+      this.fetchPlayerList();
+    }
   };
   componentDidMount() {
     this.fetchPlayerList();
+    socket.addEventListener("message", (event) => {
+      this.checkMessage(JSON.parse(event.data));
+      console.log("Received message from server:", JSON.parse(event.data));
+    });
   }
   render() {
     return (
