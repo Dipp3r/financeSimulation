@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 // import loss from "@assets/images/loss.svg"
 import loss from "@assets/images/loss.svg";
 import gain from "@assets/images/gain.svg";
+import info from "@assets/images/info_alt_light.svg";
 export default class AssetsCompCommon extends React.Component {
   toggleToBuy = () => {
     let obj = {};
@@ -15,6 +16,9 @@ export default class AssetsCompCommon extends React.Component {
   render() {
     return (
       <div className={"row " + this.props.position} onClick={this.toggleToBuy}>
+        <button id="info">
+          <img src={info} alt="info" />
+        </button>
         <p id="name">{this.props.name}</p>
         <div>
           <p>₹{this.props.price}</p>

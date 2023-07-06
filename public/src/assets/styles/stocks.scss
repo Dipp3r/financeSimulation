@@ -146,14 +146,24 @@
             overflow-y:scroll;
             .top{
                 background: rgba(34, 63, 128, 0.15);
+                #info{
+                    background: #3C4B6F;
+                }
             }
             .bottom{
                 background: rgba(34, 63, 128, 0.1);
+                #info{
+                    background: #6579A7;
+                }
             }
             .row{
                 width: 100vw;
                 height:94px;
                 @include flex(row,space-between,center);
+                #info{
+                    height: 100%;
+                    width: 40px;
+                }
                 #name{
                     width: 50%;
                     font-family: 'Inter';
