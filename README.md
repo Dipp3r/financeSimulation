@@ -83,6 +83,9 @@ msgType:  {
     }
     "CashUpt" : {
         cash
+    },
+    "Transact" : {
+        groupid
     }
 }
 ```
