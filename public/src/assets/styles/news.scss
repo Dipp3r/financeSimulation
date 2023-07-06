@@ -1,61 +1,100 @@
 @import 'main';
 
-
 #news{
     #topBar{
+        height: 50px;
         border-bottom: 2px solid rgba(34, 63, 128, 0.4);
         @include flex(row,space-between,center);
-        
         div{
-            @include flex(row,flex-start,center);
-            img{
-                margin-left:10px;
+            @include flex(column,center,start);
+            height: 100%;
+            width: 33.33%;
+            img {
+              margin-left: 10px;
             }
-            p{
-                margin-left:50px;
-                margin-bottom:15px;  
-                font-family: 'Montserrat';
-                font-style: normal;
-                font-weight: 600;
-                font-size: 18px;
-                color: #595959;
-            }
+          }
+        p{
+            @include flex(column,center,center);
+            margin:0px;
+            height: 100%;
+            width: 33.33%;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            color: #6A6A6A;
         }
-        
         #timer{
-            @include flex(row,space-between,center);
+            @include flex(row,center,center);
             p{
-                margin:5px 20px 0px 5px;
+                margin:5px 0px 0px 5px;
                 font-family: 'Inter';
                 font-style: normal;
                 font-weight: 700;
                 font-size: 16px;
                 color: #FF473F;
-
+    
             }
         }
     }
-    
     #main{
         height:100vh;
         @include flex(column,flex-start,center);
-        background: #D9D9D9;
+        background: #F9F9FF;
+        #rotate{
+            @include flex(row,flex-start,center);
+            height:30px;
+            width:100%;
+            background: #223F80;
+            overflow:hidden;
+            overflow-x:scroll;
+            p{
+                margin:0px;
+                margin-right:20px;
+                color: #FFF;
+                font-family: Montserrat;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 400;
+            }
+        }
+        #content{
+            padding:50px 30px;
+            .news{
+                margin-bottom:20px;
+                @include flex(row,center,start);
+                img{
+                    height:18px;
+                    margin-top:3px;
+                    margin-right:16px;
+                }
+                p{
+                    margin:0px;
+                    color: #2C2C2C;
+                    font-family: Montserrat;
+                    font-size: 17px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                }
+            }
+        }
         #fixed{
             z-index: 1;
-            width:100px;
+            width:100%;
             position:fixed;
-            bottom:30px;
-            background: #D9D9D9;
-            @include flex(row,space-evenly,center);
+            bottom:20px;
+            background: #F9F9FF;
+            @include flex(row,center,center);
             div{
                 margin:4px;
                 border-radius: 100%;
                 width: 13px;
                 height: 13px;
                 background: rgba(34, 63, 128, 0.4);
-                &:hover{
-                    background:#223F80;
-                }
+            }
+            .clicked{
+                background:#223F80;
             }
         }
     }
