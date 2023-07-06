@@ -74,15 +74,24 @@ msgType:  {
         groupid,
         name
     },
-    ”RemoveUser” : {
-        userid,
-        groupid,
-        name
+    ”DeleteAction” : {
+        userid|groupid|sessionid,
+        groupid | ,
+        name | ,
+        reason |  
     },
     ”GamePause” : {
     }
     "CashUpt" : {
         cash
-    }
+    },
+    "Transact" : {
+        groupid
+    },
+    "AssetRename" : {
+        assetid,
+        name,
+        type
+    },
 }
 ```

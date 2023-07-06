@@ -373,17 +373,14 @@ app.delete("/deleteGroup", async (request, response) => {
         userPromises.push(userPromise);
       }
       await Promise.all(userPromises);
-      try {
-        await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
-      } catch (err) {
-        response.status(400).send("Error: " + err.message);
-      }
+      await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
+      wss.broadcast({
+        groupid:groupid,
+        msgType: "DeleteAction",
+        reason: "This group was either removed by the admin or it's no longer active"
+      });
     } else {
-      try {
-        await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
-      } catch (err) {
-        response.status(400).send("Error: " + err.message);
-      }
+      await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
     }
     response.status(200).send({ status: true });
   } catch (err) {
@@ -414,7 +411,7 @@ app.delete("/removeUser", async (request, response) => {
       userid: userid,
       groupid: info.rows[0].groupid,
       name: info.rows[0].name,
-      msgType: "RemoveUser",
+      msgType: "DeleteAction"
     });
     response.status(200).send({ status: true });
   } catch (error) {
@@ -741,6 +738,11 @@ app.put("/renameAsset", async (req, res) => {
       `UPDATE assets SET asset_name = $1 WHERE id = $2`,
       [new_name, assetId]
     );
+    const asset = await pool.query(`
+      SELECT asset_type as type FROM assets WHERE id = ${assetId}
+    `);
+    console.log({assetid:assetId,name:new_name,type:asset.rows[0]["type"],msgType:"AssetRename"});
+    wss.broadcast({assetid:assetId,name:new_name,type:asset.rows[0]["type"],msgType:"AssetRename"});
     res.status(200).send({ status: true });
   } catch (err) {
     console.log("Error: " + err.message);
@@ -761,6 +763,7 @@ app.delete("/deleteSession", async (req, res) => {
 
     if (groups.rowCount === 0) {
       await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionid]);
+      wss.broadcast({sessionid:sessionid,msgType:"DeleteAction",reason:"This session is either removed by the admin or it's no longer active"});
       res.status(200).send({ status: true });
     } else {
       groups = groups.rows;
@@ -804,6 +807,7 @@ app.delete("/deleteSession", async (req, res) => {
       await Promise.all(promises);
 
       await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionid]);
+      wss.broadcast({sessionid:sessionid,msgType:"DeleteAction",reason:"This session is either removed by the admin or it's no longer active"});
       res.status(200).send({ status: true });
     }
   } catch (err) {
@@ -978,6 +982,7 @@ app.put("/buy", async (req, res) => {
       INSERT INTO investment(stockid,groupid,holdings) values(${stockid},${groupid},${amount})
     `);
     await yearlyUpdate(groupid, amount, stockid, "+");
+    wss.broadcast({groupid:groupid, msgType:"Transact"});
     res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
@@ -999,6 +1004,7 @@ app.put("/sell", async (req, res) => {
     `)
       : "";
     await yearlyUpdate(groupid, amount, stockid, "-");
+    wss.broadcast({groupid:groupid, msgType:"Transact"});
     res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
