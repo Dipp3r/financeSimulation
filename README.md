@@ -87,7 +87,7 @@ msgType:  {
     "Transact" : {
         groupid
     },
-    "assetRename" : {
+    "AssetRename" : {
         assetid,
         name,
         type
