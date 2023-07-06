@@ -1010,15 +1010,44 @@ app.put("/sell", async (req, res) => {
 app.put("/gamechange", async (req, res) => {
   const { sessionid, OP, option } = req.body;
   try {
-    option
-      ? await pool.query(`
-        UPDATE "session" SET year = year ${OP} 1 WHERE sessionid = ${sessionid}
-      `)
-      : await pool.query(`
-        UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
+    const info = await pool.query(`
+        SELECT year, phase FROM  "session" WHERE sessionid = ${sessionid}
+    `);
+    const year = info.rows[0].year;
+    const phase = info.rows[0].phase;
+    console.log(year,phase);
+    if(option){
+      await pool.query(`
+        UPDATE "session" SET year = year ${OP} 1, phase = 1 WHERE sessionid = ${sessionid}
       `);
-      // wss.broadcast({msgType:})
-    res.status(200).send({ status: true });
+    } else{
+      if(phase>3 && OP==="+"){
+        await pool.query(`
+          UPDATE "session" SET phase = 1, year = year + 1 WHERE sessionid = ${sessionid}
+        `);
+      } else if(phase<2 && OP==="-"){
+        await pool.query(`
+          UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
+        `);
+      } else{
+        await pool.query(`
+          UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
+        `);
+      }
+    }
+    const result= {};
+    const gameinfo = await pool.query(`
+      SELECT year,phase FROM "session" WHERE sessionid = ${sessionid}
+    `);
+    result.year = gameinfo.rows[0]["year"];
+    result.phase = gameinfo.rows[0]["phase"];
+    const time = await pool.query(`
+      SELECT phase${result.phase} as time FROM gamedata WHERE year = ${result.year}
+    `);
+    result.time = time.rows[0]["time"];
+    console.log({...result,sessionid:sessionid,msgType:"GameChg"});
+    wss.broadcast({...result,sessionid:sessionid,msgType:"GameChg"});
+    res.status(200).send(result);
   } catch (err) {
     res.status(400).send({ status: false, err: err.message });
   }
