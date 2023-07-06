@@ -23,7 +23,7 @@ class InitialComp extends React.Component {
       localStorage.getItem("userid") &&
       localStorage.getItem("groupid") == window.location.href.split("/").pop()
     ) {
-      this.props.toggleMainDisplay("dashboard");
+      this.props.toggleMainDisplay(localStorage.getItem("mainDisplay"));
     } else {
       let groupid = window.location.href.split("/").pop();
       localStorage.setItem("groupid", groupid);

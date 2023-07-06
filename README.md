@@ -56,7 +56,7 @@ CREATE TABLE investment (
 WEB Sockets message types:
 ```python
 msgType:  {
-    “GameChg" : {
+    "GameChg" : {
         year,
         phase,
         time,

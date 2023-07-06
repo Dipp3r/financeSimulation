@@ -32,18 +32,18 @@ class IndexComp extends React.Component {
   getItem = (name) => {
     return this.state[name];
   };
-  toggleMainDisplay = (e, res) => {
+  toggleMainDisplay = (e) => {
     let value =
       typeof e === "string" ? e : e.currentTarget.getAttribute("value");
     console.log(value);
     let displayComp;
+    localStorage.setItem("mainDisplay", value);
     switch (value) {
       case "dashboard":
       default:
         displayComp = (
           <Dashboard
             toggleMainDisplay={this.toggleMainDisplay}
-            value={res}
             setItem={this.setItem}
             getItem={this.getItem}
           />
@@ -99,7 +99,7 @@ class IndexComp extends React.Component {
     let minute, second, cash;
 
     let notificationList = this.state.notificationList.slice(undefined, 100);
-    message.isread = false;
+    message.isRead = false;
 
     switch (message.msgType) {
       case "GameChg":
@@ -108,10 +108,12 @@ class IndexComp extends React.Component {
         localStorage.setItem("minute", Number.parseInt(minute));
         localStorage.setItem("second", Number.parseInt(second) + 1);
         notificationList.push(message);
+        this.toggleMainDisplay("dashboard");
         break;
       case "CashUpt":
-        cash = localStorage.getItem("cash");
-        localStorage.setItem("cash", cash + this.state.cash);
+        cash = Number.parseInt(localStorage.getItem("cash"));
+        cash ||= 0;
+        localStorage.setItem("cash", Number.parseInt(cash + 500000));
         notificationList.push(message);
         break;
       case "RoleChg":
@@ -119,6 +121,15 @@ class IndexComp extends React.Component {
       case "RemoveUser":
         if (message.groupid == localStorage.getItem("groupid")) {
           notificationList.push(message);
+        }
+        break;
+      case "DeleteAction":
+        if (message.groupid == localStorage.getItem("groupid")) {
+          window.close();
+        } else if (message.userid == localStorage.getItem("userid")) {
+          window.close();
+        } else {
+          window.close();
         }
         break;
       default:
@@ -141,6 +152,9 @@ class IndexComp extends React.Component {
     //setting the timer
     if (!localStorage.getItem("minute")) localStorage.setItem("minute", 15);
     if (!localStorage.getItem("second")) localStorage.setItem("second", 0);
+    if (!localStorage.getItem("cash")) localStorage.setItem("cash", 0);
+    let display = localStorage.getItem("mainDisplay");
+    this.toggleMainDisplay(display ? display : "");
   }
   render() {
     console.log(this.state);

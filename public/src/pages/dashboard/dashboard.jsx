@@ -8,20 +8,14 @@ import Chart_alt_fill from "@assets/images/Chart_alt_fill.svg";
 import Message from "@assets/images/Message.svg";
 import Message_alt_fill from "@assets/images/Message_alt_fill.svg";
 import ProfileComp from "@pages/dashboard/profile";
-import NotifComp from "@pages/dashboard/notification";
+import NotifComp from "@pages/dashboard/notification/notification";
 import StocksComp from "@pages/dashboard/stocks";
 import "@assets/styles/dashboard.scss";
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      display: (
-        <ProfileComp
-          toggleMainDisplay={this.props.toggleMainDisplay}
-          setItem={this.props.setItem}
-          getItem={this.props.getItem}
-        />
-      ),
+      display: "",
       displayName: "ProfileComp",
     };
   }
@@ -32,7 +26,6 @@ class Dashboard extends React.Component {
     navImg[0].src = User_circle;
     navImg[1].src = Chart_alt;
     navImg[2].src = Message;
-
     switch (value) {
       case "ProfileComp":
       default:
@@ -65,25 +58,12 @@ class Dashboard extends React.Component {
         displayName = "NotifComp";
         break;
     }
-    this.setState({ display: display, displayName: displayName }, () => {
-      this.props.setItem("dashboard", this.state);
-    });
+    localStorage.setItem("dashboard", displayName);
+    this.setState({ display: display, displayName: displayName });
   };
   componentDidMount() {
-    let state = this.props.getItem("dashboard");
-    if (!state) {
-      state = {};
-      state.display = (
-        <ProfileComp
-          toggleMainDisplay={this.props.toggleMainDisplay}
-          setItem={this.props.setItem}
-          getItem={this.props.getItem}
-        />
-      );
-      state.displayName = "ProfileComp";
-    }
-    this.changeDisplay(state.displayName);
-    this.setState(state);
+    let display = localStorage.getItem("dashboard");
+    this.changeDisplay(display ? display : "");
   }
   render() {
     return (

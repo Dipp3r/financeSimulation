@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import "@assets/styles/notif.scss";
 
 import Time from "@components/time";
-import NotificationCard from "@components/notificationCard";
+import NotificationCard from "./notificationCard";
 
-const socket = new WebSocket("ws://localhost:3003");
+const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 class NotifComp extends React.Component {
   constructor(props) {
     super(props);
@@ -20,6 +20,16 @@ class NotifComp extends React.Component {
         console.log(this.state);
       }
     );
+  };
+  changeisRead = (index) => {
+    console.log(index);
+    let list = this.state.notificationList;
+    list[index].isRead = true;
+    console.log(list[index]);
+    this.props.setItem("notificationList", list);
+    this.setState({ notificationList: list }, (index) => {
+      console.log(this.state, index);
+    });
   };
   componentDidMount() {
     this.getList();
@@ -52,12 +62,15 @@ class NotifComp extends React.Component {
           <Time />
         </div>
         <div id="main">
+          {this.state.notificationList.length == 0 && <p>empty</p>}
           {this.state.notificationList.map((notification, index) => {
             return (
               <NotificationCard
-                notification={notification}
-                toggleMainDisplay={this.props.toggleMainDisplay}
+                id={index}
                 key={index}
+                notification={notification}
+                changeisRead={this.changeisRead}
+                toggleMainDisplay={this.props.toggleMainDisplay}
               />
             );
           })}
