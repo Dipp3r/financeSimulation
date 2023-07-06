@@ -86,6 +86,11 @@ msgType:  {
     },
     "Transact" : {
         groupid
-    }
+    },
+    "assetRename" : {
+        assetid,
+        name,
+        type
+    },
 }
 ```
