@@ -1,0 +1,23 @@
+<svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 14728">
+<g id="Rectangle 41">
+<rect width="14.9248" height="14.9248" rx="1" transform="matrix(0.710669 0.703526 -0.710669 0.703526 10.6067 0)" fill="url(#paint0_linear_797_3880)"/>
+<rect width="14.9248" height="14.9248" rx="1" transform="matrix(0.710669 0.703526 -0.710669 0.703526 10.6067 0)" stroke="url(#paint1_linear_797_3880)"/>
+</g>
+<rect id="Rectangle 52" width="10.9711" height="10.9711" rx="1" transform="matrix(0.710669 0.703526 -0.710669 0.703526 10.6067 2.96997)" fill="url(#paint2_linear_797_3880)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_797_3880" x1="2.44094" y1="2.44094" x2="13.5608" y2="13.5608" gradientUnits="userSpaceOnUse">
+<stop stop-color="#5B3663"/>
+<stop offset="0.856394" stop-color="#972C48"/>
+</linearGradient>
+<linearGradient id="paint1_linear_797_3880" x1="0" y1="0" x2="2.16973" y2="15.7305" gradientUnits="userSpaceOnUse">
+<stop stop-color="#562C5E"/>
+<stop offset="1" stop-color="#902D4B"/>
+</linearGradient>
+<linearGradient id="paint2_linear_797_3880" x1="-1.61007" y1="-1.63841" x2="10.2625" y2="10.2342" gradientUnits="userSpaceOnUse">
+<stop stop-color="#5B3663"/>
+<stop offset="1" stop-color="#9C4F6E"/>
+</linearGradient>
+</defs>
+</svg>

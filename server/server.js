@@ -22,21 +22,21 @@ const DATA = require("./info.json");
 
 const COINS = 500000;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -1016,25 +1016,37 @@ app.put("/sell", async (req, res) => {
 app.put("/gamechange", async (req, res) => {
   const { sessionid, OP, option } = req.body;
   try {
+    const years = await pool.query(`
+      SELECT year FROM gamedata ORDER BY year ASC
+    `);
+    const [firstYear,lastYear] = [years.rows[0]["year"],years.rows.pop()["year"]]
     const info = await pool.query(`
         SELECT year, phase FROM  "session" WHERE sessionid = ${sessionid}
     `);
     const year = info.rows[0].year;
-    const phase = info.rows[0].phase;
-    console.log(year,phase);
+    const phase = info.rows[0].phase;    
     if(option == "1"){
-      await pool.query(`
-        UPDATE "session" SET year = year ${OP} 1, phase = 1 WHERE sessionid = ${sessionid}
-      `);
+      if(!((OP=="+" && year==lastYear) || (OP=="-" && year==firstYear))){
+        await pool.query(`
+          UPDATE "session" SET year = year ${OP} 1, phase = 1 WHERE sessionid = ${sessionid}
+        `);
+      }
     } else{
       if(phase>3 && OP==="+"){
-        await pool.query(`
-          UPDATE "session" SET phase = 1, year = year + 1 WHERE sessionid = ${sessionid}
-        `);
+        ( year!=lastYear)
+        ?
+          await pool.query(`
+            UPDATE "session" SET phase = 1, year = year + 1 WHERE sessionid = ${sessionid}
+          `)
+        : "";
       } else if(phase<2 && OP==="-"){
-        await pool.query(`
-          UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
-        `);
+        (year!=firstYear)
+        ?
+          await pool.query(`
+            UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
+          `)
+        :
+          "";
       } else{
         await pool.query(`
           UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
