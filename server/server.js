@@ -1090,7 +1090,7 @@ app.post("/news",async(req,res)=>{
     for (let key in obj) {
       if (obj.hasOwnProperty(key)) {
         obj[key].forEach(element=>{
-          news.push(element.replace(/_asset_/g,assets[`${key}`]));
+          news.push(element.replace(/_asset_/g,`<b>${assets[`${key}`]}</b>`));
         });;
       }
     }
