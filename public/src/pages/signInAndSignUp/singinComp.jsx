@@ -14,16 +14,6 @@ class SigninComp extends React.Component {
       mobileError: "",
     };
   }
-  // componentDidMount() {
-  //   if (
-  //     localStorage.getItem("userid") &&
-  //     localStorage.getItem("groupid") == window.location.href.split("/").pop()
-  //   )
-  //     this.props.toggleMainDisplay("dashboard");
-
-  //   let groupid = window.location.href.split("/").pop();
-  //   localStorage.setItem("groupid", groupid);
-  // }
   submit = () => {
     let formElements = document
       .querySelector(".form")
@@ -64,10 +54,12 @@ class SigninComp extends React.Component {
           body: JSON.stringify(obj),
         }
       )
-        .then((response) => {
+        .then(async (response) => {
           if (response.status == 200) {
             return response.json();
           } else {
+            let data = await response.json();
+            this.setState({ passwordError: data.msg });
             throw new Error();
           }
         })

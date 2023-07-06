@@ -118,17 +118,16 @@ class IndexComp extends React.Component {
         break;
       case "RoleChg":
       case "NewUser":
-      case "RemoveUser":
         if (message.groupid == localStorage.getItem("groupid")) {
           notificationList.push(message);
         }
         break;
       case "DeleteAction":
         if (message.groupid == localStorage.getItem("groupid")) {
-          window.close();
-        } else if (message.userid == localStorage.getItem("userid")) {
-          window.close();
-        } else {
+          // if (message.userid == localStorage.getItem("userid")) {
+          //   window.close();
+          // }
+          notificationList.push(message);
           window.close();
         }
         break;

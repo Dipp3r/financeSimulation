@@ -50,6 +50,7 @@ class SignupComp extends React.Component {
       error.confirmPasswordError = "confirmPassword again";
       isError = true;
     }
+    this.setState(error);
     if (!isError) {
       delete obj.confirmPassword;
       fetch(
@@ -62,10 +63,12 @@ class SignupComp extends React.Component {
           body: JSON.stringify(obj),
         }
       )
-        .then((response) => {
+        .then(async (response) => {
           if (response.status == 200) {
             return response.json();
           } else {
+            let data = await response.json();
+            this.setState({ confirmPasswordError: data.msg });
             throw new Error();
           }
         })
@@ -82,8 +85,6 @@ class SignupComp extends React.Component {
         .catch((error) => {
           throw new Error(error);
         });
-    } else {
-      this.setState(error);
     }
   };
   render() {

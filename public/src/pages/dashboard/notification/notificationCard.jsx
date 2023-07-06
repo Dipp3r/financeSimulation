@@ -6,6 +6,7 @@ import Group from "@assets/images/Group.svg";
 import Star from "@assets/images/Star.svg";
 import white_paper from "@assets/images/white_paper.svg";
 import white_group from "@assets/images/white_group.svg";
+import red_group from "@assets/images/red_group.svg";
 import white_star from "@assets/images/white_star.svg";
 import roleNumToStr from "@utils/roleNumberToString";
 
@@ -20,15 +21,13 @@ export default class NotificationCard extends React.Component {
   }
   afterClick = () => {
     this.setState({ isRead: true }, () => {
-      console.log(this.state);
       this.props.changeisRead(this.props.id);
       switch (this.state.msgType) {
         case "GameChg":
           this.props.toggleMainDisplay("news");
           break;
         case "NewUser":
-          this.props.toggleMainDisplay("team");
-          break;
+        case "RemoveUser":
         case "RoleChg":
           this.props.toggleMainDisplay("team");
           break;
@@ -67,14 +66,23 @@ export default class NotificationCard extends React.Component {
               src={this.state.isRead ? Group : white_group}
               alt="group"
             />
-            <p className="text-thin">Arya joined your team</p>
+            <p className="text-thin">{this.state.name} joined your team</p>
+          </div>
+        );
+      case "DeleteAction":
+        return (
+          <div
+            className={`notif ${this.state.isRead ? "notif-extend" : ""}`}
+            onClick={this.afterClick}
+          >
+            <img className="coin" src={red_group} alt="group" />
+            <p className="text-thin">{this.state.name} has been removed</p>
           </div>
         );
       case "RoleChg":
-        if (this.state.role == -1) {
+        if (this.state.role == "-1" || this.state.role == "") {
           string =
-            "relieved of your duties as the " +
-            roleNumToStr(this.state.prev_role);
+            "relieved from duties as the " + roleNumToStr(this.state.prev_role);
         } else {
           string = "assigned as an " + roleNumToStr(this.state.role);
         }

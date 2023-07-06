@@ -5,7 +5,7 @@ import "@assets/styles/profile.scss";
 import badge from "@assets/images/badge.svg";
 import emptyBadge from "@assets/images/emptyBadge.svg";
 import pie_chart from "@assets/images/pie_chart.svg";
-import Group from "@assets/images/Group.svg";
+import white_group from "@assets/images/white_group.svg";
 import Vector from "@assets/images/Vector.svg";
 import Coin from "@assets/images/coin.svg";
 import Time from "@components/time";
@@ -138,7 +138,7 @@ class ProfileComp extends React.Component {
               value="team"
             >
               <img src={Coin} className="animate" alt="coin" />
-              <img src={Group} alt="team logo" />
+              <img src={white_group} alt="team logo" />
               <p>Team</p>
             </div>
 
