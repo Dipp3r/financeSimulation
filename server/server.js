@@ -136,6 +136,7 @@ const updateGame = async (
       obj.year = year;
       obj.phase = phase;
       obj.time = time;
+      obj.sessionid = session;
 
       wss.broadcast(obj);
       startTime[`${session}`] = new Date().getTime();
@@ -401,18 +402,18 @@ app.delete("/removeUser", async (request, response) => {
     `,
       [userid]
     );
-    let groupid = await pool.query(
+    const info = await pool.query(
       `
-      select groupid from users where userid = $1
+      select name,groupid from users where userid = $1
     `,
       [userid]
     );
     await pool.query("DELETE FROM users WHERE userid=$1", [userid]);
 
-    groupid = groupid.rows[0].groupid;
     wss.broadcast({
       userid: userid,
-      groupid: groupid,
+      groupid: info.rows[0].groupid,
+      name: info.rows[0].name,
       msgType: "RemoveUser",
     });
     response.status(200).send({ status: true });
