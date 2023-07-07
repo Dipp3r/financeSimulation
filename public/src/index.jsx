@@ -104,6 +104,7 @@ class IndexComp extends React.Component {
     switch (message.msgType) {
       case "GameChg":
         localStorage.setItem("year", message.year);
+        localStorage.setItem("phase", message.phase);
         [, minute, second] = message.time.split(":");
         localStorage.setItem("minute", Number.parseInt(minute));
         localStorage.setItem("second", Number.parseInt(second) + 1);
@@ -153,6 +154,8 @@ class IndexComp extends React.Component {
     if (!localStorage.getItem("minute")) localStorage.setItem("minute", 15);
     if (!localStorage.getItem("second")) localStorage.setItem("second", 0);
     if (!localStorage.getItem("cash")) localStorage.setItem("cash", 0);
+    localStorage.setItem("year", 2099);
+    localStorage.setItem("phase", 1);
     let display = localStorage.getItem("mainDisplay");
     this.toggleMainDisplay(display ? display : "");
   }

@@ -9,7 +9,7 @@ import white_group from "@assets/images/white_group.svg";
 import red_group from "@assets/images/red_group.svg";
 import white_star from "@assets/images/white_star.svg";
 import roleNumToStr from "@utils/roleNumberToString";
-
+import getPhaseString from "@utils/getPhaseString";
 export default class NotificationCard extends React.Component {
   constructor(props) {
     super(props);
@@ -25,6 +25,8 @@ export default class NotificationCard extends React.Component {
       switch (this.state.msgType) {
         case "GameChg":
           this.props.toggleMainDisplay("news");
+          localStorage.setItem("year", this.state.year);
+          localStorage.setItem("phase", this.state.phase);
           break;
         case "NewUser":
         case "RemoveUser":
@@ -51,7 +53,7 @@ export default class NotificationCard extends React.Component {
           >
             <img src={this.state.isRead ? Paper : white_paper} alt="paper" />
             <p>
-              phase{this.state.phase} news | {this.state.year}
+              {getPhaseString(this.state.phase)} | {this.state.year}
             </p>
           </div>
         );

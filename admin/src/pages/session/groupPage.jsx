@@ -12,6 +12,7 @@ import Expand_right from "@assets/images/Expand_right.svg";
 import Expand_right_double from "@assets/images/Expand_right_double.svg";
 import link from "@assets/images/link.svg";
 import Time from "@components/time";
+import getPhaseString from "@utils/getPhaseString";
 const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 export default class GroupPage extends React.Component {
   constructor(props) {
@@ -116,6 +117,7 @@ export default class GroupPage extends React.Component {
     });
   };
   updateGame = (operation, option) => {
+    if (this.state.isRunning) return;
     fetch(import.meta.env.VITE_API_SERVER_URL + "gamechange", {
       method: "PUT",
       headers: {
@@ -166,7 +168,6 @@ export default class GroupPage extends React.Component {
     event.currentTarget.value = `${minute.toString()}:${second.toString()}`;
   };
   checkMessage(message) {
-    console.log(message);
     // msgType: 'GameChg', year: 2106, phase: 4, time: '00:00:10'
     if (message.msgType == "GameChg") {
       this.setState({
@@ -232,7 +233,7 @@ export default class GroupPage extends React.Component {
                 </div>
                 <p>|</p>
                 <div>
-                  <p>{this.state.phase}</p>
+                  <p>{getPhaseString(this.state.phase)}</p>
                 </div>
                 <p>|</p>
                 <div className="navComp">

@@ -30,7 +30,6 @@ class SessionsComp extends React.Component {
   toggleSession = (e) => {
     let value =
       typeof e === "string" ? e : e.currentTarget.getAttribute("value");
-    console.log(value);
     let displayComp;
     switch (value) {
       case "sessionViewer":
@@ -61,7 +60,6 @@ class SessionsComp extends React.Component {
   };
   componentDidMount() {
     let sessionPage = localStorage.getItem("sessionPage");
-    console.log(sessionPage);
     this.toggleSession(sessionPage ? sessionPage : "sessionViewer");
   }
   render() {

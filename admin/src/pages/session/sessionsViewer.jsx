@@ -50,12 +50,10 @@ export default class SessionsViewer extends React.Component {
         downloadIcon;
       for (let session of list) {
         card = document.createElement("button");
-        console.log(session.sessionid);
         card.onclick = () => {
           localStorage.setItem("currentSessionID", session.sessionid);
           this.props.toggleSession("groupPage");
         };
-        // console.log(card)
         card.value = "groupPage";
         card.className = "sessionCards";
         nameDiv = document.createElement("div");
@@ -146,7 +144,6 @@ export default class SessionsViewer extends React.Component {
   };
   searchSession = (e) => {
     let list = this.state.sessionsList;
-    console.log(list);
     if (e.currentTarget.value == "") {
       this.displaySessions(list);
     }
@@ -164,8 +161,6 @@ export default class SessionsViewer extends React.Component {
         return response.json();
       })
       .then((data) => {
-        // Handle the response data
-        console.log(data);
         this.displaySessions(data);
         this.props.setItem({ sessionsList: data });
         this.setState({ sessionsList: data });
@@ -175,7 +170,6 @@ export default class SessionsViewer extends React.Component {
     this.fetchSessionsList();
   }
   render() {
-    console.log(this.state);
     return (
       <div id="sessionsViewer">
         {this.state.DeletePrompDisplay && (

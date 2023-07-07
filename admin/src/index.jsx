@@ -24,11 +24,9 @@ class IndexComp extends React.Component {
     this.toggleMainPage = this.toggleMainPage.bind(this);
   }
   getItem(key) {
-    console.log(this.state[key]);
     return this.state[key];
   }
   setItem(obj) {
-    console.log(obj);
     this.setState(obj);
   }
   toggleMainPage(value) {
@@ -36,7 +34,6 @@ class IndexComp extends React.Component {
     let mainPage;
 
     let options = document.querySelector("#options").childNodes;
-    console.log(options);
 
     options.forEach((element) => {
       element.style.background = "transparent";
@@ -67,15 +64,8 @@ class IndexComp extends React.Component {
     socket.addEventListener("open", () => {
       console.log("WebSocket connection opened");
     });
-
-    // When a message is received from the WebSocket server
-    socket.addEventListener("message", (event) => {
-      // this.checkMessage(JSON.parse(event.data));
-      console.log("Received message from server:", JSON.parse(event.data));
-    });
   }
   render() {
-    console.log(this.state);
     return (
       <section id="home">
         <nav id="sideBar">

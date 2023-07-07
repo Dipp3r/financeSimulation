@@ -20,7 +20,10 @@ class NewsComp extends React.Component {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ groupid: localStorage.getItem("groupid") }),
+      body: JSON.stringify({
+        year: localStorage.getItem("year"),
+        phase: localStorage.getItem("phase"),
+      }),
     })
       .then(async (response) => {
         if (response.status == 200) {
@@ -30,22 +33,6 @@ class NewsComp extends React.Component {
         }
       })
       .then((data) => {
-        console.log(data);
-        data.news = [
-          "<b>Ran dom Tower</b> buying controlling stake in Hm acquires substantial stake in media startup NEJ",
-          "<b>Blade Bull Finance</b> raises Rs 23,600 crore i<b>Blade Bull Finance</b> raises another Rs 200 cr.",
-          "<b>Ran dom Tower</b> buying controlling stake in Hm acquires substantial stake in media startup NEJ",
-
-          "<b>Blade Bull Finance</b> raises Rs 23,600 crore i…>Blade Bull Finance</b> raises another Rs 200 cr.",
-          "<b>Ran dom Tower</b> buying controlling stake in H…m acquires substantial stake in media startup NEJ",
-          "<b>Blade Bull Finance</b> raises Rs 23,600 crore i…>Blade Bull Finance</b> raises another Rs 200 cr.",
-
-          "<b>Ran dom Tower</b> buying controlling stake in H…m acquires substantial stake in media startup NEJ",
-          "<b>Blade Bull Finance</b> raises Rs 23,600 crore i…>Blade Bull Finance</b> raises another Rs 200 cr.",
-          "<b>Ran dom Tower</b> buying controlling stake in H…m acquires substantial stake in media startup NEJ",
-
-          "<b>Blade Bull Finance</b> raises Rs 23,600 crore i…>Blade Bull Finance</b> raises another Rs 200 cr.",
-        ];
         let mainList = [];
         let list = [];
         let minNewsHieght = 130; // higher number will have lower news per page
