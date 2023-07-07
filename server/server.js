@@ -387,7 +387,7 @@ app.delete("/deleteGroup", async (request, response) => {
       await Promise.all(userPromises);
       await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
       wss.broadcast({
-        groupid:groupid,
+        groupList:[groupid],
         msgType: "DeleteAction",
         reason: "This group was either removed by the admin or it's no longer active"
       });
@@ -421,7 +421,7 @@ app.delete("/removeUser", async (request, response) => {
 
     wss.broadcast({
       userid: userid,
-      groupid: info.rows[0].groupid,
+      groupList: [info.rows[0].groupid],
       name: info.rows[0].name,
       msgType: "DeleteAction"
     });
@@ -772,10 +772,13 @@ app.delete("/deleteSession", async (req, res) => {
     `,
       [sessionid]
     );
-
+    const groupList = [];
+    groups.rows.forEach(e=>{
+      groupList.push(e.groupid);
+    });
     if (groups.rowCount === 0) {
       await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionid]);
-      wss.broadcast({sessionid:sessionid,msgType:"DeleteAction",reason:"This session is either removed by the admin or it's no longer active"});
+      wss.broadcast({groupList:groupList,msgType:"DeleteAction",reason:"This session is either removed by the admin or it's no longer active"});
       res.status(200).send({ status: true });
     } else {
       groups = groups.rows;
