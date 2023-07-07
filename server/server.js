@@ -1087,12 +1087,8 @@ app.put("/gamechange", async (req, res) => {
 });
 
 app.post("/news",async(req,res)=>{
-  const {groupid} = req.body;
+  const {year,phase} = req.body;
   try {
-    let gamedata = await pool.query(`
-      SELECT year,phase FROM "session" WHERE sessionid = (SELECT sessionid FROM "group" WHERE groupid = ${groupid});
-    `);
-    const { year, phase } = gamedata.rows[0];
     const stocks = await pool.query(`
       SELECT id,asset_name FROM assets
     `); 
