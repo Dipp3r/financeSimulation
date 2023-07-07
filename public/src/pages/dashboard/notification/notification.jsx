@@ -1,9 +1,11 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from "react";
 import PropTypes from "prop-types";
 import "@assets/styles/notif.scss";
 
 import Time from "@components/time";
 import NotificationCard from "./notificationCard";
+import empty_notif from "@assets/images/empty_notification.svg";
 
 const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 class NotifComp extends React.Component {
@@ -58,11 +60,17 @@ class NotifComp extends React.Component {
       <div id="notification">
         <div id="topBar">
           <div></div>
-          <p>Notification</p>
+          <p>Notifications</p>
           <Time />
         </div>
         <div id="main">
-          {this.state.notificationList.length == 0 && <p>empty</p>}
+          {this.state.notificationList.length == 0 && (
+            <div id="empty">
+              <img src={empty_notif} alt="notification" />
+              <h2>No Notifications</h2>
+              <p>We'll notify you when something arrives.</p>
+            </div>
+          )}
           {this.state.notificationList.map((notification, index) => {
             return (
               <NotificationCard

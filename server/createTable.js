@@ -36,7 +36,8 @@ async function createTables() {
         time_created TIMESTAMP WITHOUT TIME ZONE,
         year INTEGER,
         phase INTEGER,
-        start INTEGER
+        start INTEGER,
+        ${groupString}
       )
     `);
 
