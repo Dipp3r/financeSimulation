@@ -887,13 +887,11 @@ app.post("/invest", async (req, res) => {
     });
 
     const assets = {};
-    console.log(result.rows)
     result.rows.forEach((row) => {
       const { id, asset_type, asset_name, asset_price, asset_diff } = row;
       if (!assets.hasOwnProperty(`${asset_type}List`)) {
         assets[`${asset_type}List`] = [];
       }
-      console.log(id,DATA.news[`${year}`][`${phase}`].assets);
       if(DATA.news[`${year}`][`${phase}`].assets.includes(id)){
         if (holdings[`${id}`] === undefined) {
           console.log(assets);
@@ -925,6 +923,7 @@ app.post("/invest", async (req, res) => {
     });
     res.status(200).send(assets);
   } catch (err) {
+    console.log("error",err)
     res.status(400).send({ status: false, msg: err.message });
   }
 });

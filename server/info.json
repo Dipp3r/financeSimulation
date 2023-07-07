@@ -209,6 +209,32 @@
                 "assets":[],
                 "news":{}
             }      
+        },
+        "2106":{
+            "1":{
+                "assets":[1,3,5,7,8,10,12,13,14,15],
+                "news":{}
+            },            
+            "2":{
+                "assets":[1,3,5,7,8,10,12,13,14,15],
+                "news":{
+                    "1":["_asset_ to embed e-commerce app _asset_ Mart into WhatsApp within six months: Report."],
+                    "5":["_asset_ case: Sebi fines, bars 4 individuals, 1 entity from securities mkt"],
+                    "3":["Rakesh, the famous investor pares stake in _asset_."],
+                    "7":["_asset_ awaiting relaxations in dine-in curbs to ramp up growth."],
+                    "8":["_asset_ wins the ICSI National Award for Excellence in Corporate Governance "],
+                    "10":["_asset_ creates India's largest omni-channel health platform, reports Rs 170 crore net profit for Q4FY21."],
+                    "11":["_asset_ sells part of its stake in OakNorth Holdings, raises Rs 93 crore"]
+                }
+            },         
+            "3":{
+                "assets":[],
+                "news":{}
+            },         
+            "4":{
+                "assets":[],
+                "news":{}
+            }      
         }
     }
 }
