@@ -124,11 +124,11 @@ const updateGame = async (
     }
     year++;
   }
-  const yearBegan = await pool.query(`
-  SELECT _${year} as curr_year FROM "session" WHERE sessionid = ${session}
-`);
   if (year <= lastYear) {
     try {
+      const yearBegan = await pool.query(`
+        SELECT _${year} as curr_year FROM "session" WHERE sessionid = ${session}
+      `);
       const query = `SELECT phase${phase} FROM gamedata WHERE year = $1 ORDER BY year ASC`;
       const result = await pool.query(query, [year]);
       time ??= result.rows[0][`phase${phase}`];
