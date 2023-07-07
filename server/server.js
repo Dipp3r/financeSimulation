@@ -49,6 +49,12 @@ app.use(
   })
 );
 
+let allYears = "";
+DATA.year.forEach((e) => {
+  allYears += `_${e}, `;
+});
+allYears = allYears.trim().replace(/,$/, "");
+
 // function deleteDirectory(directoryPath) {
 //   if (fs.existsSync(directoryPath)) {
 //     fs.readdirSync(directoryPath).forEach((file) => {
@@ -100,7 +106,6 @@ const updateGame = async (
   year = 1,
   lastYear = 0,
   session,
-  groups,
   time
 ) => {
   const firstYear = await pool.query(`
@@ -117,14 +122,11 @@ const updateGame = async (
         UPDATE "group" SET cash = 0 WHERE sessionid = ${session}
       `);     
     }
-    for (let group of groups) {
-      await pool.query(`
-        UPDATE "group" set cash = cash + ${COINS} WHERE groupid = ${group["groupid"]}
-      `);
-    }
-    wss.broadcast({ cash: COINS, msgType: "CashUpt" });
     year++;
   }
+  const yearBegan = await pool.query(`
+  SELECT _${year} as curr_year FROM "session" WHERE sessionid = ${session}
+`);
   if (year <= lastYear) {
     try {
       const query = `SELECT phase${phase} FROM gamedata WHERE year = $1 ORDER BY year ASC`;
@@ -135,6 +137,15 @@ const updateGame = async (
       const totalSeconds = Number.parseInt(
         hours * 3600 + minutes * 60 + seconds
       );
+      if(yearBegan.rows[0]["curr_year"]===0){
+        await pool.query(`
+          UPDATE "group" set cash = cash + ${COINS} WHERE sessionid = ${session}
+        `);
+        await pool.query(`
+          UPDATE "session" SET _${year} = 1 where sessionid = ${session}
+        `);
+        wss.broadcast({ cash: COINS, msgType: "CashUpt" });
+      }
       await pool.query(
         `
         UPDATE "session" SET year = $1, phase = $2 where sessionid = $3
@@ -154,7 +165,7 @@ const updateGame = async (
       startTime[`${session}`] = new Date().getTime();
       delay[`${session}`] = Number.parseInt(totalSeconds) * 1000;
       timer_key[`${session}`] = setTimeout(
-        () => {updateGame(phase + 1, year, lastYear, session, groups)},
+        () => {updateGame(phase + 1, year, lastYear, session)},
           delay[`${session}`]
       );
     } catch (error) {
@@ -184,28 +195,14 @@ app.post("/start", async (req, res) => {
     SELECT start,year,phase FROM "session" WHERE sessionid = ${sessionid}
   `);
   let start = gameStatus.rows[0]["start"];
-  console.log(start)
-
     if(start==0){
       await pool.query(`
         UPDATE "session" SET start = 1 WHERE sessionid = ${sessionid}
       `);
       let result = await pool.query("select year from gameData ORDER BY year ASC");
       let lastYear = result.rows.pop().year;
-
       let [currentYear,currentPhase] = [gameStatus.rows[0]["year"],gameStatus.rows[0]["phase"]];
-
-      const groups = await pool.query(`
-        SELECT groupid FROM "group" WHERE sessionid = ${sessionid}
-      `);
-
-      for (let group of groups.rows) {
-        await pool.query(`
-          UPDATE "group" set cash = cash + ${COINS} WHERE groupid = ${group["groupid"]}
-        `);
-      } 
-      wss.broadcast({ cash: COINS, msgType: "CashUpt" });
-      updateGame(currentPhase, currentYear, lastYear, sessionid, groups.rows,secondsToHMS(remainingTime[`${sessionid}`]));
+      updateGame(currentPhase, currentYear, lastYear, sessionid,secondsToHMS(remainingTime[`${sessionid}`]));
       res.status(200).end();
   }
   
@@ -252,7 +249,7 @@ app.post("/createSession", async (request, response) => {
       `);
       firstYear = firstYear.rows[0]["year"];
       await pool.query(
-        "INSERT INTO session(sessionid,title,excelLink,time_created,year,phase,start) VALUES($1,$2,$3,$4,$5,$6,0)",
+        `INSERT INTO session(sessionid,title,excelLink,time_created,year,phase,start, ${allYears}) VALUES($1,$2,$3,$4,$5,$6,0,0,0,0,0,0,0,0,0)`,
         [id, title, "", new Date(), firstYear, 1]
       );
       response.status(200).send({ status: true });
@@ -266,11 +263,6 @@ app.post("/createSession", async (request, response) => {
 });
 
 app.post("/addGroup", async (request, response) => {
-  let allYears = "";
-  DATA.year.forEach((e) => {
-    allYears += `_${e}, `;
-  });
-  allYears = allYears.trim().replace(/,$/, "");
   let id = Math.floor(100000 + Math.random() * 900000);
   const { name, limit, sessionid } = request.body;
   console.log(request.body);
@@ -1034,14 +1026,20 @@ app.put("/gamechange", async (req, res) => {
     const years = await pool.query(`
       SELECT year FROM gamedata ORDER BY year ASC
     `);
-    const [firstYear,lastYear] = [years.rows[1]["year"],years.rows.pop()["year"]]
+    const [trailYear,firstYear,lastYear] = [years.rows[0]["year"],years.rows[1]["year"],years.rows.pop()["year"]]
     const info = await pool.query(`
         SELECT year, phase FROM  "session" WHERE sessionid = ${sessionid}
     `);
     const year = info.rows[0].year;
     const phase = info.rows[0].phase;    
     if(option == "1"){
-      if(!((OP=="+" && year==lastYear) || (OP=="-" && year==firstYear))){
+      if(!((OP=="+" && year==lastYear) || (OP=="-" && [trailYear,firstYear].includes(year)))){
+        if(OP=="-"){
+          await pool.query(`UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}`);
+          await pool.query(`
+            UPDATE "session" SET _${year} = 0 WHERE sessionid = ${sessionid}
+          `);
+        }
         await pool.query(`
           UPDATE "session" SET year = year ${OP} 1, phase = 1 WHERE sessionid = ${sessionid}
         `);
@@ -1055,7 +1053,7 @@ app.put("/gamechange", async (req, res) => {
           `)
         : "";
       } else if(phase<2 && OP==="-"){
-        (year!=firstYear)
+        (![trailYear,firstYear].includes(year))
         ?
           await pool.query(`
             UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
