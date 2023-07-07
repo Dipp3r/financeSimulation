@@ -131,7 +131,7 @@ class SellComp extends React.Component {
               value="dashboard"
             />
             <img className="coin" src={Coin} alt="coin" />
-            <p>₹{formatCurrencyValue(this.state.cash)}</p>
+            <p>{formatCurrencyValue(this.state.cash)}</p>
           </div>
           <Time />
         </div>

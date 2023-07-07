@@ -74,7 +74,7 @@ class StocksComp extends React.Component {
         <div id="topBar">
           <div>
             <img className="coin" src={Coin} alt="coin" />
-            <p>₹{formatCurrencyValue(this.state.cash)}</p>
+            <p>{formatCurrencyValue(this.state.cash)}</p>
           </div>
           <p>Buy/Sell</p>
           <Time />
