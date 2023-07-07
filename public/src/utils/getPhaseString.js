@@ -1,13 +1,13 @@
 export default function getPhaseString(number) {
   switch (number) {
-    case 0:
+    case 1:
     default:
       return "Open Phase";
-    case 1:
-      return "Market Update";
     case 2:
-      return "Breaking News";
+      return "Market Update";
     case 3:
+      return "Breaking News";
+    case 4:
       return "Super Break News";
   }
 }

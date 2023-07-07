@@ -7,6 +7,7 @@ import PortfolioComp from "@pages/portfolio";
 import TeamComp from "@pages/team/team";
 import * as serviceWorkerRegistration from "@utils/serviceWorkerRegistration";
 import NewsComp from "@pages/news";
+import AssetInfoComp from "@pages/assetInfo";
 const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 
 class IndexComp extends React.Component {
@@ -88,6 +89,11 @@ class IndexComp extends React.Component {
       case "login":
         displayComp = (
           <InitialComp toggleMainDisplay={this.toggleMainDisplay} />
+        );
+        break;
+      case "assetInfo":
+        displayComp = (
+          <AssetInfoComp toggleMainDisplay={this.toggleMainDisplay} />
         );
         break;
     }

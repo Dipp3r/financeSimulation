@@ -7,6 +7,7 @@ import Coin from "@assets/images/coin.svg";
 // import Gain from "@assets/images/gain.svg"
 import AssetsCompCommon from "@components/assestsCompCommon";
 import Time from "@components/time";
+import formatCurrencyValue from "@utils/formatCurrencyValue";
 class StocksComp extends React.Component {
   constructor(props) {
     super(props);
@@ -73,7 +74,7 @@ class StocksComp extends React.Component {
         <div id="topBar">
           <div>
             <img className="coin" src={Coin} alt="coin" />
-            <p>₹{this.state.cash}</p>
+            <p>₹{formatCurrencyValue(this.state.cash)}</p>
           </div>
           <p>Buy/Sell</p>
           <Time />

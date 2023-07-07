@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import loss from "@assets/images/loss.svg";
 import gain from "@assets/images/gain.svg";
+import formatCurrencyValue from "@utils/formatCurrencyValue";
 export default class AssetsComp extends React.Component {
   render() {
     return (
@@ -25,7 +26,7 @@ export default class AssetsComp extends React.Component {
             )}
           </div>
           <div>
-            <p>₹{this.props.holdings}</p>
+            <p>₹{formatCurrencyValue(this.props.holdings)}</p>
             {this.props.holdings_diff > 0 && (
               <div>
                 <img src={gain} alt="gain" />

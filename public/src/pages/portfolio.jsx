@@ -20,6 +20,7 @@ import AssetsComp from "@components/assestsComp";
 import { PieChart, Pie, Cell } from "recharts";
 import Time from "@components/time";
 // import { Pie } from 'react-chartjs-2';
+import formatCurrencyValue from "@utils/formatCurrencyValue";
 
 class PortfolioComp extends React.Component {
   constructor(props) {
@@ -186,7 +187,7 @@ class PortfolioComp extends React.Component {
             </div>
           </div>
           <p id="title">NET WORTH</p>
-          <p id="amount">₹ {this.state.networth}</p>
+          <p id="amount">₹ {formatCurrencyValue(this.state.networth)}</p>
           <div id="row1">
             <p> This year Gain/Loss</p>
             <p> Overall Gain/Loss</p>
@@ -195,7 +196,7 @@ class PortfolioComp extends React.Component {
             <div className="rowContent">
               {this.state.yearly < 0 && <img src={loss} alt="loss" />}
               {this.state.yearly < 0 && <img src={gain} alt="gain" />}
-              <p>₹{this.state.yearly || "0"}</p>
+              <p>₹{formatCurrencyValue(this.state.yearly) || "0"}</p>
               {this.state.yearly_diff > 0 && (
                 <p id="percentage">{this.state.yearly_diff}%</p>
               )}
@@ -204,7 +205,7 @@ class PortfolioComp extends React.Component {
             <div className="rowContent">
               {this.state.overall < 0 && <img src={loss} alt="loss" />}
               {this.state.overall < 0 && <img src={gain} alt="gain" />}
-              <p>₹{this.state.overall || "0"}</p>
+              <p>₹{formatCurrencyValue(this.state.overall) || "0"}</p>
               {this.state.overall_diff > 0 && (
                 <p id="percentage">{this.state.overall_diff}%</p>
               )}
@@ -218,7 +219,7 @@ class PortfolioComp extends React.Component {
             </div>
 
             <div id="middle" className="mr-2">
-              <p>₹ {this.state.cash}</p>
+              <p>₹ {formatCurrencyValue(this.state.cash)}</p>
             </div>
           </div>
 
@@ -234,7 +235,7 @@ class PortfolioComp extends React.Component {
             </div>
 
             <div id="middle">
-              <p>₹{this.state.stock}</p>
+              <p>₹{formatCurrencyValue(this.state.stock)}</p>
             </div>
 
             <div id="last">
@@ -242,13 +243,17 @@ class PortfolioComp extends React.Component {
                 {this.state.stock_diff < 0 && (
                   <>
                     <img src={loss} alt="loss" />
-                    <p className="loss">{this.state.stock_diff}</p>
+                    <p className="loss">
+                      {formatCurrencyValue(this.state.stock_diff)}
+                    </p>
                   </>
                 )}
                 {this.state.stock_diff > 0 && (
                   <>
                     <img src={gain} alt="gain" />
-                    <p className="gain">{this.state.stock_diff}</p>
+                    <p className="gain">
+                      {formatCurrencyValue(this.state.stock_diff)}
+                    </p>
                   </>
                 )}
                 <button>
@@ -285,7 +290,7 @@ class PortfolioComp extends React.Component {
             </div>
 
             <div id="middle">
-              <p>₹{this.state.mutualFund}</p>
+              <p>₹{formatCurrencyValue(this.state.mutualFund)}</p>
             </div>
 
             <div id="last">
@@ -293,13 +298,17 @@ class PortfolioComp extends React.Component {
                 {this.state.mutualFund_diff < 0 && (
                   <>
                     <img src={loss} alt="loss" />
-                    <p className="loss">{this.state.mutualFund_diff}</p>
+                    <p className="loss">
+                      {formatCurrencyValue(this.state.mutualFund_diff)}
+                    </p>
                   </>
                 )}
                 {this.state.mutualFund_diff > 0 && (
                   <>
                     <img src={gain} alt="gain" />
-                    <p className="gain">{this.state.mutualFund_diff}</p>
+                    <p className="gain">
+                      {formatCurrencyValue(this.state.mutualFund_diff)}
+                    </p>
                   </>
                 )}
                 <button>
@@ -335,7 +344,7 @@ class PortfolioComp extends React.Component {
             </div>
 
             <div id="middle">
-              <p>₹{this.state.commodity}</p>
+              <p>₹{formatCurrencyValue(this.state.commodity)}</p>
             </div>
 
             <div id="last">
@@ -343,13 +352,17 @@ class PortfolioComp extends React.Component {
                 {this.state.commodity_diff < 0 && (
                   <>
                     <img src={loss} alt="loss" />
-                    <p className="loss">{this.state.commodity_diff}</p>
+                    <p className="loss">
+                      {formatCurrencyValue(this.state.commodity_diff)}
+                    </p>
                   </>
                 )}
                 {this.state.commodity_diff > 0 && (
                   <>
                     <img src={gain} alt="gain" />
-                    <p className="gain">{this.state.commodity_diff}</p>
+                    <p className="gain">
+                      {formatCurrencyValue(this.state.commodity_diff)}
+                    </p>
                   </>
                 )}
                 <button>

@@ -6,6 +6,7 @@ import tick from "@assets/images/tick.svg";
 import Coin from "@assets/images/coin.svg";
 import Arrow_left from "@assets/images/Arrow_left.svg";
 import Time from "@components/time";
+import formatCurrencyValue from "@utils/formatCurrencyValue";
 
 class SellComp extends React.Component {
   constructor(props) {
@@ -78,9 +79,15 @@ class SellComp extends React.Component {
           this.setState({ mainCash: mainCash, cash: mainCash, value: 0 });
         } else {
           let mainCash = this.state.mainCash + value;
+          let holdings = this.state.holdings;
           console.log(this.state.mainCash, value, mainCash);
           localStorage.setItem("cash", Number.parseInt(mainCash));
-          this.setState({ mainCash: mainCash, cash: mainCash, value: 0 });
+          this.setState({
+            mainCash: mainCash,
+            cash: mainCash,
+            value: 0,
+            mainHoldings: holdings,
+          });
         }
       }
     });
@@ -124,14 +131,15 @@ class SellComp extends React.Component {
               value="dashboard"
             />
             <img className="coin" src={Coin} alt="coin" />
-            <p>₹{this.state.cash}</p>
+            <p>₹{formatCurrencyValue(this.state.cash)}</p>
           </div>
           <Time />
         </div>
         <div id="main">
           <div id="about">
             <p>
-              {this.state.name} &nbsp;&nbsp;₹{this.state.holdings}
+              {this.state.name} &nbsp;&nbsp; ₹
+              {formatCurrencyValue(this.state.holdings)}
             </p>
             <div>
               <button
