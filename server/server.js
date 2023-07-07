@@ -1035,10 +1035,17 @@ app.put("/gamechange", async (req, res) => {
     if(option == "1"){
       if(!((OP=="+" && year==lastYear) || (OP=="-" && [trailYear,firstYear].includes(year)))){
         if(OP=="-"){
-          await pool.query(`UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}`);
-          await pool.query(`
-            UPDATE "session" SET _${year} = 0 WHERE sessionid = ${sessionid}
+          const deposited = await pool.query(`
+            SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
           `);
+          if(deposited.rows[0]["deposited"]==1){
+            await pool.query(`
+              UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
+            `);
+            await pool.query(`
+              UPDATE "session" SET _${year} = 0 WHERE sessionid = ${sessionid}
+            `);
+          }
         }
         await pool.query(`
           UPDATE "session" SET year = year ${OP} 1, phase = 1 WHERE sessionid = ${sessionid}
@@ -1053,13 +1060,22 @@ app.put("/gamechange", async (req, res) => {
           `)
         : "";
       } else if(phase<2 && OP==="-"){
-        (![trailYear,firstYear].includes(year))
-        ?
+        if(![trailYear,firstYear].includes(year)){
           await pool.query(`
             UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
-          `)
-        :
-          "";
+          `);
+          const deposited = await pool.query(`
+            SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
+          `);
+          if(deposited.rows[0]["deposited"]==1){
+            await pool.query(`
+              UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
+            `);
+            await pool.query(`
+              UPDATE "session" _${year} = 0 WHERE sessionid = ${sessionid}
+            `);
+          }
+        };
       } else{
         await pool.query(`
           UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
@@ -1080,7 +1096,7 @@ app.put("/gamechange", async (req, res) => {
     wss.broadcast({...result,sessionid:sessionid,msgType:"GameChg"});
     res.status(200).send(result);
   } catch (err) {
-    res.status(400).send({ status: false, err: err.message });
+    res.status(400).send({ status: false, err: err.message }); 
   }
 });
 
