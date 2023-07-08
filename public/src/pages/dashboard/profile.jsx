@@ -19,12 +19,15 @@ import User_fill from "@assets/images/User_fill.svg"
 import Chart_alt from "@assets/images/Chart_alt.svg"
 import Message from "@assets/images/Message.svg";
 */
+import { PieChart, Pie, Cell } from "recharts";
 const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 class ProfileComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      year: 2023,
+      year: 2099,
+      star: Math.round(Math.random() * 6),
+      pieValue: 0,
     };
   }
   triggerDelay = 500;
@@ -74,9 +77,41 @@ class ProfileComp extends React.Component {
     localStorage.clear();
     this.props.toggleMainDisplay("login");
   };
+  setStars = () => {
+    let starCount = this.state.star;
+    let holders = document.querySelectorAll(".starHolder");
+    holders.forEach((holder, index) => {
+      if (index < starCount) {
+        holder.src = badge;
+      } else {
+        holder.src = emptyBadge;
+      }
+    });
+    if (starCount == 6) {
+      document.querySelector("#reward").style.display = "flex";
+    } else {
+      document.querySelector("#reward").style.display = "none";
+      document.querySelector("#empty").style.height = `${
+        23 * (starCount + 1)
+      }%`;
+    }
+    console.log(23 * starCount + "% percent wave");
+  };
+  updateProgressBar = () => {
+    let currentYear = this.state.year;
+    // let currentYear = 2106;
+    let maxYear = 2106;
+    let minYear = 2099;
+    let percent = Number.parseInt(
+      ((currentYear - minYear) / (maxYear - minYear)) * 100
+    );
+    console.log(percent);
+    this.setState({ pieValue: percent });
+  };
   componentDidMount() {
     this.updateProfileInfo();
-
+    this.setStars();
+    this.updateProgressBar();
     socket.addEventListener("message", (event) => {
       let data = JSON.parse(event.data);
       switch (data.msgType) {
@@ -99,25 +134,79 @@ class ProfileComp extends React.Component {
         </div>
         <div id="main">
           <div id="circle">
-            <div id="progress"></div>
+            <div id="progress" className="progress-0"></div>
+            <PieChart width={200} height={200} style={{ position: "absolute" }}>
+              <defs>
+                <linearGradient
+                  id="myGradient"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="0%"
+                >
+                  <stop offset="2.98%" stopColor="#223F80" />
+                  <stop offset="26.65%" stopColor="#444584" />
+                  <stop offset="101.79%" stopColor="#A43936" />
+                </linearGradient>
+              </defs>
+              <Pie
+                data={[
+                  { name: "awf", value: this.state.pieValue },
+                  {
+                    name: "awf",
+                    value: 100 - this.state.pieValue,
+                  },
+                ]}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius={80}
+                outerRadius={95}
+                startAngle={90}
+                endAngle={-450}
+              >
+                <Cell
+                  style={{ outline: "none", border: "none" }}
+                  fill={"url(#myGradient)"}
+                  stroke="none"
+                  key={1}
+                />
+                <Cell
+                  style={{ outline: "none", border: "none" }}
+                  fill={"transparent"}
+                  stroke="none"
+                  key={2}
+                />
+                {/* <Label
+                  content={
+                    <this.CustomLabel
+                      labelText="year"
+                      value={this.state.year}
+                    />
+                  }
+                  position="center"
+                /> */}
+              </Pie>
+            </PieChart>
             <p id="title">Year</p>
             <p id="yearNum">{this.state.year}</p>
           </div>
           <div className="badgeRow">
-            <img src={badge} alt="badge1" />
-            <img src={emptyBadge} alt="emptyBadge" />
-            <img src={emptyBadge} alt="emptyBadge" />
+            <img className="starHolder" alt="star" />
+            <img className="starHolder" alt="star" />
+            <img className="starHolder" alt="star" />
           </div>
           <div className="badgeRow">
-            <img src={emptyBadge} alt="emptyBadge" />
-            <img src={emptyBadge} alt="emptyBadge" />
-            <img src={emptyBadge} alt="emptyBadge" />
+            <img className="starHolder" alt="star" />
+            <img className="starHolder" alt="star" />
+            <img className="starHolder" alt="star" />
           </div>
           <div id="card">
             <div id="empty"></div>
             <div id="reward">
               <img
-                id="reward"
+                id="mainImg"
                 src={reward}
                 alt="reward"
                 onClick={this.toShare}

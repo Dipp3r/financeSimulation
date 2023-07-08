@@ -102,6 +102,10 @@
                 position:relative;
                 @include flex(column,center,center);
                 display:none;
+                #mainImg{
+                  width:100%;
+                  height:100%;
+                }
                 #cash{
                     position:absolute;
                     top:30%;
