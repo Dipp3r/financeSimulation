@@ -102,7 +102,7 @@ class NewsComp extends React.Component {
     return (
       <div id="news">
         <div id="topBar">
-          <div>
+          <div id="back">
             <img
               src={Arrow_left}
               alt="back_arrow"

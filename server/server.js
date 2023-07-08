@@ -22,21 +22,21 @@ const DATA = require("./info.json");
 
 const COINS = 500000;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -154,13 +154,20 @@ const updateGame = async (
       );
 
       console.log("year: ", year, " phase:", phase, " sec: ", totalSeconds);
+      let groups = await pool.query(`
+        SELECT groupid FROM "group" WHERE sessionid = ${session}
+      `);
+      groups = groups.rows;
+      const groupList = [];
+      groups.forEach(e=>{
+        groupList.push(e.groupid);
+      });
       let obj = {};
       obj.msgType = "GameChg";
       obj.year = year;
       obj.phase = phase;
       obj.time = time;
-      obj.sessionid = session;
-
+      obj.groupList = groupList;
       wss.broadcast(obj);
       startTime[`${session}`] = new Date().getTime();
       delay[`${session}`] = Number.parseInt(totalSeconds) * 1000;
@@ -1092,8 +1099,15 @@ app.put("/gamechange", async (req, res) => {
       SELECT phase${result.phase} as time FROM gamedata WHERE year = ${result.year}
     `);
     result.time = time.rows[0]["time"];
-    console.log({...result,sessionid:sessionid,msgType:"GameChg"});
-    wss.broadcast({...result,sessionid:sessionid,msgType:"GameChg"});
+    let groups = await pool.query(`
+      SELECT groupid FROM "group" WHERE sessionid = ${sessionid}
+    `);
+    groups = groups.rows;
+    const groupList = [];
+    groups.forEach(e=>{
+      groupList.push(e.groupid);
+    });
+    wss.broadcast({...result,groupList:groupList,msgType:"GameChg"});
     res.status(200).send(result);
   } catch (err) {
     res.status(400).send({ status: false, err: err.message }); 
