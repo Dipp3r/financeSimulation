@@ -32,19 +32,26 @@ class ProfileComp extends React.Component {
   }
   triggerDelay = 500;
   toShare = async () => {
-    try {
-      const response = await fetch(reward);
-      const blob = await response.blob();
-      const file = new File([blob], "image.jpg", { type: "image/jpeg" });
-      if (!navigator.share) return;
-      if (!navigator.canShare(file)) return;
-      await navigator.share({
-        files: [file],
-      });
+    if (navigator.share && navigator.canShare) {
+      fetch("")
+        .then((response) => response.blob())
+        .then((blob) => {
+          const file = new File([blob], "image.jpg", { type: blob.type });
 
-      console.log("Successfully shared");
-    } catch (error) {
-      console.error("Error sharing:", error);
+          navigator
+            .share({
+              files: [file],
+            })
+            .then(() => {
+              console.log("Image shared successfully!");
+            })
+            .catch((error) => {
+              console.error("Error sharing image:", error);
+            });
+        })
+        .catch((error) => {
+          console.error("Error fetching image:", error);
+        });
     }
   };
   updateProfileInfo = () => {
