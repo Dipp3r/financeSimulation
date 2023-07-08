@@ -9,7 +9,7 @@ class NewsComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newsListComps: [[], []],
+      newsListComps: [[]],
       currentPos: 0,
       isScrollLock: false,
     };
@@ -52,14 +52,16 @@ class NewsComp extends React.Component {
       });
   };
   setScroll = (event) => {
-    let innerRange = 0.08;
+    let innerRange = 0.01;
     let target = event.currentTarget;
     let count = Number.parseInt(target.scrollLeft / window.innerWidth);
     let CurrentCardPos = window.innerWidth * count;
     let diff = (target.scrollLeft / window.innerWidth) % 1;
+    let content = document.querySelector("#content");
     console.log(this.state.isScrollLock);
-    if (diff <= innerRange - 0.05 || diff >= 1 - (innerRange - 0.05)) {
+    if (diff <= innerRange + 0.02 || diff >= 1 - (innerRange + 0.02)) {
       this.setState({ isScrollLock: false });
+      content.style.overflow = "scroll";
       return;
     }
     let upperMiddle = CurrentCardPos + window.innerWidth * 0.45;
@@ -82,9 +84,11 @@ class NewsComp extends React.Component {
       target.scrollLeft < upperMiddle &&
       target.scrollLeft > upperBound
     ) {
+      if (count + 1 >= this.state.newsListComps.length) return;
       console.log(CurrentCardPos, "up", count + 1);
       this.setState({ currentPos: count + 1, isScrollLock: true });
-      target.scrollLeft = CurrentCardPos + window.innerWidth * 0.98;
+      content.style.overflow = "hidden";
+      target.scrollLeft = CurrentCardPos + window.innerWidth;
     } else if (
       !this.state.isScrollLock &&
       target.scrollLeft > lowerMiddle &&
@@ -92,7 +96,8 @@ class NewsComp extends React.Component {
     ) {
       console.log(CurrentCardPos, "down", count);
       this.setState({ currentPos: count, isScrollLock: true });
-      target.scrollLeft = CurrentCardPos - window.innerWidth * 0.02;
+      content.style.overflow = "hidden";
+      target.scrollLeft = CurrentCardPos;
     }
   };
   componentDidMount = () => {

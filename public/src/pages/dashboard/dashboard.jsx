@@ -11,6 +11,9 @@ import ProfileComp from "@pages/dashboard/profile";
 import NotifComp from "@pages/dashboard/notification/notification";
 import StocksComp from "@pages/dashboard/stocks";
 import "@assets/styles/dashboard.scss";
+
+const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
+
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -64,6 +67,12 @@ class Dashboard extends React.Component {
   componentDidMount() {
     let display = localStorage.getItem("dashboard");
     this.changeDisplay(display ? display : "");
+    socket.addEventListener("message", (event) => {
+      let data = JSON.parse(event.data);
+      if (data.msgType == "GameChg") {
+        this.changeDisplay("NotifComp");
+      }
+    });
   }
   render() {
     return (

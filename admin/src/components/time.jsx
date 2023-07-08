@@ -112,6 +112,7 @@ export default class Time extends React.Component {
           value={this.state.time}
           onInput={this.inputFormate}
           onFocus={this.fixTimer}
+          style={{ color: this.state.isRunning ? "#aaaaaa" : "#fff" }}
         />
       </>
     );

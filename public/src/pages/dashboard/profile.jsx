@@ -26,6 +26,7 @@ class ProfileComp extends React.Component {
     super(props);
     this.state = {
       year: 2099,
+      phase: 1,
       star: Math.round(Math.random() * 6),
       pieValue: 0,
     };
@@ -105,17 +106,22 @@ class ProfileComp extends React.Component {
     console.log(23 * starCount + "% percent wave");
   };
   updateProgressBar = () => {
-    let currentYear = this.state.year;
-    // let currentYear = 2106;
-    let maxYear = 2106;
-    let minYear = 2099;
+    let currentYear = this.state.year - 2100;
+    if (currentYear < 0) return this.setState({ pieValue: 0 });
+    let max = 2107 - 2100;
+    let perPhaseValue = 1 / (7 * 4);
+    console.log(perPhaseValue, currentYear / max + perPhaseValue);
     let percent = Number.parseInt(
-      ((currentYear - minYear) / (maxYear - minYear)) * 100
+      (currentYear / max + perPhaseValue * this.state.phase) * 100
     );
-    console.log(percent);
+    console.log(percent, "percent");
     this.setState({ pieValue: percent });
   };
   componentDidMount() {
+    this.setState({
+      year: localStorage.getItem("year"),
+      phase: localStorage.getItem("phase"),
+    });
     this.updateProfileInfo();
     this.setStars();
     this.updateProgressBar();
@@ -123,7 +129,10 @@ class ProfileComp extends React.Component {
       let data = JSON.parse(event.data);
       switch (data.msgType) {
         case "GameChg":
-          this.setState({ year: data.year });
+          this.setState({ year: data.year, phase: data.phase }, () => {
+            this.updateProgressBar();
+          });
+
           break;
         default:
           break;

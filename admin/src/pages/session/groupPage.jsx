@@ -10,6 +10,10 @@ import Expand_left_double from "@assets/images/Expand_left_double.svg";
 import Expand_left from "@assets/images/Expand_left.svg";
 import Expand_right from "@assets/images/Expand_right.svg";
 import Expand_right_double from "@assets/images/Expand_right_double.svg";
+import Expand_left_double_grey from "@assets/images/Expand_left_double_grey.svg";
+import Expand_left_grey from "@assets/images/Expand_left_grey.svg";
+import Expand_right_grey from "@assets/images/Expand_right_grey.svg";
+import Expand_right_double_grey from "@assets/images/Expand_right_double_grey.svg";
 import link from "@assets/images/link.svg";
 import Time from "@components/time";
 import getPhaseString from "@utils/getPhaseString";
@@ -223,10 +227,7 @@ export default class GroupPage extends React.Component {
 
           <div id="second">
             <div id="navBar">
-              <div
-                id="portion1"
-                style={{ color: this.state.isRunning ? "#aaaaaa" : "#fff" }}
-              >
+              <div id="portion1">
                 <div className="navComp">
                   <img src={Date_range} alt="Date_range" />
                   <p>{this.state.year}</p>
@@ -247,28 +248,38 @@ export default class GroupPage extends React.Component {
               <div id="navigate">
                 <button>
                   <img
-                    src={Expand_left_double}
+                    src={
+                      this.state.isRunning
+                        ? Expand_left_double_grey
+                        : Expand_left_double
+                    }
                     alt="expand left"
                     onClick={() => this.updateGame("-", "year")}
                   />
                 </button>
                 <button>
                   <img
-                    src={Expand_left}
+                    src={this.state.isRunning ? Expand_left_grey : Expand_left}
                     alt="left"
                     onClick={() => this.updateGame("-", "phase")}
                   />
                 </button>
                 <button>
                   <img
-                    src={Expand_right}
+                    src={
+                      this.state.isRunning ? Expand_right_grey : Expand_right
+                    }
                     alt="right"
                     onClick={() => this.updateGame("+", "phase")}
                   />
                 </button>
                 <button>
                   <img
-                    src={Expand_right_double}
+                    src={
+                      this.state.isRunning
+                        ? Expand_right_double_grey
+                        : Expand_right_double
+                    }
                     alt="expand right"
                     onClick={() => this.updateGame("+", "year")}
                   />

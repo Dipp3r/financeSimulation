@@ -100,7 +100,6 @@ class IndexComp extends React.Component {
     console.log(displayComp);
     this.setState({ mainDisplay: displayComp });
   };
-
   checkMessage = (message) => {
     let minute, second, cash;
 
