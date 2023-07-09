@@ -93,5 +93,8 @@ msgType:  {
         name,
         type
     },
+    "EndGame" : {
+        groupList
+    }
 }
 ```
