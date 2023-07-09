@@ -53,6 +53,20 @@ CREATE TABLE investment (
     FOREIGN KEY (stockid) REFERENCES assets (id)
 );
 ```
+<h4>TRANSACTION TABLE</h4>
+
+```sql
+CREATE TABLE transaction (
+    id SERIAL PRIMARY KEY,
+    assetid INTEGER, 
+    groupid INTEGER, 
+    amount INTEGER, 
+    status VARCHAR(255),
+    time TIMESTAMP WITHOUT TIME ZONE, 
+    CONSTRAINT transaction_assetid_fkey FOREIGN KEY(assetid) REFERENCES assets(id),
+    CONSTRAINT transaction_groupid_fkey FOREIGN KEY(groupid) REFERENCES "group"(groupid)
+);
+```
 WEB Sockets message types:
 ```python
 msgType:  {
