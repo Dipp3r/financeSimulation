@@ -1045,6 +1045,9 @@ app.put("/buy", async (req, res) => {
       : await pool.query(`
       INSERT INTO investment(stockid,groupid,holdings) values(${stockid},${groupid},${amount})
     `);
+    await pool.query(`
+      INSERT INTO transaction(assetid,groupid,amount,status,time) VALUES(${stockid},${groupid},${amount},'buy',$1)
+    `,[new Date()]);
     await yearlyUpdate(groupid, amount, stockid, "+");
     wss.broadcast({ groupid: groupid, msgType: "Transact" });
     res.status(200).send({ status: true });
@@ -1067,6 +1070,9 @@ app.put("/sell", async (req, res) => {
       UPDATE investment SET holdings = holdings - ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
     `)
       : "";
+    await pool.query(`
+      INSERT INTO transaction(assetid,groupid,amount,status,time) VALUES(${stockid},${groupid},${amount},'sell',$1)
+    `,[new Date()]);
     await yearlyUpdate(groupid, amount, stockid, "-");
     wss.broadcast({ groupid: groupid, msgType: "Transact" });
     res.status(200).send({ status: true });
