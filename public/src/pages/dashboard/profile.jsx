@@ -11,6 +11,8 @@ import Coin from "@assets/images/coin.svg";
 import Time from "@components/time";
 import reward from "@assets/images/rewardCard.svg";
 import cash from "@assets/images/cash.svg";
+
+import yearPhase from "@utils/yearPhase.json";
 // import share from "@assets/images/share.svg";
 
 /*
@@ -106,15 +108,19 @@ class ProfileComp extends React.Component {
     console.log(23 * starCount + "% percent wave");
   };
   updateProgressBar = () => {
-    let currentYear = this.state.year - 2100;
+    let keys = Object.keys(yearPhase);
+    let currentYear = Number(localStorage.getItem("year")) - Number(keys[0]);
     if (currentYear < 0) return this.setState({ pieValue: 0 });
-    let max = 2107 - 2100;
-    let perPhaseValue = 1 / (7 * 4);
-    console.log(perPhaseValue, currentYear / max + perPhaseValue);
+
+    let max = Number(keys[keys.length - 1]) + 1 - Number(keys[0]);
+    let perPhaseValue =
+      1 / (7 * yearPhase[localStorage.getItem("year")].length);
     let percent = Number.parseInt(
-      (currentYear / max + perPhaseValue * this.state.phase) * 100
+      (currentYear / max +
+        perPhaseValue * Number(localStorage.getItem("phase"))) *
+        100
     );
-    console.log(percent, "percent");
+    console.log(percent, "percent progress");
     this.setState({ pieValue: percent });
   };
   componentDidMount() {
@@ -122,7 +128,7 @@ class ProfileComp extends React.Component {
       year: localStorage.getItem("year"),
       phase: localStorage.getItem("phase"),
     });
-    this.updateProfileInfo();
+    // this.updateProfileInfo();
     this.setStars();
     this.updateProgressBar();
     socket.addEventListener("message", (event) => {
@@ -145,7 +151,7 @@ class ProfileComp extends React.Component {
         <div id="topBar">
           {/* <img src={Arrow_left} onClick={this.props.togglePortfolioComp} alt="back_arrow" /> */}
           <div></div>
-          <p>Profile</p>
+          <p className="pageTitle">Profile</p>
           <Time />
         </div>
         <div id="main">

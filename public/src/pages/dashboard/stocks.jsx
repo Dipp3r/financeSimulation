@@ -74,30 +74,34 @@ class StocksComp extends React.Component {
         <div id="topBar">
           <div>
             <img className="coin" src={Coin} alt="coin" />
-            <p>{formatCurrencyValue(this.state.cash)}</p>
+            <p className="cashCount">{formatCurrencyValue(this.state.cash)}</p>
           </div>
-          <p>Buy/Sell</p>
+          <p className="pageTitle">Buy/Sell</p>
           <Time />
         </div>
         <div id="main">
           <div id="stockInfo">
             <div id="marquee">
-              {this.state.content.map((element, index) => {
-                // console.log(element,index)
-                return (
-                  <div key={index}>
-                    <p>
-                      {element.name} | {element.price} |
-                    </p>
-                    {element.diff > 0 && (
-                      <a className="gain">{element.diff}%</a>
-                    )}
-                    {element.diff < 0 && (
-                      <a className="loss">{element.diff}%</a>
-                    )}
-                  </div>
-                );
-              })}
+              {JSON.parse(localStorage.getItem("isRunning")) ? (
+                this.state.content.map((element, index) => {
+                  // console.log(element,index)
+                  return (
+                    <div key={index}>
+                      <p>
+                        {element.name} | {element.price} |
+                      </p>
+                      {element.diff > 0 && (
+                        <a className="gain">{element.diff}%</a>
+                      )}
+                      {element.diff < 0 && (
+                        <a className="loss">{element.diff}%</a>
+                      )}
+                    </div>
+                  );
+                })
+              ) : (
+                <div></div>
+              )}
             </div>
           </div>
           <div id="about">
@@ -114,44 +118,25 @@ class StocksComp extends React.Component {
             </div>
           </div>
           <div id="content">
-            {this.state.content.map((asset, index) => {
-              // console.log(element,index)
-              return (
-                <AssetsCompCommon
-                  key={asset.id}
-                  id={asset.id}
-                  name={asset.name}
-                  holdings={asset.holdings}
-                  price={asset.price}
-                  diff={asset.diff}
-                  position={index % 2 === 0 ? "top" : "bottom"}
-                  toggleMainDisplay={this.props.toggleMainDisplay}
-                />
-              );
-            })}
-
-            {/* <div class="row top">
-                            <p id="name">Ram Dam</p>
-                            <div>
-                                <p>₹100</p>
-                                <div>
-                                    <img src={Gain} alt="gain"/>
-                                    <p class="loss">2%</p>
-                                </div>
-                            </div>
-                            <p id="amount">₹20,000</p>
-                        </div>
-                        <div class="row bottom">
-                            <p id="name">Ram Dam</p>
-                            <div>
-                                <p>₹100</p>
-                                <div>
-                                    <img src={Gain} alt="gain"/>
-                                    <p class="gain">2%</p>
-                                </div>
-                            </div>
-                            <p id="amount">₹20,000</p>
-                        </div> */}
+            {JSON.parse(localStorage.getItem("isRunning")) ? (
+              this.state.content.map((asset, index) => {
+                // console.log(element,index)
+                return (
+                  <AssetsCompCommon
+                    key={asset.id}
+                    id={asset.id}
+                    name={asset.name}
+                    holdings={asset.holdings}
+                    price={asset.price}
+                    diff={asset.diff}
+                    position={index % 2 === 0 ? "top" : "bottom"}
+                    toggleMainDisplay={this.props.toggleMainDisplay}
+                  />
+                );
+              })
+            ) : (
+              <p> GAME PAUSED </p>
+            )}
           </div>
         </div>
       </div>

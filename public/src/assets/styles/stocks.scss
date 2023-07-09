@@ -17,7 +17,7 @@
                 margin-left:20px;
                 height:30px;
             }
-            p{
+            .cashCount{
                 margin-top:10px;
                 margin-left:12px;
                 font-family: 'Inter';
@@ -27,7 +27,7 @@
                 color: #223F80;
             }
         }
-        p{
+        .pageTitle{
             @include flex(column,center,center);
             margin:0px;
             height: 100%;
@@ -38,20 +38,6 @@
             font-size: 18px;
             text-align: center;
             color: #595959;
-        }
-        
-        #timer{
-            width: 33.33%;
-            @include flex(row,center,center);
-            p{
-                margin:5px 0px 0px 5px;
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 700;
-                font-size: 16px;
-                color: #FF473F;
-
-            }
         }
     }
     

@@ -11,7 +11,7 @@
                 margin-left:10px;
             }
         }
-        p{
+        .pageTitle{
             @include flex(column,center,center);
             margin:0px;
             height: 100%;
@@ -22,18 +22,6 @@
             font-weight: 600;
             font-size: 18px;
             color: #595959;
-        }
-        #timer{
-            @include flex(row,center,center);
-            p{
-                margin:5px 0px 0px 5px;
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 700;
-                font-size: 16px;
-                color: #FF473F;
-
-            }
         }
     }
     #main{
@@ -73,6 +61,7 @@
             margin-top:5px;
             @include flex(row,space-evenly,center);
             img{
+              animation: starRotate 60s linear infinite;
                 margin:2px 10px;
             }
         }
@@ -233,7 +222,15 @@
         transform:translate(0px,-50px);
     }
 }
-
+@keyframes starRotate {
+    
+  0%{
+      transform:rotateZ(0deg);
+  }
+  100%{
+      transform:rotateZ(360deg);
+  }
+}
 @keyframes wave {
 
     0%{

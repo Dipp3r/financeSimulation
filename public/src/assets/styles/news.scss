@@ -15,7 +15,7 @@
         margin-left: 10px;
       }
     }
-    p {
+    .pageTitle{
       @include flex(column, center, center);
       margin: 0px;
       height: 100%;
@@ -24,17 +24,6 @@
       font-weight: 600;
       font-size: 18px;
       color: #6a6a6a;
-    }
-    #timer {
-      @include flex(row, center, center);
-      p {
-        margin: 5px 16px 0px 3px;
-        font-family: "Inter";
-        font-style: normal;
-        font-weight: 700;
-        font-size: 16px;
-        color: #ff473f;
-      }
     }
   }
   #main {
@@ -71,10 +60,14 @@
         // border: 1px solid black;
         width: 100vw;
         margin: 0px 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
         .news {
           padding: 0px 20px;
           margin-bottom: 20px;
-          @include flex(row, center, start);
+          @include flex(row, flex-start, flex-start);
           margin-bottom: 20px;
           width: 95vw;
           img {

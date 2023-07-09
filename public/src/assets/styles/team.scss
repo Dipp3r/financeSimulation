@@ -14,7 +14,7 @@
         margin-left: 10px;
       }
     }
-    p {
+    p:first-child {
       @include flex(column,center,center);
       margin:0px;
       height: 100%;
@@ -25,17 +25,6 @@
       font-weight: 600;
       font-size: 18px;
       color: #6a6a6a;
-    }
-    #timer {
-      @include flex(row, center, center);
-      p {
-        margin: 5px 0px 0px 5px;
-        font-family: "Inter";
-        font-style: normal;
-        font-weight: 700;
-        font-size: 16px;
-        color: #ff473f;
-      }
     }
   }
   #main {

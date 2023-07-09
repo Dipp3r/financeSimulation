@@ -135,7 +135,7 @@ class PortfolioComp extends React.Component {
               alt="back_arrow"
             />
           </div>
-          <p>Portfolio</p>
+          <p className="pageTitle">Portfolio</p>
           <Time />
         </div>
         <div id="main">

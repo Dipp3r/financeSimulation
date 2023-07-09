@@ -60,7 +60,7 @@ class NotifComp extends React.Component {
       <div id="notification">
         <div id="topBar">
           <div></div>
-          <p>Notifications</p>
+          <p className="pageTitle">Notifications</p>
           <Time />
         </div>
         <div id="main">

@@ -1,6 +1,6 @@
 import React from "react";
 import Alarmclock from "@assets/images/Alarmclock.svg";
-
+import styles from "@assets/styles/timer.module.scss";
 export default class Time extends React.Component {
   constructor(props) {
     super(props);
@@ -16,7 +16,11 @@ export default class Time extends React.Component {
           obj.minute--;
         }
         // console.log(obj);
-        if (obj.minute < 0 || (obj.minute <= 0 && obj.second <= 0)) {
+        if (
+          !JSON.parse(localStorage.isRunning) ||
+          obj.minute < 0 ||
+          (obj.minute <= 0 && obj.second <= 0)
+        ) {
           //timer ended
           clearInterval(this.state.countDownIntervalKey);
         } else {
@@ -30,8 +34,10 @@ export default class Time extends React.Component {
   }
   componentDidMount() {
     let obj = {};
-    obj.minute = localStorage.getItem("minute");
-    obj.second = localStorage.getItem("second") - 1;
+    obj.minute = Number(localStorage.getItem("minute"));
+    obj.minute ??= 0;
+    obj.second = Number(localStorage.getItem("second")) - 1;
+    obj.second ??= 0;
     let countDownIntervalKey = localStorage.getItem("countDownIntervalKey");
     if (countDownIntervalKey) clearInterval(countDownIntervalKey);
     countDownIntervalKey = setInterval(this.state.countDownFunc, 1000);
@@ -40,18 +46,14 @@ export default class Time extends React.Component {
   }
   render() {
     return (
-      <div id="timer">
+      <div id={styles.timer}>
         <img src={Alarmclock} alt="timer" />
-        <p>
-          {this.state.minute
-            ? this.state.second
-              ? this.state.minute.toString().padStart(2, "0") +
-                ":" +
-                this.state.second.toString().padStart(2, "0")
-              : this.state.minute.toString().padStart(2, "0") + ":" + "00"
-            : this.state.second
-            ? "00" + ":" + this.state.second.toString().padStart(2, "0")
-            : "00" + ":" + "00"}
+        <p id={styles.timerText}>
+          {JSON.parse(localStorage.isRunning)
+            ? this.state.minute.toString().padStart(2, "0") +
+              ":" +
+              this.state.second.toString().padStart(2, "0")
+            : "PAUSED"}
         </p>
       </div>
     );

@@ -45,7 +45,7 @@
                 height:30px;
                 margin-left:10px;
             }
-            p{
+            p:first-child{
                 margin-left:10px;
                 margin-bottom:8px;  
                 font-family: 'Inter';
@@ -53,19 +53,6 @@
                 font-weight: 700;
                 font-size: 16px;
                 color: #223F80;
-            }
-        }
-        
-        #timer{
-            @include flex(row,center,center);
-            p{
-                margin:5px 16px 0px 2px;
-                font-family: 'Inter';
-                font-style: normal;
-                font-weight: 700;
-                font-size: 16px;
-                color: #FF473F;
-
             }
         }
     }

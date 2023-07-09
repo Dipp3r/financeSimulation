@@ -115,6 +115,7 @@ class IndexComp extends React.Component {
         localStorage.setItem("second", Number.parseInt(second) + 1);
         notificationList.push(message);
         localStorage.setItem("dashboard", "NotifComp");
+        localStorage.setItem("isRunning", true);
         this.toggleMainDisplay("dashboard");
         break;
       case "CashUpt":
@@ -136,6 +137,23 @@ class IndexComp extends React.Component {
           // }
           notificationList.push(message);
           window.close();
+        }
+        break;
+      case "GamePause":
+        if (message.groupList) {
+          message.groupList.forEach((groupid) => {
+            if (groupid == localStorage.getItem("groupid")) {
+              localStorage.setItem("isRunning", false);
+              localStorage.setItem("dashboard", "ProfileComp");
+              this.toggleMainDisplay("dashboard");
+              return;
+            }
+          });
+        } else {
+          localStorage.setItem("isRunning", false);
+          localStorage.setItem("dashboard", "ProfileComp");
+          this.toggleMainDisplay("dashboard");
+          //for test only
         }
         break;
       default:
@@ -173,3 +191,5 @@ class IndexComp extends React.Component {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<IndexComp />);
 serviceWorkerRegistration.register();
+
+//update session set year = 2099,phase = 1,_2100 = 0,_2101 = 0,_2102 = 0,_2103 = 0,_2104 = 0,_2105 = 0,_2106 = 0,start = 0;

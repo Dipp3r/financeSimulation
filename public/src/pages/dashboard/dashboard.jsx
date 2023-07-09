@@ -68,9 +68,21 @@ class Dashboard extends React.Component {
     let display = localStorage.getItem("dashboard");
     this.changeDisplay(display ? display : "");
     socket.addEventListener("message", (event) => {
-      let data = JSON.parse(event.data);
-      if (data.msgType == "GameChg") {
+      let message = JSON.parse(event.data);
+      if (message.msgType == "GameChg") {
         this.changeDisplay("NotifComp");
+      } else if (message.msgType == "GamePause") {
+        if (message.groupList) {
+          message.groupList.forEach((groupid) => {
+            if (groupid == localStorage.getItem("groupid")) {
+              this.changeDisplay("ProfileComp");
+              return;
+            }
+          });
+        } else {
+          this.changeDisplay("ProfileComp");
+          //for test only
+        }
       }
     });
   }

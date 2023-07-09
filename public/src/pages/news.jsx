@@ -116,7 +116,7 @@ class NewsComp extends React.Component {
               }}
             />
           </div>
-          <p>News</p>
+          <p className=".pageTitle">News</p>
           <Time />
         </div>
         <div id="main">
