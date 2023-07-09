@@ -22,21 +22,21 @@ const DATA = require("./info.json");
 
 const COINS = 500000;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -99,31 +99,36 @@ wss.broadcast = function (data) {
   });
 };
 
-let timer_key={},startTime={},delay={},remainingTime={};
+let timer_key = {},
+  startTime = {},
+  delay = {},
+  remainingTime = {};
 
-const updateGame = async (
-  phase = 1,
-  year = 1,
-  lastYear = 0,
-  session,
-  time
-) => {
+const updateGame = async (phase = 1, year = 1, lastYear = 0, session, time) => {
   const firstYear = await pool.query(`
     SELECT year FROM gamedata ORDER BY year ASC LIMIT 1
   `);
   const trailYear = firstYear.rows[0]["year"];
   if (phase >= 5) {
     phase = 1;
-    if(year===trailYear){
+    if (year === trailYear) {
       await pool.query(`
         DELETE FROM investment
       `);
       await pool.query(`
         UPDATE "group" SET cash = 0 WHERE sessionid = ${session}
-      `);     
+      `);
     }
     year++;
   }
+  let groups = await pool.query(`
+    SELECT groupid FROM "group" WHERE sessionid = ${session}
+  `);
+  groups = groups.rows;
+  const groupList = [];
+  groups.forEach((e) => {
+    groupList.push(e.groupid);
+  });
   if (year <= lastYear) {
     try {
       const yearBegan = await pool.query(`
@@ -132,58 +137,60 @@ const updateGame = async (
       const query = `SELECT phase${phase} FROM gamedata WHERE year = $1 ORDER BY year ASC`;
       const result = await pool.query(query, [year]);
       time ??= result.rows[0][`phase${phase}`];
-      console.log(year,phase,time);
-      const [hours, minutes, seconds] = time.split(":");
-      const totalSeconds = Number.parseInt(
-        hours * 3600 + minutes * 60 + seconds
-      );
-      if(yearBegan.rows[0]["curr_year"]===0){
-        await pool.query(`
-          UPDATE "group" set cash = cash + ${COINS} WHERE sessionid = ${session}
-        `);
-        await pool.query(`
-          UPDATE "session" SET _${year} = 1 where sessionid = ${session}
-        `);
-        wss.broadcast({ cash: COINS, msgType: "CashUpt" });
-      }
-      await pool.query(
-        `
-        UPDATE "session" SET year = $1, phase = $2 where sessionid = $3
-      `,
-        [year, phase, session]
-      );
+      console.log(year, phase, time);
+      if(Object.keys(DATA.news[`${year}`][`${phase}`]["assets"]).length>0){
+        const [hours, minutes, seconds] = time.split(":");
+        const totalSeconds = Number.parseInt(
+          hours * 3600 + minutes * 60 + seconds
+        );
+        if (yearBegan.rows[0]["curr_year"] === 0) {
+          await pool.query(`
+            UPDATE "group" set cash = cash + ${COINS},star = star + 1 WHERE sessionid = ${session}
+          `);
+          await pool.query(`
+            UPDATE "session" SET _${year} = 1 where sessionid = ${session}
+          `);
+          wss.broadcast({ cash: COINS, msgType: "CashUpt" });
+        }
+        await pool.query(
+          `
+          UPDATE "session" SET year = $1, phase = $2 where sessionid = $3
+        `,
+          [year, phase, session]
+        );
 
-      console.log("year: ", year, " phase:", phase, " sec: ", totalSeconds);
-      let groups = await pool.query(`
-        SELECT groupid FROM "group" WHERE sessionid = ${session}
-      `);
-      groups = groups.rows;
-      const groupList = [];
-      groups.forEach(e=>{
-        groupList.push(e.groupid);
-      });
-      let obj = {};
-      obj.msgType = "GameChg";
-      obj.year = year;
-      obj.phase = phase;
-      obj.time = time;
-      obj.groupList = groupList;
-      wss.broadcast(obj);
-      startTime[`${session}`] = new Date().getTime();
-      delay[`${session}`] = Number.parseInt(totalSeconds) * 1000;
-      timer_key[`${session}`] = setTimeout(
-        () => {updateGame(phase + 1, year, lastYear, session)},
-          delay[`${session}`]
-      );
+        console.log("year: ", year, " phase:", phase, " sec: ", totalSeconds);
+        let obj = {};
+        obj.msgType = "GameChg";
+        obj.year = year;
+        obj.phase = phase;
+        obj.news = Object.keys(DATA.news[`${year}`][`${phase}`]["news"]).length>0
+        obj.time = time;
+        obj.groupList = groupList;
+        wss.broadcast(obj);
+        startTime[`${session}`] = new Date().getTime();
+        delay[`${session}`] = Number.parseInt(totalSeconds) * 1000;
+        timer_key[`${session}`] = setTimeout(() => {
+          updateGame(phase + 1, year, lastYear, session);
+        }, delay[`${session}`]);
+      }else{
+        updateGame(phase + 1, year, lastYear, session); 
+      }
+      
     } catch (error) {
       console.error("Error:", error);
     }
+  } else {
+    wss.broadcast({
+      msgTyoe: "EndGame",
+      groupList: groupList
+    });
   }
 };
 
 function secondsToHMS(seconds) {
-  if(!seconds){
-    return
+  if (!seconds) {
+    return;
   }
   var hours = Math.floor(seconds / 3600);
   var minutes = Math.floor((seconds % 3600) / 60);
@@ -195,43 +202,53 @@ function secondsToHMS(seconds) {
   return HH + ":" + MM + ":" + SS;
 }
 
-
 app.post("/start", async (req, res) => {
   const { sessionid } = req.body;
   const gameStatus = await pool.query(`
     SELECT start,year,phase FROM "session" WHERE sessionid = ${sessionid}
   `);
   let start = gameStatus.rows[0]["start"];
-    if(start==0){
-      await pool.query(`
+  if (start == 0) {
+    await pool.query(`
         UPDATE "session" SET start = 1 WHERE sessionid = ${sessionid}
       `);
-      let result = await pool.query("select year from gameData ORDER BY year ASC");
-      let lastYear = result.rows.pop().year;
-      let [currentYear,currentPhase] = [gameStatus.rows[0]["year"],gameStatus.rows[0]["phase"]];
-      updateGame(currentPhase, currentYear, lastYear, sessionid,secondsToHMS(remainingTime[`${sessionid}`]));
-      res.status(200).end();
+    let result = await pool.query(
+      "select year from gameData ORDER BY year ASC"
+    );
+    let lastYear = result.rows.pop().year;
+    let [currentYear, currentPhase] = [
+      gameStatus.rows[0]["year"],
+      gameStatus.rows[0]["phase"],
+    ];
+    updateGame(
+      currentPhase,
+      currentYear,
+      lastYear,
+      sessionid,
+      secondsToHMS(remainingTime[`${sessionid}`])
+    );
+    res.status(200).end();
   }
-  
 });
 
-app.post("/pause",async (req,res)=>{
-  const {sessionid} = req.body;
+app.post("/pause", async (req, res) => {
+  const { sessionid } = req.body;
   clearTimeout(timer_key[`${sessionid}`]);
   elapsedTime = new Date().getTime() - startTime[`${sessionid}`];
-  remainingTime[`${sessionid}`] = Math.round((delay[`${sessionid}`] - elapsedTime)/1000);
+  remainingTime[`${sessionid}`] = Math.round(
+    (delay[`${sessionid}`] - elapsedTime) / 1000
+  );
   pool.query(`
     UPDATE "session" SET start = 0 WHERE sessionid = ${sessionid}
   `);
   console.log("paused");
-  wss.broadcast({msgType:"GamePause"});
+  wss.broadcast({ msgType: "GamePause" });
   res.status(200).end();
 });
 
 app.get("/", (request, response) => {
   response.json({ info: "Node.js, Express, and Postgres API" });
 });
-
 
 //API for testing
 
@@ -386,9 +403,10 @@ app.delete("/deleteGroup", async (request, response) => {
       await Promise.all(userPromises);
       await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
       wss.broadcast({
-        groupList:[groupid],
+        groupList: [groupid],
         msgType: "DeleteAction",
-        reason: "This group was either removed by the admin or it's no longer active"
+        reason:
+          "This group was either removed by the admin or it's no longer active",
       });
     } else {
       await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
@@ -422,7 +440,7 @@ app.delete("/removeUser", async (request, response) => {
       userid: userid,
       groupList: [info.rows[0].groupid],
       name: info.rows[0].name,
-      msgType: "DeleteAction"
+      msgType: "DeleteAction",
     });
     response.status(200).send({ status: true });
   } catch (error) {
@@ -432,19 +450,24 @@ app.delete("/removeUser", async (request, response) => {
 
 app.put("/assignrole", async (request, response) => {
   const { userid, role } = request.body;
-  console.log(userid,role);
+  console.log(userid, role);
   try {
     if (role == "0") {
-      const exe = await pool.query(`
+      const exe = await pool.query(
+        `
         SELECT userid,name,groupid FROM users WHERE groupid = (SELECT groupid FROM users WHERE userid = $1) AND role = '0'
-      `,[userid]);
-      if(exe.rowCount>0){
-        await pool.query(`UPDATE users SET role = '' WHERE userid = $1`,[exe.rows[0]["userid"]]);
+      `,
+        [userid]
+      );
+      if (exe.rowCount > 0) {
+        await pool.query(`UPDATE users SET role = '' WHERE userid = $1`, [
+          exe.rows[0]["userid"],
+        ]);
         wss.broadcast({
           userid: exe.rows[0]["userid"],
           groupid: exe.rows[0]["groupid"],
           name: exe.rows[0]["name"],
-          prev_role:'0',
+          prev_role: "0",
           role: "",
           msgType: "RoleChg",
         });
@@ -482,7 +505,7 @@ app.put("/assignrole", async (request, response) => {
 app.post("/signup/:id", async (request, response) => {
   const { name, mobile, password } = request.body;
   var groupid = Number.parseInt(request.params.id);
-  console.log(groupid,name, mobile, password);
+  console.log(groupid, name, mobile, password);
   try {
     const user = await pool.query("SELECT groupid FROM users WHERE mobile=$1", [
       mobile,
@@ -491,20 +514,21 @@ app.post("/signup/:id", async (request, response) => {
     if (user.rowCount == 0) {
       let id = Math.floor(100000 + Math.random() * 900000);
       try {
-        console.log(groupid,name, mobile, password);
+        console.log(groupid, name, mobile, password);
         const _limit = await pool.query(
           'select _limit as limit,players from "group" where groupid=$1',
           [groupid]
         );
-        const {limit, players} = _limit.rows[0];
-        if(limit>players){
+        const { limit, players } = _limit.rows[0];
+        if (limit > players) {
           await pool.query(
             "INSERT INTO users (userid,name,mobile,password,groupid,role,created_on) VALUES ($1, $2, $3, $4, $5, $6,$7)",
             [id, name, mobile, password, groupid, "", new Date()]
           );
-          await pool.query('update "group" set players = players + 1 where groupid=$1',[
-            groupid,
-          ]);
+          await pool.query(
+            'update "group" set players = players + 1 where groupid=$1',
+            [groupid]
+          );
           wss.broadcast({
             userid: id,
             groupid: groupid,
@@ -512,8 +536,10 @@ app.post("/signup/:id", async (request, response) => {
             msgType: "NewUser",
           });
           response.status(200).send({ userid: id, star_count: 0 });
-        }else{
-          response.status(400).send({ status:false,msg:"Group limit exceeded"});
+        } else {
+          response
+            .status(400)
+            .send({ status: false, msg: "Group limit exceeded" });
         }
       } catch (error) {
         console.log("Error: " + error.message);
@@ -582,12 +608,12 @@ app.get("/portfolio/:id", async (request, response) => {
     `);
 
     console.log(holding_diff.rows);
-    if(products.length>0){
+    if (products.length > 0) {
       products.forEach((e) => {
         result[e.asset_type] = Number.parseInt(e.value);
         networth = networth + Number.parseInt(e.value);
       });
-    }else{
+    } else {
       let assetsTypes = await pool.query(`
         SELECT DISTINCT asset_type FROM assets
       `);
@@ -597,9 +623,9 @@ app.get("/portfolio/:id", async (request, response) => {
         result[e.asset_type + "_diff"] = 0;
       });
     }
-    
+
     result["networth"] = networth;
-    if(holding_diff.rows.length>0){
+    if (holding_diff.rows.length > 0) {
       holding_diff.rows.forEach((e) => {
         result[e.asset_type + "_diff"] = Number.parseInt(e.holding_diff);
         overall += Number.parseInt(e.holding_diff);
@@ -607,14 +633,20 @@ app.get("/portfolio/:id", async (request, response) => {
     }
 
     result["overall"] = overall;
-    overall?result["overall_diff"] = Math.round((overall / networth) * 100 * 100) / 100:result["overall_diff"] = 0;
+    overall
+      ? (result["overall_diff"] =
+          Math.round((overall / networth) * 100 * 100) / 100)
+      : (result["overall_diff"] = 0);
 
     let yearly = await pool.query(`
       SELECT _${year} from "group" where groupid = ${groupid}
     `);
     yearly = yearly.rows[0][`_${year}`];
     result["yearly"] = yearly;
-    yearly?result["yearly_diff"] = Math.round((yearly / networth) * 100 * 100) / 100:result["yearly_diff"] = 0;
+    yearly
+      ? (result["yearly_diff"] =
+          Math.round((yearly / networth) * 100 * 100) / 100)
+      : (result["yearly_diff"] = 0);
 
     response.status(200).send(result);
   } catch (error) {
@@ -752,8 +784,18 @@ app.put("/renameAsset", async (req, res) => {
     const asset = await pool.query(`
       SELECT asset_type as type FROM assets WHERE id = ${assetId}
     `);
-    console.log({assetid:assetId,name:new_name,type:asset.rows[0]["type"],msgType:"AssetRename"});
-    wss.broadcast({assetid:assetId,name:new_name,type:asset.rows[0]["type"],msgType:"AssetRename"});
+    console.log({
+      assetid: assetId,
+      name: new_name,
+      type: asset.rows[0]["type"],
+      msgType: "AssetRename",
+    });
+    wss.broadcast({
+      assetid: assetId,
+      name: new_name,
+      type: asset.rows[0]["type"],
+      msgType: "AssetRename",
+    });
     res.status(200).send({ status: true });
   } catch (err) {
     console.log("Error: " + err.message);
@@ -772,12 +814,17 @@ app.delete("/deleteSession", async (req, res) => {
       [sessionid]
     );
     const groupList = [];
-    groups.rows.forEach(e=>{
+    groups.rows.forEach((e) => {
       groupList.push(e.groupid);
     });
     if (groups.rowCount === 0) {
       await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionid]);
-      wss.broadcast({groupList:groupList,msgType:"DeleteAction",reason:"This session is either removed by the admin or it's no longer active"});
+      wss.broadcast({
+        groupList: groupList,
+        msgType: "DeleteAction",
+        reason:
+          "This session is either removed by the admin or it's no longer active",
+      });
       res.status(200).send({ status: true });
     } else {
       groups = groups.rows;
@@ -821,7 +868,12 @@ app.delete("/deleteSession", async (req, res) => {
       await Promise.all(promises);
 
       await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionid]);
-      wss.broadcast({sessionid:sessionid,msgType:"DeleteAction",reason:"This session is either removed by the admin or it's no longer active"});
+      wss.broadcast({
+        sessionid: sessionid,
+        msgType: "DeleteAction",
+        reason:
+          "This session is either removed by the admin or it's no longer active",
+      });
       res.status(200).send({ status: true });
     }
   } catch (err) {
@@ -900,7 +952,7 @@ app.post("/invest", async (req, res) => {
       if (!assets.hasOwnProperty(`${asset_type}List`)) {
         assets[`${asset_type}List`] = [];
       }
-      if(DATA.news[`${year}`][`${phase}`].assets.includes(id)){
+      if (DATA.news[`${year}`][`${phase}`].assets.includes(id)) {
         if (holdings[`${id}`] === undefined) {
           console.log(assets);
           assets[`${asset_type}List`].push({
@@ -931,7 +983,7 @@ app.post("/invest", async (req, res) => {
     });
     res.status(200).send(assets);
   } catch (err) {
-    console.log("error",err)
+    console.log("error", err);
     res.status(400).send({ status: false, msg: err.message });
   }
 });
@@ -969,13 +1021,11 @@ async function yearlyUpdate(groupid, amount, stockid, OP) {
     AND price_${year}.asset_id = ${stockid};
   `);
   } catch (err) {
-    res
-      .status(400)
-      .send({
-        status: false,
-        err: err.message,
-        msg: "Could not update yearly amount of the group",
-      });
+    res.status(400).send({
+      status: false,
+      err: err.message,
+      msg: "Could not update yearly amount of the group",
+    });
   }
 }
 
@@ -996,7 +1046,7 @@ app.put("/buy", async (req, res) => {
       INSERT INTO investment(stockid,groupid,holdings) values(${stockid},${groupid},${amount})
     `);
     await yearlyUpdate(groupid, amount, stockid, "+");
-    wss.broadcast({groupid:groupid, msgType:"Transact"});
+    wss.broadcast({ groupid: groupid, msgType: "Transact" });
     res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
@@ -1018,7 +1068,7 @@ app.put("/sell", async (req, res) => {
     `)
       : "";
     await yearlyUpdate(groupid, amount, stockid, "-");
-    wss.broadcast({groupid:groupid, msgType:"Transact"});
+    wss.broadcast({ groupid: groupid, msgType: "Transact" });
     res.status(200).send({ status: true });
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
@@ -1033,63 +1083,79 @@ app.put("/gamechange", async (req, res) => {
     const years = await pool.query(`
       SELECT year FROM gamedata ORDER BY year ASC
     `);
-    const [trailYear,firstYear,lastYear] = [years.rows[0]["year"],years.rows[1]["year"],years.rows.pop()["year"]]
-    const info = await pool.query(`
-        SELECT year, phase FROM  "session" WHERE sessionid = ${sessionid}
-    `);
-    const year = info.rows[0].year;
-    const phase = info.rows[0].phase;    
-    if(option == "1"){
-      if(!((OP=="+" && year==lastYear) || (OP=="-" && [trailYear,firstYear].includes(year)))){
-        if(OP=="-"){
-          const deposited = await pool.query(`
-            SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
-          `);
-          if(deposited.rows[0]["deposited"]==1){
-            await pool.query(`
-              UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
+    const [trailYear, firstYear, lastYear] = [
+      years.rows[0]["year"],
+      years.rows[1]["year"],
+      years.rows.pop()["year"],
+    ];
+    game(sessionid,OP,option);
+    async function  game(sessionid,OP,option){
+      
+      const info = await pool.query(`
+          SELECT year, phase FROM  "session" WHERE sessionid = ${sessionid}
+      `);
+      const year = info.rows[0].year;
+      const phase = info.rows[0].phase;
+      if (option == "1") {
+        if (
+          !(
+            (OP == "+" && year == lastYear) ||
+            (OP == "-" && [trailYear, firstYear].includes(year))
+          )
+        ) {
+          if (OP == "-") {
+            const deposited = await pool.query(`
+              SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
             `);
-            await pool.query(`
-              UPDATE "session" SET _${year} = 0 WHERE sessionid = ${sessionid}
-            `);
+            if (deposited.rows[0]["deposited"] == 1) {
+              await pool.query(`
+                UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
+              `);
+              await pool.query(`
+                UPDATE "session" SET _${year} = 0 WHERE sessionid = ${sessionid}
+              `);
+            }
           }
+          await pool.query(`
+            UPDATE "session" SET year = year ${OP} 1, phase = 1 WHERE sessionid = ${sessionid}
+          `);
         }
-        await pool.query(`
-          UPDATE "session" SET year = year ${OP} 1, phase = 1 WHERE sessionid = ${sessionid}
-        `);
-      }
-    } else{
-      if(phase>3 && OP==="+"){
-        ( year!=lastYear)
-        ?
-          await pool.query(`
-            UPDATE "session" SET phase = 1, year = year + 1 WHERE sessionid = ${sessionid}
-          `)
-        : "";
-      } else if(phase<2 && OP==="-"){
-        if(![trailYear,firstYear].includes(year)){
-          await pool.query(`
-            UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
-          `);
-          const deposited = await pool.query(`
-            SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
-          `);
-          if(deposited.rows[0]["deposited"]==1){
+      } else {
+        if (phase > 3 && OP === "+") {
+          year != lastYear
+            ? await pool.query(`
+              UPDATE "session" SET phase = 1, year = year + 1 WHERE sessionid = ${sessionid}
+            `)
+            : "";
+        } else if (phase < 2 && OP === "-") {
+          if (![trailYear, firstYear].includes(year)) {
             await pool.query(`
-              UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
+              UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
             `);
-            await pool.query(`
-              UPDATE "session" _${year} = 0 WHERE sessionid = ${sessionid}
+            const deposited = await pool.query(`
+              SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
             `);
+            if (deposited.rows[0]["deposited"] == 1) {
+              await pool.query(`
+                UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
+              `);
+              await pool.query(`
+                UPDATE "session" _${year} = 0 WHERE sessionid = ${sessionid}
+              `);
+            }
           }
-        };
-      } else{
-        await pool.query(`
-          UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
-        `);
+        } else {
+          await pool.query(`
+            UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
+          `);
+        }
+      }
+      if(Object.keys(DATA.news[`${year}`][`${phase}`]["assets"]).length<=0){
+        game(sessionid,OP,option);
       }
     }
-    const result= {};
+
+    const result = {};
     const gameinfo = await pool.query(`
       SELECT year,phase FROM "session" WHERE sessionid = ${sessionid}
     `);
@@ -1099,45 +1165,37 @@ app.put("/gamechange", async (req, res) => {
       SELECT phase${result.phase} as time FROM gamedata WHERE year = ${result.year}
     `);
     result.time = time.rows[0]["time"];
-    let groups = await pool.query(`
-      SELECT groupid FROM "group" WHERE sessionid = ${sessionid}
-    `);
-    groups = groups.rows;
-    const groupList = [];
-    groups.forEach(e=>{
-      groupList.push(e.groupid);
-    });
-    wss.broadcast({...result,groupList:groupList,msgType:"GameChg"});
+    wss.broadcast({ ...result, sessionid:sessionid, msgType: "AdminGameChg"});
     res.status(200).send(result);
   } catch (err) {
-    res.status(400).send({ status: false, err: err.message }); 
+    res.status(400).send({ status: false, err: err.message });
   }
 });
 
-app.post("/news",async(req,res)=>{
-  const {year,phase} = req.body;
+app.post("/news", async (req, res) => {
+  const { year, phase } = req.body;
   try {
     const stocks = await pool.query(`
       SELECT id,asset_name FROM assets
-    `); 
+    `);
     const assets = {};
-    stocks.rows.forEach(e=>{
+    stocks.rows.forEach((e) => {
       assets[`${e.id}`] = e.asset_name;
     });
     const news = [];
     const obj = DATA.news[`${year}`][`${phase}`].news;
     for (let key in obj) {
       if (obj.hasOwnProperty(key)) {
-        obj[key].forEach(element=>{
-          news.push(element.replace(/_asset_/g,`<b>${assets[`${key}`]}</b>`));
-        });;
+        obj[key].forEach((element) => {
+          news.push(element.replace(/_asset_/g, `<b>${assets[`${key}`]}</b>`));
+        });
       }
     }
-    res.status(200).send({news:news});
+    res.status(200).send({ news: news });
   } catch (err) {
-    res.status(400).send({status:false,err:err.message});
+    res.status(400).send({ status: false, err: err.message });
   }
-}); 
+});
 
 // setInterval(() => {
 //   wss.broadcast({ type: "time", message: "new news" });

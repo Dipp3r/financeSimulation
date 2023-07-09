@@ -93,5 +93,14 @@ msgType:  {
         name,
         type
     },
+    "EndGame" : {
+        groupList
+    },
+    "AdminGameChg" : {
+        time,
+        phase,
+        year,
+        sessionid
+    }
 }
 ```
