@@ -145,6 +145,19 @@ async function createTables() {
       await pool.query(`TRUNCATE TABLE ${tableName}`);
       console.log(`Table ${tableName} created and truncated`);
     });
+
+    await pool.query(`
+      CREATE TABLE transaction (
+        id SERIAL PRIMARY KEY,
+        assetid INTEGER, 
+        groupid INTEGER, 
+        amount INTEGER, 
+        status VARCHAR(255),
+        time TIMESTAMP WITHOUT TIME ZONE, 
+        CONSTRAINT transaction_assetid_fkey FOREIGN KEY(assetid) REFERENCES assets(id),
+        CONSTRAINT transaction_groupid_fkey FOREIGN KEY(groupid) REFERENCES "group"(groupid)
+      )`);   
+
     await Promise.all(promises);
     console.log('All tables created successfully');
   } catch (error) {
