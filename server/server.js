@@ -15,28 +15,25 @@ const path = require("path");
 
 const DATA = require("./info.json");
 
-// const uploadFolderPath = `./upload`;
-// fs.mkdir(uploadFolderPath, { recursive: true }, (err) => {});
-
 //INITIALIZING VITTAE COIN
 
 const COINS = 500000;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -54,32 +51,6 @@ DATA.year.forEach((e) => {
   allYears += `_${e}, `;
 });
 allYears = allYears.trim().replace(/,$/, "");
-
-// function deleteDirectory(directoryPath) {
-//   if (fs.existsSync(directoryPath)) {
-//     fs.readdirSync(directoryPath).forEach((file) => {
-//       const filePath = path.join(directoryPath, file);
-
-//       if (fs.lstatSync(filePath).isDirectory()) {
-//         // Recursively delete subdirectories
-//         deleteDirectory(filePath);
-//       } else {
-//         // Delete file
-//         fs.unlinkSync(filePath);
-//       }
-//     });
-
-//     // Delete the empty directory
-//     try {
-//       fs.rmdirSync(directoryPath);
-//       console.log(`Directory ${directoryPath} deleted successfully.`);
-//     } catch (err) {
-//       console.error(`Error deleting directory ${directoryPath}:`, err);
-//     }
-//   } else {
-//     console.log(`Directory ${directoryPath} does not exist.`);
-//   }
-// }
 
 // WebSocket server
 wss.on("connection", (ws) => {
@@ -137,7 +108,6 @@ const updateGame = async (phase = 1, year = 1, lastYear = 0, session, time) => {
       const query = `SELECT phase${phase} FROM gamedata WHERE year = $1 ORDER BY year ASC`;
       const result = await pool.query(query, [year]);
       time ??= result.rows[0][`phase${phase}`];
-      console.log(year, phase, time);
       if(Object.keys(DATA.news[`${year}`][`${phase}`]["assets"]).length>0){
         const [hours, minutes, seconds] = time.split(":");
         const totalSeconds = Number.parseInt(
@@ -150,7 +120,8 @@ const updateGame = async (phase = 1, year = 1, lastYear = 0, session, time) => {
           await pool.query(`
             UPDATE "session" SET _${year} = 1 where sessionid = ${session}
           `);
-          wss.broadcast({ cash: COINS, msgType: "CashUpt" });
+          console.log({ cash: COINS, msgType: "CashUpt",year:year}); 
+          wss.broadcast({ cash: COINS, msgType: "CashUpt",year:year});
         }
         await pool.query(
           `
@@ -298,7 +269,6 @@ app.post("/createSession", async (request, response) => {
 app.post("/addGroup", async (request, response) => {
   let id = Math.floor(100000 + Math.random() * 900000);
   const { name, limit, sessionid } = request.body;
-  console.log(request.body);
   if (name.length > 0) {
     try {
       if (!Number.isInteger(limit)) {
@@ -345,7 +315,6 @@ app.get("/sessions", async (request, response) => {
         }
       });
     });
-    console.log(sessions.rows);
     response.send(sessions.rows);
   } catch (error) {
     response.status(400).send("Error: " + error.message);
@@ -459,7 +428,6 @@ app.delete("/removeUser", async (request, response) => {
 
 app.put("/assignrole", async (request, response) => {
   const { userid, role } = request.body;
-  console.log(userid, role);
   try {
     if (role == "0") {
       const exe = await pool.query(
@@ -514,16 +482,13 @@ app.put("/assignrole", async (request, response) => {
 app.post("/signup/:id", async (request, response) => {
   const { name, mobile, password } = request.body;
   var groupid = Number.parseInt(request.params.id);
-  console.log(groupid, name, mobile, password);
   try {
     const user = await pool.query("SELECT groupid FROM users WHERE mobile=$1", [
       mobile,
     ]);
-    console.log(user.rowCount);
     if (user.rowCount == 0) {
       let id = Math.floor(100000 + Math.random() * 900000);
       try {
-        console.log(groupid, name, mobile, password);
         const _limit = await pool.query(
           'select _limit as limit,players from "group" where groupid=$1',
           [groupid]
@@ -556,7 +521,6 @@ app.post("/signup/:id", async (request, response) => {
       }
     } else {
       let [id] = Object.values(user.rows[0]);
-      console.log(id);
       id == groupid
         ? response
             .status(400)
@@ -615,8 +579,6 @@ app.get("/portfolio/:id", async (request, response) => {
       WHERE t2.groupid = ${groupid}
       GROUP BY t1.asset_type;
     `);
-
-    console.log(holding_diff.rows);
     if (products.length > 0) {
       products.forEach((e) => {
         result[e.asset_type] = Number.parseInt(e.value);
@@ -751,28 +713,6 @@ app.get("/download/:sessionId", (req, res) => {
 
   res.sendFile(filePath);
 });
-// app.post("/upload", async (req, res) => {
-//   if (req.files) {
-//     const [year, phase] = Object.keys(req.files)[0].split("_");
-//     const name_ = year + "_" + phase;
-//     var file = req.files[name_];
-
-//     const parentDir = `./upload/${year}`;
-//     const destination = `./upload/${year}/${phase}`;
-//     if (!fs.existsSync(parentDir)) {
-//       await fs.mkdir(parentDir, { recursive: true }, (err) => {});
-//     }
-//     if(fs.existsSync(destination)) {
-//       await deleteDirectory(destination);
-//     }
-//     fs.mkdir(destination, { recursive: true }, (err) => {
-//       !err?file.mv(`${destination}/`+file.name.split(" ").join(""),(err)=>{
-//       err?console.log(err):res.status(200).send(true);}):res.status(400).send("Error while uploading the file!");
-//     });
-//   } else {
-//     res.status(400).send("false");
-//   }
-// });
 
 app.put("/renameAsset", async (req, res) => {
   const { assetId, new_name } = req.body;
@@ -1096,7 +1036,6 @@ app.put("/sell", async (req, res) => {
 app.put("/gamechange", async (req, res) => {
   const { sessionid, OP, option } = req.body;
   remainingTime[`${sessionid}`] = undefined;
-  console.log("recieved",sessionid,OP,option);
   try {
     const years = await pool.query(`
       SELECT year FROM gamedata ORDER BY year ASC
@@ -1113,7 +1052,6 @@ app.put("/gamechange", async (req, res) => {
     let phase = info.rows[0].phase;
     await game(sessionid,OP,option,year,phase);
     async function  game(sessionid,OP,option,year,phase){
-      console.log("reading year: ", year, phase);
       if (option == "1") {
         if (
           !(
@@ -1122,6 +1060,7 @@ app.put("/gamechange", async (req, res) => {
           )
         ) {
           if (OP == "-") {
+            console.log("year: ",year);
             const deposited = await pool.query(`
               SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
             `);
@@ -1154,8 +1093,6 @@ app.put("/gamechange", async (req, res) => {
             await pool.query(`
               UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
             `);
-            year = eval(`${year} ${OP} 1`);
-            phase = 4;
             const deposited = await pool.query(`
               SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
             `);
@@ -1167,25 +1104,23 @@ app.put("/gamechange", async (req, res) => {
                 UPDATE "session" _${year} = 0 WHERE sessionid = ${sessionid}
               `);
             }
+            year = eval(`${year} ${OP} 1`);
+            phase = 4;
           }
         } else {
           if(!(phase===2 && year===lastYear && OP==="+")){
-            console.log("just changing the phase");
             await pool.query(`
               UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
             `);
             phase = eval(`${phase} ${OP} 1`);
-            console.log("phase after changing:",phase)
           }
         }
       }
 
       if((Object.keys(DATA.news[`${year}`][`${phase}`]["assets"]).length<=0) && (year!=lastYear && phase!==2)){
-        console.log("running game loop",year,phase);
         await game(sessionid,OP,option,year,phase);
       }
     }
-    console.log("final:",year,phase);
     const result = {};
     const gameinfo = await pool.query(`
       SELECT year,phase FROM "session" WHERE sessionid = ${sessionid}
@@ -1196,7 +1131,6 @@ app.put("/gamechange", async (req, res) => {
       SELECT phase${result.phase} as time FROM gamedata WHERE year = ${result.year}
     `);
     result.time = time.rows[0]["time"];
-    console.log(result);
     wss.broadcast({ ...result, sessionid:sessionid, msgType: "AdminGameChg"});
     res.status(200).send(result);
   } catch (err) {
