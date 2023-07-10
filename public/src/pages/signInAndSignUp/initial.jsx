@@ -6,12 +6,13 @@ import "@assets/styles/signupForm.scss";
 import SigninComp from "./singinComp";
 import SignupComp from "./signupComp";
 import { WithRouter } from "@components/routingWrapper";
-
+// const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 class InitialComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isSignin: true,
+      notificationList: [],
     };
   }
   toggleInitPage = () => {
@@ -43,6 +44,8 @@ class InitialComp extends React.Component {
   }
 }
 InitialComp.propTypes = {
+  setItem: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
   navigate: PropTypes.func.isRequired,
 };
 export default WithRouter(InitialComp);

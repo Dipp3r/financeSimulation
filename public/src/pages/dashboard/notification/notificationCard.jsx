@@ -29,6 +29,7 @@ class NotificationCard extends React.Component {
           localStorage.setItem("year", this.state.year);
           localStorage.setItem("phase", this.state.phase);
           break;
+        case "DeleteAction":
         case "NewUser":
         case "RemoveUser":
         case "RoleChg":

@@ -5,6 +5,7 @@ import coin from "@assets/images/coin.svg";
 // import FormSignup from "@components/signupForm";
 import Arrow_left from "@assets/images/backArrow.png";
 import validator from "@utils/validator";
+import { WithRouter } from "@components/routingWrapper";
 class SignupComp extends React.Component {
   constructor(props) {
     super(props);
@@ -145,4 +146,4 @@ SignupComp.propTypes = {
   toggleInitPage: PropTypes.func.isRequired,
   navigate: PropTypes.func.isRequired,
 };
-export default SignupComp;
+export default WithRouter(SignupComp);
