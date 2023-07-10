@@ -1,21 +1,21 @@
 const Pool = require("pg").Pool;
 
-const pool = new Pool({
-  user: "vittaex",
-  host: "localhost",
-  database: "finance",
-  password: "123456",
-  port: 5432,
-});
-
-
 // const pool = new Pool({
-//   user: "postgres",
+//   user: "vittaex",
 //   host: "localhost",
 //   database: "finance",
-//   password: "arun",
+//   password: "123456",
 //   port: 5432,
 // });
+
+
+const pool = new Pool({
+  user: "postgres",
+  host: "localhost",
+  database: "finance",
+  password: "arun",
+  port: 5432,
+});
 
 const assets  = require("./assetsName.json");
 const data = require("./info.json");
@@ -47,7 +47,6 @@ async function createTables() {
         name VARCHAR(255),
         _limit INTEGER,
         cash INTEGER,
-        star INTEGER,
         sessionid INTEGER,
         players INTEGER,
         time_created TIMESTAMP WITHOUT TIME ZONE,

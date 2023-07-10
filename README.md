@@ -74,7 +74,9 @@ msgType:  {
         year,
         phase,
         time,
-        sessionid
+        groupList,
+        star
+
     },
     “RoleChg” : {
         userid,
@@ -89,12 +91,13 @@ msgType:  {
         name
     },
     ”DeleteAction” : {
-        userid|groupid|sessionid,
+        userid|groupList,
         groupid | ,
         name | ,
         reason |  
     },
     ”GamePause” : {
+        groupList
     }
     "CashUpt" : {
         cash
