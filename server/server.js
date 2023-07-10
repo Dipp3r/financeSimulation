@@ -244,7 +244,7 @@ app.post("/pause", async (req, res) => {
   `);
   console.log("paused");
   let groups = await pool.query(`
-    SELECT groupid FROM "group" WHERE sessionid = ${session}
+    SELECT groupid FROM "group" WHERE sessionid = ${sessionid}
   `);
   groups = groups.rows;
   const groupList = [];
@@ -1045,8 +1045,13 @@ app.put("/buy", async (req, res) => {
       : await pool.query(`
       INSERT INTO investment(stockid,groupid,holdings) values(${stockid},${groupid},${amount})
     `);
+    const gameInfo = await pool.query(`
+      select year,phase from "session" where sessionid = (select sessionid from "group" where groupid = ${groupid})
+    `);
+    const year = gameInfo.rows[0]["year"]
+    const phase = gameInfo.rows[0]["phase"]
     await pool.query(`
-      INSERT INTO transaction(assetid,groupid,amount,status,time) VALUES(${stockid},${groupid},${amount},'buy',$1)
+      INSERT INTO transaction(assetid,groupid,amount,status,time,year,phase) VALUES(${stockid},${groupid},${amount},'buy',$1,${year},${phase})
     `,[new Date()]);
     await yearlyUpdate(groupid, amount, stockid, "+");
     wss.broadcast({ groupid: groupid, msgType: "Transact" });
@@ -1070,8 +1075,13 @@ app.put("/sell", async (req, res) => {
       UPDATE investment SET holdings = holdings - ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
     `)
       : "";
+    const gameInfo = await pool.query(`
+      select year,phase from "session" where sessionid = (select sessionid from "group" where groupid = ${groupid})
+    `);
+    const year = gameInfo.rows[0]["year"]
+    const phase = gameInfo.rows[0]["phase"]
     await pool.query(`
-      INSERT INTO transaction(assetid,groupid,amount,status,time) VALUES(${stockid},${groupid},${amount},'sell',$1)
+      INSERT INTO transaction(assetid,groupid,amount,status,time,year,phase) VALUES(${stockid},${groupid},${amount},'sell',$1,${year},${phase})
     `,[new Date()]);
     await yearlyUpdate(groupid, amount, stockid, "-");
     wss.broadcast({ groupid: groupid, msgType: "Transact" });
