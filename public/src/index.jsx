@@ -13,7 +13,8 @@ import AssetInfoComp from "@pages/assetInfo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 import { HashRouter } from "react-router-dom";
-import RemovedComp from "./pages/removed";
+import RemovedComp from "@pages/removed";
+import ErrorComp from "@pages/error";
 // import { WithRouter } from "@components/routingWrapper";
 // import { useNavigate } from "react-router-dom";
 class IndexComp extends React.Component {
@@ -78,6 +79,7 @@ class IndexComp extends React.Component {
           />
           <Route path="/assetInfo" element={<AssetInfoComp />} />
           <Route path="/removed" element={<RemovedComp />} />
+          <Route path="/*" element={<ErrorComp />} />
         </Routes>
       </BrowserRouter>
     );
