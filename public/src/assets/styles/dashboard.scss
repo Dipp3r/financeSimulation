@@ -6,7 +6,12 @@
     left: 0px;
     width:100vw;
     height: 69px;
-    background: #FFFFFF;
+    background-color: #FFFFFF;
     box-shadow: 0px -3px 14px 1px rgba(0, 0, 0, 0.1);
     @include flex(row,space-around,center);
+}
+
+.circleScaleDown {
+  transform-origin: center center;
+  transform: scale(0.7);
 }

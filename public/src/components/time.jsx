@@ -17,7 +17,7 @@ export default class Time extends React.Component {
         }
         // console.log(obj);
         if (
-          !JSON.parse(localStorage.isRunning) ||
+          !JSON.parse(localStorage.getItem("isRunning")) ||
           obj.minute < 0 ||
           (obj.minute <= 0 && obj.second <= 0)
         ) {
@@ -49,7 +49,7 @@ export default class Time extends React.Component {
       <div id={styles.timer}>
         <img src={Alarmclock} alt="timer" />
         <p id={styles.timerText}>
-          {JSON.parse(localStorage.isRunning)
+          {JSON.parse(localStorage.getItem("isRunning"))
             ? this.state.minute.toString().padStart(2, "0") +
               ":" +
               this.state.second.toString().padStart(2, "0")
