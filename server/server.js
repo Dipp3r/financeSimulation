@@ -14,6 +14,7 @@ const upload = require("express-fileupload");
 const path = require("path");
 
 const DATA = require("./info.json");
+const { group } = require("console");
 
 //INITIALIZING VITTAE COIN
 
@@ -535,96 +536,6 @@ app.post("/signup/:id", async (request, response) => {
   }
 });
 
-app.get("/portfolio/:id", async (request, response) => {
-  const groupid = request.params.id;
-  let networth = 0,
-    overall = 0;
-  const result = {};
-  // const ratio  = (numerator,base)=>{
-  //   if(numerator!==0){
-  //     return Number.parseInt(Math.round((numerator/base)*100));
-  //   }
-  //   return 0;
-  // }
-  try {
-    let gamedata = await pool.query(`
-      SELECT year,phase FROM "session" WHERE sessionid = (SELECT sessionid FROM "group" WHERE groupid = ${groupid});
-    `);
-    const { year, phase } = gamedata.rows[0];
-
-    let cashAmt = await pool.query(
-      'SELECT cash FROM "group" WHERE groupid = $1',
-      [groupid]
-    );
-    cashAmt = cashAmt.rows[0];
-    result["cash"] = cashAmt.cash;
-    networth += cashAmt.cash;
-
-    let products = await pool.query(`
-      SELECT assets.asset_type, SUM(investment.holdings) AS value
-      FROM assets
-      JOIN investment ON assets.id = investment.stockid
-      WHERE investment.groupid = ${groupid}
-      GROUP BY assets.asset_type
-    `);
-    products = products.rows;
-
-    // const {stock, commodity, cash, mutualFund} = result;
-
-    const holding_diff = await pool.query(`
-      SELECT t1.asset_type, SUM(t2.holdings * t3.phase${phase}_diff/100) AS holding_diff
-      FROM assets AS t1
-      JOIN investment AS t2 ON t1.id = t2.stockid
-      JOIN price_${year} t3 ON t2.stockid = t3.asset_id
-      WHERE t2.groupid = ${groupid}
-      GROUP BY t1.asset_type;
-    `);
-    if (products.length > 0) {
-      products.forEach((e) => {
-        result[e.asset_type] = Number.parseInt(e.value);
-        networth = networth + Number.parseInt(e.value);
-      });
-    } else {
-      let assetsTypes = await pool.query(`
-        SELECT DISTINCT asset_type FROM assets
-      `);
-      assetsTypes = assetsTypes.rows;
-      assetsTypes.forEach((e) => {
-        result[e.asset_type] = 0;
-        result[e.asset_type + "_diff"] = 0;
-      });
-    }
-
-    result["networth"] = networth;
-    if (holding_diff.rows.length > 0) {
-      holding_diff.rows.forEach((e) => {
-        result[e.asset_type + "_diff"] = Number.parseInt(e.holding_diff);
-        overall += Number.parseInt(e.holding_diff);
-      });
-    }
-
-    result["overall"] = overall;
-    overall
-      ? (result["overall_diff"] =
-          Math.round((overall / networth) * 100 * 100) / 100)
-      : (result["overall_diff"] = 0);
-
-    let yearly = await pool.query(`
-      SELECT _${year} from "group" where groupid = ${groupid}
-    `);
-    yearly = yearly.rows[0][`_${year}`];
-    result["yearly"] = yearly;
-    yearly
-      ? (result["yearly_diff"] =
-          Math.round((yearly / networth) * 100 * 100) / 100)
-      : (result["yearly_diff"] = 0);
-
-    response.status(200).send(result);
-  } catch (error) {
-    console.log("Error: " + error.message);
-  }
-});
-
 app.post("/login/:id", async (req, res) => {
   const { mobile, password } = req.body;
   var groupid = Number.parseInt(req.params.id);
@@ -864,67 +775,158 @@ app.put("/renameGroup", async (req, res) => {
   }
 });
 
+async function assetInfo(assets,groupid,OP){
+  const data = await pool.query(
+    `
+    SELECT year,phase FROM "session" WHERE sessionid = (SELECT sessionid FROM "group" WHERE groupid = $1);
+  `,
+    [groupid]
+  );
+  let { year, phase } = data.rows[0];
+  const result = await pool.query(`
+    SELECT assets.id,assets.asset_type,assets.asset_name,price_${year}.phase${phase}_price as asset_price,price_${year}.phase${phase}_diff as asset_diff FROM assets,price_${year} WHERE assets.id = price_${year}.asset_id ORDER BY assets.asset_type,assets.asset_name ASC
+  `);
+  const investment = await pool.query(`
+    SELECT stockid,holdings FROM investment WHERE groupid = ${groupid} ORDER BY stockid ASC
+  `);
+  const holdings = {};
+  investment.rows.forEach((e) => {
+    holdings[e["stockid"]] = e["holdings"];
+  });
+
+  result.rows.forEach((row) => {
+    const { id, asset_type, asset_name, asset_price, asset_diff } = row;
+    if (!assets.hasOwnProperty(`${asset_type}List`)) {
+      assets[`${asset_type}List`] = [];
+    }
+    if(eval(`DATA.news[${year}][${phase}].assets.includes(id) ${OP} true`)) {
+      if (holdings[`${id}`] === undefined) {
+        assets[`${asset_type}List`].push({
+          id: id,
+          name: asset_name,
+          price: asset_price,
+          diff: asset_diff,
+          holdings: 0,
+          holdings_diff: 0,
+        });
+      } else {
+        assets[`${asset_type}List`].push({
+          id: id,
+          name: asset_name,
+          price: asset_price,
+          diff: asset_diff,
+          holdings: holdings[`${id}`],
+          holdings_diff:
+            Math.round(holdings[`${id}`] * (asset_diff / 100) * 100) / 100,
+        });
+      }
+    }
+  });
+  // Sort assets within each type alphabetically
+  Object.keys(assets).forEach((assetType) => {
+    assets[assetType].sort((a, b) => a.name.localeCompare(b.name));
+  });
+}
+
 app.post("/invest", async (req, res) => {
   const { groupid } = req.body;
   try {
-    const data = await pool.query(
-      `
-      SELECT year,phase FROM "session" WHERE sessionid = (SELECT sessionid FROM "group" WHERE groupid = $1);
-    `,
-      [groupid]
-    );
-    console.log(data.rows);
-    let { year, phase } = data.rows[0];
-    const result = await pool.query(`
-      SELECT assets.id,assets.asset_type,assets.asset_name,price_${year}.phase${phase}_price as asset_price,price_${year}.phase${phase}_diff as asset_diff FROM assets,price_${year} WHERE assets.id = price_${year}.asset_id ORDER BY assets.asset_type,assets.asset_name ASC
-    `);
-    const investment = await pool.query(`
-      SELECT stockid,holdings FROM investment WHERE groupid = ${groupid} ORDER BY stockid ASC
-    `);
-    const holdings = {};
-    investment.rows.forEach((e) => {
-      holdings[e["stockid"]] = e["holdings"];
-    });
-
     const assets = {};
-    result.rows.forEach((row) => {
-      const { id, asset_type, asset_name, asset_price, asset_diff } = row;
-      if (!assets.hasOwnProperty(`${asset_type}List`)) {
-        assets[`${asset_type}List`] = [];
-      }
-      if (DATA.news[`${year}`][`${phase}`].assets.includes(id)) {
-        if (holdings[`${id}`] === undefined) {
-          console.log(assets);
-          assets[`${asset_type}List`].push({
-            id: id,
-            name: asset_name,
-            price: asset_price,
-            diff: asset_diff,
-            holdings: 0,
-            holdings_diff: 0,
-          });
-        } else {
-          assets[`${asset_type}List`].push({
-            id: id,
-            name: asset_name,
-            price: asset_price,
-            diff: asset_diff,
-            holdings: holdings[`${id}`],
-            holdings_diff:
-              Math.round(holdings[`${id}`] * (asset_diff / 100) * 100) / 100,
-          });
-        }
-      }
-    });
-
-    // Sort assets swithin each type alphabetically
-    Object.keys(assets).forEach((assetType) => {
-      assets[assetType].sort((a, b) => a.name.localeCompare(b.name));
-    });
+    await assetInfo(assets,groupid,'&&');
     res.status(200).send(assets);
   } catch (err) {
     console.log("error", err);
     res.status(400).send({ status: false, msg: err.message });
+  }
+});
+
+app.get("/portfolio/:id", async (request, response) => {
+  const groupid = request.params.id;
+  let networth = 0, overall = 0;
+  const result = {};
+  await assetInfo(result,groupid,'||');
+  // const ratio  = (numerator,base)=>{
+  //   if(numerator!==0){
+  //     return Number.parseInt(Math.round((numerator/base)*100));
+  //   }
+  //   return 0;
+  // }
+  try {
+    let gamedata = await pool.query(`
+      SELECT year,phase FROM "session" WHERE sessionid = (SELECT sessionid FROM "group" WHERE groupid = ${groupid});
+    `);
+    const { year, phase } = gamedata.rows[0];
+
+    let cashAmt = await pool.query(
+      'SELECT cash FROM "group" WHERE groupid = $1',
+      [groupid]
+    );
+    cashAmt = cashAmt.rows[0];
+    result["cash"] = cashAmt.cash;
+    networth += cashAmt.cash;
+
+    let products = await pool.query(`
+      SELECT assets.asset_type, SUM(investment.holdings) AS value
+      FROM assets
+      JOIN investment ON assets.id = investment.stockid
+      WHERE investment.groupid = ${groupid}
+      GROUP BY assets.asset_type
+    `);
+    products = products.rows;
+
+    // const {stock, commodity, cash, mutualFund} = result;
+
+    const holding_diff = await pool.query(`
+      SELECT t1.asset_type, SUM(t2.holdings * t3.phase${phase}_diff/100) AS holding_diff
+      FROM assets AS t1
+      JOIN investment AS t2 ON t1.id = t2.stockid
+      JOIN price_${year} t3 ON t2.stockid = t3.asset_id
+      WHERE t2.groupid = ${groupid}
+      GROUP BY t1.asset_type;
+    `);
+    if (products.length > 0) {
+      products.forEach((e) => {
+        result[e.asset_type] = Number.parseInt(e.value);
+        networth = networth + Number.parseInt(e.value);
+      });
+    } else {
+      let assetsTypes = await pool.query(`
+        SELECT DISTINCT asset_type FROM assets
+      `);
+      assetsTypes = assetsTypes.rows;
+      assetsTypes.forEach((e) => {
+        result[e.asset_type] = 0;
+        result[e.asset_type + "_diff"] = 0;
+      });
+    }
+
+    result["networth"] = networth;
+    if (holding_diff.rows.length > 0) {
+      holding_diff.rows.forEach((e) => {
+        result[e.asset_type + "_diff"] = Number.parseInt(e.holding_diff);
+        overall += Number.parseInt(e.holding_diff);
+      });
+    }
+
+    result["overall"] = overall;
+    overall
+      ? (result["overall_diff"] =
+          Math.round((overall / networth) * 100 * 100) / 100)
+      : (result["overall_diff"] = 0);
+
+    let yearly = await pool.query(`
+      SELECT _${year} from "group" where groupid = ${groupid}
+    `);
+    yearly = yearly.rows[0][`_${year}`];
+    result["yearly"] = yearly;
+    yearly
+      ? (result["yearly_diff"] =
+          Math.round((yearly / networth) * 100 * 100) / 100)
+      : (result["yearly_diff"] = 0);
+
+    response.status(200).send(result);
+  } catch (error) {
+    console.log("Error: " + error.message);
   }
 });
 
