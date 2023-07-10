@@ -22,21 +22,21 @@ const DATA = require("./info.json");
 
 const COINS = 500000;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -105,10 +105,10 @@ let timer_key = {},
   remainingTime = {};
 
 const updateGame = async (phase = 1, year = 1, lastYear = 0, session, time) => {
-  const firstYear = await pool.query(`
-    SELECT year FROM gamedata ORDER BY year ASC LIMIT 1
+  const YEAR = await pool.query(`
+    SELECT year FROM gamedata ORDER BY year ASC LIMIT 2
   `);
-  const trailYear = firstYear.rows[0]["year"];
+  const [trailYear,firstYear] = [YEAR.rows[0]["year"],YEAR.rows[1]["year"]];
   if (phase >= 5) {
     phase = 1;
     if (year === trailYear) {
@@ -145,7 +145,7 @@ const updateGame = async (phase = 1, year = 1, lastYear = 0, session, time) => {
         );
         if (yearBegan.rows[0]["curr_year"] === 0) {
           await pool.query(`
-            UPDATE "group" set cash = cash + ${COINS},star = star + 1 WHERE sessionid = ${session}
+            UPDATE "group" set cash = cash + ${COINS} WHERE sessionid = ${session}
           `);
           await pool.query(`
             UPDATE "session" SET _${year} = 1 where sessionid = ${session}
@@ -166,6 +166,7 @@ const updateGame = async (phase = 1, year = 1, lastYear = 0, session, time) => {
         obj.phase = phase;
         obj.news = Object.keys(DATA.news[`${year}`][`${phase}`]["news"]).length>0
         obj.time = time;
+        year===trailYear? obj.star = 0 : obj.star = year - firstYear + 1;
         obj.groupList = groupList;
         wss.broadcast(obj);
         startTime[`${session}`] = new Date().getTime();
@@ -242,7 +243,15 @@ app.post("/pause", async (req, res) => {
     UPDATE "session" SET start = 0 WHERE sessionid = ${sessionid}
   `);
   console.log("paused");
-  wss.broadcast({ msgType: "GamePause" });
+  let groups = await pool.query(`
+    SELECT groupid FROM "group" WHERE sessionid = ${session}
+  `);
+  groups = groups.rows;
+  const groupList = [];
+  groups.forEach((e) => {
+    groupList.push(e.groupid);
+  });
+  wss.broadcast({ msgType: "GamePause", groupList:groupList });
   res.status(200).end();
 });
 
@@ -296,8 +305,8 @@ app.post("/addGroup", async (request, response) => {
         throw new Error("Invalid limit. Please provide a valid integer value.");
       }
       await pool.query(
-        `INSERT INTO "group"(groupid, name, _limit, cash, sessionid, players, star, time_created, ${allYears}) VALUES($1, $2, $3, $4, $5, $6, $7, $8, 0, 0, 0, 0, 0, 0, 0,0)`,
-        [id, name, limit, 0, sessionid, 0, 0, new Date()]
+        `INSERT INTO "group"(groupid, name, _limit, cash, sessionid, players, time_created, ${allYears}) VALUES($1, $2, $3, $4, $5, $6, $7, 0, 0, 0, 0, 0, 0, 0, 0)`,
+        [id, name, limit, 0, sessionid, 0, new Date()]
       );
       response.status(200).send({ status: true });
     } catch (error) {
@@ -535,7 +544,7 @@ app.post("/signup/:id", async (request, response) => {
             name: name,
             msgType: "NewUser",
           });
-          response.status(200).send({ userid: id, star_count: 0 });
+          response.status(200).send({ userid: id});
         } else {
           response
             .status(400)
@@ -668,16 +677,7 @@ app.post("/login/:id", async (req, res) => {
       const [db_password, db_groupid, userid] = Object.values(result.rows[0]);
       if (db_groupid == groupid) {
         if (db_password == password) {
-          try {
-            const group = await pool.query(
-              'SELECT star FROM "group" WHERE groupid = $1',
-              [groupid]
-            );
-            const [star_count] = Object.values(group.rows[0]);
-            res.send({ userid: userid, star_count: star_count });
-          } catch (error) {
-            console.log("Error: " + error.message);
-          }
+            res.send({ userid: userid});
         } else {
           res.status(401).send({ status: false, msg: "Invalid password" });
         }
@@ -1085,6 +1085,8 @@ app.put("/sell", async (req, res) => {
 // {option:0} -> phase
 app.put("/gamechange", async (req, res) => {
   const { sessionid, OP, option } = req.body;
+  remainingTime[`${sessionid}`] = undefined;
+  console.log("recieved",sessionid,OP,option);
   try {
     const years = await pool.query(`
       SELECT year FROM gamedata ORDER BY year ASC
@@ -1094,14 +1096,14 @@ app.put("/gamechange", async (req, res) => {
       years.rows[1]["year"],
       years.rows.pop()["year"],
     ];
-    game(sessionid,OP,option);
-    async function  game(sessionid,OP,option){
-      
-      const info = await pool.query(`
+    const info = await pool.query(`
           SELECT year, phase FROM  "session" WHERE sessionid = ${sessionid}
       `);
-      const year = info.rows[0].year;
-      const phase = info.rows[0].phase;
+    let year = info.rows[0].year;
+    let phase = info.rows[0].phase;
+    await game(sessionid,OP,option,year,phase);
+    async function  game(sessionid,OP,option,year,phase){
+      console.log("reading year: ", year, phase);
       if (option == "1") {
         if (
           !(
@@ -1125,19 +1127,25 @@ app.put("/gamechange", async (req, res) => {
           await pool.query(`
             UPDATE "session" SET year = year ${OP} 1, phase = 1 WHERE sessionid = ${sessionid}
           `);
+          year = eval(`${year} ${OP} 1`);
+          phase = 1;
         }
       } else {
         if (phase > 3 && OP === "+") {
-          year != lastYear
-            ? await pool.query(`
+          if(year != lastYear){
+            await pool.query(`
               UPDATE "session" SET phase = 1, year = year + 1 WHERE sessionid = ${sessionid}
-            `)
-            : "";
+            `);
+            year = eval(`${year} ${OP} 1`);
+            phase = 1;
+          }
         } else if (phase < 2 && OP === "-") {
           if (![trailYear, firstYear].includes(year)) {
             await pool.query(`
               UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
             `);
+            year = eval(`${year} ${OP} 1`);
+            phase = 4;
             const deposited = await pool.query(`
               SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
             `);
@@ -1151,16 +1159,23 @@ app.put("/gamechange", async (req, res) => {
             }
           }
         } else {
-          await pool.query(`
-            UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
-          `);
+          if(!(phase===2 && year===lastYear && OP==="+")){
+            console.log("just changing the phase");
+            await pool.query(`
+              UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
+            `);
+            phase = eval(`${phase} ${OP} 1`);
+            console.log("phase after changing:",phase)
+          }
         }
       }
-      if(Object.keys(DATA.news[`${year}`][`${phase}`]["assets"]).length<=0){
-        game(sessionid,OP,option);
+
+      if((Object.keys(DATA.news[`${year}`][`${phase}`]["assets"]).length<=0) && (year!=lastYear && phase!==2)){
+        console.log("running game loop",year,phase);
+        await game(sessionid,OP,option,year,phase);
       }
     }
-
+    console.log("final:",year,phase);
     const result = {};
     const gameinfo = await pool.query(`
       SELECT year,phase FROM "session" WHERE sessionid = ${sessionid}
@@ -1171,6 +1186,7 @@ app.put("/gamechange", async (req, res) => {
       SELECT phase${result.phase} as time FROM gamedata WHERE year = ${result.year}
     `);
     result.time = time.rows[0]["time"];
+    console.log(result);
     wss.broadcast({ ...result, sessionid:sessionid, msgType: "AdminGameChg"});
     res.status(200).send(result);
   } catch (err) {
@@ -1202,10 +1218,6 @@ app.post("/news", async (req, res) => {
     res.status(400).send({ status: false, err: err.message });
   }
 });
-
-// setInterval(() => {
-//   wss.broadcast({ type: "time", message: "new news" });
-// }, 5000);
 
 server.listen(port, () => {
   console.log(`App running on port http://localhost:${port}.`);
