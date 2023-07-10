@@ -132,7 +132,15 @@ export default class GroupPage extends React.Component {
         OP: operation,
         option: option == "year" ? "1" : "0",
       }),
-    });
+    })
+      .then((response) => response.json())
+      .then((message) => {
+        this.setState({
+          year: message.year,
+          phase: message.phase,
+          time: message.time.slice(3, undefined),
+        });
+      });
   };
   fetchGroupList = () => {
     fetch(import.meta.env.VITE_API_SERVER_URL + "groups", {
@@ -174,6 +182,14 @@ export default class GroupPage extends React.Component {
   checkMessage(message) {
     // msgType: 'GameChg', year: 2106, phase: 4, time: '00:00:10'
     if (message.msgType == "GameChg") {
+      // if (message.sessionid != localStorage.getItem("currentSessionID")) return;
+      this.setState({
+        year: message.year,
+        phase: message.phase,
+        time: message.time.slice(3, undefined),
+      });
+    } else if (message.msgType == "AdminGameChg") {
+      // if (message.sessionid != localStorage.getItem("currentSessionID")) return;
       this.setState({
         year: message.year,
         phase: message.phase,

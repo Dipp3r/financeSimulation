@@ -113,9 +113,10 @@ class IndexComp extends React.Component {
         [, minute, second] = message.time.split(":");
         localStorage.setItem("minute", Number.parseInt(minute));
         localStorage.setItem("second", Number.parseInt(second) + 1);
+        localStorage.setItem("isRunning", true);
+        if (!message.news) return;
         notificationList.push(message);
         localStorage.setItem("dashboard", "NotifComp");
-        localStorage.setItem("isRunning", true);
         this.toggleMainDisplay("dashboard");
         break;
       case "CashUpt":

@@ -38,6 +38,7 @@
       overflow: hidden;
       overflow-x: scroll;
       p {
+        animation: listMovement 5s linear infinite;
         margin: 0px;
         margin-right: 20px;
         color: #fff;
@@ -105,5 +106,14 @@
         background: #223f80;
       }
     }
+  }
+}
+
+@keyframes listMovement {
+  0%{
+    transform: translateX(300%);
+  }
+  100%{
+    transform: translateX(-350%);
   }
 }

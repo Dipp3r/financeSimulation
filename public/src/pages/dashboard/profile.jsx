@@ -93,8 +93,10 @@ class ProfileComp extends React.Component {
     holders.forEach((holder, index) => {
       if (index < starCount) {
         holder.src = badge;
+        holder.className = "starHolder starPresent";
       } else {
         holder.src = emptyBadge;
+        holder.className = "starHolder star";
       }
     });
     if (starCount == 6) {
@@ -109,12 +111,13 @@ class ProfileComp extends React.Component {
   };
   updateProgressBar = () => {
     let keys = Object.keys(yearPhase);
-    let currentYear = Number(localStorage.getItem("year")) - Number(keys[0]);
+    let year = localStorage.getItem("year");
+    // let year = 2106;
+    let currentYear = Number(year) - Number(keys[0]);
     if (currentYear < 0) return this.setState({ pieValue: 0 });
 
     let max = Number(keys[keys.length - 1]) + 1 - Number(keys[0]);
-    let perPhaseValue =
-      1 / (7 * yearPhase[localStorage.getItem("year")].length);
+    let perPhaseValue = 1 / (7 * yearPhase[year].length);
     let percent = Number.parseInt(
       (currentYear / max +
         perPhaseValue * Number(localStorage.getItem("phase"))) *

@@ -40,17 +40,22 @@ class NotifComp extends React.Component {
       let notificationList = [...this.state.notificationList];
       let message = JSON.parse(event.data);
       message.isRead = false;
-      if (
-        message.msgType == "RoleChg" ||
-        message.msgType == "NewUser" ||
-        message.msgType == "RemoveUser"
-      ) {
-        if (message.groupid == localStorage.getItem("groupid")) {
+      switch (message.msgType) {
+        case "RoleChg":
+        case "NewUser":
+        case "RemoveUser":
+          if (message.groupid == localStorage.getItem("groupid")) {
+            notificationList.push(message);
+          }
+          break;
+        case "GameChg":
+          if (!message.news) return;
           notificationList.push(message);
-        }
-      } else {
-        notificationList.push(message);
+          break;
+        default:
+          break;
       }
+
       this.setState({ notificationList: notificationList });
       // this.getList();
     });

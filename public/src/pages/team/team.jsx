@@ -97,7 +97,7 @@ class TeamComp extends React.Component {
               value="dashboard"
             />
           </div>
-          <p>Team</p>
+          <p className="pageTitle">Team</p>
           <Time />
         </div>
         <div id="main">
