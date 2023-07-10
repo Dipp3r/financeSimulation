@@ -74,7 +74,9 @@ msgType:  {
         year,
         phase,
         time,
-        groupList
+        groupList,
+        star
+
     },
     “RoleChg” : {
         userid,
