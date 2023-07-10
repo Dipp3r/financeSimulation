@@ -40,6 +40,7 @@ CREATE TABLE "group" (
 ```
 ```sql
 alter table "group" add column time_created timestamp;
+alter table "group" drop column star;
 ```
 <h4>INVESTMENT TABLE</h4>
 
