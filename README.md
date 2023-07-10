@@ -74,7 +74,8 @@ msgType:  {
         year,
         phase,
         time,
-        sessionid
+        groupList,
+        star
     },
     “RoleChg” : {
         userid,
