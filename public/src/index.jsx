@@ -18,6 +18,7 @@ class IndexComp extends React.Component {
     this.state = {
       notificationList: [],
       year: Number.parseInt(localStorage.getItem("year")),
+      newNotification: false,
     };
   }
   setItem = (name, value) => {
@@ -43,6 +44,7 @@ class IndexComp extends React.Component {
         localStorage.setItem("second", Number.parseInt(second) + 1);
         localStorage.setItem("isRunning", true);
         if (!message.news) return;
+        this.setState({ newNotification: true });
         notificationList.push(message);
         localStorage.setItem("dashboard", "NotifComp");
         this.toggleMainDisplay("dashboard");
@@ -51,11 +53,13 @@ class IndexComp extends React.Component {
         cash = Number.parseInt(localStorage.getItem("cash"));
         cash ||= 0;
         localStorage.setItem("cash", Number.parseInt(cash + 500000));
+        this.setState({ newNotification: true });
         notificationList.push(message);
         break;
       case "RoleChg":
       case "NewUser":
         if (message.groupid == localStorage.getItem("groupid")) {
+          this.setState({ newNotification: true });
           notificationList.push(message);
         }
         break;
@@ -64,6 +68,7 @@ class IndexComp extends React.Component {
           // if (message.userid == localStorage.getItem("userid")) {
           //   window.close();
           // }
+          this.setState({ newNotification: true });
           notificationList.push(message);
           window.close();
         }
@@ -88,7 +93,9 @@ class IndexComp extends React.Component {
       default:
         break;
     }
-    this.setState({ notificationList: notificationList });
+    this.setState({ notificationList: notificationList }, () => {
+      console.log(this.state);
+    });
   };
 
   componentDidMount() {
@@ -120,7 +127,11 @@ class IndexComp extends React.Component {
           <Route
             path="/dashboard"
             element={
-              <Dashboard setItem={this.setItem} getItem={this.getItem} />
+              <Dashboard
+                setItem={this.setItem}
+                getItem={this.getItem}
+                newNotification={this.state.newNotification}
+              />
             }
           />
           <Route

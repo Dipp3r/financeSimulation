@@ -6,6 +6,7 @@ import User_fill from "@assets/images/User_fill.svg";
 import Chart_alt from "@assets/images/Chart_alt.svg";
 import Chart_alt_fill from "@assets/images/Chart_alt_fill.svg";
 import Message from "@assets/images/Message.svg";
+import Message_alt from "@assets/images/Message_alt.svg";
 import Message_alt_fill from "@assets/images/Message_alt_fill.svg";
 import ProfileComp from "@pages/dashboard/profile";
 import NotifComp from "@pages/dashboard/notification/notification";
@@ -28,7 +29,7 @@ class Dashboard extends React.Component {
     let navImg = document.querySelectorAll(".navImg");
     navImg[0].src = User_circle;
     navImg[1].src = Chart_alt;
-    navImg[2].src = Message;
+    navImg[2].src = this.props.newNotification ? Message : Message_alt;
     switch (value) {
       case "ProfileComp":
       default:
@@ -47,6 +48,7 @@ class Dashboard extends React.Component {
         displayName = "StocksComp";
         break;
       case "NotifComp":
+        this.props.setItem("newNotification", false);
         display = (
           <NotifComp
             setItem={this.props.setItem}
@@ -60,6 +62,11 @@ class Dashboard extends React.Component {
     localStorage.setItem("dashboard", displayName);
     this.setState({ display: display, displayName: displayName });
   };
+  componentDidUpdate(prevProps) {
+    if (this.props.newNotification !== prevProps.newNotification) {
+      this.setState({ notification: this.props.newNotification });
+    }
+  }
   componentDidMount() {
     let display = localStorage.getItem("dashboard");
     this.changeDisplay(display ? display : "");
@@ -97,7 +104,13 @@ class Dashboard extends React.Component {
             <img
               id="messageImg"
               className="navImg"
-              src={Message}
+              src={
+                this.props.newNotification
+                  ? Message
+                  : localStorage.getItem("dashboard") == "NotifComp"
+                  ? Message_alt_fill
+                  : Message_alt
+              }
               alt="message"
             />
           </button>
@@ -109,5 +122,6 @@ class Dashboard extends React.Component {
 Dashboard.propTypes = {
   getItem: PropTypes.func.isRequired,
   setItem: PropTypes.func.isRequired,
+  newNotification: PropTypes.bool.isRequired,
 };
 export default Dashboard;

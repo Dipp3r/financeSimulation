@@ -97,7 +97,7 @@ class ProfileComp extends React.Component {
         holder.className = "starHolder starPresent";
       } else {
         holder.src = emptyBadge;
-        holder.className = "starHolder star";
+        holder.className = "starHolder starEmpty";
       }
     });
     if (starCount == 6) {
