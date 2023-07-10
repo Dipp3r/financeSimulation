@@ -6,6 +6,7 @@ import coin from "@assets/images/coin.svg";
 import Arrow_left from "@assets/images/backArrow.png";
 
 import validator from "@utils/validator";
+import { WithRouter } from "@components/routingWrapper";
 class SigninComp extends React.Component {
   constructor(props) {
     super(props);
@@ -71,7 +72,7 @@ class SigninComp extends React.Component {
             localStorage.setItem("minute", 15);
           if (!localStorage.getItem("second"))
             localStorage.setItem("second", 0);
-          this.props.toggleMainDisplay("dashboard");
+          this.props.navigate("../dashboard");
         })
         .catch((error) => {
           throw new Error(error);
@@ -127,6 +128,6 @@ class SigninComp extends React.Component {
 }
 SigninComp.propTypes = {
   toggleInitPage: PropTypes.func.isRequired,
-  toggleMainDisplay: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
 };
-export default SigninComp;
+export default WithRouter(SigninComp);

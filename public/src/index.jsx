@@ -8,7 +8,9 @@ import TeamComp from "@pages/team/team";
 import * as serviceWorkerRegistration from "@utils/serviceWorkerRegistration";
 import NewsComp from "@pages/news";
 import AssetInfoComp from "@pages/assetInfo";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
+import { HashRouter } from "react-router-dom";
 
 class IndexComp extends React.Component {
   constructor(props) {
@@ -16,13 +18,6 @@ class IndexComp extends React.Component {
     this.state = {
       notificationList: [],
       year: Number.parseInt(localStorage.getItem("year")),
-      mainDisplay: (
-        <InitialComp
-          toggleMainDisplay={this.toggleMainDisplay}
-          setItem={this.setItem}
-          getItem={this.getItem}
-        />
-      ),
     };
   }
   setItem = (name, value) => {
@@ -32,73 +27,6 @@ class IndexComp extends React.Component {
   };
   getItem = (name) => {
     return this.state[name];
-  };
-  toggleMainDisplay = (e) => {
-    let value =
-      typeof e === "string" ? e : e.currentTarget.getAttribute("value");
-    console.log(value);
-    let displayComp;
-    localStorage.setItem("mainDisplay", value);
-    switch (value) {
-      case "dashboard":
-      default:
-        displayComp = (
-          <Dashboard
-            toggleMainDisplay={this.toggleMainDisplay}
-            setItem={this.setItem}
-            getItem={this.getItem}
-          />
-        );
-        break;
-      case "portfolio":
-        displayComp = (
-          <PortfolioComp
-            toggleMainDisplay={this.toggleMainDisplay}
-            setItem={this.setItem}
-            getItem={this.getItem}
-          />
-        );
-        break;
-      case "team":
-        displayComp = (
-          <TeamComp
-            toggleMainDisplay={this.toggleMainDisplay}
-            setItem={this.setItem}
-            getItem={this.getItem}
-          />
-        );
-        break;
-      case "purchase":
-        displayComp = (
-          <SellComp
-            toggleMainDisplay={this.toggleMainDisplay}
-            setItem={this.setItem}
-            getItem={this.getItem}
-          />
-        );
-        break;
-      case "news":
-        displayComp = (
-          <NewsComp
-            toggleMainDisplay={this.toggleMainDisplay}
-            setItem={this.setItem}
-            getItem={this.getItem}
-          />
-        );
-        break;
-      case "login":
-        displayComp = (
-          <InitialComp toggleMainDisplay={this.toggleMainDisplay} />
-        );
-        break;
-      case "assetInfo":
-        displayComp = (
-          <AssetInfoComp toggleMainDisplay={this.toggleMainDisplay} />
-        );
-        break;
-    }
-    console.log(displayComp);
-    this.setState({ mainDisplay: displayComp });
   };
   checkMessage = (message) => {
     let minute, second, cash;
@@ -180,12 +108,47 @@ class IndexComp extends React.Component {
     if (!localStorage.getItem("cash")) localStorage.setItem("cash", 0);
     localStorage.setItem("year", 2099);
     localStorage.setItem("phase", 1);
-    let display = localStorage.getItem("mainDisplay");
-    this.toggleMainDisplay(display ? display : "");
+    // let display = localStorage.getItem("mainDisplay");
+    // this.toggleMainDisplay(display ? display : "");
   }
   render() {
-    console.log(this.state);
-    return <section>{this.state.mainDisplay}</section>;
+    return (
+      <BrowserRouter history={HashRouter}>
+        <Routes history={HashRouter}>
+          {/* <Route path="*" index element={<ErrorComp />} /> */}
+          <Route path="/:groupid" element={<InitialComp />} />
+          <Route
+            path="/dashboard"
+            element={
+              <Dashboard setItem={this.setItem} getItem={this.getItem} />
+            }
+          />
+          <Route
+            path="/portfolio"
+            element={
+              <PortfolioComp setItem={this.setItem} getItem={this.getItem} />
+            }
+          />
+          <Route
+            path="/team"
+            element={<TeamComp setItem={this.setItem} getItem={this.getItem} />}
+          />
+          <Route
+            path="/purchase"
+            element={<SellComp setItem={this.setItem} getItem={this.getItem} />}
+          />
+          <Route
+            path="/purchase"
+            element={<SellComp setItem={this.setItem} getItem={this.getItem} />}
+          />
+          <Route
+            path="/news"
+            element={<NewsComp setItem={this.setItem} getItem={this.getItem} />}
+          />
+          <Route path="/assetInfo" element={<AssetInfoComp />} />
+        </Routes>
+      </BrowserRouter>
+    );
   }
 }
 

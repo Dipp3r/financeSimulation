@@ -5,6 +5,7 @@ import "@assets/styles/signupForm.scss";
 
 import SigninComp from "./singinComp";
 import SignupComp from "./signupComp";
+import { WithRouter } from "@components/routingWrapper";
 
 class InitialComp extends React.Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class InitialComp extends React.Component {
       localStorage.getItem("userid") &&
       localStorage.getItem("groupid") == window.location.href.split("/").pop()
     ) {
-      this.props.toggleMainDisplay(localStorage.getItem("mainDisplay"));
+      this.props.navigate("../" + localStorage.getItem("mainDisplay"));
     } else {
       let groupid = window.location.href.split("/").pop();
       localStorage.setItem("groupid", groupid);
@@ -33,21 +34,15 @@ class InitialComp extends React.Component {
     return (
       <>
         {this.state.isSignin ? (
-          <SigninComp
-            toggleInitPage={this.toggleInitPage}
-            toggleMainDisplay={this.props.toggleMainDisplay}
-          />
+          <SigninComp toggleInitPage={this.toggleInitPage} />
         ) : (
-          <SignupComp
-            toggleInitPage={this.toggleInitPage}
-            toggleMainDisplay={this.props.toggleMainDisplay}
-          />
+          <SignupComp toggleInitPage={this.toggleInitPage} />
         )}
       </>
     );
   }
 }
 InitialComp.propTypes = {
-  toggleMainDisplay: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
 };
-export default InitialComp;
+export default WithRouter(InitialComp);

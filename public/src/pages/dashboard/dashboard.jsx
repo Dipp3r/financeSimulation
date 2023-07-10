@@ -34,7 +34,6 @@ class Dashboard extends React.Component {
       default:
         display = (
           <ProfileComp
-            toggleMainDisplay={this.props.toggleMainDisplay}
             setItem={this.props.setItem}
             getItem={this.props.getItem}
           />
@@ -43,16 +42,13 @@ class Dashboard extends React.Component {
         displayName = "ProfileComp";
         break;
       case "StocksComp":
-        display = (
-          <StocksComp toggleMainDisplay={this.props.toggleMainDisplay} />
-        );
+        display = <StocksComp />;
         navImg[1].src = Chart_alt_fill;
         displayName = "StocksComp";
         break;
       case "NotifComp":
         display = (
           <NotifComp
-            toggleMainDisplay={this.props.toggleMainDisplay}
             setItem={this.props.setItem}
             getItem={this.props.getItem}
           />
@@ -111,7 +107,6 @@ class Dashboard extends React.Component {
   }
 }
 Dashboard.propTypes = {
-  toggleMainDisplay: PropTypes.func.isRequired,
   getItem: PropTypes.func.isRequired,
   setItem: PropTypes.func.isRequired,
 };

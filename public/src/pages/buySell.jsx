@@ -7,6 +7,7 @@ import Coin from "@assets/images/coin.svg";
 import Arrow_left from "@assets/images/Arrow_left.svg";
 import Time from "@components/time";
 import formatCurrencyValue from "@utils/formatCurrencyValue";
+import { WithRouter } from "@components/routingWrapper";
 
 class SellComp extends React.Component {
   constructor(props) {
@@ -127,8 +128,8 @@ class SellComp extends React.Component {
             <img
               src={Arrow_left}
               alt="back_arrow"
-              onClick={this.props.toggleMainDisplay}
-              value="dashboard"
+              onClick={this.props.navigate}
+              value="../dashboard"
             />
             <img className="coin" src={Coin} alt="coin" />
             <p>{formatCurrencyValue(this.state.cash)}</p>
@@ -199,7 +200,7 @@ class SellComp extends React.Component {
 }
 
 SellComp.propTypes = {
-  toggleMainDisplay: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
 };
 
-export default SellComp;
+export default WithRouter(SellComp);

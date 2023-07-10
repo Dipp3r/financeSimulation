@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 import "@assets/styles/stocks.scss";
 // import Alarmclock from "@assets/images/Alarmclock.svg";
@@ -8,6 +8,7 @@ import Coin from "@assets/images/coin.svg";
 import AssetsCompCommon from "@components/assestsCompCommon";
 import Time from "@components/time";
 import formatCurrencyValue from "@utils/formatCurrencyValue";
+// import { WithRouter } from "@components/routingWrapper";
 class StocksComp extends React.Component {
   constructor(props) {
     super(props);
@@ -130,7 +131,6 @@ class StocksComp extends React.Component {
                     price={asset.price}
                     diff={asset.diff}
                     position={index % 2 === 0 ? "top" : "bottom"}
-                    toggleMainDisplay={this.props.toggleMainDisplay}
                   />
                 );
               })
@@ -143,7 +143,7 @@ class StocksComp extends React.Component {
     );
   }
 }
-StocksComp.propTypes = {
-  toggleMainDisplay: PropTypes.func.isRequired,
-};
+// StocksComp.propTypes = {
+//   navigate: PropTypes.func.isRequired,
+// };
 export default StocksComp;

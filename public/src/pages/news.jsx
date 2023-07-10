@@ -4,6 +4,7 @@ import "@assets/styles/news.scss";
 import Arrow_left from "@assets/images/Arrow_left.svg";
 import Time from "@components/time";
 import NewsListComp from "../components/newsListComp";
+import { WithRouter } from "@components/routingWrapper";
 
 class NewsComp extends React.Component {
   constructor(props) {
@@ -112,7 +113,7 @@ class NewsComp extends React.Component {
               src={Arrow_left}
               alt="back_arrow"
               onClick={() => {
-                this.props.toggleMainDisplay("dashboard");
+                this.props.navigate("../dashboard");
               }}
             />
           </div>
@@ -151,9 +152,9 @@ class NewsComp extends React.Component {
     );
   }
 }
-export default NewsComp;
+export default WithRouter(NewsComp);
 NewsComp.propTypes = {
-  toggleMainDisplay: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
   getItem: PropTypes.func.isRequired,
   setItem: PropTypes.func.isRequired,
 };

@@ -21,7 +21,7 @@ import { PieChart, Pie, Cell } from "recharts";
 import Time from "@components/time";
 // import { Pie } from 'react-chartjs-2';
 import formatCurrencyValue from "@utils/formatCurrencyValue";
-
+import { WithRouter } from "@components/routingWrapper";
 class PortfolioComp extends React.Component {
   constructor(props) {
     super(props);
@@ -130,8 +130,8 @@ class PortfolioComp extends React.Component {
           <div>
             <img
               src={Arrow_left}
-              onClick={this.props.toggleMainDisplay}
-              value="dashboard"
+              onClick={this.props.navigate}
+              value="../dashboard"
               alt="back_arrow"
             />
           </div>
@@ -391,7 +391,7 @@ class PortfolioComp extends React.Component {
   }
 }
 PortfolioComp.propTypes = {
-  toggleMainDisplay: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
 };
 
-export default PortfolioComp;
+export default WithRouter(PortfolioComp);

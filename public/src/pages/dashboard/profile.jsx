@@ -13,6 +13,7 @@ import reward from "@assets/images/rewardCard.svg";
 import cash from "@assets/images/cash.svg";
 
 import yearPhase from "@utils/yearPhase.json";
+import { WithRouter } from "@components/routingWrapper";
 // import share from "@assets/images/share.svg";
 
 /*
@@ -72,7 +73,7 @@ class ProfileComp extends React.Component {
     )
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
-          // this.props.toggleMainDisplay("dashboard")
+          // this.props.navigate("dashboard")
         }
         return response.json();
       })
@@ -85,7 +86,7 @@ class ProfileComp extends React.Component {
     let countDownIntervalKey = localStorage.getItem("countDownIntervalKey");
     if (countDownIntervalKey) clearInterval(countDownIntervalKey);
     localStorage.clear();
-    this.props.toggleMainDisplay("login");
+    this.props.navigate("../login");
   };
   setStars = () => {
     let starCount = this.state.star;
@@ -249,7 +250,7 @@ class ProfileComp extends React.Component {
               className="option"
               onClick={() =>
                 setTimeout(
-                  () => this.props.toggleMainDisplay("portfolio"),
+                  () => this.props.navigate("../portfolio"),
                   this.triggerDelay
                 )
               }
@@ -266,7 +267,7 @@ class ProfileComp extends React.Component {
               id="team"
               onClick={() =>
                 setTimeout(
-                  () => this.props.toggleMainDisplay("team"),
+                  () => this.props.navigate("../team"),
                   this.triggerDelay
                 )
               }
@@ -293,7 +294,7 @@ class ProfileComp extends React.Component {
   }
 }
 ProfileComp.propTypes = {
-  toggleMainDisplay: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
   getItem: PropTypes.func.isRequired,
 };
-export default ProfileComp;
+export default WithRouter(ProfileComp);

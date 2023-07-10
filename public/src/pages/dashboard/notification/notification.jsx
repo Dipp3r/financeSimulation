@@ -83,7 +83,6 @@ class NotifComp extends React.Component {
                 key={index}
                 notification={notification}
                 changeisRead={this.changeisRead}
-                toggleMainDisplay={this.props.toggleMainDisplay}
               />
             );
           })}
@@ -112,7 +111,6 @@ class NotifComp extends React.Component {
   }
 }
 NotifComp.propTypes = {
-  toggleMainDisplay: PropTypes.func.isRequired,
   getItem: PropTypes.func.isRequired,
   setItem: PropTypes.func.isRequired,
 };

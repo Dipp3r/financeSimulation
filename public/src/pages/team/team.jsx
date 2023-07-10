@@ -10,6 +10,7 @@ import QR from "@assets/images/QR.svg";
 import TeamCardComp from "@components/teamCard";
 import QRComp from "./QRComp";
 import Time from "@components/time";
+import { WithRouter } from "@components/routingWrapper";
 const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 class TeamComp extends React.Component {
   constructor(props) {
@@ -93,8 +94,8 @@ class TeamComp extends React.Component {
             <img
               src={Arrow_left}
               alt="back_arrow"
-              onClick={this.props.toggleMainDisplay}
-              value="dashboard"
+              onClick={this.props.navigate}
+              value="../dashboard"
             />
           </div>
           <p className="pageTitle">Team</p>
@@ -123,6 +124,6 @@ class TeamComp extends React.Component {
 }
 
 TeamComp.propTypes = {
-  toggleMainDisplay: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
 };
-export default TeamComp;
+export default WithRouter(TeamComp);

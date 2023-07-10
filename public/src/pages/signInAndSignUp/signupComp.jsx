@@ -17,7 +17,7 @@ class SignupComp extends React.Component {
   //     localStorage.getItem("userid") &&
   //     localStorage.getItem("groupid") == window.location.href.split("/").pop()
   //   )
-  //     this.props.toggleMainDisplay("dashboard");
+  //     this.props.navigate("dashboard");
 
   //   let groupid = window.location.href.split("/").pop();
   //   localStorage.setItem("groupid", groupid);
@@ -80,7 +80,7 @@ class SignupComp extends React.Component {
             localStorage.setItem("minute", 15);
           if (!localStorage.getItem("second"))
             localStorage.setItem("second", 0);
-          this.props.toggleMainDisplay("dashboard");
+          this.props.navigate("../dashboard");
         })
         .catch((error) => {
           throw new Error(error);
@@ -143,6 +143,6 @@ class SignupComp extends React.Component {
 }
 SignupComp.propTypes = {
   toggleInitPage: PropTypes.func.isRequired,
-  toggleMainDisplay: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
 };
 export default SignupComp;
