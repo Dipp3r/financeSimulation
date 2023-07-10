@@ -163,7 +163,7 @@ class Dashboard extends React.Component {
             if (groupid == localStorage.getItem("groupid")) {
               localStorage.setItem("isRunning", false);
               localStorage.setItem("dashboard", "ProfileComp");
-              this.props.navigate("dashboard");
+              this.props.navigate("../dashboard");
               return;
             }
           });
