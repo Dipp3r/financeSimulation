@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import Arrow_left from "@assets/images/Arrow_left.svg";
 import "@assets/styles/news.scss";
 import Time from "@components/time";
-import { WithRouter } from "@components/routingWrapper";
 
 class AssetInfoComp extends React.Component {
   render() {
@@ -15,7 +14,7 @@ class AssetInfoComp extends React.Component {
               src={Arrow_left}
               alt="back_arrow"
               onClick={() => {
-                this.props.navigate("../dashboard");
+                this.props.toggleMainDisplay("../dashboard");
               }}
             />
           </div>
@@ -32,7 +31,7 @@ class AssetInfoComp extends React.Component {
 }
 AssetInfoComp.propTypes = {
   // info: PropTypes.object.isRequired,
-  navigate: PropTypes.func.isRequired,
+  toggleMainDisplay: PropTypes.func.isRequired,
 };
 
-export default WithRouter(AssetInfoComp);
+export default AssetInfoComp;

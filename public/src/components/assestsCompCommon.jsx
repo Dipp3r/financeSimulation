@@ -5,7 +5,6 @@ import loss from "@assets/images/loss.svg";
 import gain from "@assets/images/gain.svg";
 import info from "@assets/images/info_alt_light.svg";
 import formatCurrencyValue from "@utils/formatCurrencyValue";
-import { WithRouter } from "@components/routingWrapper";
 class AssetsCompCommon extends React.Component {
   toggleToBuy = () => {
     let obj = {};
@@ -13,7 +12,7 @@ class AssetsCompCommon extends React.Component {
     obj.id = this.props.id;
     obj.holdings = this.props.holdings;
     localStorage.setItem("asset", JSON.stringify(obj));
-    this.props.navigate("../purchase");
+    this.props.toggleMainDisplay("purchase");
   };
   render() {
     return (
@@ -22,7 +21,7 @@ class AssetsCompCommon extends React.Component {
           id="info"
           onClick={(event) => {
             event.stopPropagation();
-            this.props.navigate("../assetInfo");
+            this.props.toggleMainDisplay("assetInfo");
           }}
         >
           <img src={info} alt="info" />
@@ -55,6 +54,6 @@ AssetsCompCommon.propTypes = {
   holdings: PropTypes.number.isRequired,
   price: PropTypes.number.isRequired,
   diff: PropTypes.number.isRequired,
-  navigate: PropTypes.func.isRequired,
+  toggleMainDisplay: PropTypes.func.isRequired,
 };
-export default WithRouter(AssetsCompCommon);
+export default AssetsCompCommon;

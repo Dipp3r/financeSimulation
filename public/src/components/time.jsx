@@ -49,7 +49,9 @@ export default class Time extends React.Component {
       <div id={styles.timer}>
         <img src={Alarmclock} alt="timer" />
         <p id={styles.timerText}>
-          {JSON.parse(localStorage.getItem("isRunning"))
+          {JSON.parse(localStorage.getItem("isEnd"))
+            ? "ENDED"
+            : JSON.parse(localStorage.getItem("isRunning"))
             ? this.state.minute.toString().padStart(2, "0") +
               ":" +
               this.state.second.toString().padStart(2, "0")

@@ -55,9 +55,7 @@ class SignupComp extends React.Component {
     if (!isError) {
       delete obj.confirmPassword;
       fetch(
-        import.meta.env.VITE_API_SERVER_URL +
-          "signup/" +
-          localStorage.getItem("groupid"),
+        import.meta.env.VITE_API_SERVER_URL + "signup/" + this.props.groupid,
         {
           method: "POST",
           headers: { "Content-type": "application/json" },
@@ -81,7 +79,7 @@ class SignupComp extends React.Component {
             localStorage.setItem("minute", 15);
           if (!localStorage.getItem("second"))
             localStorage.setItem("second", 0);
-          this.props.navigate("../dashboard");
+          this.props.navigate("../../");
         })
         .catch((error) => {
           throw new Error(error);
@@ -144,6 +142,7 @@ class SignupComp extends React.Component {
 }
 SignupComp.propTypes = {
   toggleInitPage: PropTypes.func.isRequired,
+  groupid: PropTypes.string.isRequired,
   navigate: PropTypes.func.isRequired,
 };
 export default WithRouter(SignupComp);

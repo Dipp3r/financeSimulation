@@ -1,5 +1,5 @@
 import React from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
 import "@assets/styles/stocks.scss";
 // import Alarmclock from "@assets/images/Alarmclock.svg";
@@ -67,9 +67,6 @@ class StocksComp extends React.Component {
     this.fetchList();
   }
   render() {
-    {
-      console.log(this.state);
-    }
     return (
       <div id="stocks">
         <div id="topBar">
@@ -131,6 +128,7 @@ class StocksComp extends React.Component {
                     price={asset.price}
                     diff={asset.diff}
                     position={index % 2 === 0 ? "top" : "bottom"}
+                    toggleMainDisplay={this.props.toggleMainDisplay}
                   />
                 );
               })
@@ -145,7 +143,7 @@ class StocksComp extends React.Component {
     );
   }
 }
-// StocksComp.propTypes = {
-//   navigate: PropTypes.func.isRequired,
-// };
+StocksComp.propTypes = {
+  toggleMainDisplay: PropTypes.func.isRequired,
+};
 export default StocksComp;
