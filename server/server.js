@@ -76,7 +76,7 @@ let timer_key = {},
   delay = {},
   remainingTime = {};
 
-const updateGame = async (phase = 1, year = 1, lastYear = 0, session, time) => {
+async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
   const YEAR = await pool.query(`
     SELECT year FROM gamedata ORDER BY year ASC LIMIT 2
   `);
@@ -159,7 +159,7 @@ const updateGame = async (phase = 1, year = 1, lastYear = 0, session, time) => {
       groupList: groupList,
     });
   }
-};
+}
 
 function secondsToHMS(seconds) {
   if (!seconds) {
