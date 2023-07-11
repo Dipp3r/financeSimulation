@@ -134,7 +134,8 @@ class StocksComp extends React.Component {
               })
             ) : (
               <div id="pauseDiv">
-                <p id="title"> GAME PAUSED </p>
+                <p id="title1"> GAME </p>
+                <p id="title2"> PAUSED </p>
               </div>
             )}
           </div>
