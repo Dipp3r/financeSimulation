@@ -72,6 +72,7 @@ class SignupComp extends React.Component {
           }
         })
         .then((data) => {
+          localStorage.setItem("groupid", this.props.groupid);
           for (let i in data) {
             localStorage.setItem(i, data[i]);
           }

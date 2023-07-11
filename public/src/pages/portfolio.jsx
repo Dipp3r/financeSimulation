@@ -33,7 +33,7 @@ class PortfolioComp extends React.Component {
         { name: "stocks", value: 0, color: "#223F80" },
         { name: "Mutual funds", value: 0, color: "#406AC8" },
         { name: "commidities", value: 0, color: "#6F82AB" },
-        { name: "cash", value: 1, color: "#CADAFF" },
+        { name: "cash", value: 0, color: "#CADAFF" },
       ],
       stock: 0,
       mutualFund: 0,
@@ -48,20 +48,30 @@ class PortfolioComp extends React.Component {
     this.toggleExpand = this.toggleExpand.bind(this);
   }
   toggleExpand(event, contentLength) {
+    let cards = [...document.querySelectorAll(".card")].slice(1, undefined);
+    let expand;
+    let obj = {};
+    for (let card of cards) {
+      if (!this.state[card.getAttribute("name")]) continue;
+      obj[card.getAttribute("name")] = false;
+      expand = document.querySelector("#" + card.getAttribute("name"));
+      expand.style.height = "0px";
+      card.querySelector(".arrow").style.transform = "rotateX(0deg)";
+    }
+
     let name = event.currentTarget.getAttribute("name");
-    let target = document.querySelector("#" + name);
+    expand = document.querySelector("#" + name);
     let arrow = event.currentTarget.querySelector(".arrow");
     let display = this.state[name];
-    console.log(display, target);
+    console.log("\n", display, name);
     if (display) {
-      target.style.height = "0px";
+      expand.style.height = "0px";
       arrow.style.transform = "rotateX(0deg)";
     } else {
-      target.style.height = `${(contentLength + 1) * 70 - 40}px`;
-      arrow.style.transform = "rotateX(180deg)";
+      expand.style.height = `${(contentLength + 1) * 70}px`;
+      arrow.style.transform = "rotateX(540deg)";
       // target.scrollIntoView({ behavior: "smooth",inline:'center'})
     }
-    let obj = {};
     obj[name] = !display;
     this.setState(obj);
   }
@@ -88,10 +98,7 @@ class PortfolioComp extends React.Component {
           { name: "commodities", value: data.commodity, color: "#6F82AB" },
           {
             name: "cash",
-            value:
-              data.cash ||
-              data.networth - data.stock - data.mutualFund - data.commodity ||
-              1,
+            value: data.cash < 0 ? 1 : data.cash,
             color: "#CADAFF",
           },
         ];
@@ -120,7 +127,7 @@ class PortfolioComp extends React.Component {
   };
   componentDidMount() {
     this.fetchInfo();
-    this.fetchList();
+    // this.fetchList();
   }
   render() {
     return (
