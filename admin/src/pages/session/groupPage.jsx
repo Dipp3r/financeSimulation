@@ -307,8 +307,8 @@ export default class GroupPage extends React.Component {
             </button>
           </div>
         </div>
-
         <div id="groupsList"></div>
+        <button id="fixed-end">End Game</button>
       </div>
     );
   }

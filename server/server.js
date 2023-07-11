@@ -1234,6 +1234,28 @@ app.post("/news", async (req, res) => {
   }
 });
 
+app.post("/end",async(req,res)=>{
+  const {sessionid} = req.body;
+  try {
+    const groups = await pool.query(`
+      SELECT groupid FROM "group" WHERE sessionid = ${sessionid}
+    `);
+    const groupList = [];
+    groups.rows.forEach(e=>{
+      groupList.push(e.groupid);
+    });
+    wss.broadcast({msgType:"EndGame",groupList:groupList})
+    res.status(200).send({
+      status:true
+    })
+  } catch (err) {
+    res.status(400).send({
+      status:false,
+      msg:err.message
+    }) 
+  }
+});
+
 server.listen(port, () => {
   console.log(`App running on port http://localhost:${port}.`);
 });

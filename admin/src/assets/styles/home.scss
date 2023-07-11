@@ -967,6 +967,28 @@
       }
 
       #groupPage {
+        #fixed-end{
+          position: fixed;
+          bottom: 40px;
+          right:80px;
+          width: 202px;
+          height: 44px;
+          flex-shrink: 0;
+          border-radius: 8px;
+          border: 1.5px solid #A50C0C;
+          color: #A50C0C;
+          text-align: center;
+          font-family: Montserrat;
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: normal;
+          transition:all 0.2s ease;
+          &:hover{
+            color:white;
+            background: #A50C0C;
+          }
+        }
         margin-top: 100px;
         @include flex(column, flex-start, center);
         // display:none;
@@ -1081,6 +1103,7 @@
               font-weight: 500;
               font-size: 20px;
               color: #223f80;
+              transition:all 0.2s ease;
               &:hover {
                 color: white;
                 background: #223f80;
