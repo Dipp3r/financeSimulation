@@ -85,8 +85,8 @@ class ProfileComp extends React.Component {
   logout = () => {
     let countDownIntervalKey = localStorage.getItem("countDownIntervalKey");
     if (countDownIntervalKey) clearInterval(countDownIntervalKey);
+    this.props.navigate("../login/" + localStorage.getItem("groupid"));
     localStorage.clear();
-    this.props.navigate("../login/0");
   };
   setStars = () => {
     let starCount = this.state.star;

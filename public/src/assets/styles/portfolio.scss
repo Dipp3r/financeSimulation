@@ -154,6 +154,7 @@
                     @include flex(row,center,center);
                     img{
                         margin:5px;
+                        transition: 0.5s;
                     }
                     p{
                         margin:0px;
@@ -181,7 +182,7 @@
             // height: 250px;
             overflow:auto;
             // border: 2px solid black;
-            
+            overflow: hidden;
             transition-duration: 0.5s;
             width: 98%;
             height: 0px;
