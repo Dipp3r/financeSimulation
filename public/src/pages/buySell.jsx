@@ -129,7 +129,7 @@ class SellComp extends React.Component {
               onClick={() => this.props.toggleMainDisplay("dashboard")}
             />
             <img className="coin" src={Coin} alt="coin" />
-            <p>{formatCurrencyValue(this.state.cash)}</p>
+            <p className="cashCount">{formatCurrencyValue(this.state.cash)}</p>
           </div>
           <Time />
         </div>

@@ -121,8 +121,8 @@ class NewsComp extends React.Component {
         </div>
         <div id="main">
           <div id="rotate">
-            <p>Super breaking news</p>
-            <p>Super breaking news</p>
+            <p>Super breaking news |</p>
+            <p>Super breaking news |</p>
             <p>Super breaking news</p>
           </div>
           <div id="content" onScroll={this.setScroll}>
