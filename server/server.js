@@ -20,21 +20,21 @@ const { group } = require("console");
 
 const COINS = 500000;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -80,7 +80,7 @@ const updateGame = async (phase = 1, year = 1, lastYear = 0, session, time) => {
   const YEAR = await pool.query(`
     SELECT year FROM gamedata ORDER BY year ASC LIMIT 2
   `);
-  const [trailYear,firstYear] = [YEAR.rows[0]["year"],YEAR.rows[1]["year"]];
+  const [trailYear, firstYear] = [YEAR.rows[0]["year"], YEAR.rows[1]["year"]];
   if (phase >= 5) {
     phase = 1;
     if (year === trailYear) {
@@ -109,7 +109,7 @@ const updateGame = async (phase = 1, year = 1, lastYear = 0, session, time) => {
       const query = `SELECT phase${phase} FROM gamedata WHERE year = $1 ORDER BY year ASC`;
       const result = await pool.query(query, [year]);
       time ??= result.rows[0][`phase${phase}`];
-      if(Object.keys(DATA.news[`${year}`][`${phase}`]["assets"]).length>0){
+      if (Object.keys(DATA.news[`${year}`][`${phase}`]["assets"]).length > 0) {
         const [hours, minutes, seconds] = time.split(":");
         const totalSeconds = Number.parseInt(
           hours * 3600 + minutes * 60 + seconds
@@ -121,8 +121,8 @@ const updateGame = async (phase = 1, year = 1, lastYear = 0, session, time) => {
           await pool.query(`
             UPDATE "session" SET _${year} = 1 where sessionid = ${session}
           `);
-          console.log({ cash: COINS, msgType: "CashUpt",year:year}); 
-          wss.broadcast({ cash: COINS, msgType: "CashUpt",year:year});
+          console.log({ cash: COINS, msgType: "CashUpt", year: year });
+          wss.broadcast({ cash: COINS, msgType: "CashUpt", year: year });
         }
         await pool.query(
           `
@@ -136,9 +136,10 @@ const updateGame = async (phase = 1, year = 1, lastYear = 0, session, time) => {
         obj.msgType = "GameChg";
         obj.year = year;
         obj.phase = phase;
-        obj.news = Object.keys(DATA.news[`${year}`][`${phase}`]["news"]).length>0
+        obj.news =
+          Object.keys(DATA.news[`${year}`][`${phase}`]["news"]).length > 0;
         obj.time = time;
-        year===trailYear? obj.star = 0 : obj.star = year - firstYear + 1;
+        year === trailYear ? (obj.star = 0) : (obj.star = year - firstYear + 1);
         obj.groupList = groupList;
         wss.broadcast(obj);
         startTime[`${session}`] = new Date().getTime();
@@ -146,17 +147,16 @@ const updateGame = async (phase = 1, year = 1, lastYear = 0, session, time) => {
         timer_key[`${session}`] = setTimeout(() => {
           updateGame(phase + 1, year, lastYear, session);
         }, delay[`${session}`]);
-      }else{
-        updateGame(phase + 1, year, lastYear, session); 
+      } else {
+        updateGame(phase + 1, year, lastYear, session);
       }
-      
     } catch (error) {
       console.error("Error:", error);
     }
   } else {
     wss.broadcast({
       msgTyoe: "EndGame",
-      groupList: groupList
+      groupList: groupList,
     });
   }
 };
@@ -223,7 +223,7 @@ app.post("/pause", async (req, res) => {
   groups.forEach((e) => {
     groupList.push(e.groupid);
   });
-  wss.broadcast({ msgType: "GamePause", groupList:groupList });
+  wss.broadcast({ msgType: "GamePause", groupList: groupList });
   res.status(200).end();
 });
 
@@ -510,7 +510,7 @@ app.post("/signup/:id", async (request, response) => {
             name: name,
             msgType: "NewUser",
           });
-          response.status(200).send({ userid: id});
+          response.status(200).send({ userid: id });
         } else {
           response
             .status(400)
@@ -550,7 +550,7 @@ app.post("/login/:id", async (req, res) => {
       const [db_password, db_groupid, userid] = Object.values(result.rows[0]);
       if (db_groupid == groupid) {
         if (db_password == password) {
-            res.send({ userid: userid});
+          res.send({ userid: userid });
         } else {
           res.status(401).send({ status: false, msg: "Invalid password" });
         }
@@ -775,7 +775,7 @@ app.put("/renameGroup", async (req, res) => {
   }
 });
 
-async function assetInfo(assets,groupid,OP){
+async function assetInfo(assets, groupid, OP) {
   const data = await pool.query(
     `
     SELECT year,phase FROM "session" WHERE sessionid = (SELECT sessionid FROM "group" WHERE groupid = $1);
@@ -799,7 +799,7 @@ async function assetInfo(assets,groupid,OP){
     if (!assets.hasOwnProperty(`${asset_type}List`)) {
       assets[`${asset_type}List`] = [];
     }
-    if(eval(`DATA.news[${year}][${phase}].assets.includes(id) ${OP} true`)) {
+    if (eval(`DATA.news[${year}][${phase}].assets.includes(id) ${OP} true`)) {
       if (holdings[`${id}`] === undefined) {
         assets[`${asset_type}List`].push({
           id: id,
@@ -832,7 +832,7 @@ app.post("/invest", async (req, res) => {
   const { groupid } = req.body;
   try {
     const assets = {};
-    await assetInfo(assets,groupid,'&&');
+    await assetInfo(assets, groupid, "&&");
     res.status(200).send(assets);
   } catch (err) {
     console.log("error", err);
@@ -842,9 +842,10 @@ app.post("/invest", async (req, res) => {
 
 app.get("/portfolio/:id", async (request, response) => {
   const groupid = request.params.id;
-  let networth = 0, overall = 0;
+  let networth = 0,
+    overall = 0;
   const result = {};
-  await assetInfo(result,groupid,'||');
+  await assetInfo(result, groupid, "||");
   // const ratio  = (numerator,base)=>{
   //   if(numerator!==0){
   //     return Number.parseInt(Math.round((numerator/base)*100));
@@ -990,11 +991,14 @@ app.put("/buy", async (req, res) => {
     const gameInfo = await pool.query(`
       select year,phase from "session" where sessionid = (select sessionid from "group" where groupid = ${groupid})
     `);
-    const year = gameInfo.rows[0]["year"]
-    const phase = gameInfo.rows[0]["phase"]
-    await pool.query(`
+    const year = gameInfo.rows[0]["year"];
+    const phase = gameInfo.rows[0]["phase"];
+    await pool.query(
+      `
       INSERT INTO transaction(assetid,groupid,amount,status,time,year,phase) VALUES(${stockid},${groupid},${amount},'buy',$1,${year},${phase})
-    `,[new Date()]);
+    `,
+      [new Date()]
+    );
     await yearlyUpdate(groupid, amount, stockid, "+");
     wss.broadcast({ groupid: groupid, msgType: "Transact" });
     res.status(200).send({ status: true });
@@ -1020,11 +1024,14 @@ app.put("/sell", async (req, res) => {
     const gameInfo = await pool.query(`
       select year,phase from "session" where sessionid = (select sessionid from "group" where groupid = ${groupid})
     `);
-    const year = gameInfo.rows[0]["year"]
-    const phase = gameInfo.rows[0]["phase"]
-    await pool.query(`
+    const year = gameInfo.rows[0]["year"];
+    const phase = gameInfo.rows[0]["phase"];
+    await pool.query(
+      `
       INSERT INTO transaction(assetid,groupid,amount,status,time,year,phase) VALUES(${stockid},${groupid},${amount},'sell',$1,${year},${phase})
-    `,[new Date()]);
+    `,
+      [new Date()]
+    );
     await yearlyUpdate(groupid, amount, stockid, "-");
     wss.broadcast({ groupid: groupid, msgType: "Transact" });
     res.status(200).send({ status: true });
@@ -1052,38 +1059,69 @@ app.put("/gamechange", async (req, res) => {
       `);
     let year = info.rows[0].year;
     let phase = info.rows[0].phase;
-    await game(sessionid,OP,option,year,phase);
-    async function  game(sessionid,OP,option,year,phase){
+    await game(sessionid, OP, option, year, phase);
+    async function game(sessionid, OP, option, year, phase) {
       if (option == "1") {
         if (
           !(
             (OP == "+" && year == lastYear) ||
-            (OP == "-" && [trailYear, firstYear].includes(year))
+            (OP == "-" && [trailYear].includes(year))
           )
         ) {
           if (OP == "-") {
-            console.log("year: ",year);
-            const deposited = await pool.query(`
-              SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
-            `);
-            if (deposited.rows[0]["deposited"] == 1) {
-              await pool.query(`
-                UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
+            if (year == firstYear) {
+              const trailStarted = await pool.query(`
+                SELECT _${
+                  year - 1
+                } as deposited from "session" WHERE sessionid = ${sessionid}
               `);
-              await pool.query(`
-                UPDATE "session" SET _${year} = 0 WHERE sessionid = ${sessionid}
+              if (trailStarted.rows[0]["deposited"] == 0) {
+                const deposited = await pool.query(`
+                  SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
+                `);
+                if (deposited.rows[0]["deposited"] == 1) {
+                  await pool.query(`
+                    UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
+                  `);
+                  await pool.query(`
+                    UPDATE "session" SET _${year} = 0 WHERE sessionid = ${sessionid}
+                  `);
+                }
+                await pool.query(`
+                  UPDATE "session" SET year = year ${OP} 1, phase = 1 WHERE sessionid = ${sessionid}
+                `);
+                year = eval(`${year} ${OP} 1`);
+                phase = 1;
+              }
+            } else {
+              const deposited = await pool.query(`
+                SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
               `);
+              if (deposited.rows[0]["deposited"] == 1) {
+                await pool.query(`
+                  UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
+                `);
+                await pool.query(`
+                  UPDATE "session" SET _${year} = 0 WHERE sessionid = ${sessionid}
+                `);
+              }
+              await pool.query(`
+                UPDATE "session" SET year = year ${OP} 1, phase = 1 WHERE sessionid = ${sessionid}
+              `);
+              year = eval(`${year} ${OP} 1`);
+              phase = 1;
             }
+          } else {
+            await pool.query(`
+              UPDATE "session" SET year = year ${OP} 1, phase = 1 WHERE sessionid = ${sessionid}
+            `);
+            year = eval(`${year} ${OP} 1`);
+            phase = 1;
           }
-          await pool.query(`
-            UPDATE "session" SET year = year ${OP} 1, phase = 1 WHERE sessionid = ${sessionid}
-          `);
-          year = eval(`${year} ${OP} 1`);
-          phase = 1;
         }
       } else {
         if (phase > 3 && OP === "+") {
-          if(year != lastYear){
+          if (year != lastYear) {
             await pool.query(`
               UPDATE "session" SET phase = 1, year = year + 1 WHERE sessionid = ${sessionid}
             `);
@@ -1091,26 +1129,53 @@ app.put("/gamechange", async (req, res) => {
             phase = 1;
           }
         } else if (phase < 2 && OP === "-") {
-          if (![trailYear, firstYear].includes(year)) {
-            await pool.query(`
-              UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
-            `);
-            const deposited = await pool.query(`
-              SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
-            `);
-            if (deposited.rows[0]["deposited"] == 1) {
-              await pool.query(`
-                UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
+          if (![trailYear].includes(year)) {
+            if (year == firstYear) {
+              const trailStarted = await pool.query(`
+                SELECT _${
+                  year - 1
+                } as deposited from "session" WHERE sessionid = ${sessionid}
               `);
+              if (trailStarted.rows[0]["deposited"] == 0) {
+                await pool.query(`
+                  UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
+                `);
+                  const deposited = await pool.query(`
+                  SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
+                `);
+                if (deposited.rows[0]["deposited"] == 1) {
+                  await pool.query(`
+                  UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
+                `);
+                  await pool.query(`
+                  UPDATE "session" SET _${year} = 0 WHERE sessionid = ${sessionid}
+                `);
+                }
+                year = eval(`${year} ${OP} 1`);
+                phase = 4;
+              }
+            } else {
+              console.log("running",year);
               await pool.query(`
-                UPDATE "session" _${year} = 0 WHERE sessionid = ${sessionid}
+                UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
               `);
+              const deposited = await pool.query(`
+                SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
+              `);
+              if (deposited.rows[0]["deposited"] == 1) {
+                await pool.query(`
+                  UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
+                `);
+                console.log("deposited amount reduce");
+                await pool.query(`UPDATE "session" SET _${year} = 0 WHERE sessionid = ${sessionid}`);
+                console.log("session updated");
+              }
+              year = eval(`${year} ${OP} 1`);
+              phase = 4;
             }
-            year = eval(`${year} ${OP} 1`);
-            phase = 4;
           }
         } else {
-          if(!(phase===2 && year===lastYear && OP==="+")){
+          if (!(phase === 2 && year === lastYear && OP === "+")) {
             await pool.query(`
               UPDATE "session" SET phase = phase ${OP} 1 WHERE sessionid = ${sessionid}
             `);
@@ -1119,8 +1184,12 @@ app.put("/gamechange", async (req, res) => {
         }
       }
 
-      if((Object.keys(DATA.news[`${year}`][`${phase}`]["assets"]).length<=0) && (year!=lastYear && phase!==2)){
-        await game(sessionid,OP,option,year,phase);
+      if (
+        Object.keys(DATA.news[`${year}`][`${phase}`]["assets"]).length <= 0 &&
+        year != lastYear &&
+        phase !== 2
+      ) {
+        await game(sessionid, OP, option, year, phase);
       }
     }
     const result = {};
@@ -1133,7 +1202,7 @@ app.put("/gamechange", async (req, res) => {
       SELECT phase${result.phase} as time FROM gamedata WHERE year = ${result.year}
     `);
     result.time = time.rows[0]["time"];
-    wss.broadcast({ ...result, sessionid:sessionid, msgType: "AdminGameChg"});
+    wss.broadcast({ ...result, sessionid: sessionid, msgType: "AdminGameChg" });
     res.status(200).send(result);
   } catch (err) {
     res.status(400).send({ status: false, err: err.message });
