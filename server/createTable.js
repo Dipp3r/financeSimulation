@@ -153,6 +153,8 @@ async function createTables() {
         amount INTEGER, 
         status VARCHAR(255),
         time TIMESTAMP WITHOUT TIME ZONE, 
+        year INTEGER,
+        phase INTEGER,
         CONSTRAINT transaction_assetid_fkey FOREIGN KEY(assetid) REFERENCES assets(id),
         CONSTRAINT transaction_groupid_fkey FOREIGN KEY(groupid) REFERENCES "group"(groupid)
       )`);   

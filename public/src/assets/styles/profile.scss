@@ -31,6 +31,7 @@
             position:relative;
             @include flex(column,center,center);
             margin-top:30px;
+            margin-bottom:15px;
             width: 165px;
             height: 165px;
             border-radius: 100%;
@@ -58,7 +59,7 @@
             }
         }
         .badgeRow{
-            margin-top:5px;
+            margin-top:0px;
             @include flex(row,space-evenly,center);
             img{
               animation: starRotate 60s linear infinite;
@@ -151,7 +152,6 @@
             @include flex(row,space-between,center);
             .option{
                 height:60px;
-                width:40px;
                 margin:0px;
                 position:relative;
                 @include flex(column,center,center);
@@ -181,15 +181,15 @@
                     color: #FFFFFF;
 
                 }
+                
             }
             #team{
                 img{
-                    margin-top:0px;
+                    margin-top:3px;
                 }
                 p{
-                    margin-top:2px;
+                    margin-top:7px;
                 }
-                
             }
         }
         #fixedNav{

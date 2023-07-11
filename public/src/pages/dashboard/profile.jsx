@@ -185,8 +185,8 @@ class ProfileComp extends React.Component {
                 nameKey="name"
                 cx="50%"
                 cy="50%"
-                innerRadius={80}
-                outerRadius={95}
+                innerRadius={82.5}
+                outerRadius={92.5}
                 startAngle={90}
                 endAngle={-450}
               >
@@ -222,6 +222,7 @@ class ProfileComp extends React.Component {
             <img className="starHolder" alt="star" />
           </div>
           <div className="badgeRow">
+            <img className="starHolder" alt="star" />
             <img className="starHolder" alt="star" />
             <img className="starHolder" alt="star" />
             <img className="starHolder" alt="star" />
