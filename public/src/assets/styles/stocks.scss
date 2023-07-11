@@ -133,7 +133,7 @@
                 @include flex(column,center,center);
                 transition:transform 0.3s ease;
                 p{
-                    animation:heart-beat 1.34s infinite ease;
+                   
                     background: linear-gradient(90deg, #223F80e2 2.98%, #444584e2 26.65%, #a43a36e2 101.79%);
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
@@ -143,11 +143,12 @@
                     
                 }
                 #title1{
+                    animation:heart-beat1 1.34s infinite ease;
                     font-size: 52px;
                     font-weight: 900;
                 }
                 #title2{
-                    transform: translate(0,-70px);
+                    animation:heart-beat2 1.34s infinite ease;
                     font-size: 30px;
                     font-weight: 900;
                 }
@@ -216,7 +217,7 @@
     }
 }
 
-@keyframes heart-beat {
+@keyframes heart-beat1 {
     0%{
         transform:scale(1) translate(0,-65px);
     }
@@ -226,7 +227,18 @@
     100%{
         transform:scale(1)  translate(0,-65px);
     }
-    
+}
+
+@keyframes heart-beat2 {
+    0%{
+        transform:scale(1) translate(0,-70px);
+    }
+    50%{
+        transform: scale(1.06)  translate(0,-70px);
+    }
+    100%{
+        transform:scale(1)  translate(0,-70px);
+    }
 }
 
 @keyframes marquee-scroll {

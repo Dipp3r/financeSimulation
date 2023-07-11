@@ -1,6 +1,8 @@
 import React from "react";
 // import PropTypes from "prop-types";
 // import { WithRouter } from "@components/routingWrapper";
+import error from "@assets/images/error.svg";
+import "@assets/styles/error.scss";
 
 class ErrorComp extends React.Component {
   constructor(props) {
@@ -15,10 +17,15 @@ class ErrorComp extends React.Component {
   render() {
     return (
       <>
-        <p>
-          404 page not found <br />
-          try reloading again
-        </p>
+        <div id="error">
+          <div id="content">
+            <img src={error} alt="404 page not found" />
+            <p>
+              This page is a result of an invalid URL. Try entering a valid url
+              or contact the admin for help.
+            </p>
+          </div>
+        </div>
       </>
     );
   }
