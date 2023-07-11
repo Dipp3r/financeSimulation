@@ -1,0 +1,23 @@
+@import "main";
+
+#error{
+    width:100vw;
+    height:100vh;
+    @include flex(column,center,center);
+    #content{
+        @include flex(column,center,center);
+        transform: translate(0,-50px);
+        img{
+            height:320px;
+        }
+        p{
+            width:80%;
+            margin:0px;
+            text-align: center;
+            font-family: "Montserrat";
+            font-size: 14px;
+            font-weight: 400;
+            color: rgb(47, 47, 47);
+        }
+    }
+}

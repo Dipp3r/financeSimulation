@@ -131,16 +131,26 @@
                 width: 100vw;
                 height: 100%;
                 @include flex(column,center,center);
-                #title{
-                    background: linear-gradient(90deg, #223F80 2.98%, #444584 26.65%, #A43936 101.79%);
+                transition:transform 0.3s ease;
+                p{
+                   
+                    background: linear-gradient(90deg, #223F80e2 2.98%, #444584e2 26.65%, #a43a36e2 101.79%);
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                     background-clip: text;
-                    transform: translate(0,-50px);
                     margin:0px;
                     font-family: 'Inter';
-                    font-size: large;
-                    font-weight: 600;
+                    
+                }
+                #title1{
+                    animation:heart-beat1 1.34s infinite ease;
+                    font-size: 52px;
+                    font-weight: 900;
+                }
+                #title2{
+                    animation:heart-beat2 1.34s infinite ease;
+                    font-size: 30px;
+                    font-weight: 900;
                 }
             }
             height:calc(100vh - 200px);
@@ -204,6 +214,30 @@
                 }
             }
         }
+    }
+}
+
+@keyframes heart-beat1 {
+    0%{
+        transform:scale(1) translate(0,-65px);
+    }
+    50%{
+        transform: scale(1.06)  translate(0,-65px);
+    }
+    100%{
+        transform:scale(1)  translate(0,-65px);
+    }
+}
+
+@keyframes heart-beat2 {
+    0%{
+        transform:scale(1) translate(0,-70px);
+    }
+    50%{
+        transform: scale(1.06)  translate(0,-70px);
+    }
+    100%{
+        transform:scale(1)  translate(0,-70px);
     }
 }
 

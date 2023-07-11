@@ -33,19 +33,22 @@
     overflow-y: scroll;
     #fixed {
       padding: 5px 20px;
-      @include flex(row, space-between, center);
+      @include flex(row, space-around, center);
       position: absolute;
       bottom: 30px;
       width: 185px;
       height: 44px;
       background: #223f80;
       border-radius: 10px;
+      img{
+        height:20px;
+      }
     //   transition: all .4s ease-out;
       &:focus{
-        animation: click 0.3s ease;
+        animation: click 0.1s ease-out;
       }
       p {
-        margin-right: 10px;
+        margin:0px;
         font-family: "Inter";
         font-style: normal;
         font-weight: 400;
@@ -126,7 +129,7 @@
 
 @keyframes click {
 	from {
-		transform: scale(0.9);
+		transform: scale(0.85);
 	}
 	to {
 		transform: translateY(1);
