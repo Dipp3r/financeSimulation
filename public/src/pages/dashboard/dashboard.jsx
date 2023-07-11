@@ -233,7 +233,13 @@ class Dashboard extends React.Component {
             id="ProfileCompButton"
             onClick={this.changeDisplay}
           >
-            <img id="userImg" className="navImg" src={User_fill} alt="User" />
+            <img
+              id="userImg"
+              height="32px"
+              className="navImg"
+              src={User_fill}
+              alt="User"
+            />
           </button>
           <button
             style={{ zIndex: 1 }}
@@ -241,7 +247,13 @@ class Dashboard extends React.Component {
             id="StocksCompButton"
             onClick={this.changeDisplay}
           >
-            <img id="chartImg" className="navImg" src={Chart_alt} alt="chart" />
+            <img
+              id="chartImg"
+              height="27px"
+              className="navImg"
+              src={Chart_alt}
+              alt="chart"
+            />
           </button>
           <button
             style={{ zIndex: 1 }}
@@ -251,6 +263,7 @@ class Dashboard extends React.Component {
           >
             <img
               id="messageImg"
+              height="35px"
               className="navImg"
               src={
                 this.props.newNotification
@@ -274,15 +287,15 @@ class Dashboard extends React.Component {
             </linearGradient>
             <circle
               id="buttonCircle"
-              r={25}
+              r={22}
               cx={this.state.circle_offsetLeft}
               cy="50%"
               // stroke="black"
               fill={"transparent"}
-              strokeWidth={5}
+              strokeWidth={4}
               stroke={"url(#myGradient)"}
               style={{
-                transitionDuration: "1s",
+                transitionDuration: "0.8s",
                 transitionTimingFunction: "cubic - bezier(0.87, 1.22, 0, 0.92)",
               }}
             />
