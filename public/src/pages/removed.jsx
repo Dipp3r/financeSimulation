@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { WithRouter } from "@components/routingWrapper";
+import alert from "@assets/images/alert_white.svg";
+import "@assets/styles/delete.scss";
 
 class RemovedComp extends React.Component {
   constructor(props) {
@@ -15,15 +17,29 @@ class RemovedComp extends React.Component {
   render() {
     return (
       <>
-        {this.state.userid ? (
-          <p> {this.state.name}, you have been removed </p>
-        ) : (
-          <p>{this.state.reason}</p>
-        )}
+        <div id="removePg">
+          <div id="main">
+            <div id="topDiv">
+              <img src={alert} alt="alert icon" />
+            </div>
+            <div id="content">
+              <p id="alert">Alert!</p>
+              {this.state.userid ? (
+                <p id="msg">
+                  {" "}
+                  {this.state.name}, you have been removed by the admin.
+                </p>
+              ) : (
+                <p id="msg">{this.state.reason}</p>
+              )}
+            </div>
+          </div>
+        </div>
       </>
     );
   }
 }
+
 RemovedComp.propTypes = {
   navigate: PropTypes.func.isRequired,
 };

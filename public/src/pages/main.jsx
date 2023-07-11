@@ -163,8 +163,8 @@ class MainComp extends React.Component {
           ) {
             //this user id removed
             localStorage.clear();
-            this.props.navigate("../removed");
             localStorage.setItem("removedMsg", JSON.stringify(message));
+            this.props.navigate("../removed");
           } else {
             //other users are removed
             notificationList.push(message);
@@ -174,6 +174,7 @@ class MainComp extends React.Component {
           for (let groupid of message.groupList) {
             if (groupid == localStorage.getItem("groupid")) {
               localStorage.setItem("isRunning", false);
+              localStorage.setItem("removedMsg", JSON.stringify(message));
               this.props.navigate("../removed");
               break;
             }
