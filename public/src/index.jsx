@@ -1,22 +1,16 @@
 import React from "react";
-import * as serviceWorkerRegistration from "@utils/serviceWorkerRegistration";
 import ReactDOM from "react-dom/client";
-// import PropTypes from "prop-types";
-import SellComp from "@pages/buySell";
-import Dashboard from "@pages/dashboard/dashboard";
-import InitialComp from "@pages/signInAndSignUp/initial";
-import PortfolioComp from "@pages/portfolio";
-import TeamComp from "@pages/team/team";
-
-import NewsComp from "@pages/news";
-import AssetInfoComp from "@pages/assetInfo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
-import { HashRouter } from "react-router-dom";
+// import PropTypes from "prop-types";
+
+import InitialComp from "@pages/signInAndSignUp/initial";
+
+import MainComp from "@pages/main";
 import RemovedComp from "@pages/removed";
 import ErrorComp from "@pages/error";
-// import { WithRouter } from "@components/routingWrapper";
-// import { useNavigate } from "react-router-dom";
+import * as serviceWorkerRegistration from "@utils/serviceWorkerRegistration";
+
+// const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 class IndexComp extends React.Component {
   constructor(props) {
     super(props);
@@ -36,48 +30,19 @@ class IndexComp extends React.Component {
   };
   render() {
     return (
-      <BrowserRouter history={HashRouter}>
-        <Routes history={HashRouter}>
+      <BrowserRouter>
+        <Routes>
           {/* <Route path="*" index element={<ErrorComp />} /> */}
           <Route
-            path="/:groupid"
+            path="/login/:groupid"
             element={
               <InitialComp setItem={this.setItem} getItem={this.getItem} />
             }
           />
           <Route
-            path="/dashboard"
-            element={
-              <Dashboard
-                setItem={this.setItem}
-                getItem={this.getItem}
-                newNotification={this.state.newNotification}
-              />
-            }
+            path="/"
+            element={<MainComp setItem={this.setItem} getItem={this.getItem} />}
           />
-          <Route
-            path="/portfolio"
-            element={
-              <PortfolioComp setItem={this.setItem} getItem={this.getItem} />
-            }
-          />
-          <Route
-            path="/team"
-            element={<TeamComp setItem={this.setItem} getItem={this.getItem} />}
-          />
-          <Route
-            path="/purchase"
-            element={<SellComp setItem={this.setItem} getItem={this.getItem} />}
-          />
-          <Route
-            path="/purchase"
-            element={<SellComp setItem={this.setItem} getItem={this.getItem} />}
-          />
-          <Route
-            path="/news"
-            element={<NewsComp setItem={this.setItem} getItem={this.getItem} />}
-          />
-          <Route path="/assetInfo" element={<AssetInfoComp />} />
           <Route path="/removed" element={<RemovedComp />} />
           <Route path="/*" element={<ErrorComp />} />
         </Routes>

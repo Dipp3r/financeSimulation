@@ -70,23 +70,23 @@ class ProfileComp extends React.Component {
         },
         // body: JSON.stringify({"userid":localStorage.getItem('userid')})
       }
-    )
-      .then((response) => {
-        if (response.status === 200 || response.status === 201) {
-          // this.props.navigate("dashboard")
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // Handle the response data
-        console.log(data);
-      });
+    );
+    // .then((response) => {
+    //   if (response.status === 200 || response.status === 201) {
+    //     // this.props.navigate("dashboard")
+    //   }
+    //   return response.json();
+    // })
+    // .then((data) => {
+    //   // Handle the response data
+    //   console.log(data);
+    // });
   };
   logout = () => {
     let countDownIntervalKey = localStorage.getItem("countDownIntervalKey");
     if (countDownIntervalKey) clearInterval(countDownIntervalKey);
     localStorage.clear();
-    this.props.navigate("../login");
+    this.props.navigate("../login/0");
   };
   setStars = () => {
     let starCount = this.state.star;
@@ -108,7 +108,6 @@ class ProfileComp extends React.Component {
         23 * (starCount + 1)
       }%`;
     }
-    console.log(23 * starCount + "% percent wave");
   };
   updateProgressBar = () => {
     let keys = Object.keys(yearPhase);
@@ -124,7 +123,6 @@ class ProfileComp extends React.Component {
         perPhaseValue * Number(localStorage.getItem("phase"))) *
         100
     );
-    console.log(percent, "percent progress");
     this.setState({ pieValue: percent });
   };
   componentDidMount() {
@@ -250,7 +248,7 @@ class ProfileComp extends React.Component {
               className="option"
               onClick={() =>
                 setTimeout(
-                  () => this.props.navigate("../portfolio"),
+                  () => this.props.toggleMainDisplay("portfolio"),
                   this.triggerDelay
                 )
               }
@@ -267,7 +265,7 @@ class ProfileComp extends React.Component {
               id="team"
               onClick={() =>
                 setTimeout(
-                  () => this.props.navigate("../team"),
+                  () => this.props.toggleMainDisplay("team"),
                   this.triggerDelay
                 )
               }
@@ -296,5 +294,6 @@ class ProfileComp extends React.Component {
 ProfileComp.propTypes = {
   navigate: PropTypes.func.isRequired,
   getItem: PropTypes.func.isRequired,
+  toggleMainDisplay: PropTypes.func.isRequired,
 };
 export default WithRouter(ProfileComp);

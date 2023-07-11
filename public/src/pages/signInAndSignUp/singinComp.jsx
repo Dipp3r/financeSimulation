@@ -44,9 +44,7 @@ class SigninComp extends React.Component {
     console.log(isError);
     if (!isError) {
       fetch(
-        import.meta.env.VITE_API_SERVER_URL +
-          "login/" +
-          localStorage.getItem("groupid"),
+        import.meta.env.VITE_API_SERVER_URL + "login/" + this.props.groupid,
         {
           method: "POST",
           headers: {
@@ -72,7 +70,7 @@ class SigninComp extends React.Component {
             localStorage.setItem("minute", 15);
           if (!localStorage.getItem("second"))
             localStorage.setItem("second", 0);
-          this.props.navigate("../dashboard");
+          this.props.navigate("../../");
         })
         .catch((error) => {
           throw new Error(error);
@@ -128,6 +126,7 @@ class SigninComp extends React.Component {
 }
 SigninComp.propTypes = {
   toggleInitPage: PropTypes.func.isRequired,
+  groupid: PropTypes.string.isRequired,
   navigate: PropTypes.func.isRequired,
 };
 export default WithRouter(SigninComp);

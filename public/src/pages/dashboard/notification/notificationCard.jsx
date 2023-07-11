@@ -10,7 +10,7 @@ import red_group from "@assets/images/red_group.svg";
 import white_star from "@assets/images/white_star.svg";
 import roleNumToStr from "@utils/roleNumberToString";
 import getPhaseString from "@utils/getPhaseString";
-import { WithRouter } from "@components/routingWrapper";
+
 class NotificationCard extends React.Component {
   constructor(props) {
     super(props);
@@ -25,21 +25,21 @@ class NotificationCard extends React.Component {
       this.props.changeisRead(this.props.id);
       switch (this.state.msgType) {
         case "GameChg":
-          this.props.navigate("../news");
-          localStorage.setItem("year", this.state.year);
-          localStorage.setItem("phase", this.state.phase);
+          this.props.toggleMainDisplay("news");
+          localStorage.setItem("newsYear", this.state.year);
+          localStorage.setItem("newsPhase", this.state.phase);
           break;
         case "DeleteAction":
         case "NewUser":
         case "RemoveUser":
         case "RoleChg":
-          this.props.navigate("../team");
+          this.props.toggleMainDisplay("team");
           break;
         case "CashUpt":
-          this.props.navigate("../portfolio");
+          this.props.toggleMainDisplay("portfolio");
           break;
         default:
-          this.props.navigate("../dashboard");
+          this.props.toggleMainDisplay("dashboard");
           break;
       }
     });
@@ -131,7 +131,7 @@ class NotificationCard extends React.Component {
 NotificationCard.propTypes = {
   changeisRead: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired,
-  navigate: PropTypes.func.isRequired,
+  toggleMainDisplay: PropTypes.func.isRequired,
   notification: PropTypes.object.isRequired,
 };
-export default WithRouter(NotificationCard);
+export default NotificationCard;
