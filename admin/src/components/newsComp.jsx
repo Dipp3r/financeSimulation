@@ -34,60 +34,92 @@ export default class NewsComp extends React.Component {
       <div className="newsComp">
         <div id="first">
           <p id="year">{this.props.info.year}</p>
-          <p>Open phase</p>
-          <div>
-            <img src={Alarmclock} alt="alarmclock" />
-            <input
-              type="text"
-              name="1"
-              placeholder="mm:ss"
-              onInput={this.inputInput}
-              onBlur={this.updateTime}
-              defaultValue={this.props.info.phase1.slice(3, undefined)}
-            />
-          </div>
+          {this.props.phases.includes(1) ? (
+            <>
+              <p>Open phase</p>
+              <div>
+                <img src={Alarmclock} alt="alarmclock" />
+                <input
+                  type="text"
+                  name="1"
+                  placeholder="mm:ss"
+                  onInput={this.inputInput}
+                  onBlur={this.updateTime}
+                  defaultValue={this.props.info.phase1.slice(3, undefined)}
+                />
+              </div>
+            </>
+          ) : (
+            <p>
+              <s>Open Phase</s>
+            </p>
+          )}
         </div>
         <div className="newsUpdate">
-          <p>Market update</p>
-          <div>
-            <img src={Alarmclock} alt="alarmclock" />
-            <input
-              type="text"
-              name="2"
-              placeholder="mm:ss"
-              onInput={this.inputInput}
-              onBlur={this.updateTime}
-              defaultValue={this.props.info.phase2.slice(3, undefined)}
-            />
-          </div>
+          {this.props.phases.includes(2) ? (
+            <>
+              <p>Market update</p>
+              <div>
+                <img src={Alarmclock} alt="alarmclock" />
+                <input
+                  type="text"
+                  name="2"
+                  placeholder="mm:ss"
+                  onInput={this.inputInput}
+                  onBlur={this.updateTime}
+                  defaultValue={this.props.info.phase2.slice(3, undefined)}
+                />
+              </div>
+            </>
+          ) : (
+            <p>
+              <s>Market update</s>
+            </p>
+          )}
         </div>
         <div className="newsUpdate">
-          <p>Breaking news</p>
-          <div>
-            <img src={Alarmclock} alt="alarmclock" />
-            <input
-              type="text"
-              name="3"
-              placeholder="mm:ss"
-              onInput={this.inputInput}
-              onBlur={this.updateTime}
-              defaultValue={this.props.info.phase3.slice(3, undefined)}
-            />
-          </div>
+          {this.props.phases.includes(3) ? (
+            <>
+              <p>Breaking news</p>
+              <div>
+                <img src={Alarmclock} alt="alarmclock" />
+                <input
+                  type="text"
+                  name="3"
+                  placeholder="mm:ss"
+                  onInput={this.inputInput}
+                  onBlur={this.updateTime}
+                  defaultValue={this.props.info.phase3.slice(3, undefined)}
+                />
+              </div>
+            </>
+          ) : (
+            <p>
+              <s>Breaking news</s>
+            </p>
+          )}
         </div>
         <div className="newsUpdate">
-          <p>Super breaking news</p>
-          <div>
-            <img src={Alarmclock} alt="alarmclock" />
-            <input
-              type="text"
-              name="4"
-              placeholder="mm:ss"
-              onInput={this.inputInput}
-              onBlur={this.updateTime}
-              defaultValue={this.props.info.phase4.slice(3, undefined)}
-            />
-          </div>
+          {this.props.phases.includes(4) ? (
+            <>
+              <p>Super breaking news</p>
+              <div>
+                <img src={Alarmclock} alt="alarmclock" />
+                <input
+                  type="text"
+                  name="4"
+                  placeholder="mm:ss"
+                  onInput={this.inputInput}
+                  onBlur={this.updateTime}
+                  defaultValue={this.props.info.phase4.slice(3, undefined)}
+                />
+              </div>
+            </>
+          ) : (
+            <p>
+              <s>Super breaking news</s>
+            </p>
+          )}
         </div>
       </div>
     );
@@ -95,4 +127,5 @@ export default class NewsComp extends React.Component {
 }
 NewsComp.propTypes = {
   info: PropTypes.object.isRequired,
+  phases: PropTypes.array.isRequired,
 };
