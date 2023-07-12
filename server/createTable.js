@@ -120,6 +120,7 @@ async function createTables() {
         groupid INTEGER,
         holdings FLOAT,
         prev_holdings FLOAT,
+        profit FLOAT,
         CONSTRAINT investment_groupid_fkey FOREIGN KEY (groupid) REFERENCES "group"(groupid),
         CONSTRAINT investment_stockid_fkey FOREIGN KEY (stockid) REFERENCES assets(id)
       )
