@@ -1,6 +1,8 @@
 import React from "react";
 // import PropTypes from "prop-types";
 import NewsComp from "@components/newsComp";
+import yearPhase from "@utils/yearPhase.json";
+
 export default class NewsViewer extends React.Component {
   constructor(props) {
     super(props);
@@ -16,7 +18,9 @@ export default class NewsViewer extends React.Component {
       .then((data) => {
         let newsList = [];
         data.forEach((news, index) => {
-          newsList.push(<NewsComp info={news} key={index} />);
+          newsList.push(
+            <NewsComp info={news} key={index} phases={yearPhase[news.year]} />
+          );
         });
         this.setState({ newsList: newsList });
       });

@@ -28,7 +28,8 @@ export default class PlayersPage extends React.Component {
   copyLink = (event) => {
     event.stopPropagation();
     navigator.clipboard.writeText(
-      import.meta.env.VITE_API_PUBLIC_URL + `/${this.state.groupInfo.groupid}`
+      import.meta.env.VITE_API_PUBLIC_URL +
+        `/login/${this.state.groupInfo.groupid}`
     );
   };
   groupRename = (event) => {

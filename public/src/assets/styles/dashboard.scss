@@ -10,8 +10,27 @@
     box-shadow: 0px -3px 14px 1px rgba(0, 0, 0, 0.1);
     @include flex(row,space-around,center);
 }
+#buttonCircle{
+  transform-origin: center;
+  animation: 0.8s linear 1;
+  transition-duration: 1s;
+  // transition-timing-function: cubic - bezier(0.87, 1.22, 0, 0.92),
+}
 
-.circleScaleDown {
-  transform-origin: center center;
-  transform: scale(0.7);
+@keyframes circleAnimation {
+  0%{
+    transform: scaleX(1) scaleY(1);
+  }
+  40%{
+    transform: scaleX(1.1) scaleY(0.9);
+  }
+  60%{
+    transform: scaleX(1.25) scaleY(0.8);
+  }
+  70%{
+    transform: scaleX(1.4) scaleY(0.6);
+  }
+  80%{
+    transform: scaleX(1) scaleY(1);
+  }
 }

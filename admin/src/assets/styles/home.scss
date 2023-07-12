@@ -222,6 +222,12 @@
               font-weight: 500;
               font-size: 20px;
               color: #3f3f3f;
+              s {
+                text-decoration: line-through;
+                text-decoration-color: #ff000052;
+                text-decoration-thickness: 2px;
+                color: #8080809e;
+              }
             }
             div {
               margin-top: 10px;

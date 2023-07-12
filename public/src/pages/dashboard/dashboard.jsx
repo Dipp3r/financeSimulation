@@ -81,13 +81,11 @@ class Dashboard extends React.Component {
       circle_offsetLeft: comp.offsetLeft + comp.offsetWidth / 2,
     });
     setTimeout(() => {
-      circle.classList.add("circleScaleDown");
-    }, 100);
-
-    // Scale up after 4 seconds
-    setTimeout(() => {
-      circle.classList.remove("circleScaleDown");
-    }, 500);
+      circle.style.animationName = "circleAnimation";
+      setTimeout(() => {
+        circle.style.animationName = "";
+      }, 1100);
+    }, 1);
   };
   componentDidUpdate(prevProps) {
     console.log("checking");
@@ -183,10 +181,6 @@ class Dashboard extends React.Component {
               fill={"transparent"}
               strokeWidth={4}
               stroke={"url(#myGradient)"}
-              style={{
-                transitionDuration: "0.8s",
-                transitionTimingFunction: "cubic - bezier(0.87, 1.22, 0, 0.92)",
-              }}
             />
           </svg>
         </div>
