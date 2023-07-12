@@ -147,6 +147,13 @@ class MainComp extends React.Component {
         }
         break;
       case "RoleChg":
+        if (message.groupid == localStorage.getItem("groupid")) {
+          if (message.userid == localStorage.getItem("userid"))
+            localStorage.setItem("role", message.role);
+          this.setState({ newNotification: true });
+          notificationList.push(message);
+        }
+        break;
       case "NewUser":
         if (message.groupid == localStorage.getItem("groupid")) {
           this.setState({ newNotification: true });
