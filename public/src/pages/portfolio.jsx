@@ -278,6 +278,7 @@ class PortfolioComp extends React.Component {
                   price={stock.price}
                   diff={stock.diff}
                   holdings_diff={stock.holdings_diff}
+                  type="stock"
                 />
               );
             })}
@@ -332,6 +333,7 @@ class PortfolioComp extends React.Component {
                   price={stock.price}
                   diff={stock.diff}
                   holdings_diff={stock.holdings_diff}
+                  type="mutualFund"
                 />
               );
             })}
@@ -386,6 +388,7 @@ class PortfolioComp extends React.Component {
                   price={stock.price}
                   diff={stock.diff}
                   holdings_diff={stock.holdings_diff}
+                  type="commodity"
                 />
               );
             })}

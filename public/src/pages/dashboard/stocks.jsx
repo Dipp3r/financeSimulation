@@ -18,6 +18,7 @@ class StocksComp extends React.Component {
       mutualFundList: [],
       commodityList: [],
       content: [],
+      type: "",
     };
   }
   toggleStatusButton = (e) => {
@@ -44,7 +45,7 @@ class StocksComp extends React.Component {
         content = this.state.commodityList;
         break;
     }
-    this.setState({ content: content });
+    this.setState({ content: content, type: target.getAttribute("value") });
   };
   fetchList = () => {
     fetch(import.meta.env.VITE_API_SERVER_URL + "invest", {
@@ -129,6 +130,7 @@ class StocksComp extends React.Component {
                     diff={asset.diff}
                     position={index % 2 === 0 ? "top" : "bottom"}
                     toggleMainDisplay={this.props.toggleMainDisplay}
+                    type={this.state.type}
                   />
                 );
               })

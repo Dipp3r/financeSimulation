@@ -11,7 +11,11 @@ export default class AssetsComp extends React.Component {
         <div className="row">
           <p id="name">{this.props.name}</p>
           <div>
-            <p>₹{this.props.price}</p>
+            <p>
+              {this.props.type == "mutualFund"
+                ? this.props.price + "%"
+                : "₹" + this.props.price}
+            </p>
             {this.props.diff > 0 && (
               <div>
                 <img src={gain} alt="gain" />
@@ -52,4 +56,5 @@ AssetsComp.propTypes = {
   price: PropTypes.number.isRequired,
   diff: PropTypes.number.isRequired,
   holdings_diff: PropTypes.number.isRequired,
+  type: PropTypes.string,
 };

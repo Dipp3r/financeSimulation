@@ -28,7 +28,11 @@ class AssetsCompCommon extends React.Component {
         </button>
         <p id="name">{this.props.name}</p>
         <div>
-          <p>₹{this.props.price}</p>
+          <p>
+            {this.props.type == "mutualFund"
+              ? this.props.price + "%"
+              : "₹" + this.props.price}
+          </p>
           {this.props.diff > 0 && (
             <div>
               <img src={gain} alt="gain" />
@@ -55,5 +59,6 @@ AssetsCompCommon.propTypes = {
   price: PropTypes.number.isRequired,
   diff: PropTypes.number.isRequired,
   toggleMainDisplay: PropTypes.func.isRequired,
+  type: PropTypes.string,
 };
 export default AssetsCompCommon;
