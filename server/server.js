@@ -20,21 +20,21 @@ const { group } = require("console");
 
 const COINS = 500000;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -135,22 +135,29 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
           UPDATE investment SET prev_holdings = holdings WHERE groupid in (SELECT groupid FROM "group" WHERE sessionid=${session})
           `); 
           await pool.query(`
-            UPDATE "group" 
-            SET _${year} = t2.total_holdings FROM (
-              SELECT groupid, SUM(i.prev_holdings * p.phase${phase}_diff / 100) AS total_holdings
-              FROM investment AS i
-              JOIN price_${year} AS p ON i.stockid = p.asset_id
-              GROUP BY i.groupid
-            ) AS t2
-            WHERE "group".groupid = t2.groupid AND "group".groupid in (SELECT groupid FROM "group" WHERE sessionid=${session}) 
-          `);
-          await pool.query(`
-            UPDATE investment SET holdings = t2.new_holdings FROM (
+          UPDATE investment SET holdings = t2.new_holdings FROM (
             SELECT i.stockid, i.groupid, i.holdings + (i.holdings * p.phase${phase}_diff / 100) AS new_holdings 
             FROM investment AS i
             JOIN price_${year} AS p ON i.stockid = p.asset_id
             WHERE i.groupid IN (SELECT groupid FROM "group" WHERE sessionid = ${session})) AS t2 
             WHERE investment.stockid = t2.stockid AND investment.groupid = t2.groupid
+          `);
+          await pool.query(`
+            UPDATE investment SET profit = (profit + holdings - prev_holdings) WHERE groupid in (SELECT groupid FROM "group" WHERE sessionid=${session})
+          `);
+          let tempYear = year-1;
+          let previous_years = "";
+          for(tempYear;tempYear>=trailYear;tempYear--){
+            previous_years += ` - "group"._${tempYear}`
+          }
+          await pool.query(`
+            UPDATE "group" 
+            SET _${year} = t2.total_holdings ${previous_years} FROM (
+              SELECT groupid, SUM(i.profit) AS total_holdings
+              FROM investment AS i
+              GROUP BY i.groupid
+            ) AS t2
+            WHERE "group".groupid = t2.groupid AND "group".groupid in (SELECT groupid FROM "group" WHERE sessionid=${session}) 
           `);
           holdingsUpt[`${session}`][`${year}`][`${phase}`] = true;
           console.log("holdings ran once for - ",year,phase,holdingsUpt)
@@ -821,13 +828,13 @@ async function assetInfo(assets, groupid, OP) {
     SELECT assets.id,assets.asset_type,assets.asset_name,price_${year}.phase${phase}_price as asset_price,price_${year}.phase${phase}_diff as asset_diff FROM assets,price_${year} WHERE assets.id = price_${year}.asset_id ORDER BY assets.asset_type,assets.asset_name ASC
   `);
   const investment = await pool.query(`
-    SELECT stockid,holdings,prev_holdings FROM investment WHERE groupid = ${groupid} ORDER BY stockid ASC
+    SELECT stockid,holdings,profit FROM investment WHERE groupid = ${groupid} ORDER BY stockid ASC
   `);
   const holdings = {};
-  const prev_holdings = {};
+  const profit = {};
   investment.rows.forEach((e) => {
     holdings[e["stockid"]] = e["holdings"];
-    prev_holdings[e["stockid"]] = e["prev_holdings"];
+    profit[e["stockid"]] = e["profit"];
   });
 
   result.rows.forEach((row) => {
@@ -853,7 +860,7 @@ async function assetInfo(assets, groupid, OP) {
           diff: asset_diff,
           holdings: holdings[`${id}`],
           holdings_diff:
-            Math.round(prev_holdings[`${id}`] * (asset_diff / 100) * 100) / 100,
+            Math.round(profit[`${id}`] * 100) / 100,
         });
       }
     }
@@ -915,10 +922,9 @@ app.get("/portfolio/:id", async (request, response) => {
     // const {stock, commodity, cash, mutualFund} = result;
 
     const holding_diff = await pool.query(`
-      SELECT t1.asset_type, SUM(t2.prev_holdings * t3.phase${phase}_diff/100) AS holding_diff
+      SELECT t1.asset_type, SUM(t2.profit) AS holding_diff
       FROM assets AS t1
       JOIN investment AS t2 ON t1.id = t2.stockid
-      JOIN price_${year} t3 ON t2.stockid = t3.asset_id
       WHERE t2.groupid = ${groupid}
       GROUP BY t1.asset_type;
     `);
@@ -999,11 +1005,11 @@ app.put("/buy", async (req, res) => {
     `);
     holdings.rowCount > 0
       ? await pool.query(`
-      UPDATE investment SET holdings = holdings + ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
-    `)
+          UPDATE investment SET holdings = holdings + ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
+        `)
       : await pool.query(`
-      INSERT INTO investment(stockid,groupid,holdings) values(${stockid},${groupid},${amount})
-    `);
+          INSERT INTO investment(stockid,groupid,holdings,profit) values(${stockid},${groupid},${amount},0)
+        `);
     const gameInfo = await pool.query(`
       select year,phase from "session" where sessionid = (select sessionid from "group" where groupid = ${groupid})
     `);
