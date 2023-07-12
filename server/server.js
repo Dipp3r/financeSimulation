@@ -20,21 +20,21 @@ const { group } = require("console");
 
 const COINS = 500000;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -74,7 +74,8 @@ wss.broadcast = function (data) {
 let timer_key = {},
   startTime = {},
   delay = {},
-  remainingTime = {};
+  remainingTime = {},
+  holdingsUpt = {};
 
 async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
   const YEAR = await pool.query(`
@@ -111,9 +112,7 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
       time ??= result.rows[0][`phase${phase}`];
       if (Object.keys(DATA.news[`${year}`][`${phase}`]["assets"]).length > 0) {
         const [hours, minutes, seconds] = time.split(":");
-        const totalSeconds = Number.parseInt(
-          hours * 3600 + minutes * 60 + seconds
-        );
+        const totalSeconds = Number.parseInt(hours) * 3600 + Number.parseInt(minutes) * 60 + Number.parseInt(seconds);
         if (yearBegan.rows[0]["curr_year"] === 0) {
           await pool.query(`
             UPDATE "group" set cash = cash + ${COINS} WHERE sessionid = ${session}
@@ -129,14 +128,34 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
         `,
           [year, phase, session]
         );
-        await pool.query(`
-          UPDATE investment SET holdings = t2.new_holdings FROM (
-          SELECT i.stockid, i.groupid, i.holdings + (i.holdings * p.phase${phase}_diff / 100) AS new_holdings 
-          FROM investment AS i
-          JOIN price_${year} AS p ON i.stockid = p.asset_id
-          WHERE i.groupid IN (SELECT groupid FROM "group" WHERE sessionid = ${session})) AS t2 
-          WHERE investment.stockid = t2.stockid AND investment.groupid = t2.groupid;
-        `);
+        try {
+          if(holdingsUpt[`${session}`][`${year}`][`${phase}`]!=1){
+            await pool.query(`
+              UPDATE investment SET holdings = t2.new_holdings FROM (
+              SELECT i.stockid, i.groupid, i.holdings + (i.holdings * p.phase${phase}_diff / 100) AS new_holdings 
+              FROM investment AS i
+              JOIN price_${year} AS p ON i.stockid = p.asset_id
+              WHERE i.groupid IN (SELECT groupid FROM "group" WHERE sessionid = ${session})) AS t2 
+              WHERE investment.stockid = t2.stockid AND investment.groupid = t2.groupid;
+            `);
+            holdingsUpt[`${session}`][`${year}`][`${phase}`] = 1;
+            console.log("holdings updated");
+          }
+        } catch {
+          await pool.query(`
+            UPDATE investment SET holdings = t2.new_holdings FROM (
+            SELECT i.stockid, i.groupid, i.holdings + (i.holdings * p.phase${phase}_diff / 100) AS new_holdings 
+            FROM investment AS i
+            JOIN price_${year} AS p ON i.stockid = p.asset_id
+            WHERE i.groupid IN (SELECT groupid FROM "group" WHERE sessionid = ${session})) AS t2 
+            WHERE investment.stockid = t2.stockid AND investment.groupid = t2.groupid;
+          `);
+          holdingsUpt[`${session}`] = {};
+          holdingsUpt[`${session}`][`${year}`] = {};
+          holdingsUpt[`${session}`][`${year}`][`${phase}`] = 1;
+          console.log("holdings updated 1st time");
+        }
+        
         console.log("year: ", year, " phase:", phase, " sec: ", totalSeconds);
         let obj = {};
         obj.msgType = "GameChg";
