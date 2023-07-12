@@ -70,7 +70,7 @@ export default class GroupPage extends React.Component {
         linkButton.onclick = (e) => {
           e.stopPropagation();
           navigator.clipboard.writeText(
-            import.meta.env.VITE_API_PUBLIC_URL + `login/${group.groupid}`
+            import.meta.env.VITE_API_PUBLIC_URL + `/login/${group.groupid}`
           );
         };
         groupBox.appendChild(linkButton);

@@ -118,7 +118,8 @@ async function createTables() {
         id SERIAL PRIMARY KEY,
         stockid INTEGER,
         groupid INTEGER,
-        holdings INTEGER,
+        holdings FLOAT,
+        prev_holdings FLOAT,
         CONSTRAINT investment_groupid_fkey FOREIGN KEY (groupid) REFERENCES "group"(groupid),
         CONSTRAINT investment_stockid_fkey FOREIGN KEY (stockid) REFERENCES assets(id)
       )
