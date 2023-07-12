@@ -20,11 +20,14 @@ const pool = new Pool({
 const assets  = require("./assetsName.json");
 const data = require("./info.json");
 
-let groupString = ""
+let groupString = "", sessionString = "";
 data.year.forEach(e=>{
-  groupString += `_${e} INTEGER, `
+  groupString += `_${e} FLOAT, `;
+  sessionString += `_${e} INTEGER, `;
 });
 groupString = groupString.trim().replace(/,$/, '');
+sessionString = sessionString.trim().replace(/,$/, '');
+
 
 async function createTables() {
   try {
@@ -37,7 +40,7 @@ async function createTables() {
         year INTEGER,
         phase INTEGER,
         start INTEGER,
-        ${groupString}
+        ${sessionString}
       )
     `);
 
@@ -234,6 +237,10 @@ async function deleteTables() {
 
     await pool.query(`
       DROP TABLE IF EXISTS investment;
+    `);
+
+    await pool.query(`
+      DROP TABLE IF EXISTS transaction;
     `);
 
     // Drop parent tables next

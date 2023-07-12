@@ -121,8 +121,7 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
           await pool.query(`
             UPDATE "session" SET _${year} = 1 where sessionid = ${session}
           `);
-          console.log({ cash: COINS, msgType: "CashUpt", year: year });
-          wss.broadcast({ cash: COINS, msgType: "CashUpt", year: year });
+          wss.broadcast({ cash: COINS, msgType: "CashUpt", groupList:groupList });
         }
         await pool.query(
           `
@@ -130,7 +129,14 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
         `,
           [year, phase, session]
         );
-
+        await pool.query(`
+          UPDATE investment SET holdings = t2.new_holdings FROM (
+          SELECT i.stockid, i.groupid, i.holdings + (i.holdings * p.phase${phase}_diff / 100) AS new_holdings 
+          FROM investment AS i
+          JOIN price_${year} AS p ON i.stockid = p.asset_id
+          WHERE i.groupid IN (SELECT groupid FROM "group" WHERE sessionid = ${session})) AS t2 
+          WHERE investment.stockid = t2.stockid AND investment.groupid = t2.groupid;
+        `);
         console.log("year: ", year, " phase:", phase, " sec: ", totalSeconds);
         let obj = {};
         obj.msgType = "GameChg";
@@ -542,15 +548,15 @@ app.post("/login/:id", async (req, res) => {
   try {
     let result = await pool.query(
       `
-      SELECT password,groupid,userid FROM users WHERE mobile = $1
+      SELECT password as db_password,groupid as db_groupid,userid,role FROM users WHERE mobile = $1
     `,
       [mobile]
     );
     if (result.rowCount > 0) {
-      const [db_password, db_groupid, userid] = Object.values(result.rows[0]);
+      const {db_password, db_groupid, userid, role} = result.rows[0];
       if (db_groupid == groupid) {
         if (db_password == password) {
-          res.send({ userid: userid });
+          res.send({ userid: userid, role: role });
         } else {
           res.status(401).send({ status: false, msg: "Invalid password" });
         }
@@ -609,17 +615,25 @@ app.put("/editTime", async (req, res) => {
   }
 });
 
-app.get("/download/:sessionId", (req, res) => {
+app.get("/download/:sessionId",async (req, res) => {
   const { sessionId } = req.params;
-  const filePath = path.join(__dirname, "excelSheets", sessionId + ".xlsx");
+  const info = await pool.query(`
+    SELECT title,year,phase FROM "session" WHERE sessionid = ${sessionId}
+  `);
+  const title = info.rows[0]["title"];
+  const year = info.rows[0]["year"];
+  const phase = info.rows[0]["phase"];
+
+  const filePath = path.join(__dirname, "excelSheets", `${title}_${sessionId}` + ".xlsx");
 
   res.setHeader(
     "Content-Type",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
   );
+
   res.setHeader(
     "Content-Disposition",
-    `attachment; filename=${sessionId}.xlsx`
+    `attachment; filename=${title}.xlsx`
   );
 
   res.sendFile(filePath);
