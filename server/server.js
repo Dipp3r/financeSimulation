@@ -94,6 +94,8 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
     }
     year++;
   }
+  holdingsUpt[`${session}`] ??= {};
+  holdingsUpt[`${session}`][`${year}`] ??= {};
   let groups = await pool.query(`
     SELECT groupid FROM "group" WHERE sessionid = ${session}
   `);
@@ -150,7 +152,7 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
             WHERE i.groupid IN (SELECT groupid FROM "group" WHERE sessionid = ${session})) AS t2 
             WHERE investment.stockid = t2.stockid AND investment.groupid = t2.groupid
           `);
-          holdingsUpt[`${session}`][`${year}`][`${phase}`] = 1;
+          holdingsUpt[`${session}`][`${year}`][`${phase}`] = true;
           console.log("holdings ran once for - ",year,phase,holdingsUpt)
         }
         console.log("year: ", year, " phase:", phase, " sec: ", totalSeconds);
@@ -216,8 +218,6 @@ app.post("/start", async (req, res) => {
       gameStatus.rows[0]["year"],
       gameStatus.rows[0]["phase"],
     ];
-    holdingsUpt[`${sessionid}`] ??= {};
-    holdingsUpt[`${sessionid}`][`${currentYear}`] ??= {};
     updateGame(
       currentPhase,
       currentYear,
