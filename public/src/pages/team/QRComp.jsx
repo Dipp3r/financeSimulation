@@ -16,6 +16,7 @@ export default class QRComp extends React.Component {
         <QRGenerator
           value={
             import.meta.env.VITE_API_PUBLIC_URL +
+            "login/" +
             localStorage.getItem("groupid")
           }
         />
