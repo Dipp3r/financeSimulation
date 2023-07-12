@@ -128,34 +128,31 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
         `,
           [year, phase, session]
         );
-        try {
-          if(holdingsUpt[`${session}`][`${year}`][`${phase}`]!=1){
-            await pool.query(`
-              UPDATE investment SET holdings = t2.new_holdings FROM (
-              SELECT i.stockid, i.groupid, i.holdings + (i.holdings * p.phase${phase}_diff / 100) AS new_holdings 
+        if(!holdingsUpt[`${session}`][`${year}`][`${phase}`]){
+          await pool.query(`
+          UPDATE investment SET prev_holdings = holdings WHERE groupid in (SELECT groupid FROM "group" WHERE sessionid=${session})
+          `); 
+          await pool.query(`
+            UPDATE "group" 
+            SET _${year} = t2.total_holdings FROM (
+              SELECT groupid, SUM(i.prev_holdings * p.phase${phase}_diff / 100) AS total_holdings
               FROM investment AS i
               JOIN price_${year} AS p ON i.stockid = p.asset_id
-              WHERE i.groupid IN (SELECT groupid FROM "group" WHERE sessionid = ${session})) AS t2 
-              WHERE investment.stockid = t2.stockid AND investment.groupid = t2.groupid;
-            `);
-            holdingsUpt[`${session}`][`${year}`][`${phase}`] = 1;
-            console.log("holdings updated");
-          }
-        } catch {
+              GROUP BY i.groupid
+            ) AS t2
+            WHERE "group".groupid = t2.groupid AND "group".groupid in (SELECT groupid FROM "group" WHERE sessionid=${session}) 
+          `);
           await pool.query(`
             UPDATE investment SET holdings = t2.new_holdings FROM (
             SELECT i.stockid, i.groupid, i.holdings + (i.holdings * p.phase${phase}_diff / 100) AS new_holdings 
             FROM investment AS i
             JOIN price_${year} AS p ON i.stockid = p.asset_id
             WHERE i.groupid IN (SELECT groupid FROM "group" WHERE sessionid = ${session})) AS t2 
-            WHERE investment.stockid = t2.stockid AND investment.groupid = t2.groupid;
+            WHERE investment.stockid = t2.stockid AND investment.groupid = t2.groupid
           `);
-          holdingsUpt[`${session}`] = {};
-          holdingsUpt[`${session}`][`${year}`] = {};
           holdingsUpt[`${session}`][`${year}`][`${phase}`] = 1;
-          console.log("holdings updated 1st time");
+          console.log("holdings ran once for - ",year,phase,holdingsUpt)
         }
-        
         console.log("year: ", year, " phase:", phase, " sec: ", totalSeconds);
         let obj = {};
         obj.msgType = "GameChg";
@@ -201,7 +198,8 @@ function secondsToHMS(seconds) {
 }
 
 app.post("/start", async (req, res) => {
-  const { sessionid } = req.body;
+  let { sessionid, time } = req.body;
+  time ??=  secondsToHMS(remainingTime[`${sessionid}`]);
   const gameStatus = await pool.query(`
     SELECT start,year,phase FROM "session" WHERE sessionid = ${sessionid}
   `);
@@ -218,19 +216,22 @@ app.post("/start", async (req, res) => {
       gameStatus.rows[0]["year"],
       gameStatus.rows[0]["phase"],
     ];
+    holdingsUpt[`${sessionid}`] ??= {};
+    holdingsUpt[`${sessionid}`][`${currentYear}`] ??= {};
     updateGame(
       currentPhase,
       currentYear,
       lastYear,
       sessionid,
-      secondsToHMS(remainingTime[`${sessionid}`])
-    );
+      time
+     );
     res.status(200).end();
   }
 });
 
 app.post("/pause", async (req, res) => {
   const { sessionid } = req.body;
+  console.log("pause:",holdingsUpt);
   clearTimeout(timer_key[`${sessionid}`]);
   elapsedTime = new Date().getTime() - startTime[`${sessionid}`];
   remainingTime[`${sessionid}`] = Math.round(
@@ -820,11 +821,13 @@ async function assetInfo(assets, groupid, OP) {
     SELECT assets.id,assets.asset_type,assets.asset_name,price_${year}.phase${phase}_price as asset_price,price_${year}.phase${phase}_diff as asset_diff FROM assets,price_${year} WHERE assets.id = price_${year}.asset_id ORDER BY assets.asset_type,assets.asset_name ASC
   `);
   const investment = await pool.query(`
-    SELECT stockid,holdings FROM investment WHERE groupid = ${groupid} ORDER BY stockid ASC
+    SELECT stockid,holdings,prev_holdings FROM investment WHERE groupid = ${groupid} ORDER BY stockid ASC
   `);
   const holdings = {};
+  const prev_holdings = {};
   investment.rows.forEach((e) => {
     holdings[e["stockid"]] = e["holdings"];
+    prev_holdings[e["stockid"]] = e["prev_holdings"];
   });
 
   result.rows.forEach((row) => {
@@ -850,7 +853,7 @@ async function assetInfo(assets, groupid, OP) {
           diff: asset_diff,
           holdings: holdings[`${id}`],
           holdings_diff:
-            Math.round(holdings[`${id}`] * (asset_diff / 100) * 100) / 100,
+            Math.round(prev_holdings[`${id}`] * (asset_diff / 100) * 100) / 100,
         });
       }
     }
@@ -906,12 +909,13 @@ app.get("/portfolio/:id", async (request, response) => {
       WHERE investment.groupid = ${groupid}
       GROUP BY assets.asset_type
     `);
+
     products = products.rows;
 
     // const {stock, commodity, cash, mutualFund} = result;
 
     const holding_diff = await pool.query(`
-      SELECT t1.asset_type, SUM(t2.holdings * t3.phase${phase}_diff/100) AS holding_diff
+      SELECT t1.asset_type, SUM(t2.prev_holdings * t3.phase${phase}_diff/100) AS holding_diff
       FROM assets AS t1
       JOIN investment AS t2 ON t1.id = t2.stockid
       JOIN price_${year} t3 ON t2.stockid = t3.asset_id
@@ -983,27 +987,6 @@ app.post("/trade", async (req, res) => {
   }
 });
 
-async function yearlyUpdate(groupid, amount, stockid, OP) {
-  try {
-    let gamedata = await pool.query(`
-      SELECT year,phase FROM "session" WHERE sessionid = (SELECT sessionid FROM "group" WHERE groupid = ${groupid});
-    `);
-    const { year, phase } = gamedata.rows[0];
-    pool.query(`
-    UPDATE "group" 
-    SET _${year} = _${year} ${OP} (${amount} * price_${year}.phase${phase}_diff / 100) 
-    FROM price_${year}
-    WHERE groupid = ${groupid} 
-    AND price_${year}.asset_id = ${stockid};
-  `);
-  } catch (err) {
-    res.status(400).send({
-      status: false,
-      err: err.message,
-      msg: "Could not update yearly amount of the group",
-    });
-  }
-}
 
 app.put("/buy", async (req, res) => {
   const { groupid, stockid, amount } = req.body;
@@ -1032,7 +1015,6 @@ app.put("/buy", async (req, res) => {
     `,
       [new Date()]
     );
-    await yearlyUpdate(groupid, amount, stockid, "+");
     wss.broadcast({ groupid: groupid, msgType: "Transact" });
     res.status(200).send({ status: true });
   } catch (err) {
@@ -1065,7 +1047,6 @@ app.put("/sell", async (req, res) => {
     `,
       [new Date()]
     );
-    await yearlyUpdate(groupid, amount, stockid, "-");
     wss.broadcast({ groupid: groupid, msgType: "Transact" });
     res.status(200).send({ status: true });
   } catch (err) {
@@ -1154,7 +1135,20 @@ app.put("/gamechange", async (req, res) => {
         }
       } else {
         if (phase > 3 && OP === "+") {
+          console.log("running");
           if (year != lastYear) {
+            if(year == trailYear){
+              console.log("trail running");
+              const trailCash = await pool.query(`
+                SELECT _${trailYear} AS cash FROM "session" WHERE sessionid = ${sessionid}
+              `);
+              if(trailCash.rows[0][`cash`]==1){
+                console.log("trail cash removing");
+                await pool.query(`
+                  UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
+                `);
+              }
+            }
             await pool.query(`
               UPDATE "session" SET phase = 1, year = year + 1 WHERE sessionid = ${sessionid}
             `);
