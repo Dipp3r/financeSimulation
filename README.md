@@ -30,7 +30,6 @@ CREATE TABLE "group" (
     stocks INTEGER,
     commodities INTEGER,
     cash INTEGER,
-    star INTEGER,
     mutual_funds INTEGER,
     sessionid INTEGER,
     players INTEGER,
