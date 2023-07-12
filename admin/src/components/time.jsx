@@ -37,8 +37,6 @@ export default class Time extends React.Component {
             second: Number.parseInt(values[1]),
           });
           clearInterval(this.state.countDownIntervalKey);
-        } else {
-          this.props.timeChange(obj.time);
         }
       },
       countDownIntervalKey: 0,
@@ -69,11 +67,13 @@ export default class Time extends React.Component {
     let value = event.currentTarget.value;
     value.replace(/[^0-9:]/g, "");
     let values = value.split(":");
+    let newTime = `${values[0].toString().padStart(2, "0")}:${values[1]
+      .toString()
+      .padStart(2, "0")}`;
     this.setState({
-      time: `${values[0].toString().padStart(2, "0")}:${values[1]
-        .toString()
-        .padStart(2, "0")}`,
+      time: newTime,
     });
+    this.props.timeChange("00:" + newTime);
   };
   init = () => {
     let obj = {};
@@ -111,7 +111,7 @@ export default class Time extends React.Component {
           type="text"
           value={this.state.time}
           onInput={this.inputFormate}
-          onFocus={this.fixTimer}
+          onBlur={this.fixTimer}
           style={{ color: this.state.isRunning ? "#aaaaaa" : "#fff" }}
         />
       </>

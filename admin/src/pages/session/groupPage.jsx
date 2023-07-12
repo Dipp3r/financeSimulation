@@ -28,6 +28,7 @@ export default class GroupPage extends React.Component {
       year: "2099",
       phase: "1",
       childState: {},
+      newTime: null,
     };
   }
   searchGroup = (e) => {
@@ -110,13 +111,13 @@ export default class GroupPage extends React.Component {
         },
         body: JSON.stringify({
           sessionid: Number.parseInt(localStorage.getItem("currentSessionID")),
-          // time: this.state.time,
+          time: this.state.newTime,
         }),
       }
     ).then((response) => {
       if (response.status == 200) {
         let isRunning = this.state.isRunning;
-        this.setState({ isRunning: !isRunning });
+        this.setState({ isRunning: !isRunning, newTime: null });
       }
     });
   };
@@ -210,8 +211,8 @@ export default class GroupPage extends React.Component {
       console.log("Received message from server:", JSON.parse(event.data));
     });
   }
-  timeChange = (newState) => {
-    this.setState({ time: newState });
+  timeChange = (newTime) => {
+    this.setState({ newTime: newTime });
   };
   render() {
     return (
