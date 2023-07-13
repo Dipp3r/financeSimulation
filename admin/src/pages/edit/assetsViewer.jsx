@@ -1,5 +1,6 @@
 import React from "react";
 import AssetsComp from "./assetComp";
+import AddInfoPrompt from "./addInfo";
 
 export default class AssetsViewer extends React.Component {
   constructor(props) {
@@ -7,6 +8,9 @@ export default class AssetsViewer extends React.Component {
     this.state = {
       assetsList: [],
       currentActiveAssetButton: "0",
+      toggleaddInfoPromptDisplay: "none",
+      assetId: 0,
+      assetName: "",
     };
   }
   displayList = () => {};
@@ -48,12 +52,27 @@ export default class AssetsViewer extends React.Component {
         });
       });
   };
+  toggleaddInfoPrompt = (obj = {}) => {
+    let toggleaddInfoPromptDisplay =
+      this.state.toggleaddInfoPromptDisplay == "none" ? "flex" : "none";
+    this.setState({
+      ...obj,
+      toggleaddInfoPromptDisplay: toggleaddInfoPromptDisplay,
+    });
+  };
   componentDidMount() {
     this.fetchList();
   }
   render() {
     return (
       <div id="assets" className="section">
+        <AddInfoPrompt
+          display={this.state.toggleaddInfoPromptDisplay}
+          toggleaddInfoPrompt={this.toggleaddInfoPrompt}
+          assetId={this.state.assetId}
+          assetName={this.state.assetName}
+        />
+
         <div id="top">
           <button value="0" onClick={this.toggleAssetSection}>
             Stocks
@@ -68,7 +87,12 @@ export default class AssetsViewer extends React.Component {
         <div id="editMainSection">
           {this.state.assetsList.map((assets, index) => {
             return (
-              <AssetsComp key={assets.id} index={index + 1} info={assets} />
+              <AssetsComp
+                key={assets.id}
+                index={index + 1}
+                info={assets}
+                toggleaddInfoPrompt={this.toggleaddInfoPrompt}
+              />
             );
           })}
         </div>

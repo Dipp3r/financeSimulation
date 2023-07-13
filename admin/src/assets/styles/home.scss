@@ -91,6 +91,44 @@
         max-height: calc(100% - 300px);
         background: rgba(34, 63, 128, 0.1);
         border-radius: 34px;
+        #addInfoPrompt{
+          background: rgb(0 0 0 / 71%);
+          width: 100vw;
+          height: 100vh;
+          backdrop-filter: blur(5px);
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          @include flex(row, center, center);
+          #closeButton{
+            background-color: gray;
+          }
+          #InfoBox{
+            border-radius: 10px;
+            border:2px solid beige;
+            width: 70%;
+            min-width: 50vw;
+            background-color: whitesmoke;
+            #first {
+              @include flex(row, space-between, center);
+            }
+            #textarea {
+              width: 99%;
+              min-height: 70vh;
+              resize: none;
+              .assetTitle{
+                color: red;
+              }
+              &:focus{
+                outline: none;
+              }
+            }
+          }
+        }
+
+
+
+
         #top {
           @include flex(row, space-around, center);
           button {

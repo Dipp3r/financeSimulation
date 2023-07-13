@@ -12,8 +12,25 @@ class AssetInfoComp extends React.Component {
       name: "",
     };
   }
+  getInfo = () => {
+    fetch(import.meta.env.VITE_API_SERVER_URL + "assetInfo", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ assetid: this.state.id }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({ text: data.info == null ? undefined : data.info });
+      });
+  };
   componentDidMount() {
-    this.setState(JSON.parse(localStorage.getItem("asset")));
+    this.setState(JSON.parse(localStorage.getItem("asset")), () =>
+      this.getInfo()
+    );
   }
   render() {
     return (
@@ -32,7 +49,7 @@ class AssetInfoComp extends React.Component {
           <Time />
         </div>
         <div id="main">
-          <div id="content"></div>
+          <div id="content">{this.state.text}</div>
           <div id="fixed"></div>
         </div>
       </div>
