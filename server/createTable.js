@@ -75,7 +75,8 @@ async function createTables() {
     CREATE TABLE IF NOT EXISTS assets (
       id SERIAL PRIMARY KEY,
       asset_name VARCHAR(255),
-      asset_type VARCHAR(255)
+      asset_type VARCHAR(255),
+      info TEXT
     );
     `);
 
