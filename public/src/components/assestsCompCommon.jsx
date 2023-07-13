@@ -11,6 +11,7 @@ class AssetsCompCommon extends React.Component {
     obj.name = this.props.name;
     obj.id = this.props.id;
     obj.holdings = this.props.holdings;
+    if (localStorage.getItem("role") != "0") return;
     localStorage.setItem("asset", JSON.stringify(obj));
     this.props.toggleMainDisplay("purchase");
   };
