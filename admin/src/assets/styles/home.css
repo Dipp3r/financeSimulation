@@ -389,6 +389,12 @@ input[type=time] {
   font-size: 20px;
   color: #3f3f3f;
 }
+#home #main #editMain #news .newsComp .newsUpdate p s {
+  text-decoration: line-through;
+  text-decoration-color: rgba(255, 0, 0, 0.3215686275);
+  text-decoration-thickness: 2px;
+  color: rgba(128, 128, 128, 0.6196078431);
+}
 #home #main #editMain #news .newsComp .newsUpdate div {
   margin-top: 10px;
   display: flex;
@@ -456,7 +462,7 @@ input[type=time] {
   align-items: center;
   height: 100vh;
   width: 100vw;
-  background-color: rgba(0, 0, 0, 0.242);
+  background: rgba(0, 0, 0, 0.85);
   -webkit-backdrop-filter: blur(1.5px);
           backdrop-filter: blur(1.5px);
 }
@@ -1018,6 +1024,7 @@ input[type=time] {
   align-items: center;
 }
 #home #main #sessionMain #playersPage #playersList #deletePrompt {
+  z-index: 2;
   position: fixed;
   top: 0;
   left: 0;
@@ -1027,7 +1034,7 @@ input[type=time] {
   align-items: center;
   height: 100vh;
   width: 100vw;
-  background-color: rgba(0, 0, 0, 0.242);
+  background: rgba(0, 0, 0, 0.85);
   -webkit-backdrop-filter: blur(1.5px);
           backdrop-filter: blur(1.5px);
 }
@@ -1234,6 +1241,28 @@ input[type=time] {
   background-color: white;
   overflow: hidden scroll;
 }
+#home #main #sessionMain #groupPage #fixed-end {
+  position: fixed;
+  bottom: 40px;
+  right: 80px;
+  width: 202px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 1.5px solid #A50C0C;
+  color: #A50C0C;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  transition: all 0.2s ease;
+}
+#home #main #sessionMain #groupPage #fixed-end:hover {
+  color: white;
+  background: #A50C0C;
+}
 #home #main #sessionMain #groupPage #topBar {
   width: 100%;
   display: flex;
@@ -1359,6 +1388,7 @@ input[type=time] {
   font-weight: 500;
   font-size: 20px;
   color: #223f80;
+  transition: all 0.2s ease;
 }
 #home #main #sessionMain #groupPage #topBar #second #gameStatus:hover {
   color: white;

@@ -13,15 +13,21 @@ class AssetsCompCommon extends React.Component {
     obj.holdings = this.props.holdings;
     if (localStorage.getItem("role") != "0") return;
     localStorage.setItem("asset", JSON.stringify(obj));
-    this.props.toggleMainDisplay("purchase");
   };
   render() {
     return (
-      <div className={"row " + this.props.position} onClick={this.toggleToBuy}>
+      <div
+        className={"row " + this.props.position}
+        onClick={() => {
+          this.toggleToBuy();
+          this.props.toggleMainDisplay("purchase");
+        }}
+      >
         <button
           id="info"
           onClick={(event) => {
             event.stopPropagation();
+            this.toggleToBuy();
             this.props.toggleMainDisplay("assetInfo");
           }}
         >

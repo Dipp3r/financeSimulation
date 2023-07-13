@@ -109,6 +109,7 @@ class MainComp extends React.Component {
     let notificationList = this.state.notificationList;
     let toggleMainDisplayTo = "";
     message.isRead = false;
+    // console.log(messag)
     switch (message.msgType) {
       case "GameChg":
         for (let groupid of message.groupList) {
@@ -121,10 +122,17 @@ class MainComp extends React.Component {
             localStorage.setItem("isRunning", true);
 
             if (!message.news) return;
+            let lastMessage = notificationList.slice(-1)[0];
+            if (lastMessage) {
+              if (
+                message.year == lastMessage.year &&
+                message.phase == lastMessage.phase
+              )
+                break;
+            }
             this.setState({ newNotification: true });
             localStorage.setItem("isEnd", false);
             notificationList.push(message);
-            this.setState({ newNotification: true });
 
             localStorage.setItem("dashboard", "NotifComp");
             toggleMainDisplayTo = "dashboard";
@@ -206,10 +214,12 @@ class MainComp extends React.Component {
         }
         break;
       case "EndGame":
-        localStorage.getItem("isEnd");
+        console.log(localStorage.getItem("isEnd"));
         if (message.groupList) {
           for (let groupid of message.groupList) {
+            console.log(groupid);
             if (groupid == localStorage.getItem("groupid")) {
+              console.log("isEnd at main", localStorage.getItem("isEnd"));
               localStorage.setItem("isEnd", true);
               break;
             }
@@ -234,7 +244,10 @@ class MainComp extends React.Component {
 
     const messageListener = (event) => {
       this.checkMessage(JSON.parse(event.data));
-      console.log("Received message from server:", JSON.parse(event.data));
+      console.log(
+        "Received message from server at main:",
+        JSON.parse(event.data)
+      );
     };
     socket.removeEventListener("message", messageListener);
     socket.addEventListener("message", messageListener);

@@ -5,6 +5,16 @@ import "@assets/styles/news.scss";
 import Time from "@components/time";
 
 class AssetInfoComp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: 0,
+      name: "",
+    };
+  }
+  componentDidMount() {
+    this.setState(JSON.parse(localStorage.getItem("asset")));
+  }
   render() {
     return (
       <div id="news">
@@ -14,11 +24,11 @@ class AssetInfoComp extends React.Component {
               src={Arrow_left}
               alt="back_arrow"
               onClick={() => {
-                this.props.toggleMainDisplay("../dashboard");
+                this.props.toggleMainDisplay("dashboard");
               }}
             />
           </div>
-          <p>Ram Dom Tower</p>
+          <p className="pageTitle">{this.state.name}</p>
           <Time />
         </div>
         <div id="main">
