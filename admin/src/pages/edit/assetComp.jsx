@@ -34,7 +34,7 @@ export default class AssetsComp extends React.Component {
             src={edit_doc}
             alt="edit document"
             height="25px"
-            style={{ "margin-right": "-15px", "margin-left": "20px" }}
+            style={{ marginRight: "-15px", marginLeft: "20px" }}
           />
         </button>
         <input
