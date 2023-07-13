@@ -23,21 +23,21 @@ const { get } = require("https");
 
 const COINS = 500000;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 //middleware
 app.use(cors());
@@ -1444,6 +1444,30 @@ app.post("/end", async (req, res) => {
     });
   }
 });
+
+app.post("/assetInfo",async (req,res)=>{
+  const {assetid} = req.body;
+  try {
+    const info = await pool.query(`
+      SELECT info FROM assets WHERE id = ${assetid}
+    `); 
+    res.status(200).send(info.rows[0]);
+  } catch (err) {
+    res.status(400).send({status:false, msg:err.message})
+  }
+})
+
+app.put("/updateInfo",async (req,res)=>{
+  const {assetid, text} = req.body;
+  try {
+    await pool.query(`
+      UPDATE assets SET info = ${text} WHERE id = ${assetid}
+    `); 
+    res.status(200).send({status:true});
+  } catch (err) {
+    res.status(400).send({status:false, msg:err.message})
+  }
+})
 
 server.listen(port, () => {
   console.log(`App running on port http://localhost:${port}.`);
