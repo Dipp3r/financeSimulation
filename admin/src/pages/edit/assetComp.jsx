@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import edit_doc from "@assets/images/edit_doc.svg";
 
 export default class AssetsComp extends React.Component {
   renameAsset = (event) => {
@@ -28,6 +29,14 @@ export default class AssetsComp extends React.Component {
     return (
       <div>
         <p>{(this.props.index < 10 ? "0" : "") + this.props.index}</p>
+        <button>
+          <img
+            src={edit_doc}
+            alt="edit document"
+            height="25px"
+            style={{ "margin-right": "-15px", "margin-left": "20px" }}
+          />
+        </button>
         <input
           className="assetName"
           defaultValue={this.props.info.name}
