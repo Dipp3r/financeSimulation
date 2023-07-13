@@ -1,5 +1,6 @@
 const express = require("express");
 
+const ExcelJS = require("exceljs");
 const bodyParser = require("body-parser");
 const app = express();
 const port = 3003;
@@ -15,6 +16,8 @@ const path = require("path");
 
 const DATA = require("./info.json");
 const { group } = require("console");
+const ASSET = require("./assetsName.json");
+const { get } = require("https");
 
 //INITIALIZING VITTAE COIN
 
@@ -114,7 +117,10 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
       time ??= result.rows[0][`phase${phase}`];
       if (Object.keys(DATA.news[`${year}`][`${phase}`]["assets"]).length > 0) {
         const [hours, minutes, seconds] = time.split(":");
-        const totalSeconds = Number.parseInt(hours) * 3600 + Number.parseInt(minutes) * 60 + Number.parseInt(seconds);
+        const totalSeconds =
+          Number.parseInt(hours) * 3600 +
+          Number.parseInt(minutes) * 60 +
+          Number.parseInt(seconds);
         if (yearBegan.rows[0]["curr_year"] === 0) {
           await pool.query(`
             UPDATE "group" set cash = cash + ${COINS} WHERE sessionid = ${session}
@@ -122,7 +128,11 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
           await pool.query(`
             UPDATE "session" SET _${year} = 1 where sessionid = ${session}
           `);
-          wss.broadcast({ cash: COINS, msgType: "CashUpt", groupList:groupList });
+          wss.broadcast({
+            cash: COINS,
+            msgType: "CashUpt",
+            groupList: groupList,
+          });
         }
         await pool.query(
           `
@@ -130,10 +140,10 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
         `,
           [year, phase, session]
         );
-        if(!holdingsUpt[`${session}`][`${year}`][`${phase}`]){
+        if (!holdingsUpt[`${session}`][`${year}`][`${phase}`]) {
           await pool.query(`
           UPDATE investment SET prev_holdings = holdings WHERE groupid in (SELECT groupid FROM "group" WHERE sessionid=${session})
-          `); 
+          `);
           await pool.query(`
           UPDATE investment SET holdings = t2.new_holdings FROM (
             SELECT i.stockid, i.groupid, i.holdings + (i.holdings * p.phase${phase}_diff / 100) AS new_holdings 
@@ -145,10 +155,10 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
           await pool.query(`
             UPDATE investment SET profit = (profit + holdings - prev_holdings) WHERE groupid in (SELECT groupid FROM "group" WHERE sessionid=${session})
           `);
-          let tempYear = year-1;
+          let tempYear = year - 1;
           let previous_years = "";
-          for(tempYear;tempYear>=trailYear;tempYear--){
-            previous_years += ` - "group"._${tempYear}`
+          for (tempYear; tempYear >= trailYear; tempYear--) {
+            previous_years += ` - "group"._${tempYear}`;
           }
           await pool.query(`
             UPDATE "group" 
@@ -160,7 +170,7 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
             WHERE "group".groupid = t2.groupid AND "group".groupid in (SELECT groupid FROM "group" WHERE sessionid=${session}) 
           `);
           holdingsUpt[`${session}`][`${year}`][`${phase}`] = true;
-          console.log("holdings ran once for - ",year,phase,holdingsUpt)
+          console.log("holdings ran once for - ", year, phase, holdingsUpt);
         }
         console.log("year: ", year, " phase:", phase, " sec: ", totalSeconds);
         let obj = {};
@@ -208,7 +218,7 @@ function secondsToHMS(seconds) {
 
 app.post("/start", async (req, res) => {
   let { sessionid, time } = req.body;
-  time ??=  secondsToHMS(remainingTime[`${sessionid}`]);
+  time ??= secondsToHMS(remainingTime[`${sessionid}`]);
   const gameStatus = await pool.query(`
     SELECT start,year,phase FROM "session" WHERE sessionid = ${sessionid}
   `);
@@ -225,20 +235,14 @@ app.post("/start", async (req, res) => {
       gameStatus.rows[0]["year"],
       gameStatus.rows[0]["phase"],
     ];
-    updateGame(
-      currentPhase,
-      currentYear,
-      lastYear,
-      sessionid,
-      time
-     );
+    updateGame(currentPhase, currentYear, lastYear, sessionid, time);
     res.status(200).end();
   }
 });
 
 app.post("/pause", async (req, res) => {
   const { sessionid } = req.body;
-  console.log("pause:",holdingsUpt);
+  console.log("pause:", holdingsUpt);
   clearTimeout(timer_key[`${sessionid}`]);
   elapsedTime = new Date().getTime() - startTime[`${sessionid}`];
   remainingTime[`${sessionid}`] = Math.round(
@@ -580,7 +584,7 @@ app.post("/login/:id", async (req, res) => {
       [mobile]
     );
     if (result.rowCount > 0) {
-      const {db_password, db_groupid, userid, role} = result.rows[0];
+      const { db_password, db_groupid, userid, role } = result.rows[0];
       if (db_groupid == groupid) {
         if (db_password == password) {
           res.send({ userid: userid, role: role });
@@ -642,17 +646,159 @@ app.put("/editTime", async (req, res) => {
   }
 });
 
-app.get("/download/:sessionId",async (req, res) => {
+function getRandomLightHexColorCode() {
+  const letters = '89ABCDEF'; // Use higher values for R, G, and B components
+  let colorCode = '';
+  for (let i = 0; i < 6; i++) {
+    colorCode += letters[Math.floor(Math.random() * letters.length)];
+  }
+  return colorCode;
+}
+
+app.get("/download/:sessionId", async (req, res) => {
   const { sessionId } = req.params;
   const info = await pool.query(`
-    SELECT title,year,phase FROM "session" WHERE sessionid = ${sessionId}
+    SELECT title, year, phase FROM "session" WHERE sessionid = ${sessionId}
   `);
   const title = info.rows[0]["title"];
-  const year = info.rows[0]["year"];
-  const phase = info.rows[0]["phase"];
+  const finalYear = info.rows[0]["year"];
+  const finalPhase = info.rows[0]["phase"];
+  const gamedata = await pool.query(`
+    SELECT year FROM gamedata ORDER BY year ASC LIMIT 2
+  `);
+  let year = gamedata.rows[1]["year"];
+  let tempYear = year;
+  
+  const groups = await pool.query(`
+    SELECT name, groupid FROM "group" WHERE sessionid = ${sessionId}
+  `);
+  const workbook = new ExcelJS.Workbook();
 
-  const filePath = path.join(__dirname, "excelSheets", `${title}_${sessionId}` + ".xlsx");
+  for (const group of groups.rows) {
+    const worksheet = workbook.addWorksheet(`${group["name"]}`);
 
+    worksheet.getCell("A1").value = "year/phase";
+    worksheet.getCell("A1").fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FFBDAF' }
+    };
+    
+    worksheet.mergeCells("B1:D1");
+    worksheet.getCell("B1").value = "OPEN PHASE";
+    worksheet.getCell("B1").fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'CCFC8F' }
+    };
+   
+    worksheet.mergeCells("E1:G1");
+    worksheet.getCell("E1").value = "MARKET UPDATE";
+    worksheet.getCell("E1").fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: '8FE8FC' }
+    };
+
+    worksheet.mergeCells("H1:J1");
+    worksheet.getCell("H1").value = "BREAKING NEWS";
+    worksheet.getCell("H1").fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: '8F92FC' }
+    };
+
+    worksheet.mergeCells("K1:M1");
+    worksheet.getCell("K1").value = "SUPER BREAKING NEWS";
+    worksheet.getCell("K1").fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FC8FB8' }
+    };
+    worksheet.spliceRows(2,2,["","asset","buy","sell","asset","buy","sell","asset","buy","sell","asset","buy","sell"])
+    let rowStart = 3;
+    
+    for (year; year <= finalYear; year++) {
+      let ASSETS = {};
+      Object.values(ASSET).forEach(e=>{
+        e.forEach(a=>{
+          ASSETS[`${a}`] = [""];
+        })
+      });
+      // let yearColLast = yearColStart;
+      let phase = 1;
+      for(phase;phase<=4;phase++){
+        let data = {buy:[],sell:[]};
+        let assets = [];
+        const row = await pool.query(`
+          SELECT t1.name, SUM(t1.amount), t1.status
+          FROM (
+            SELECT assets.asset_name AS name, transaction.amount, transaction.status
+            FROM assets
+            JOIN transaction ON assets.id = transaction.assetid
+            WHERE year = ${year} AND phase = ${phase} AND groupid = ${group["groupid"]}
+          ) AS t1
+          GROUP BY t1.name, t1.status;
+        `);
+        row.rows.forEach(transaction=>{
+          if(!assets.includes(transaction["name"])){
+            assets.push(transaction["name"]);
+          }
+          if(transaction["status"]=="buy"){
+            data.buy.push({name:transaction["name"],amount:transaction["sum"]});
+          }else{
+            data.sell.push({name:transaction["name"],amount:transaction["sum"]}); 
+          }
+        });
+        Object.keys(ASSETS).forEach(stock=>{
+          if(!assets.includes(stock)){
+            ASSETS[`${stock}`] = [...ASSETS[`${stock}`],...[`${stock}`,0,0]];
+          }
+        })
+        assets.forEach(asset=>{
+          let sellAmt = 0, buyAmt = 0;
+          data.buy.forEach(e=>{
+            if(e["name"]==asset){
+              buyAmt = e["amount"];
+            }
+          })
+          data.sell.forEach(e=>{
+            if(e["name"]==asset){
+              sellAmt = e["amount"];
+            }
+          })
+          ASSETS[`${asset}`] = [...ASSETS[`${asset}`],...[asset,buyAmt,sellAmt]];
+        });
+      }
+      Object.keys(ASSETS).forEach(stock=>{
+        worksheet.spliceRows(rowStart,2,ASSETS[`${stock}`])
+        rowStart +=1
+      });
+    }
+    const columnCount = worksheet.columns.length;
+    for (let colNumber = 1; colNumber <= columnCount; colNumber++) {
+      const column = worksheet.getColumn(colNumber);
+      column.width = 25;
+      column.height = 10; // Set desired width value
+    }
+    let yearColStart = 3;
+    for (tempYear; tempYear <= finalYear; tempYear++) {
+      worksheet.mergeCells(`A${yearColStart}:A${yearColStart + 14}`);
+      worksheet.getCell(`A${yearColStart}`).value = `${tempYear}`;
+      worksheet.getCell(`A${yearColStart}`).fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: getRandomLightHexColorCode() }
+      };
+      yearColStart += 15;
+    }
+    worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+      row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+        cell.alignment = { vertical: 'middle', horizontal: 'center' };
+      });
+    });
+  }
+  
   res.setHeader(
     "Content-Type",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -663,8 +809,18 @@ app.get("/download/:sessionId",async (req, res) => {
     `attachment; filename=${title}.xlsx`
   );
 
-  res.sendFile(filePath);
+  workbook.xlsx
+    .write(res)
+    .then(() => {
+      console.log("Excel file created successfully.");
+      res.end();
+    })
+    .catch((err) => {
+      console.log("Error creating Excel file:", err);
+      res.status(500).send("Error creating Excel file");
+    });
 });
+
 
 app.put("/renameAsset", async (req, res) => {
   const { assetId, new_name } = req.body;
@@ -859,8 +1015,7 @@ async function assetInfo(assets, groupid, OP) {
           price: asset_price,
           diff: asset_diff,
           holdings: holdings[`${id}`],
-          holdings_diff:
-            Math.round(profit[`${id}`] * 100) / 100,
+          holdings_diff: Math.round(profit[`${id}`] * 100) / 100,
         });
       }
     }
@@ -992,7 +1147,6 @@ app.post("/trade", async (req, res) => {
     res.status(400).send({ status: false, msg: err.message });
   }
 });
-
 
 app.put("/buy", async (req, res) => {
   const { groupid, stockid, amount } = req.body;
@@ -1143,12 +1297,12 @@ app.put("/gamechange", async (req, res) => {
         if (phase > 3 && OP === "+") {
           console.log("running");
           if (year != lastYear) {
-            if(year == trailYear){
+            if (year == trailYear) {
               console.log("trail running");
               const trailCash = await pool.query(`
                 SELECT _${trailYear} AS cash FROM "session" WHERE sessionid = ${sessionid}
               `);
-              if(trailCash.rows[0][`cash`]==1){
+              if (trailCash.rows[0][`cash`] == 1) {
                 console.log("trail cash removing");
                 await pool.query(`
                   UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
@@ -1173,7 +1327,7 @@ app.put("/gamechange", async (req, res) => {
                 await pool.query(`
                   UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
                 `);
-                  const deposited = await pool.query(`
+                const deposited = await pool.query(`
                   SELECT _${year} as deposited from "session" WHERE sessionid = ${sessionid}
                 `);
                 if (deposited.rows[0]["deposited"] == 1) {
@@ -1188,7 +1342,7 @@ app.put("/gamechange", async (req, res) => {
                 phase = 4;
               }
             } else {
-              console.log("running",year);
+              console.log("running", year);
               await pool.query(`
                 UPDATE "session" SET phase = 4, year = year - 1 WHERE sessionid = ${sessionid}
               `);
@@ -1200,7 +1354,9 @@ app.put("/gamechange", async (req, res) => {
                   UPDATE "group" SET cash = cash - ${COINS} WHERE sessionid = ${sessionid}
                 `);
                 console.log("deposited amount reduce");
-                await pool.query(`UPDATE "session" SET _${year} = 0 WHERE sessionid = ${sessionid}`);
+                await pool.query(
+                  `UPDATE "session" SET _${year} = 0 WHERE sessionid = ${sessionid}`
+                );
                 console.log("session updated");
               }
               year = eval(`${year} ${OP} 1`);
@@ -1267,25 +1423,25 @@ app.post("/news", async (req, res) => {
   }
 });
 
-app.post("/end",async(req,res)=>{
-  const {sessionid} = req.body;
+app.post("/end", async (req, res) => {
+  const { sessionid } = req.body;
   try {
     const groups = await pool.query(`
       SELECT groupid FROM "group" WHERE sessionid = ${sessionid}
     `);
     const groupList = [];
-    groups.rows.forEach(e=>{
+    groups.rows.forEach((e) => {
       groupList.push(e.groupid);
     });
-    wss.broadcast({msgType:"EndGame",groupList:groupList})
+    wss.broadcast({ msgType: "EndGame", groupList: groupList });
     res.status(200).send({
-      status:true
-    })
+      status: true,
+    });
   } catch (err) {
     res.status(400).send({
-      status:false,
-      msg:err.message
-    }) 
+      status: false,
+      msg: err.message,
+    });
   }
 });
 
