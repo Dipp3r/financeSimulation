@@ -21,6 +21,9 @@ import { PieChart, Pie, Cell } from "recharts";
 import Time from "@components/time";
 // import { Pie } from 'react-chartjs-2';
 import formatCurrencyValue from "@utils/formatCurrencyValue";
+
+const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
+
 class PortfolioComp extends React.Component {
   constructor(props) {
     super(props);
@@ -63,7 +66,7 @@ class PortfolioComp extends React.Component {
     expand = document.querySelector("#" + name);
     let arrow = event.currentTarget.querySelector(".arrow");
     let display = this.state[name];
-    console.log("\n", display, name);
+
     if (display) {
       expand.style.height = "0px";
       arrow.style.transform = "rotateX(0deg)";
@@ -103,9 +106,7 @@ class PortfolioComp extends React.Component {
           },
         ];
         localStorage.setItem("cash", data.cash);
-        this.setState({ pieData: pieData, ...data }, () => {
-          console.log(this.state);
-        });
+        this.setState({ pieData: pieData, ...data });
       });
   };
   fetchList = () => {
@@ -128,6 +129,18 @@ class PortfolioComp extends React.Component {
   componentDidMount() {
     this.fetchInfo();
     // this.fetchList();
+
+    const messageListener = (event) => {
+      let data = JSON.parse(event.data);
+      if (data.msgType == "Transact") {
+        if (data.groupid == localStorage.getItem("groupid")) {
+          this.fetchInfo();
+        }
+      }
+      console.log("Received message from server:", JSON.parse(event.data));
+    };
+    socket.removeEventListener("message", messageListener);
+    socket.addEventListener("message", messageListener);
   }
   render() {
     return (
@@ -200,7 +213,7 @@ class PortfolioComp extends React.Component {
           <div id="row2">
             <div className="rowContent">
               {this.state.yearly < 0 && <img src={loss} alt="loss" />}
-              {this.state.yearly < 0 && <img src={gain} alt="gain" />}
+              {this.state.yearly > 0 && <img src={gain} alt="gain" />}
               <p>₹{formatCurrencyValue(this.state.yearly) || "0"}</p>
               {this.state.yearly_diff > 0 && (
                 <p id="percentage">{this.state.yearly_diff}%</p>
@@ -209,7 +222,7 @@ class PortfolioComp extends React.Component {
             <hr />
             <div className="rowContent">
               {this.state.overall < 0 && <img src={loss} alt="loss" />}
-              {this.state.overall < 0 && <img src={gain} alt="gain" />}
+              {this.state.overall > 0 && <img src={gain} alt="gain" />}
               <p>₹{formatCurrencyValue(this.state.overall) || "0"}</p>
               {this.state.overall_diff > 0 && (
                 <p id="percentage">{this.state.overall_diff}%</p>
