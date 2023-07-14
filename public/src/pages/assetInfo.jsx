@@ -10,6 +10,7 @@ class AssetInfoComp extends React.Component {
     this.state = {
       id: 0,
       name: "",
+      text: [""],
     };
   }
   getInfo = () => {
@@ -24,7 +25,14 @@ class AssetInfoComp extends React.Component {
         return response.json();
       })
       .then((data) => {
-        this.setState({ text: data.info == null ? undefined : data.info });
+        if (data.info) {
+          data.info = data.info
+            .replace(/_asset_/gi, this.state.name)
+            .split("\n");
+        } else {
+          data.info == undefined;
+        }
+        this.setState({ text: data.info });
       });
   };
   componentDidMount() {
@@ -49,8 +57,11 @@ class AssetInfoComp extends React.Component {
           <Time />
         </div>
         <div id="main">
-          <div id="content">{this.state.text}</div>
-          <div id="fixed"></div>
+          <div id="assetsContent">
+            {this.state.text.map((line, index) => {
+              return <p key={index}>{line}</p>;
+            })}
+          </div>
         </div>
       </div>
     );
