@@ -10,7 +10,6 @@ import Vector from "@assets/images/Vector.svg";
 import Coin from "@assets/images/coin.svg";
 import Time from "@components/time";
 import reward from "@assets/images/rewardCard.svg";
-import cash from "@assets/images/cash.svg";
 
 import yearPhase from "@utils/yearPhase.json";
 import { WithRouter } from "@components/routingWrapper";
