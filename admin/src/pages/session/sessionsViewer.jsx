@@ -30,7 +30,11 @@ export default class SessionsViewer extends React.Component {
   displaySessions = (list) => {
     let container = document.querySelector("#sessionList");
     if (!container) return;
-    container.innerHTML = "";
+    if (container.replaceChildren) {
+      container.replaceChildren();
+    } else {
+      container.innerHTML = "";
+    }
     if (list.length > 0) {
       let card,
         nameDiv,

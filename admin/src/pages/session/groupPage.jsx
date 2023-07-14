@@ -46,7 +46,12 @@ export default class GroupPage extends React.Component {
   };
   displayGroups = (list) => {
     let container = document.querySelector("#groupsList");
-    container.innerHTML = "";
+    if (!container) return;
+    if (container.replaceChildren) {
+      container.replaceChildren();
+    } else {
+      container.innerHTML = "";
+    }
     if (list.length > 0) {
       let card,
         groupBox,
@@ -65,16 +70,21 @@ export default class GroupPage extends React.Component {
         groupInfo.id = "groupInfo";
 
         linkButton = document.createElement("button");
+        linkButton.className = "groupLinkButton";
         linkButton.onclick = this.togglePlayersPage;
         linkIcon = document.createElement("img");
         linkIcon.src = link;
         groupBox.appendChild(groupInfo);
         linkButton.appendChild(linkIcon);
         linkButton.onclick = (e) => {
+          e.target.className = "groupLinkButton groupLinkButtonActive";
           e.stopPropagation();
           navigator.clipboard.writeText(
             import.meta.env.VITE_API_PUBLIC_URL + `/login/${group.groupid}`
           );
+          setTimeout(() => {
+            e.target.className = "groupLinkButton";
+          }, 500);
         };
         groupBox.appendChild(linkButton);
 
@@ -100,6 +110,11 @@ export default class GroupPage extends React.Component {
         };
         container.appendChild(card);
       }
+    } else {
+      let p = document.createElement("p");
+      p.id = "emptyGroup";
+      p.innerText = "No group";
+      container.appendChild(p);
     }
   };
   startSession = () => {

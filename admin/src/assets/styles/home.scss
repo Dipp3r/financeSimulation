@@ -25,6 +25,27 @@
         border-radius: 12px;
         color: #223f80;
         @include flex(row, flex-center, center);
+        position: relative;
+        overflow: hidden;
+        z-index: 0;
+        &::before{
+          z-index: -1;
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 5px;
+          height: 45px;
+          background: #ffffff;
+          transform: translate(-30px, 0) skew(-35deg);
+          transition: 0.5s;
+        }
+        &:hover:after{
+border:2px solid red;
+        }
+        &:hover:before{
+          transform: translate(240px, 0) skew(-20deg);
+        }
         img {
           margin: 10px;
           // circle{stroke:#223F80;}
@@ -47,6 +68,11 @@
         //         }
         //     }
         // }
+      }
+      .buttonActive{
+        &::before{
+          background-color: rgb(128, 128, 128);
+        }
       }
     }
     #tree {
@@ -831,6 +857,17 @@
               height: 44px;
               @include flex(row, space-between, center);
               div {
+                .groupLinkButton {
+                  border-radius: 50%;
+                  width: 50px;
+                  height: 50px;
+                  @include flex(row, space-around, center);
+                  background-color: white;
+                  transition: 0.5s;
+                }
+                .groupLinkButtonActive{
+                  background-color: rgba(16, 42, 189, 0.534);
+                }
                 #trash {
                   margin-right: 60px;
                 }
@@ -1021,6 +1058,31 @@
               font-weight: 500;
               font-size: 20px;
               color: #a43936;
+              border-radius: 5px;
+              height: 45px;
+              @include flex(row, flex-center, center);
+              position: relative;
+              overflow: hidden;
+              z-index: 0;
+              transition: 0.8s;
+              &::before{
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 120px;
+                height: 45px;
+                background: #6b0f0f;
+                transform: translate(-140%, 0) skew(-45deg);
+                transition: 0.8s;
+                z-index: -1;
+              }
+              &:hover:before{
+                transform: translate(0%, 0) skew(0deg);
+              }
+              &:hover{
+                color: white;
+              }
             }
             button {
               position: relative;
@@ -1276,6 +1338,17 @@
           min-width: 70%;
           // margin: 30px 20px;
           .card {
+            .groupLinkButton {
+              border-radius: 50%;
+              width: 50px;
+              height: 50px;
+              @include flex(row, space-around, center);
+              background-color: white;
+              transition: 0.5s;
+            }
+            .groupLinkButtonActive{
+              background-color: rgba(16, 42, 189, 0.534);
+            }
             transition: all 0.3s ease-in-out;
             &:hover {
               transform: scale(1.1);

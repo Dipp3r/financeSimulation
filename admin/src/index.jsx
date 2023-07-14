@@ -38,6 +38,7 @@ class IndexComp extends React.Component {
     options.forEach((element) => {
       element.style.background = "transparent";
       element.style.color = "#223F80";
+      element.className = "button";
     });
     switch (value) {
       case "session":
@@ -54,6 +55,7 @@ class IndexComp extends React.Component {
         document.querySelector("#imgGroup").src = Group;
         break;
     }
+    options[value == "edit" ? 0 : 1].className = "button buttonActive";
     options[value == "edit" ? 0 : 1].style.backgroundColor = "#223f80";
     options[value == "edit" ? 0 : 1].style.color = "#FFF";
     this.setState({ mainPage: mainPage, mainPageValue: value });

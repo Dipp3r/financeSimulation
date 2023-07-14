@@ -25,12 +25,16 @@ export default class PlayersPage extends React.Component {
       DeletePrompDisplay: display,
     });
   };
-  copyLink = (event) => {
-    event.stopPropagation();
+  copyLink = (e) => {
+    e.target.className = "groupLinkButton groupLinkButtonActive";
+    e.stopPropagation();
     navigator.clipboard.writeText(
       import.meta.env.VITE_API_PUBLIC_URL +
         `/login/${this.state.groupInfo.groupid}`
     );
+    setTimeout(() => {
+      e.target.className = "groupLinkButton";
+    }, 500);
   };
   groupRename = (event) => {
     let obj = {};
@@ -114,7 +118,7 @@ export default class PlayersPage extends React.Component {
                 <button id="trash" onClick={this.toggleDeletePromp}>
                   <img src={trash} alt="trashIcon" />
                 </button>
-                <button onClick={this.copyLink}>
+                <button onClick={this.copyLink} className="groupLinkButton">
                   <img src={link} alt="linkIcon" />
                 </button>
               </div>
