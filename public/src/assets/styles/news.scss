@@ -34,15 +34,25 @@
     #rotate {
       @include flex(row, flex-start, center);
       height: 30px;
-      width: 100%;
+      width: 100vw;
       background: #223f80;
       overflow: hidden;
-      overflow-x: scroll;
       white-space: nowrap;
       word-wrap: unset;
+      #listOne{
+        width: 100vw;
+        animation: newsListMovement 8s linear infinite;
+        @include flex(row, space-evenly, center);
+        min-width: 100vw;
+      }
+      #listTwo{
+        width: 100vw;
+        animation: newsListMovement 8s linear infinite;
+        @include flex(row, space-evenly, center);
+        min-width: 100vw;
+      }
       p {
         margin:0px 5px;
-        animation: listMovement 8s linear infinite;
         color: #fff;
         font-family: Montserrat;
         font-size: 14px;
@@ -111,11 +121,11 @@
   }
 }
 
-@keyframes listMovement {
+@keyframes newsListMovement {
   0%{
-    transform: translateX(250%);
+    transform: translateX(0vw);
   }
   100%{
-    transform: translateX(-350%);
+    transform: translateX(-100vw);
   }
 }

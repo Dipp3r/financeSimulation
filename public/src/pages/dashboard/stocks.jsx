@@ -80,28 +80,48 @@ class StocksComp extends React.Component {
         </div>
         <div id="main">
           <div id="stockInfo">
-            <div id="marquee">
-              {JSON.parse(localStorage.getItem("isRunning")) ? (
-                this.state.content.map((element, index) => {
-                  // console.log(element,index)
-                  return (
-                    <div key={index}>
-                      <p>
-                        {element.name} | {element.price} |
-                      </p>
-                      {element.diff > 0 && (
-                        <a className="gain">{element.diff}%</a>
-                      )}
-                      {element.diff < 0 && (
-                        <a className="loss">{element.diff}%</a>
-                      )}
-                    </div>
-                  );
-                })
-              ) : (
-                <div></div>
-              )}
-            </div>
+            {JSON.parse(localStorage.getItem("isRunning")) ? (
+              <>
+                <div id="marquee1">
+                  {this.state.content.map((element, index) => {
+                    // console.log(element,index)
+                    return (
+                      <div key={index}>
+                        <p>
+                          {element.name} | {element.price} |
+                        </p>
+                        {element.diff > 0 && (
+                          <a className="gain">{element.diff}%</a>
+                        )}
+                        {element.diff < 0 && (
+                          <a className="loss">{element.diff}%</a>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div id="marquee2">
+                  {this.state.content.map((element, index) => {
+                    // console.log(element,index)
+                    return (
+                      <div key={index}>
+                        <p>
+                          {element.name} | {element.price} |
+                        </p>
+                        {element.diff > 0 && (
+                          <a className="gain">{element.diff}%</a>
+                        )}
+                        {element.diff < 0 && (
+                          <a className="loss">{element.diff}%</a>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <div></div>
+            )}
           </div>
           <div id="about">
             <div id="statusButton">

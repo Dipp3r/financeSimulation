@@ -4,7 +4,7 @@ import "@assets/styles/news.scss";
 import Arrow_left from "@assets/images/Arrow_left.svg";
 import Time from "@components/time";
 import NewsListComp from "../components/newsListComp";
-
+import getPhasestring from "@utils/getPhaseString";
 class NewsComp extends React.Component {
   constructor(props) {
     super(props);
@@ -121,9 +121,16 @@ class NewsComp extends React.Component {
         </div>
         <div id="main">
           <div id="rotate">
-            <p>Super breaking news |</p>
-            <p>Super breaking news |</p>
-            <p>Super breaking news</p>
+            <div id="listOne">
+              <p>{getPhasestring(localStorage.getItem("phase"))}</p>
+              <p>{getPhasestring(localStorage.getItem("phase"))}</p>
+              <p>{getPhasestring(localStorage.getItem("phase"))}</p>
+            </div>
+            <div id="listTwo">
+              <p>{getPhasestring(localStorage.getItem("phase"))}</p>
+              <p>{getPhasestring(localStorage.getItem("phase"))}</p>
+              <p>{getPhasestring(localStorage.getItem("phase"))}</p>
+            </div>
           </div>
           <div id="content" onScroll={this.setScroll}>
             {this.state.newsListComps.map((news, index) => {

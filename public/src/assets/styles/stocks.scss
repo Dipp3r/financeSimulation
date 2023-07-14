@@ -97,12 +97,10 @@
             overflow-x: hidden;
             overflow-y: hidden;
             background: #223F80;
-            // @include flex(row,space-evenly,center);
-            #marquee {
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                animation: marquee-scroll 15s linear infinite;
+            @include flex(row,flex-start,center);
+            #marquee1,#marquee2 {
+              @include flex(row,flex-start,center);
+                animation: marquee-scroll 10s linear infinite;
                 white-space: nowrap;
                 word-wrap: unset;
                 div{
@@ -243,9 +241,9 @@
 
 @keyframes marquee-scroll {
     0% {
-      transform: translateX(100%);
+      transform: translateX(0%);
     }
     100% {
-      transform: translateX(-350%);
+      transform: translateX(-100%);
     }
 }
