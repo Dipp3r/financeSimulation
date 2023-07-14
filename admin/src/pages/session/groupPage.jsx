@@ -120,6 +120,10 @@ export default class GroupPage extends React.Component {
       if (response.status == 200) {
         let isRunning = this.state.isRunning;
         this.setState({ isRunning: !isRunning, newTime: null });
+        localStorage.setItem(
+          localStorage.getItem("currentSessionID") + "_isRunning",
+          !isRunning
+        );
       }
     });
   };
@@ -142,7 +146,12 @@ export default class GroupPage extends React.Component {
           year: message.year,
           phase: message.phase,
           time: message.time.slice(3, undefined),
+          isEnd: false,
         });
+        localStorage.setItem(
+          localStorage.getItem("currentSessionID") + "_isEnd",
+          false
+        );
       });
   };
   fetchGroupList = () => {
@@ -162,7 +171,14 @@ export default class GroupPage extends React.Component {
         this.displayGroups(data.groupList);
         // this.props.setItem({ groupList: data });
         data.time = data.time.slice(3, undefined);
-        this.setState({ ...data, isRunning: data.start == "1" ? true : false });
+        this.setState({
+          ...data,
+          isRunning: data.start == "1" ? true : false,
+        });
+        localStorage.setItem(
+          localStorage.getItem("currentSessionID") + "_isRunning",
+          data.start == "1" ? true : false
+        );
       });
   };
   inputInput = (event) => {
@@ -202,13 +218,18 @@ export default class GroupPage extends React.Component {
     }
     if (message.msgType == "EndGame") {
       console.log(
-        message.sessionid == localStorage.getItem("currentSessionID")
+        message.sessionid ==
+          Number.parseInt(localStorage.getItem("currentSessionID"))
       );
-      if (message.sessionid == localStorage.getItem("currentSessionID"))
-        localStorage.setItem(
-          localStorage.getItem("currentSessionID") + "_isEnd",
-          true
-        );
+      if (
+        message.sessionid ==
+        Number.parseInt(localStorage.getItem("currentSessionID"))
+      )
+        this.setState({ isEnd: true, isRunning: false });
+      localStorage.setItem(
+        localStorage.getItem("currentSessionID") + "_isEnd",
+        true
+      );
     }
   }
   toggleEndPromp = () => {
@@ -217,11 +238,18 @@ export default class GroupPage extends React.Component {
     this.setState({ endPromptDisplay: endPromptDisplay });
   };
   componentDidMount() {
-    // let groupList = this.props.getItem("groupList")
-    // if (groupList && groupList.length > 0){
-    //   this.displayGroups(groupList)
-    //   this.setState({groupList:groupList})
-    // } else {
+    this.setState({
+      isEnd: JSON.parse(
+        localStorage.getItem(
+          localStorage.getItem("currentSessionID") + "_isEnd"
+        )
+      ),
+      isRunning: JSON.parse(
+        localStorage.getItem(
+          localStorage.getItem("currentSessionID") + "_isRunning"
+        )
+      ),
+    });
     this.fetchGroupList();
     // }
     socket.addEventListener("message", (event) => {
@@ -277,6 +305,7 @@ export default class GroupPage extends React.Component {
                     timeChange={this.timeChange}
                     time={this.state.time}
                     isRunning={this.state.isRunning}
+                    isEnd={this.state.isEnd}
                   />
                 </div>
               </div>

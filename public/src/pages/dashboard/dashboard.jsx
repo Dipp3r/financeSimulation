@@ -52,7 +52,10 @@ class Dashboard extends React.Component {
       case "StocksComp":
         comp = document.querySelector("#StocksCompButton");
         display = (
-          <StocksComp toggleMainDisplay={this.props.toggleMainDisplay} />
+          <StocksComp
+            toggleMainDisplay={this.props.toggleMainDisplay}
+            isEnd={this.state.isEnd}
+          />
         );
         if (navImg) if (navImg.length == 3) navImg[1].src = Chart_alt_fill;
         displayName = "StocksComp";
@@ -91,6 +94,9 @@ class Dashboard extends React.Component {
     console.log("checking");
     if (this.props.newNotification !== prevProps.newNotification) {
       this.setState({ newNotification: this.props.newNotification });
+    }
+    if (this.props.isEnd !== prevProps.isEnd) {
+      this.setState({ isEnd: this.props.isEnd });
     }
   }
   componentDidMount() {
@@ -191,6 +197,7 @@ class Dashboard extends React.Component {
 Dashboard.propTypes = {
   getItem: PropTypes.func.isRequired,
   setItem: PropTypes.func.isRequired,
+  isEnd: PropTypes.bool,
   newNotification: PropTypes.bool.isRequired,
   notificationList: PropTypes.array.isRequired,
   toggleMainDisplay: PropTypes.func.isRequired,

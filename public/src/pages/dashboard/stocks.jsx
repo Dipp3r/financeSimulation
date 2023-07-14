@@ -64,8 +64,17 @@ class StocksComp extends React.Component {
         });
       });
   };
+  componentDidUpdate(prevProps) {
+    if (this.props.isEnd !== prevProps.isEnd) {
+      this.setState({ isEnd: this.props.isEnd });
+    }
+  }
   componentDidMount() {
     this.fetchList();
+    this.setState({
+      isEnd: JSON.parse(localStorage.getItem("isEnd")),
+      isRunning: JSON.parse(localStorage.getItem("isRunning")),
+    });
   }
   render() {
     return (
@@ -80,7 +89,7 @@ class StocksComp extends React.Component {
         </div>
         <div id="main">
           <div id="stockInfo">
-            {JSON.parse(localStorage.getItem("isRunning")) ? (
+            {this.state.isRunning | this.state.isEnd ? (
               <>
                 <div id="marquee1">
                   {this.state.content.map((element, index) => {
@@ -137,27 +146,34 @@ class StocksComp extends React.Component {
             </div>
           </div>
           <div id="content">
-            {JSON.parse(localStorage.getItem("isRunning")) ? (
-              this.state.content.map((asset, index) => {
-                // console.log(element,index)
-                return (
-                  <AssetsCompCommon
-                    key={asset.id}
-                    id={asset.id}
-                    name={asset.name}
-                    holdings={asset.holdings}
-                    price={asset.price}
-                    diff={asset.diff}
-                    position={index % 2 === 0 ? "top" : "bottom"}
-                    toggleMainDisplay={this.props.toggleMainDisplay}
-                    type={this.state.type}
-                  />
-                );
-              })
+            {this.props.isEnd ? (
+              this.state.isRunning ? (
+                this.state.content.map((asset, index) => {
+                  // console.log(element,index)
+                  return (
+                    <AssetsCompCommon
+                      key={asset.id}
+                      id={asset.id}
+                      name={asset.name}
+                      holdings={asset.holdings}
+                      price={asset.price}
+                      diff={asset.diff}
+                      position={index % 2 === 0 ? "top" : "bottom"}
+                      toggleMainDisplay={this.props.toggleMainDisplay}
+                      type={this.state.type}
+                    />
+                  );
+                })
+              ) : (
+                <div id="pauseDiv">
+                  <p id="title1"> GAME </p>
+                  <p id="title2"> PAUSED </p>
+                </div>
+              )
             ) : (
               <div id="pauseDiv">
                 <p id="title1"> GAME </p>
-                <p id="title2"> PAUSED </p>
+                <p id="title2"> ENDED </p>
               </div>
             )}
           </div>
@@ -168,5 +184,6 @@ class StocksComp extends React.Component {
 }
 StocksComp.propTypes = {
   toggleMainDisplay: PropTypes.func.isRequired,
+  isEnd: PropTypes.bool,
 };
 export default StocksComp;

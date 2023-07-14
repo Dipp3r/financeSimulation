@@ -97,6 +97,9 @@ export default class Time extends React.Component {
     if (this.props.time !== prevProps.time) {
       this.setState({ time: this.props.time }, () => this.init());
     }
+    if (this.props.isEnd !== prevProps.isEnd) {
+      this.setState({ isEnd: this.props.isEnd });
+    }
   }
   componentDidMount() {
     this.init();
@@ -107,7 +110,7 @@ export default class Time extends React.Component {
         <img src={Alarmclock} alt="timer" />
         <input
           type="text"
-          value={this.state.time}
+          value={this.state.isEnd ? "ENDED" : this.state.time}
           onInput={this.inputFormate}
           onBlur={this.fixTimer}
           style={{ color: this.state.isRunning ? "#aaaaaa" : "#fff" }}
@@ -120,7 +123,8 @@ export default class Time extends React.Component {
 
 Time.propTypes = {
   time: PropTypes.string.isRequired,
-  isRunning: PropTypes.bool.isRequired,
+  isRunning: PropTypes.bool,
+  isEnd: PropTypes.bool,
   timeChange: PropTypes.func.isRequired,
 };
 

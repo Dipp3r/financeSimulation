@@ -1434,7 +1434,7 @@ app.post("/end", async (req, res) => {
     groups.rows.forEach((e) => {
       groupList.push(e.groupid);
     });
-    wss.broadcast({ msgType: "EndGame", groupList: groupList });
+    wss.broadcast({ msgType: "EndGame", groupList: groupList, sessionid:sessionid });
     res.status(200).send({
       status: true,
     });

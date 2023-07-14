@@ -16,6 +16,7 @@ class MainComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isEnd: false,
       notificationList: [],
       year: Number.parseInt(localStorage.getItem("year")),
       newNotification: false,
@@ -50,6 +51,7 @@ class MainComp extends React.Component {
             toggleMainDisplay={this.toggleMainDisplay}
             newNotification={this.state.newNotification}
             notificationList={this.state.notificationList}
+            isEnd={this.state.isEnd}
             setItem={this.setItem}
             getItem={this.getItem}
           />
@@ -132,6 +134,7 @@ class MainComp extends React.Component {
             }
             this.setState({ newNotification: true });
             localStorage.setItem("isEnd", false);
+            this.setState({ isEnd: true });
             notificationList.push(message);
 
             localStorage.setItem("dashboard", "NotifComp");
@@ -148,6 +151,7 @@ class MainComp extends React.Component {
             this.setState({ newNotification: true });
             notificationList.push(message);
             localStorage.setItem("isEnd", false);
+            this.setState({ isEnd: true });
             // if (localStorage.getItem("dashboard") == "NotifComp")
             //   this.changeDisplay("NotifComp");
             break;
@@ -217,10 +221,12 @@ class MainComp extends React.Component {
         console.log(localStorage.getItem("isEnd"));
         if (message.groupList) {
           for (let groupid of message.groupList) {
-            console.log(groupid);
             if (groupid == localStorage.getItem("groupid")) {
               console.log("isEnd at main", localStorage.getItem("isEnd"));
+              this.setState({ isEnd: true });
               localStorage.setItem("isEnd", true);
+              localStorage.setItem("dashboard", "ProfileComp");
+              toggleMainDisplayTo = "dashboard";
               break;
             }
           }
