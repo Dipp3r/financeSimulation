@@ -52,6 +52,7 @@ class MainComp extends React.Component {
             newNotification={this.state.newNotification}
             notificationList={this.state.notificationList}
             isEnd={this.state.isEnd}
+            isRunning={this.state.isRunning}
             setItem={this.setItem}
             getItem={this.getItem}
           />
@@ -121,8 +122,17 @@ class MainComp extends React.Component {
             [, minute, second] = message.time.split(":");
             localStorage.setItem("minute", Number.parseInt(minute));
             localStorage.setItem("second", Number.parseInt(second) + 1);
-            localStorage.setItem("isRunning", true);
 
+            if (!JSON.parse(localStorage.getItem("isRunning"))) {
+              //unpaused
+              if (localStorage.getItem("dashboard") == "StocksComp") {
+                //if in stock page and unpaused then move to profile
+                localStorage.setItem("dashboard", "ProfileComp");
+                toggleMainDisplayTo = "dashboard";
+              }
+            }
+            localStorage.setItem("isRunning", true);
+            this.setState({ isRunning: true });
             if (!message.news) return;
             let lastMessage = notificationList.slice(-1)[0];
             if (lastMessage) {
@@ -134,7 +144,7 @@ class MainComp extends React.Component {
             }
             this.setState({ newNotification: true });
             localStorage.setItem("isEnd", false);
-            this.setState({ isEnd: true });
+            this.setState({ isEnd: false });
             notificationList.push(message);
 
             localStorage.setItem("dashboard", "NotifComp");
@@ -151,7 +161,7 @@ class MainComp extends React.Component {
             this.setState({ newNotification: true });
             notificationList.push(message);
             localStorage.setItem("isEnd", false);
-            this.setState({ isEnd: true });
+            this.setState({ isEnd: false });
             // if (localStorage.getItem("dashboard") == "NotifComp")
             //   this.changeDisplay("NotifComp");
             break;
@@ -193,6 +203,7 @@ class MainComp extends React.Component {
           for (let groupid of message.groupList) {
             if (groupid == localStorage.getItem("groupid")) {
               localStorage.setItem("isRunning", false);
+              this.setState({ isRunning: false });
               localStorage.setItem("removedMsg", JSON.stringify(message));
               this.props.navigate("../removed");
               break;
@@ -205,24 +216,18 @@ class MainComp extends React.Component {
           for (let groupid of message.groupList) {
             if (groupid == localStorage.getItem("groupid")) {
               localStorage.setItem("isRunning", false);
+              this.setState({ isRunning: false });
               localStorage.setItem("dashboard", "ProfileComp");
               toggleMainDisplayTo = "dashboard";
               break;
             }
           }
-        } else {
-          localStorage.setItem("isRunning", false);
-          localStorage.setItem("dashboard", "ProfileComp");
-          toggleMainDisplayTo = "dashboard";
-          //for test only
         }
         break;
       case "EndGame":
-        console.log(localStorage.getItem("isEnd"));
         if (message.groupList) {
           for (let groupid of message.groupList) {
             if (groupid == localStorage.getItem("groupid")) {
-              console.log("isEnd at main", localStorage.getItem("isEnd"));
               this.setState({ isEnd: true });
               localStorage.setItem("isEnd", true);
               localStorage.setItem("dashboard", "ProfileComp");

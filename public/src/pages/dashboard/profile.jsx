@@ -106,11 +106,11 @@ class ProfileComp extends React.Component {
         setTimeout(() => {
           document.querySelector("#reward").style.zIndex = "1";
           document.querySelector("#empty").style.zIndex = "-1";
-        }, 1000);
+        }, 750);
         setTimeout(() => {
           document.querySelector("#card").style.animationName = "";
           sessionStorage.setItem("cardAnimationEnd", true);
-        }, 2000);
+        }, 1500);
       } else {
         document.querySelector("#reward").style.zIndex = "1";
         document.querySelector("#empty").style.zIndex = "-1";

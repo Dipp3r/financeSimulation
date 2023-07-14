@@ -55,6 +55,7 @@ class Dashboard extends React.Component {
           <StocksComp
             toggleMainDisplay={this.props.toggleMainDisplay}
             isEnd={this.state.isEnd}
+            isRunning={this.state.isRunning}
           />
         );
         if (navImg) if (navImg.length == 3) navImg[1].src = Chart_alt_fill;
@@ -91,12 +92,15 @@ class Dashboard extends React.Component {
     }, 1);
   };
   componentDidUpdate(prevProps) {
-    console.log("checking");
+    // console.log("checking");
     if (this.props.newNotification !== prevProps.newNotification) {
       this.setState({ newNotification: this.props.newNotification });
     }
     if (this.props.isEnd !== prevProps.isEnd) {
       this.setState({ isEnd: this.props.isEnd });
+    }
+    if (this.props.isRunning !== prevProps.isRunning) {
+      this.setState({ isRunning: this.props.isRunning });
     }
   }
   componentDidMount() {
@@ -106,12 +110,12 @@ class Dashboard extends React.Component {
     socket.addEventListener("message", () => {
       if (localStorage.getItem("mainDisplay") == "dashboard") {
         setTimeout(() => {
-          this.changeDisplay(localStorage.getItem("dashboard")), 500;
+          this.changeDisplay(localStorage.getItem("dashboard"));
           if (localStorage.getItem("dashboard") == "NotifComp")
             this.setState({
               newNotification: false,
             });
-        });
+        }, 500);
       }
     });
   }
@@ -198,6 +202,7 @@ Dashboard.propTypes = {
   getItem: PropTypes.func.isRequired,
   setItem: PropTypes.func.isRequired,
   isEnd: PropTypes.bool,
+  isRunning: PropTypes.bool,
   newNotification: PropTypes.bool.isRequired,
   notificationList: PropTypes.array.isRequired,
   toggleMainDisplay: PropTypes.func.isRequired,
