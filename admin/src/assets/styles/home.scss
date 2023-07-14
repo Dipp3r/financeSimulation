@@ -551,11 +551,6 @@
             &:focus{
               transform: scale(0.95);
             } 
-            &:hover{
-              div #add{
-                animation:spin 0.5s ease-in-out 1;
-              }
-            }
             margin-left: 20px;
             margin-top: 0px;
             width: 210px;
@@ -1013,6 +1008,7 @@
       #groupPage {
         #fixed-end{
           position: fixed;
+          overflow: hidden;
           bottom: 40px;
           right:80px;
           width: 202px;
@@ -1027,10 +1023,24 @@
           font-style: normal;
           font-weight: 500;
           line-height: normal;
-          transition:all 0.2s ease;
+          transition:all 0.8s ease;
+          &::before{
+            z-index: -1;
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 130%;
+            height: 55px;
+            background: #A50C0C;
+            transform: translate(-110%, 0) skew(-30deg);
+            transition: 0.8s;
+          }
+          &:hover::before{
+            transform: translate(-5%, 0) skew(-15deg);
+          }
           &:hover{
             color:white;
-            background: #A50C0C;
           }
         }
         margin-top: 100px;
@@ -1133,11 +1143,18 @@
               }
               #navigate {
                 button {
+                  border-radius: 60px;
                   margin: 10px;
+                  // transition:transform .2s ease-in;
+                  &:focus{
+                    animation: gamechange .3s 1 ease-in-out;
+                  }
                 }
               }
             }
             #gameStatus {
+              position: relative;
+              overflow: hidden;
               margin-left: 25px;
               height: 44px;
               border: 2px solid #223f80;
@@ -1147,10 +1164,24 @@
               font-weight: 500;
               font-size: 20px;
               color: #223f80;
-              transition:all 0.2s ease;
+              transition:all 0.8s ease;
+              &::before{
+                z-index: -1;
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 130%;
+                height: 55px;
+                background: #223f80;
+                transform: translate(-110%, 0) skew(-30deg);
+                transition: 0.8s;
+              }
+              &:hover::before{
+                transform: translate(-5%, 0) skew(-15deg);
+              }
               &:hover {
                 color: white;
-                background: #223f80;
               }
             }
           }
@@ -1332,4 +1363,17 @@
   100% {
     transform: rotateZ(180deg);
   }
+}
+
+@keyframes gamechange {
+  0%{
+    transform: scale(1); 
+  }
+  50%{
+    transform: scale(1.4); 
+  }
+  100%{
+    transform: scale(1); 
+  }
+  
 }

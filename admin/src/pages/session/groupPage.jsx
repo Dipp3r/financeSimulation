@@ -315,7 +315,7 @@ export default class GroupPage extends React.Component {
               </div>
             </div>
             <button id="gameStatus" onClick={this.startSession}>
-              {!this.state.isRunning ? "start" : "pause"}
+              {!this.state.isRunning ? "Start" : "Pause"}
             </button>
           </div>
         </div>
