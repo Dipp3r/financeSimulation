@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from "react";
 import PropTypes from "prop-types";
 // import deleteIcon from "@assets/images/delete.png";
@@ -68,9 +69,11 @@ export default class AddInfoPrompt extends React.Component {
           </div>
           <hr />
           <div id="second">
-            <p>note : use _asset_ as egfmkl;sngklsergm;l</p>
+            <p>
+              Note : use '_asset_' in place of the asset name(replace all the{" "}
+              {this.props.assetName} by _asset_)
+            </p>
           </div>
-          <hr />
           <div id="third">
             {/* <MDEditor
               id="textarea"
