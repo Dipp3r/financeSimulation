@@ -438,8 +438,16 @@
                 }
               }
               #deleteButton {
+                position: relative;
+                overflow: hidden;
+                border-radius: 8px;
+                font-family: "Montserrat";
+                font-style: normal;
+                font-weight: 500;
+                font-size: 20px;
+                color: #A50C0C;
+                z-index: 0;
                 width: 85%;
-                margin: 5px;
                 height: 40px;
                 border-radius: 5px;
                 padding: 5px;
@@ -455,12 +463,25 @@
                   color: white;
                   margin: 0px;
                   margin-left: 20px;
+                  transition: all 0.3s ease;
                 }
-                &:hover p {
+                &::before{
+                  z-index: -1;
+                  content: "";
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 110%;
+                  height: 40px;
+                  background: #ffffff;
+                  transform: translate(-110%, 0) skew(-30deg);
+                  transition: 0.8s;
+                }
+                &:hover::before{
+                  transform: translate(-5%, 0) skew(-15deg);
+                }
+                &:hover p{
                   color: rgb(197, 31, 31);
-                }
-                &:hover {
-                  background-color: white;
                 }
               }
             }
@@ -936,16 +957,24 @@
                   }
                 }
                 #deleteButton {
+                  position: relative;
+                  overflow: hidden;
+                  border-radius: 8px;
+                  font-family: "Montserrat";
+                  font-style: normal;
+                  font-weight: 500;
+                  font-size: 20px;
+                  color: #A50C0C;
+                  z-index: 0;
                   width: 85%;
-                  margin: 5px;
                   height: 40px;
                   border-radius: 5px;
                   padding: 5px;
                   margin: 10px;
                   background-color: rgb(197, 31, 31);
-                  border:none;
+                  border: 1px solid #223f80;
                   margin-bottom: 20px;
-                  transition: all 0.2s ease;
+                  transition: all 0.3s ease;
                   p {
                     font-family: "Montserrat";
                     font-size: 16px;
@@ -953,13 +982,25 @@
                     color: white;
                     margin: 0px;
                     margin-left: 20px;
+                    transition: all 0.3s ease;
                   }
-                  &:hover p {
+                  &::before{
+                    z-index: -1;
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 110%;
+                    height: 40px;
+                    background: #ffffff;
+                    transform: translate(-110%, 0) skew(-30deg);
+                    transition: 0.8s;
+                  }
+                  &:hover::before{
+                    transform: translate(-5%, 0) skew(-15deg);
+                  }
+                  &:hover p{
                     color: rgb(197, 31, 31);
-                  }
-                  &:hover {
-                    border: 1px solid #223f80;
-                    background-color: white;
                   }
                 }
               }
@@ -1267,6 +1308,141 @@
               left: 10;
               margin: 0px;
               @include flex(row, space-around, center);
+            }
+          }
+        }
+        #endPrompt {
+          z-index: 2;
+          position: fixed;
+          top: 0;
+          left: 0;
+          @include flex(column, center, center);
+          height: 100vh;
+          width: 100vw;
+          background: rgba(0, 0, 0, 0.85);
+          backdrop-filter: blur(1.5px);
+          #endBox {
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            width: 456px;
+            background-color: white;
+            border-radius: 20px;
+            @include flex(column, center, center);
+            #first {
+              border-radius: 20px 20px 0px 00px;
+              padding: 10px;
+              width: calc(100% - 20px);
+              background-color: #395695;
+              @include flex(row, space-between, center);
+              p {
+                font-family: "Montserrat";
+                font-size: 16px;
+                font-weight: 600;
+                color: white;
+                margin: 0px;
+                margin-left: 18px;
+              }
+              #closeButton {
+                margin: 0px;
+                width:fit-content;
+                img {
+                  height: 25px;
+                  transition: all 0.2s ease-in;
+                }
+        
+                &:hover img {
+                  transform: scale(0.8);
+                }
+              }
+            }
+            hr {
+              margin: 0px;
+              width: calc(100% - 2px);
+            }
+            #second {
+              padding: 20px 30px;
+              @include flex(column, center, center);
+              #deleteIcon {
+                height: 40px;
+              }
+              p {
+                text-align: center;
+                font-family: "Montserrat";
+                font-size: 14px;
+                font-weight: 500;
+                color: #395695;
+                margin: 10px;
+              }
+            }
+            #third {
+              @include flex(column, center, center);
+              margin-top: 10px;
+              width: 100%;
+              p {
+                margin: 5px 0px;
+                text-align: center;
+                font-family: "Montserrat";
+                font-size: 14px;
+                font-weight: 500;
+                color: #395695;
+              }
+              input {
+                padding-left:20px;
+                margin: 5px;
+                border-radius: 5px;
+                border: 2px solid #3956959c;
+                width: 80%;
+                height: 30px;
+                &:focus{
+                  outline: none;
+                }
+              }
+              #endPromptButton {
+                  position: relative;
+                  overflow: hidden;
+                  border-radius: 8px;
+                  font-family: "Montserrat";
+                  font-style: normal;
+                  font-weight: 500;
+                  font-size: 20px;
+                  color: #A50C0C;
+                  z-index: 0;
+                  width: 85%;
+                  height: 40px;
+                  border-radius: 5px;
+                  padding: 5px;
+                  margin: 10px;
+                  background-color: rgb(197, 31, 31);
+                  border: 1px solid #223f80;
+                  margin-bottom: 20px;
+                  transition: all 0.3s ease;
+                  p {
+                    font-family: "Montserrat";
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: white;
+                    margin: 0px;
+                    margin-left: 20px;
+                    transition: all 0.3s ease;
+                  }
+                  &::before{
+                    z-index: -1;
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 110%;
+                    height: 40px;
+                    background: #ffffff;
+                    transform: translate(-110%, 0) skew(-30deg);
+                    transition: 0.8s;
+                  }
+                  &:hover::before{
+                    transform: translate(-5%, 0) skew(-15deg);
+                  }
+                  &:hover p{
+                    color: rgb(197, 31, 31);
+                  }
+                }
             }
           }
         }

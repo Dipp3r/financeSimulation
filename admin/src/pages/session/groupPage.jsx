@@ -17,6 +17,7 @@ import Expand_right_double_grey from "@assets/images/Expand_right_double_grey.sv
 import link from "@assets/images/link.svg";
 import Time from "@components/time";
 import getPhaseString from "@utils/getPhaseString";
+import EndPrompt from "./EndPrompt";
 const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 export default class GroupPage extends React.Component {
   constructor(props) {
@@ -29,6 +30,7 @@ export default class GroupPage extends React.Component {
       phase: "1",
       childState: {},
       newTime: null,
+      endPromptDisplay: "none",
     };
   }
   searchGroup = (e) => {
@@ -209,6 +211,11 @@ export default class GroupPage extends React.Component {
         );
     }
   }
+  toggleEndPromp = () => {
+    let endPromptDisplay =
+      this.state.endPromptDisplay == "none" ? "flex" : "none";
+    this.setState({ endPromptDisplay: endPromptDisplay });
+  };
   componentDidMount() {
     // let groupList = this.props.getItem("groupList")
     // if (groupList && groupList.length > 0){
@@ -319,8 +326,16 @@ export default class GroupPage extends React.Component {
             </button>
           </div>
         </div>
+        <EndPrompt
+          id={Number.parseInt(localStorage.getItem("currentSessionID"))}
+          name={localStorage.getItem("currentSessionName")}
+          display={this.state.endPromptDisplay}
+          toggleEndPromp={this.toggleEndPromp}
+        />
         <div id="groupsList"></div>
-        <button id="fixed-end">End Game</button>
+        <button id="fixed-end" onClick={this.toggleEndPromp}>
+          End Game
+        </button>
       </div>
     );
   }
