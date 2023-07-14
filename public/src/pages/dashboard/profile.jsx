@@ -30,7 +30,7 @@ class ProfileComp extends React.Component {
     this.state = {
       year: 2099,
       phase: 1,
-      star: Math.round(Math.random() * 6),
+      star: 0,
       pieValue: 0,
     };
   }
@@ -89,7 +89,8 @@ class ProfileComp extends React.Component {
     localStorage.clear();
   };
   setStars = () => {
-    let starCount = this.state.star;
+    let starCount = (Number.parseInt(localStorage.getItem("year")) - 2100) | 0;
+    starCount += JSON.parse(localStorage.getItem("isEnd")) ? 1 : 0;
     let holders = document.querySelectorAll(".starHolder");
     holders.forEach((holder, index) => {
       if (index < starCount) {
@@ -100,13 +101,26 @@ class ProfileComp extends React.Component {
         holder.className = "starHolder starEmpty";
       }
     });
-    if (starCount == 6) {
-      document.querySelector("#reward").style.display = "flex";
+    if (starCount == 7) {
+      if (!JSON.parse(sessionStorage.getItem("cardAnimationEnd"))) {
+        document.querySelector("#card").style.animationName = "cardRotate";
+        setTimeout(() => {
+          document.querySelector("#reward").style.zIndex = "1";
+          document.querySelector("#empty").style.zIndex = "-1";
+        }, 1000);
+        setTimeout(() => {
+          document.querySelector("#card").style.animationName = "";
+          sessionStorage.setItem("cardAnimationEnd", true);
+        }, 2000);
+      } else {
+        document.querySelector("#reward").style.zIndex = "1";
+        document.querySelector("#empty").style.zIndex = "-1";
+      }
     } else {
-      document.querySelector("#reward").style.display = "none";
-      document.querySelector("#empty").style.height = `${
-        23 * (starCount + 1)
-      }%`;
+      document.querySelector("#reward").style.zIndex = "-1";
+      document.querySelector("#empty").style.zIndex = "1";
+      sessionStorage.setItem("cardAnimationEnd", false);
+      document.querySelector("#empty").style.height = `${27 * starCount}%`;
     }
   };
   updateProgressBar = () => {
@@ -125,27 +139,35 @@ class ProfileComp extends React.Component {
     );
     this.setState({ pieValue: percent });
   };
+  checkMessage = (event) => {
+    if (localStorage.getItem("dashboard") != "ProfileComp") return;
+    let data = JSON.parse(event.data);
+    this.setStars();
+    switch (data.msgType) {
+      case "GameChg":
+        localStorage.setItem("isEnd", false);
+        this.setState({ year: data.year, phase: data.phase }, () => {
+          this.updateProgressBar();
+          this.setStars();
+        });
+        break;
+      case "EndGame":
+        this.setStars();
+        break;
+      default:
+        break;
+    }
+  };
   componentDidMount() {
     this.setState({
-      year: localStorage.getItem("year"),
-      phase: localStorage.getItem("phase"),
+      year: Number.parseInt(localStorage.getItem("year")),
+      phase: Number.parseInt(localStorage.getItem("phase")),
     });
     // this.updateProfileInfo();
     this.setStars();
     this.updateProgressBar();
-    socket.addEventListener("message", (event) => {
-      let data = JSON.parse(event.data);
-      switch (data.msgType) {
-        case "GameChg":
-          this.setState({ year: data.year, phase: data.phase }, () => {
-            this.updateProgressBar();
-          });
-
-          break;
-        default:
-          break;
-      }
-    });
+    socket.removeEventListener("message", this.checkMessage);
+    socket.addEventListener("message", this.checkMessage);
   }
   render() {
     return (
@@ -229,6 +251,7 @@ class ProfileComp extends React.Component {
           </div>
           <div id="card">
             <div id="empty"></div>
+            <div id="emptyCard2" style={{ backgroundColor: "white" }}></div>
             <div id="reward">
               <img
                 id="mainImg"

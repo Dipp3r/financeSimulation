@@ -96,12 +96,24 @@ class PortfolioComp extends React.Component {
       })
       .then((data) => {
         let pieData = [
-          { name: "stocks", value: data.stock, color: "#223F80" },
-          { name: "Mutual funds", value: data.mutualFund, color: "#406AC8" },
-          { name: "commodities", value: data.commodity, color: "#6F82AB" },
+          {
+            name: "stocks",
+            value: data.stock < 0 ? 0 : data.stock,
+            color: "#223F80",
+          },
+          {
+            name: "Mutual funds",
+            value: data.mutualFund < 0 ? 0 : data.mutualFund,
+            color: "#406AC8",
+          },
+          {
+            name: "commodities",
+            value: data.commodity < 0 ? 0 : data.commodity,
+            color: "#6F82AB",
+          },
           {
             name: "cash",
-            value: data.cash < 0 ? 1 : data.cash,
+            value: data.cash <= 0 ? 1 : data.cash,
             color: "#CADAFF",
           },
         ];
@@ -214,19 +226,46 @@ class PortfolioComp extends React.Component {
             <div className="rowContent">
               {this.state.yearly < 0 && <img src={loss} alt="loss" />}
               {this.state.yearly > 0 && <img src={gain} alt="gain" />}
-              <p>₹{formatCurrencyValue(this.state.yearly) || "0"}</p>
-              {this.state.yearly_diff > 0 && (
-                <p id="percentage">{this.state.yearly_diff}%</p>
-              )}
+              <p>{formatCurrencyValue(Math.abs(this.state.yearly)) || ""}</p>
+
+              <p
+                id="percentage"
+                style={{
+                  color:
+                    this.state.yearly >= 0
+                      ? this.state.overall == 0
+                        ? "black"
+                        : "#6BC640"
+                      : "#FB5151",
+                }}
+              >
+                {this.state.yearly >= 0
+                  ? this.state.yearly_diff
+                  : Math.abs(this.state.yearly_diff)}
+                %
+              </p>
             </div>
             <hr />
             <div className="rowContent">
               {this.state.overall < 0 && <img src={loss} alt="loss" />}
               {this.state.overall > 0 && <img src={gain} alt="gain" />}
-              <p>₹{formatCurrencyValue(this.state.overall) || "0"}</p>
-              {this.state.overall_diff > 0 && (
-                <p id="percentage">{this.state.overall_diff}%</p>
-              )}
+              <p>{formatCurrencyValue(Math.abs(this.state.overall)) || ""}</p>
+              <p
+                id="percentage"
+                style={{
+                  color:
+                    this.state.overall >= 0
+                      ? this.state.overall == 0
+                        ? "black"
+                        : "#6BC640"
+                      : "#FB5151",
+                }}
+              >
+                {this.state.overall >= 0
+                  ? this.state.overall_diff
+                  : Math.abs(this.state.overall_diff)}
+                %
+              </p>
             </div>
           </div>
 

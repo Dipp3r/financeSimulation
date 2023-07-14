@@ -110,8 +110,8 @@ export default class GroupPage extends React.Component {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          sessionid: Number.parseInt(localStorage.getItem("currentSessionID")),
-          time: this.state.newTime,
+          sessionid: localStorage.getItem("currentSessionID"),
+          time: this.state.newTime ? "00:" + this.state.newTime : null,
         }),
       }
     ).then((response) => {
@@ -181,6 +181,7 @@ export default class GroupPage extends React.Component {
     event.currentTarget.value = `${minute.toString()}:${second.toString()}`;
   };
   checkMessage(message) {
+    console.log(message.msgType);
     // msgType: 'GameChg', year: 2106, phase: 4, time: '00:00:10'
     if (message.msgType == "GameChg") {
       // if (message.sessionid != localStorage.getItem("currentSessionID")) return;
@@ -197,6 +198,16 @@ export default class GroupPage extends React.Component {
         time: message.time.slice(3, undefined),
       });
     }
+    if (message.msgType == "EndGame") {
+      console.log(
+        message.sessionid == localStorage.getItem("currentSessionID")
+      );
+      if (message.sessionid == localStorage.getItem("currentSessionID"))
+        localStorage.setItem(
+          localStorage.getItem("currentSessionID") + "_isEnd",
+          true
+        );
+    }
   }
   componentDidMount() {
     // let groupList = this.props.getItem("groupList")
@@ -212,7 +223,7 @@ export default class GroupPage extends React.Component {
     });
   }
   timeChange = (newTime) => {
-    this.setState({ newTime: newTime });
+    this.setState({ time: newTime, newTime: newTime });
   };
   render() {
     return (

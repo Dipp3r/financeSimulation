@@ -29,7 +29,14 @@ export default class AssetsComp extends React.Component {
     return (
       <div>
         <p>{(this.props.index < 10 ? "0" : "") + this.props.index}</p>
-        <button>
+        <button
+          onClick={() =>
+            this.props.toggleaddInfoPrompt({
+              assetId: this.props.info.id,
+              assetName: this.props.info.name,
+            })
+          }
+        >
           <img
             src={edit_doc}
             alt="edit document"
@@ -53,4 +60,5 @@ export default class AssetsComp extends React.Component {
 AssetsComp.propTypes = {
   index: PropTypes.number,
   info: PropTypes.object.isRequired,
+  toggleaddInfoPrompt: PropTypes.func.isRequired,
 };

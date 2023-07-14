@@ -73,31 +73,29 @@ export default class Time extends React.Component {
     this.setState({
       time: newTime,
     });
-    this.props.timeChange("00:" + newTime);
+    this.props.timeChange(newTime);
   };
   init = () => {
     let obj = {};
     let time = this.props.time.split(":");
     obj.minute = Number.parseInt(time[0]);
     obj.second = Number.parseInt(time[1]);
-    obj.time = this.props.time;
     obj.isRunning = this.props.isRunning;
     let countDownIntervalKey = localStorage.getItem("countDownIntervalKey");
     if (countDownIntervalKey) clearInterval(countDownIntervalKey);
-    if (this.props.isRunning)
+    if (this.props.isRunning) {
       countDownIntervalKey = setInterval(this.state.countDownFunc, 1000);
+      // obj.time = this.props.time;
+    }
     localStorage.setItem("countDownIntervalKey", countDownIntervalKey);
     this.setState(obj);
   };
   componentDidUpdate(prevProps) {
-    if (
-      this.props.time !== prevProps.time ||
-      this.props.isRunning !== prevProps.isRunning
-    ) {
-      this.setState(
-        { time: this.props.time, isRunning: this.props.isRunning },
-        () => this.init()
-      );
+    if (this.props.isRunning !== prevProps.isRunning) {
+      this.setState({ isRunning: this.props.isRunning }, () => this.init());
+    }
+    if (this.props.time !== prevProps.time) {
+      this.setState({ time: this.props.time }, () => this.init());
     }
   }
   componentDidMount() {
@@ -113,6 +111,7 @@ export default class Time extends React.Component {
           onInput={this.inputFormate}
           onBlur={this.fixTimer}
           style={{ color: this.state.isRunning ? "#aaaaaa" : "#fff" }}
+          disabled={this.state.isRunning}
         />
       </>
     );
