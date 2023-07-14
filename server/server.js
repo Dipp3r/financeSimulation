@@ -1461,7 +1461,7 @@ app.put("/updateInfo",async (req,res)=>{
   const {assetid, text} = req.body;
   try {
     await pool.query(`
-      UPDATE assets SET info = ${text} WHERE id = ${assetid}
+      UPDATE assets SET info = '${text}' WHERE id = ${assetid}
     `); 
     res.status(200).send({status:true});
   } catch (err) {
