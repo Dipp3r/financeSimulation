@@ -54,5 +54,7 @@ class IndexComp extends React.Component {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<IndexComp />);
 serviceWorkerRegistration.register();
-//update session set year = 2099,phase = 1,_2100 = 0,_2101 = 0,_2102 = 0,_2103 = 0,_2104 = 0,_2105 = 0,_2106 = 0,start = 0;
+// update session set year = 2099,phase = 1,_2100 = 0,_2101 = 0,_2102 = 0,_2103 = 0,_2104 = 0,_2105 = 0,_2106 = 0,start = 0;
 // update "group" set _2100 = 0,_2101 = 0,_2102 = 0,_2103 = 0,_2104 = 0,_2105 = 0,_2106 = 0,cash = 0;
+// truncate table transaction;
+// truncate table investment;

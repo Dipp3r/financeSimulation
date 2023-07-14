@@ -37,6 +37,7 @@ class PortfolioComp extends React.Component {
         { name: "Mutual funds", value: 0, color: "#406AC8" },
         { name: "commidities", value: 0, color: "#6F82AB" },
         { name: "cash", value: 0, color: "#CADAFF" },
+        { name: "empty", value: 1, color: "#EEE" },
       ],
       stock: 0,
       mutualFund: 0,
@@ -113,9 +114,10 @@ class PortfolioComp extends React.Component {
           },
           {
             name: "cash",
-            value: data.cash <= 0 ? 1 : data.cash,
+            value: data.cash < 0 ? 0 : data.cash,
             color: "#CADAFF",
           },
+          { name: "empty", value: 1, color: "#EEE" },
         ];
         localStorage.setItem("cash", data.cash);
         this.setState({ pieData: pieData, ...data });

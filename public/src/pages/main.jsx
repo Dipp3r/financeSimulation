@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 // import ReactDOM from "react-dom/client";
-import SellComp from "@pages/buySell";
+import SellComp from "@pages/purchase/buySell";
 import Dashboard from "@pages/dashboard/dashboard";
 import InitialComp from "@pages/signInAndSignUp/initial";
 import PortfolioComp from "@pages/portfolio";

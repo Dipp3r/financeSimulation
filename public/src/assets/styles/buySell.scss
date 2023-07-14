@@ -190,3 +190,36 @@
 
 }
 
+#successfulMsg{
+  display: flex;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0px;
+  left: 0px;
+  background-color: #0000009c;
+  @include flex(column,center,center);
+  #imgContainer{
+    @include flex(column,center,center);
+    background-color: #33A05F;
+    border-radius: 50%;
+    width: 150px;
+    max-width: 50vw;
+    height: 150px;
+    max-height: 50vw;
+    img{
+      width: 55px;
+    }
+  }
+  #successfulMsgBox{
+    font-family: 'Montserrat';
+    color: white;
+    font-weight: 600;
+    font-size: 25px;
+    @include flex(column,center,center);
+    margin: 10px;
+    p {
+      margin: 2px 0px;
+    }
+  }
+}

@@ -7,6 +7,7 @@ import Coin from "@assets/images/coin.svg";
 import Arrow_left from "@assets/images/Arrow_left.svg";
 import Time from "@components/time";
 import formatCurrencyValue from "@utils/formatCurrencyValue";
+import SuccessMsgComp from "./successfullMsg";
 class SellComp extends React.Component {
   constructor(props) {
     super(props);
@@ -18,8 +19,15 @@ class SellComp extends React.Component {
       holdings: 0,
       sectionType: sessionStorage.getItem("buySellSectionType") || "buy",
       value: "",
+      successMsgDisplay: "none",
     };
   }
+  togglesuccessMsgDisplay = () => {
+    let successMsgDisplay =
+      this.state.successMsgDisplay == "none" ? "flex" : "none";
+    console.log(successMsgDisplay);
+    this.setState({ successMsgDisplay: successMsgDisplay });
+  };
   inputValue = (event) => {
     let value = Math.floor(event.currentTarget.value);
     if (value < 0) value -= value;
@@ -66,6 +74,7 @@ class SellComp extends React.Component {
       body: JSON.stringify(obj),
     }).then((respose) => {
       if (respose.status == 200) {
+        this.togglesuccessMsgDisplay();
         if (this.state.sectionType == "buy") {
           let holdings = this.state.holdings + value;
           this.setState({
@@ -191,6 +200,10 @@ class SellComp extends React.Component {
             </button>
           </div>
         </div>
+        <SuccessMsgComp
+          display={this.state.successMsgDisplay}
+          togglesuccessMsgDisplay={this.togglesuccessMsgDisplay}
+        />
       </div>
     );
   }
