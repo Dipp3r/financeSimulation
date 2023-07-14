@@ -251,7 +251,7 @@ class ProfileComp extends React.Component {
           </div>
           <div id="card">
             <div id="empty"></div>
-            <div id="emptyCard2" style={{ backgroundColor: "white" }}></div>
+            <div id="emptyCard2"></div>
             <div id="reward">
               <img
                 id="mainImg"
@@ -259,7 +259,6 @@ class ProfileComp extends React.Component {
                 alt="reward"
                 onClick={this.toShare}
               />
-              <img id="cash" src={cash} alt="cash" />
               {/* <button id="share">
                 <img src={share} alt="share" />
                 <p>Share</p>
