@@ -12,6 +12,7 @@ import ProfileComp from "@pages/dashboard/profile";
 import NotifComp from "@pages/dashboard/notification/notification";
 import StocksComp from "@pages/dashboard/stocks";
 import "@assets/styles/dashboard.scss";
+import { WithRouter } from "@components/routingWrapper";
 const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 class Dashboard extends React.Component {
   constructor(props) {
@@ -218,5 +219,6 @@ Dashboard.propTypes = {
   newNotification: PropTypes.bool.isRequired,
   notificationList: PropTypes.array.isRequired,
   toggleMainDisplay: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
 };
-export default Dashboard;
+export default WithRouter(Dashboard);

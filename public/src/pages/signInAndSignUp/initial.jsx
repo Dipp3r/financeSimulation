@@ -39,7 +39,6 @@ function InitialComp() {
 }
 
 InitialComp.propTypes = {
-  setItem: PropTypes.func.isRequired,
   getItem: PropTypes.func.isRequired,
 };
 export default InitialComp;

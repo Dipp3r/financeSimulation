@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 // import ReactDOM from "react-dom/client";
 import SellComp from "@pages/purchase/buySell";
 import Dashboard from "@pages/dashboard/dashboard";
-import InitialComp from "@pages/signInAndSignUp/initial";
+// import InitialComp from "@pages/signInAndSignUp/initial";
 import PortfolioComp from "@pages/portfolio";
 import TeamComp from "@pages/team/team";
 // import * as serviceWorkerRegistration from "@utils/serviceWorkerRegistration";
@@ -20,13 +20,7 @@ class MainComp extends React.Component {
       notificationList: [],
       year: Number.parseInt(localStorage.getItem("year")),
       newNotification: false,
-      mainDisplay: (
-        <InitialComp
-          toggleMainDisplay={this.toggleMainDisplay}
-          setItem={this.setItem}
-          getItem={this.getItem}
-        />
-      ),
+      mainDisplay: undefined,
     };
   }
   setItem = (name, value) => {
@@ -40,7 +34,7 @@ class MainComp extends React.Component {
   toggleMainDisplay = (e) => {
     let value =
       typeof e === "string" ? e : e.currentTarget.getAttribute("value");
-    console.log(value);
+    console.trace(value);
     let displayComp;
     localStorage.setItem("mainDisplay", value);
     switch (value) {
@@ -94,11 +88,14 @@ class MainComp extends React.Component {
           />
         );
         break;
-      case "login":
-        displayComp = (
-          <InitialComp toggleMainDisplay={this.toggleMainDisplay} />
-        );
-        break;
+      // case "login":
+      //   displayComp = (
+      //     <InitialComp
+      //       toggleMainDisplay={this.toggleMainDisplay}
+      //       getItem={this.getItem}
+      //     />
+      //   );
+      //   break;
       case "assetInfo":
         displayComp = (
           <AssetInfoComp toggleMainDisplay={this.toggleMainDisplay} />
@@ -248,6 +245,8 @@ class MainComp extends React.Component {
     // this.props.setItem("notificationList", notificationList);
   };
   componentDidMount() {
+    if (localStorage.getItem("userid") == null)
+      setTimeout(() => this.props.navigate("/*"), 300);
     // When the WebSocket connection is opened
     socket.addEventListener("open", () => {
       console.log("WebSocket connection opened");

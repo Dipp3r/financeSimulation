@@ -96,7 +96,7 @@ class TeamComp extends React.Component {
               onClick={() => {
                 setTimeout(
                   () => this.props.toggleMainDisplay("dashboard"),
-                  600
+                  400
                 );
               }}
             />
