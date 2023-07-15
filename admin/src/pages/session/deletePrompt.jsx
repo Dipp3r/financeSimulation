@@ -25,7 +25,11 @@ export default class DeletePrompt extends React.Component {
           headers: { "Content-type": "application/json" },
           body: JSON.stringify(obj),
         }
-      ).then(this.props.toggleDeletePromp);
+      ).then((response) => {
+        if (response.status == 200) {
+          this.props.toggleDeletePromp(false);
+        }
+      });
     } else {
       target.style.borderColor = "red";
     }
@@ -39,7 +43,10 @@ export default class DeletePrompt extends React.Component {
         <div id="deleteBox">
           <div id="first">
             <p>Delete {this.props.type + " " + this.props.name}</p>
-            <button id="closeButton" onClick={this.props.toggleDeletePromp}>
+            <button
+              id="closeButton"
+              onClick={() => this.props.toggleDeletePromp(true)}
+            >
               <img src={close} alt="" />
             </button>
           </div>

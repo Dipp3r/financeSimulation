@@ -11,8 +11,8 @@ export default class NewsComp extends React.Component {
     if (values.length == 2) [minute, second] = values;
     minute ??= 0;
     second ??= 0;
-    if (Number.parseInt(minute) > 60) minute = 60;
-    if (Number.parseInt(second) > 60) second = 60;
+    if (Number.parseInt(minute) >= 60) minute = 59;
+    if (Number.parseInt(second) >= 60) second = 59;
     event.currentTarget.value = `${minute.toString()}:${second.toString()}`;
   };
   updateTime = (event) => {
