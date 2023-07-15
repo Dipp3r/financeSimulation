@@ -292,7 +292,7 @@ app.post("/createSession", async (request, response) => {
       `);
       firstYear = firstYear.rows[0]["year"];
       await pool.query(
-        `INSERT INTO session(sessionid,title,time_created,year,phase,start, ${allYears}) VALUES($1,$2,$3,$4,$5,$6,0,0,0,0,0,0,0,0,0)`,
+        `INSERT INTO session(sessionid,title,time_created,year,phase,start, ${allYears}) VALUES($1,$2,$3,$4,$5,0,0,0,0,0,0,0,0,0)`,
         [id, title, new Date(), firstYear, 1]
       );
       response.status(200).send({ status: true });
