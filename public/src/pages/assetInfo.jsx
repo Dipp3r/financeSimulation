@@ -58,9 +58,10 @@ class AssetInfoComp extends React.Component {
         </div>
         <div id="main">
           <div id="assetsContent">
-            {this.state.text.map((line, index) => {
-              return <p key={index}>{line}</p>;
-            })}
+            {this.state.text &&
+              this.state.text.map((line, index) => {
+                return <p key={index}>{line}</p>;
+              })}
           </div>
         </div>
       </div>

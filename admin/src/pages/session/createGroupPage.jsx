@@ -64,6 +64,7 @@ export default class CreateGroupPage extends React.Component {
           <button id="save" onClick={this.createGroup}>
             Save
           </button>
+          <div id="buttonBg"></div>
         </div>
       </div>
     );

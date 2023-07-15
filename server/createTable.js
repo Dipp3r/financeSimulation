@@ -35,7 +35,6 @@ async function createTables() {
       CREATE TABLE IF NOT EXISTS "session" (
         sessionid INTEGER PRIMARY KEY,
         title VARCHAR(255),
-        excellink VARCHAR(255),
         time_created TIMESTAMP WITHOUT TIME ZONE,
         year INTEGER,
         phase INTEGER,

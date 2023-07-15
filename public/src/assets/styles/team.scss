@@ -12,6 +12,13 @@
       width: 33.33%;
       img {
         margin-left: 10px;
+        padding:2px;
+        border-radius: 10px;
+        transition: all 0.1s ease;
+        &:hover{
+          background-color: #acbadc;
+          animation: click 0.3s 1 ease;
+        }
       }
     }
     .pageTitle {

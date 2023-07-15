@@ -111,10 +111,17 @@ export default class GroupPage extends React.Component {
         container.appendChild(card);
       }
     } else {
-      let p = document.createElement("p");
-      p.id = "emptyGroup";
-      p.innerText = "No group";
-      container.appendChild(p);
+      let emptyDiv = document.createElement("div");
+      emptyDiv.id = "emptyGroupDiv";
+      let p1 = document.createElement("p");
+      p1.id = "emptyGroup1";
+      p1.innerText = "Empty";
+      let p2 = document.createElement("p");
+      p2.id = "emptyGroup2";
+      p2.innerText = `No groups yet, add new groups by clicking the "create group" button`;
+      emptyDiv.appendChild(p1);
+      emptyDiv.appendChild(p2);
+      container.appendChild(emptyDiv);
     }
   };
   startSession = () => {
