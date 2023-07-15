@@ -18,6 +18,8 @@ import link from "@assets/images/link.svg";
 import Time from "@components/time";
 import getPhaseString from "@utils/getPhaseString";
 import EndPrompt from "./EndPrompt";
+import empty_group from "@assets/images/empty_group.svg";
+
 const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 export default class GroupPage extends React.Component {
   constructor(props) {
@@ -113,13 +115,12 @@ export default class GroupPage extends React.Component {
     } else {
       let emptyDiv = document.createElement("div");
       emptyDiv.id = "emptyGroupDiv";
-      let p1 = document.createElement("p");
-      p1.id = "emptyGroup1";
-      p1.innerText = "Empty";
+      let illustration = document.createElement("img");
+      illustration.src = empty_group;
       let p2 = document.createElement("p");
       p2.id = "emptyGroup2";
-      p2.innerText = `No groups yet, add new groups by clicking the "create group" button`;
-      emptyDiv.appendChild(p1);
+      p2.innerText = `No group yet, add new group by clicking the "create group" button.`;
+      emptyDiv.appendChild(illustration);
       emptyDiv.appendChild(p2);
       container.appendChild(emptyDiv);
     }

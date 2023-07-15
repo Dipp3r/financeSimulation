@@ -5,6 +5,7 @@ import add_round from "@assets/images/Add_round.svg";
 import coin from "@assets/images/coin.svg";
 import downIcon from "@assets/images/Download.svg";
 import trash from "@assets/images/Trash.svg";
+import empty_session from "@assets/images/empty_session.svg";
 
 import DeletePrompt from "./deletePrompt";
 
@@ -133,13 +134,12 @@ export default class SessionsViewer extends React.Component {
     } else {
       let emptyDiv = document.createElement("div");
       emptyDiv.id = "emptySessionDiv";
-      let p1 = document.createElement("p");
-      p1.id = "emptySession1";
-      p1.innerText = "Empty";
+      let illustration = document.createElement("img");
+      illustration.src = empty_session;
       let p2 = document.createElement("p");
       p2.id = "emptySession2";
-      p2.innerText = `No sessions yet, add new session by clicking the "create session" button`;
-      emptyDiv.appendChild(p1);
+      p2.innerText = `No session yet, add new session by clicking the "create session" button.`;
+      emptyDiv.appendChild(illustration);
       emptyDiv.appendChild(p2);
       container.appendChild(emptyDiv);
     }

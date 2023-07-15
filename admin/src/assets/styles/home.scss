@@ -538,19 +538,13 @@
           p{
             margin:0px;
           }
-          transform:translateY(200px);
-          #emptySession1{
-            font-family: "Inter";
-            font-size: 50px;
-            font-weight: 700;
-            color: #5e5e5e93;
-          }
+          transform:translateY(100px);
           #emptySession2{
             margin-top:10px;
             font-family: "Montserrat";
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 400;
-            color: #5e5e5e93;
+            color: #4f4f4fb8;
           }
         }
         .sessionCards {
@@ -694,6 +688,7 @@
         background: rgba(0, 0, 0, 0.85);
         @include flex(column, center, center);
         #createSessionMenu {
+          transform: translateY(-100px);
           position: relative;
           width: 410px;
           height: 250px;
@@ -799,8 +794,9 @@
         @include flex(column, center, center);
         #createGroupMenu {
           position: relative;
+          transform: translateY(-100px);
           width: 427px;
-          height: 371px;
+          height: 321px;
           div {
             font-family: "Montserrat";
             font-style: normal;
@@ -928,6 +924,7 @@
         margin-top: 100px;
         @include flex(column, flex-start, center);
         padding: 40px;
+        padding-top:10px;
         width: calc(100% - 400px);
         height: 100vh;
         position: absolute;
@@ -945,6 +942,12 @@
             margin-bottom: 10px;
             #back {
               margin-right: 10px;
+              border-radius: 10px;
+              transition: all 0.1s ease;
+              &:hover{
+                background-color: #d3d8e6;
+                animation: click 0.3s 1 ease;
+              }
             }
             #topLabel {
               width: 100%;
@@ -1306,11 +1309,18 @@
           width: 100%;
           @include flex(column, center, center);
           #top {
+            margin-top:10px;
             width: 100%;
             @include flex(row, center, center);
             margin-bottom: 30px;
             #back {
               margin-right: 10px;
+              border-radius: 10px;
+              transition: all 0.1s ease;
+              &:hover{
+                background-color: #d3d8e6;
+                animation: click 0.3s 1 ease;
+              }
             }
             #searchDiv {
               width: 70%;
@@ -1442,24 +1452,18 @@
         }
         #groupsList {
           #emptyGroupDiv{
+            width:100vw;
             @include flex(column,center,center);
+            transform:translateY(50px);
             p{
               margin:0px;
-            }
-            transform:translateY(-150px);
-            width: 100vw;
-            #emptyGroup1{
-              font-family: "Inter";
-              font-size: 50px;
-              font-weight: 700;
-              color: #5e5e5e93;
             }
             #emptyGroup2{
               margin-top:10px;
               font-family: "Montserrat";
-              font-size: 20px;
+              font-size: 16px;
               font-weight: 400;
-              color: #5e5e5e93;
+              color: #4f4f4fb8;
             }
           }
           overflow-y: scroll;
