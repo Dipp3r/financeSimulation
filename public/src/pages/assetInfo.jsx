@@ -50,7 +50,10 @@ class AssetInfoComp extends React.Component {
               src={Arrow_left}
               alt="back_arrow"
               onClick={() => {
-                this.props.toggleMainDisplay("dashboard");
+                setTimeout(
+                  () => this.props.toggleMainDisplay("dashboard"),
+                  600
+                );
               }}
             />
           </div>

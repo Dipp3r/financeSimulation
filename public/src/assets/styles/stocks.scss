@@ -97,7 +97,7 @@
             overflow-y: hidden;
             background: #223F80;
             @include flex(row,flex-start,center);
-            #marquee1,#marquee2 {
+            .marquee {
               @include flex(row,flex-start,center);
                 animation: marquee-scroll 10s linear infinite;
                 white-space: nowrap;
