@@ -93,7 +93,12 @@ class TeamComp extends React.Component {
             <img
               src={Arrow_left}
               alt="back_arrow"
-              onClick={() => this.props.toggleMainDisplay("dashboard")}
+              onClick={() => {
+                setTimeout(
+                  () => this.props.toggleMainDisplay("dashboard"),
+                  600
+                );
+              }}
             />
           </div>
           <p className="pageTitle">Team</p>

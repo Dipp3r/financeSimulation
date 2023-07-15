@@ -98,7 +98,7 @@ class StocksComp extends React.Component {
           <div id="stockInfo">
             {this.state.isRunning | this.state.isEnd ? (
               <>
-                <div id="marquee1">
+                <div className="marquee">
                   {this.state.content.map((element, index) => {
                     // console.log(element,index)
                     return (
@@ -116,7 +116,43 @@ class StocksComp extends React.Component {
                     );
                   })}
                 </div>
-                <div id="marquee2">
+                <div className="marquee">
+                  {this.state.content.map((element, index) => {
+                    // console.log(element,index)
+                    return (
+                      <div key={index}>
+                        <p>
+                          {element.name} | {element.price} |
+                        </p>
+                        {element.diff > 0 && (
+                          <a className="gain">{element.diff}%</a>
+                        )}
+                        {element.diff < 0 && (
+                          <a className="loss">{element.diff}%</a>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="marquee">
+                  {this.state.content.map((element, index) => {
+                    // console.log(element,index)
+                    return (
+                      <div key={index}>
+                        <p>
+                          {element.name} | {element.price} |
+                        </p>
+                        {element.diff > 0 && (
+                          <a className="gain">{element.diff}%</a>
+                        )}
+                        {element.diff < 0 && (
+                          <a className="loss">{element.diff}%</a>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="marquee">
                   {this.state.content.map((element, index) => {
                     // console.log(element,index)
                     return (

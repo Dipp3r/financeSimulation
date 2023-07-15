@@ -135,7 +135,12 @@ class SellComp extends React.Component {
             <img
               src={Arrow_left}
               alt="back_arrow"
-              onClick={() => this.props.toggleMainDisplay("dashboard")}
+              onClick={() => {
+                setTimeout(
+                  () => this.props.toggleMainDisplay("dashboard"),
+                  600
+                );
+              }}
             />
             <img className="coin" src={Coin} alt="coin" />
             <p className="cashCount">{formatCurrencyValue(this.state.cash)}</p>
