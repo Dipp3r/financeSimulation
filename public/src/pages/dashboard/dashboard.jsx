@@ -21,6 +21,7 @@ class Dashboard extends React.Component {
       displayName: "ProfileComp",
       circle_offsetLeft: "50%",
       newNotification: this.props.newNotification,
+      cash: Number.parseInt(localStorage.getItem("cash")),
     };
   }
   changeDisplay = (e) => {
@@ -56,6 +57,7 @@ class Dashboard extends React.Component {
             toggleMainDisplay={this.props.toggleMainDisplay}
             isEnd={this.state.isEnd}
             isRunning={this.state.isRunning}
+            cash={this.state.cash}
           />
         );
         if (navImg) if (navImg.length == 3) navImg[1].src = Chart_alt_fill;
@@ -107,14 +109,24 @@ class Dashboard extends React.Component {
     let display = localStorage.getItem("dashboard");
     this.changeDisplay(display ? display : "");
 
-    socket.addEventListener("message", () => {
+    socket.addEventListener("message", (event) => {
       if (localStorage.getItem("mainDisplay") == "dashboard") {
         setTimeout(() => {
+          console.log(
+            localStorage.getItem("dashboard") == "StocksComp",
+            event.data.msgType == "CashUpt"
+          );
           this.changeDisplay(localStorage.getItem("dashboard"));
-          if (localStorage.getItem("dashboard") == "NotifComp")
+          if (localStorage.getItem("dashboard") == "NotifComp") {
             this.setState({
               newNotification: false,
             });
+          } else if (localStorage.getItem("dashboard") == "StocksComp") {
+            console.log(localStorage.getItem("cash"));
+            this.setState({
+              cash: Number.parseInt(localStorage.getItem("cash")),
+            });
+          }
         }, 500);
       }
     });

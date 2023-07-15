@@ -46,6 +46,11 @@ class SignupComp extends React.Component {
           ? error[`${element}Error`]
           : `invalid ${element}`;
       isError = isError || !vali[element];
+      if (element == "password") {
+        error[`${element}Error`] = vali[element]
+          ? ""
+          : `*Password must contain a minimum of 8 characters including atleast an uppercase, a lowercase and a digit`;
+      }
     }
     if (obj.password !== obj.confirmPassword) {
       error.confirmPasswordError = "Passwords don't match";

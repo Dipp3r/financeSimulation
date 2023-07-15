@@ -17,10 +17,10 @@ export default class PlayersPage extends React.Component {
       DeletePrompDisplay: false,
     };
   }
-  toggleDeletePromp = () => {
+  toggleDeletePromp = (isBack) => {
     let display = this.state.DeletePrompDisplay;
     display = !display;
-    if (!display) this.props.toggleSession("sessionViewer");
+    if (!display && !isBack) this.props.toggleSession("sessionViewer");
     this.setState({
       DeletePrompDisplay: display,
     });
@@ -115,7 +115,10 @@ export default class PlayersPage extends React.Component {
                 </p>
               </div>
               <div>
-                <button id="trash" onClick={this.toggleDeletePromp}>
+                <button
+                  id="trash"
+                  onClick={() => this.toggleDeletePromp(false)}
+                >
                   <img src={trash} alt="trashIcon" />
                 </button>
                 <button onClick={this.copyLink} className="groupLinkButton">
