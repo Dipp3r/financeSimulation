@@ -304,9 +304,9 @@ export default class GroupPage extends React.Component {
               onClick={this.props.toggleSession}
               value="createGroupPage"
             >
-              <div>
-                <img id="add" src={add_round} alt="add" />
-                <p>Create Group</p>
+              <p>Group</p>
+              <div id="add">
+                <img src={add_round} alt="add" />
               </div>
             </button>
           </div>
