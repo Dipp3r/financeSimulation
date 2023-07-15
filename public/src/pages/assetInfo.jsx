@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Arrow_left from "@assets/images/Arrow_left.svg";
 import "@assets/styles/news.scss";
 import Time from "@components/time";
+import point from "@assets/images/bullet_point.svg";
 
 class AssetInfoComp extends React.Component {
   constructor(props) {
@@ -63,7 +64,16 @@ class AssetInfoComp extends React.Component {
           <div id="assetsContent">
             {this.state.text &&
               this.state.text.map((line, index) => {
-                return <p key={index}>{line}</p>;
+                if (line == "") {
+                  return;
+                } else {
+                  return (
+                    <div key={index} className="news">
+                      <img src={point} alt="bullet_point" />
+                      <p>{line}</p>
+                    </div>
+                  );
+                }
               })}
           </div>
         </div>
