@@ -31,7 +31,7 @@ export default class AddInfoPrompt extends React.Component {
         return response.json();
       })
       .then((data) => {
-        this.setState({ value: data.info == null ? undefined : data.info });
+        this.setState({ value: data.info == null ? "" : data.info });
       });
   };
   setInfo = () => {
