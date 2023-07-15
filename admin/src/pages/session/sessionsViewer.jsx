@@ -131,10 +131,17 @@ export default class SessionsViewer extends React.Component {
         container.appendChild(card);
       }
     } else {
-      let p = document.createElement("p");
-      p.id = "emptySessions";
-      p.innerText = "No sessions";
-      container.appendChild(p);
+      let emptyDiv = document.createElement("div");
+      emptyDiv.id = "emptySessionDiv";
+      let p1 = document.createElement("p");
+      p1.id = "emptySession1";
+      p1.innerText = "Empty";
+      let p2 = document.createElement("p");
+      p2.id = "emptySession2";
+      p2.innerText = `No sessions yet, add new session by clicking the "create session" button`;
+      emptyDiv.appendChild(p1);
+      emptyDiv.appendChild(p2);
+      container.appendChild(emptyDiv);
     }
   };
   toggleDeletePromp = (sessionid = 0, sessionName = "session name") => {

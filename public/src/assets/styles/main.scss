@@ -93,3 +93,17 @@ button{
 ::-webkit-scrollbar-thumb {
   background-color: transparent;
 }
+
+
+@keyframes click {
+    0%{
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(1.2);
+    }
+    100%{
+        transform: scale(1);
+    }
+    
+}

@@ -7,8 +7,7 @@
         @include flex(row,space-between,center);
         
         div{
-            width: 33.33%;
-            @include flex(row,flex-start,center);
+            @include flex(row,flex-end,center);
             img{
                 margin-left:10px;
             }

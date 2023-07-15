@@ -40,6 +40,7 @@ export default class CreateSessionPage extends React.Component {
           <button id="save" onClick={this.createSession}>
             Save
           </button>
+          <div id="buttonBg"></div>
         </div>
       </div>
     );

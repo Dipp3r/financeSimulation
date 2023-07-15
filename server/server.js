@@ -292,8 +292,8 @@ app.post("/createSession", async (request, response) => {
       `);
       firstYear = firstYear.rows[0]["year"];
       await pool.query(
-        `INSERT INTO session(sessionid,title,excelLink,time_created,year,phase,start, ${allYears}) VALUES($1,$2,$3,$4,$5,$6,0,0,0,0,0,0,0,0,0)`,
-        [id, title, "", new Date(), firstYear, 1]
+        `INSERT INTO session(sessionid,title,time_created,year,phase,start, ${allYears}) VALUES($1,$2,$3,$4,$5,$6,0,0,0,0,0,0,0,0,0)`,
+        [id, title, new Date(), firstYear, 1]
       );
       response.status(200).send({ status: true });
     } catch (error) {
@@ -408,26 +408,25 @@ app.delete("/deleteGroup", async (request, response) => {
       [groupid]
     );
     if (users.rowCount > 0) {
-      users = users.rows;
-      const userPromises = [];
-      for (let j = 0; j < users.length; j++) {
-        let userid = users[j].userid;
-        let userPromise = pool.query(`DELETE FROM users WHERE userid = $1`, [
-          userid,
-        ]);
-        userPromises.push(userPromise);
-      }
-      await Promise.all(userPromises);
+      await pool.query(`
+        DELETE FROM users WHERE groupid = ${groupid}
+      `);
+      await pool.query(`
+        DELETE FROM investment WHERE groupid = ${groupid}
+      `);
+      await pool.query(`
+        DELETE FROM transaction WHERE groupid = ${groupid}
+      `);
       await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
-      wss.broadcast({
-        groupList: [groupid],
-        msgType: "DeleteAction",
-        reason:
-          "This group was either removed by the admin or it's no longer active",
-      });
     } else {
       await pool.query(`DELETE FROM "group" WHERE groupid = $1`, [groupid]);
     }
+    wss.broadcast({
+      groupList: [groupid],
+      msgType: "DeleteAction",
+      reason:
+        "This group was either removed by the admin or it's no longer active",
+    });
     response.status(200).send({ status: true });
   } catch (err) {
     response.status(400).send("Error: " + err.message);
@@ -868,63 +867,29 @@ app.delete("/deleteSession", async (req, res) => {
     });
     if (groups.rowCount === 0) {
       await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionid]);
-      wss.broadcast({
-        groupList: groupList,
-        msgType: "DeleteAction",
-        reason:
-          "This session is either removed by the admin or it's no longer active",
-      });
-      res.status(200).send({ status: true });
     } else {
-      groups = groups.rows;
-      for (let i = 0; i < groups.length; i++) {
-        let groupid = groups[i].groupid;
-
-        let users = await pool.query(
-          `
-          SELECT userid FROM users WHERE groupid = $1
-        `,
-          [groupid]
-        );
-
-        if (users.rowCount > 0) {
-          users = users.rows;
-          const userPromises = [];
-          for (let j = 0; j < users.length; j++) {
-            let userid = users[j].userid;
-            let userPromise = pool.query(
-              `DELETE FROM users WHERE userid = $1`,
-              [userid]
-            );
-            userPromises.push(userPromise);
-          }
-          await Promise.all(userPromises);
-
-          let groupPromise = pool.query(
-            `DELETE FROM "group" WHERE groupid = $1`,
-            [groupid]
-          );
-          promises.push(groupPromise);
-        } else {
-          let groupPromise = pool.query(
-            `DELETE FROM "group" WHERE groupid = $1`,
-            [groupid]
-          );
-          promises.push(groupPromise);
-        }
-      }
-
-      await Promise.all(promises);
+      await pool.query(`
+        DELETE FROM users WHERE groupid in (SELECT groupid FROM "group" WHERE sessionid = ${sessionid})
+      `);
+      await pool.query(`
+        DELETE FROM investment WHERE groupid in (SELECT groupid FROM "group" WHERE sessionid = ${sessionid})
+      `);
+      await pool.query(`
+        DELETE FROM transaction WHERE groupid in (SELECT groupid FROM "group" WHERE sessionid = ${sessionid})
+      `);
+      await pool.query(`
+        DELETE FROM "group" WHERE sessionid = ${sessionid}
+      `);
 
       await pool.query(`DELETE FROM session WHERE sessionid = $1`, [sessionid]);
-      wss.broadcast({
-        sessionid: sessionid,
-        msgType: "DeleteAction",
-        reason:
-          "This session is either removed by the admin or it's no longer active",
-      });
-      res.status(200).send({ status: true });
     }
+    wss.broadcast({
+      groupList: groupList,
+      msgType: "DeleteAction",
+      reason:
+        "This session is either removed by the admin or it's no longer active",
+    });
+    res.status(200).send({ status: true });
   } catch (err) {
     console.log("Error: " + err.message);
     res.status(400).send({ status: false });

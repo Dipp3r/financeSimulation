@@ -14,6 +14,7 @@
     border-radius: 35px;
     #options {
       margin-top: 60px;
+
       .button {
         margin: 20px;
         width: 235px;
@@ -28,24 +29,28 @@
         position: relative;
         overflow: hidden;
         z-index: 0;
-        &::before{
-          z-index: -1;
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 5px;
-          height: 45px;
-          background: #ffffff;
-          transform: translate(-30px, 0) skew(-35deg);
-          transition: 0.5s;
+        transition:all 0.3s ease;
+        &:hover{
+          transform: scale(1.1);
         }
-        &:hover:after{
-border:2px solid red;
-        }
-        &:hover:before{
-          transform: translate(240px, 0) skew(-20deg);
-        }
+//         &::before{
+//           z-index: -1;
+//           content: "";
+//           position: absolute;
+//           top: 0;
+//           left: 0;
+//           width: 5px;
+//           height: 45px;
+//           background: #ffffff;
+//           transform: translate(-30px, 0) skew(-35deg);
+//           transition: 0.5s;
+//         }
+//         &:hover:after{
+// border:2px solid red;
+//         }
+//         &:hover:before{
+//           transform: translate(240px, 0) skew(-20deg);
+//         }
         img {
           margin: 10px;
           // circle{stroke:#223F80;}
@@ -102,6 +107,7 @@ border:2px solid red;
           font-style: normal;
           font-weight: 500;
           font-size: 20px;
+          transition: all 1s ease;
           // &:focus{
           //     color:white;
           //     background: #223f80bf;
@@ -520,16 +526,32 @@ border:2px solid red;
         margin-top: 150px;
         @include flex(column, center, center);
         // display:none;
-        padding: 40px;
+        // padding: 40px;
         width: 100%;
         button {
           margin-top: 15px;
           width: 80%;
           max-width: 1500px;
         }
-        #emptySessions {
-          font-family: "Montserrat";
-          font-size: 20px;
+        #emptySessionDiv{
+          @include flex(column,center,center);
+          p{
+            margin:0px;
+          }
+          transform:translateY(200px);
+          #emptySession1{
+            font-family: "Inter";
+            font-size: 50px;
+            font-weight: 700;
+            color: #5e5e5e93;
+          }
+          #emptySession2{
+            margin-top:10px;
+            font-family: "Montserrat";
+            font-size: 20px;
+            font-weight: 400;
+            color: #5e5e5e93;
+          }
         }
         .sessionCards {
           transition: transform 0.3s ease-out;
@@ -687,12 +709,14 @@ border:2px solid red;
               right: 0px;
               border-radius: 100%;
               @include flex(column, center, center);
-              padding: 10px;
+              padding: 5px;
+              transition:all 0.2s ease;
               img {
                 height: 30px;
               }
               &:focus {
-                background-color: #224080c3;
+                background-color: white;
+                animation: gamechange 0.2s 1 ease;
               }
             }
           }
@@ -713,23 +737,53 @@ border:2px solid red;
             }
           }
           #save {
+            overflow:hidden;
             position: absolute;
             width: 131px;
             height: 49px;
             bottom: 0px;
             left: 0px;
-            background: #223f80;
+            // background: #ffffff;
             border-radius: 8px;
             font-family: "Montserrat";
             font-style: normal;
             font-weight: 500;
             font-size: 20px;
-            color: #ffffff;
-            transition: all .3s ease-out;
-            &:hover{
-              
-              transform: scale(0.9);
+            color:  #223f80;
+            border:3px solid #223F80;
+            transition:all 1s ease;
+            &::before{
+              z-index: -1;
+              content: "";
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 130%;
+              height: 55px;
+              color: rgb(255, 255, 255);
+              background: #223F80;
+              transform: translate(-110%, 0) skew(-30deg);
+              transition: 1s;
             }
+            &:hover::before{
+              transform: translate(-5%, 0) skew(-15deg);
+            }
+            &:hover {
+              color: white;
+            }
+            &:focus{
+              animation: click 0.3s 1 ease; 
+            }
+          }
+          #buttonBg{
+            position: absolute;
+            width: 130px;
+            height: 48px;
+            bottom: 0px;
+            left: 0px;
+            border-radius: 8px;
+            background: white; 
+            z-index: -2;
           }
         }
       }
@@ -759,12 +813,14 @@ border:2px solid red;
               right: 0px;
               border-radius: 100%;
               @include flex(column, center, center);
-              padding: 10px;
+              padding: 5px;
+              transition:all 0.2s ease;
               img {
                 height: 30px;
               }
               &:focus {
-                background-color: #224080c3;
+                background-color: white;
+                animation: gamechange 0.2s 1 ease;
               }
             }
           }
@@ -798,7 +854,11 @@ border:2px solid red;
               color: #8c8c8c;
             }
             select {
-              width: 92px;
+              -webkit-appearance: none;
+              -moz-appearance: none;
+              appearance: none;
+              padding:10px;
+              text-align: center;
               height: 49px;
               background: #15151556;
               border: 2px solid #8c8c8c;
@@ -807,7 +867,6 @@ border:2px solid red;
               font-style: normal;
               font-weight: 400;
               font-size: 20px;
-              padding-left: 14px;
               color: #8c8c8c;
               &:focus {
                 outline: none;
@@ -815,18 +874,53 @@ border:2px solid red;
             }
           }
           #save {
+            overflow:hidden;
             position: absolute;
             width: 131px;
             height: 49px;
             bottom: 0px;
             left: 0px;
-            background: #223f80;
+            // background: #ffffff;
             border-radius: 8px;
             font-family: "Montserrat";
             font-style: normal;
             font-weight: 500;
             font-size: 20px;
-            color: #ffffff;
+            color:  #223f80;
+            border:3px solid #223F80;
+            transition:all 1s ease;
+            &::before{
+              z-index: -1;
+              content: "";
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 130%;
+              height: 55px;
+              color: rgb(255, 255, 255);
+              background: #223F80;
+              transform: translate(-110%, 0) skew(-30deg);
+              transition: 1s;
+            }
+            &:hover::before{
+              transform: translate(-5%, 0) skew(-15deg);
+            }
+            &:hover {
+              color: white;
+            }
+            &:focus{
+              animation: click 0.3s 1 ease; 
+            }
+          }
+          #buttonBg{
+            position: absolute;
+            width: 130px;
+            height: 48px;
+            bottom: 0px;
+            left: 0px;
+            border-radius: 8px;
+            background: white; 
+            z-index: -2;
           }
         }
       }
@@ -863,13 +957,18 @@ border:2px solid red;
                   height: 50px;
                   @include flex(row, space-around, center);
                   background-color: white;
-                  transition: 0.5s;
+                  transition: 0.5s ease;
                 }
                 .groupLinkButtonActive{
-                  background-color: rgba(16, 42, 189, 0.534);
+                  background-color: #d4d4d456;
                 }
                 #trash {
                   margin-right: 60px;
+                  img{
+                    &:hover{
+                      animation: shake 0.5s ease-in-out 2;
+                    }
+                  }
                 }
                 @include flex(row, space-between, center);
                 #groupNameInput {
@@ -1059,7 +1158,7 @@ border:2px solid red;
               font-size: 20px;
               color: #a43936;
               border-radius: 5px;
-              height: 45px;
+              height: 30px;
               @include flex(row, flex-center, center);
               position: relative;
               overflow: hidden;
@@ -1071,8 +1170,8 @@ border:2px solid red;
                 top: 0;
                 left: 0;
                 width: 120px;
-                height: 45px;
-                background: #6b0f0f;
+                height: 30px;
+                background: #a43936;
                 transform: translate(-140%, 0) skew(-45deg);
                 transition: 0.8s;
                 z-index: -1;
@@ -1082,6 +1181,9 @@ border:2px solid red;
               }
               &:hover{
                 color: white;
+              }
+              &:focus{
+                animation: click 0.3s 1;
               }
             }
             button {
@@ -1150,13 +1252,7 @@ border:2px solid red;
       }
 
       #groupPage {
-        #emptyGroup {
-          font-family: "Montserrat";
-          font-size: 20px;
-          width: 80%;
-          text-align: center;
-          position: absolute;
-        }
+        
         #fixed-end{
           position: fixed;
           overflow: hidden;
@@ -1239,6 +1335,10 @@ border:2px solid red;
               }
             }
             #create {
+              transition: transform 0.2s ease-out;
+              &:focus{
+                transform: scale(0.95);
+              } 
               margin-left: 20px;
               margin-top: 0px;
               height: 44px;
@@ -1334,15 +1434,40 @@ border:2px solid red;
               &:hover {
                 color: white;
               }
+              &:focus{
+                animation:click 0.3s 1 ease;
+              }
             }
           }
         }
         #groupsList {
+          #emptyGroupDiv{
+            @include flex(column,center,center);
+            p{
+              margin:0px;
+            }
+            transform:translateY(-150px);
+            width: 100vw;
+            #emptyGroup1{
+              font-family: "Inter";
+              font-size: 50px;
+              font-weight: 700;
+              color: #5e5e5e93;
+            }
+            #emptyGroup2{
+              margin-top:10px;
+              font-family: "Montserrat";
+              font-size: 20px;
+              font-weight: 400;
+              color: #5e5e5e93;
+            }
+          }
           overflow-y: scroll;
           padding: 50px;
           margin-top: 30px;
           padding-top: 0px;
           min-width: 70%;
+          height:fit-content;
           // margin: 30px 20px;
           .card {
             .groupLinkButton {
@@ -1354,9 +1479,9 @@ border:2px solid red;
               transition: 0.5s;
             }
             .groupLinkButtonActive{
-              background-color: rgba(16, 42, 189, 0.534);
+              background-color: #d4d4d456;
             }
-            transition: all 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out ;
             &:hover {
               transform: scale(1.1);
             }
@@ -1364,7 +1489,7 @@ border:2px solid red;
             height: 100px;
             padding: 15px;
             background: white;
-            box-shadow: 2px 5px 10px 4px rgba(0, 0, 0, 0.08);
+            box-shadow: 0px 5px 5px -2px rgba(0,0,0,0.3);
             border-radius: 10px;
             position: relative;
             #groupBox {
@@ -1668,6 +1793,19 @@ border:2px solid red;
   }
   50%{
     transform: scale(1.4); 
+  }
+  100%{
+    transform: scale(1); 
+  }
+}
+
+
+@keyframes click {
+  0%{
+    transform: scale(1); 
+  }
+  50%{
+    transform: scale(1.2); 
   }
   100%{
     transform: scale(1); 
