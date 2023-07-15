@@ -53,7 +53,7 @@ class SignupComp extends React.Component {
       }
     }
     if (obj.password !== obj.confirmPassword) {
-      error.confirmPasswordError = "confirmPassword again";
+      error.confirmPasswordError = "Passwords don't match";
       isError = true;
     }
     this.setState(error);
