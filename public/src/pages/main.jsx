@@ -266,8 +266,8 @@ class MainComp extends React.Component {
     if (!localStorage.getItem("minute")) localStorage.setItem("minute", 15);
     if (!localStorage.getItem("second")) localStorage.setItem("second", 0);
     if (!localStorage.getItem("cash")) localStorage.setItem("cash", 0);
-    localStorage.setItem("year", 2099);
-    localStorage.setItem("phase", 1);
+    if (!localStorage.getItem("year")) localStorage.setItem("year", 2099);
+    if (!localStorage.getItem("phase")) localStorage.setItem("phase", 1);
     let display = localStorage.getItem("mainDisplay");
     this.toggleMainDisplay(display ? display : "");
   }

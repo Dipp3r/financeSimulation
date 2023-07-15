@@ -13,7 +13,7 @@ class StocksComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cash: localStorage.getItem("cash"),
+      cash: this.props.cash,
       stockList: [],
       mutualFundList: [],
       commodityList: [],
@@ -71,6 +71,10 @@ class StocksComp extends React.Component {
     if (this.props.isRunning !== prevProps.isRunning) {
       this.setState({ isRunning: this.props.isRunning });
     }
+    if (this.props.cash !== prevProps.cash) {
+      this.setState({ cash: this.props.cash });
+      this.fetchList();
+    }
   }
   componentDidMount() {
     this.fetchList();
@@ -80,7 +84,6 @@ class StocksComp extends React.Component {
     });
   }
   render() {
-    console.log(this.state.isEnd, this.state.isRunning);
     return (
       <div id="stocks">
         <div id="topBar">
@@ -188,5 +191,6 @@ StocksComp.propTypes = {
   toggleMainDisplay: PropTypes.func.isRequired,
   isEnd: PropTypes.bool,
   isRunning: PropTypes.bool,
+  cash: PropTypes.number,
 };
 export default StocksComp;
