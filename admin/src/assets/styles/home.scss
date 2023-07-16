@@ -245,6 +245,12 @@
               font-weight: 400;
               font-size: 20px;
               color: #223F80;
+              &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active{
+              -webkit-background-clip: text !important;
+            }
               &:focus {
                 // border: 2px solid black;
                 outline: inset;
@@ -292,6 +298,12 @@
             font-size: 15px;
             color: #223f80;
             width: 50px;
+            &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active{
+              -webkit-background-clip: text !important;
+            }
           //   display:none;
           }
           #first {
@@ -469,6 +481,12 @@
                 border: 2px solid #3956959c;
                 width: 80%;
                 height: 30px;
+                &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active{
+              -webkit-background-clip: text !important;
+            }
                 &:focus{
                   outline: none;
                 }
@@ -648,6 +666,12 @@
               font-style: normal;
               font-weight: 500;
               font-size: 20px;
+              &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active{
+              -webkit-background-clip: text !important;
+            }
               &:focus {
                 border: none;
                 outline: none;
@@ -736,6 +760,12 @@
             font-size: 20px;
             padding-left: 14px;
             color: #8c8c8c;
+            &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active{
+              -webkit-background-clip: text !important;
+            }
             &:focus {
               outline: none;
             }
@@ -842,6 +872,12 @@
             font-size: 20px;
             padding-left: 14px;
             color: #8c8c8c;
+            &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active{
+              -webkit-background-clip: text !important;
+            }
             &:focus {
               outline: none;
             }
@@ -1100,6 +1136,12 @@
                   border: 2px solid #3956959c;
                   width: 80%;
                   height: 30px;
+                  &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active{
+              -webkit-background-clip: text !important;
+            }
                   &:focus{
                     outline: none;
                   }
@@ -1347,10 +1389,17 @@
                 font-style: normal;
                 font-weight: 500;
                 font-size: 20px;
+                &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active{
+              -webkit-background-clip: text !important;
+            }
                 &:focus {
                   border: none;
                   outline: none;
                 }
+                
               }
             }
             #create {
@@ -1414,6 +1463,12 @@
                     color: inherit;
                     font-size: inherit;
                     width: 75px;
+                    &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active{
+              -webkit-background-clip: text !important;
+            }
                   }
                 }
               }
@@ -1617,6 +1672,12 @@
                 border: 2px solid #3956959c;
                 width: 80%;
                 height: 30px;
+                &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active{
+              -webkit-background-clip: text !important;
+            }
                 &:focus{
                   outline: none;
                 }
