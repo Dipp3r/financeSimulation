@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "@assets/styles/signup.scss";
 import coin from "@assets/images/coin.svg";
-// import FormSignup from "@components/signupForm";
 import Arrow_left from "@assets/images/backArrow.png";
 import validator from "@utils/validator";
 import { WithRouter } from "@components/routingWrapper";

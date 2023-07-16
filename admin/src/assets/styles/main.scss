@@ -160,3 +160,24 @@ input[type="time"] {
 // input[type="time"]::-webkit-calendar-picker-indicator {
 //     appearance: none;
 //   }
+
+
+/* Hide scrollbars on all elements */
+::-webkit-scrollbar {
+  width: 0.5em; /* Adjust the width as needed */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent; /* Set the background color of the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: transparent; /* Set the color of the thumb (the draggable part of the scrollbar) */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: transparent; /* Set the color of the thumb on hover */
+}
