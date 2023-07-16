@@ -32,7 +32,7 @@
         left:0;
         width: 100vw;
         @include flex(row,space-around,center);
-        #loginButton,#signupButton{
+        #loginButton{
             @include flex(row,space-around,center);
             // position:fixed;
             bottom:50px;
@@ -47,6 +47,11 @@
             color: #FFFFFF;
             border-radius: 35px;   
             background: #223F80;
+            &:hover{
+              color: #FFFFFF;
+              background: #223F80;
+              animation: click 0.3s 1 ease;
+            } 
           }
           img{
               height:15px;

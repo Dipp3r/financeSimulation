@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import "@assets/styles/signup.scss";
 import "@assets/styles/signupForm.scss";
 
 import SigninComp from "./singinComp";

@@ -144,11 +144,15 @@ class ProfileComp extends React.Component {
     this.setStars();
     switch (data.msgType) {
       case "GameChg":
-        localStorage.setItem("isEnd", false);
-        this.setState({ year: data.year, phase: data.phase }, () => {
-          this.updateProgressBar();
-          this.setStars();
-        });
+        for (let groupid of data.groupList) {
+          if (groupid == localStorage.getItem("groupid")) {
+            localStorage.setItem("isEnd", false);
+            this.setState({ year: data.year, phase: data.phase }, () => {
+              this.updateProgressBar();
+              this.setStars();
+            });
+          }
+        }
         break;
       case "EndGame":
         this.setStars();
