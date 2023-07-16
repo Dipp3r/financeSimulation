@@ -269,17 +269,6 @@ app.get("/", (request, response) => {
   response.json({ info: "Node.js, Express, and Postgres API" });
 });
 
-//API for testing
-
-app.get("/test", async (req, res) => {
-  try {
-    const sessions = await pool.query('SELECT * FROM "group"');
-    res.send(sessions.rows);
-  } catch (error) {
-    res.sendStatus(400).send("Error: " + error.message);
-  }
-});
-
 //API(s) FOR ADMIN
 
 app.post("/createSession", async (request, response) => {
@@ -1117,32 +1106,39 @@ app.post("/trade", async (req, res) => {
 app.put("/buy", async (req, res) => {
   const { groupid, stockid, amount } = req.body;
   try {
-    await pool.query(`
-      UPDATE "group" SET cash = cash - ${amount} WHERE groupid = ${groupid}
+    const cash = await pool.query(`
+      SELECT cash FROM "group" WHERE groupid = ${groupid}
     `);
-    const holdings = await pool.query(`
-      SELECT holdings FROM investment WHERE groupid = ${groupid} AND stockid = ${stockid} 
-    `);
-    holdings.rowCount > 0
-      ? await pool.query(`
-          UPDATE investment SET holdings = holdings + ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
-        `)
-      : await pool.query(`
-          INSERT INTO investment(stockid,groupid,holdings,profit) values(${stockid},${groupid},${amount},0)
-        `);
-    const gameInfo = await pool.query(`
-      select year,phase from "session" where sessionid = (select sessionid from "group" where groupid = ${groupid})
-    `);
-    const year = gameInfo.rows[0]["year"];
-    const phase = gameInfo.rows[0]["phase"];
-    await pool.query(
-      `
-      INSERT INTO transaction(assetid,groupid,amount,status,time,year,phase) VALUES(${stockid},${groupid},${amount},'buy',$1,${year},${phase})
-    `,
-      [new Date()]
-    );
-    wss.broadcast({ groupid: groupid, msgType: "Transact" });
-    res.status(200).send({ status: true });
+    if(cash.rows[0]["cash"]>=amount){
+      await pool.query(`
+        UPDATE "group" SET cash = cash - ${amount} WHERE groupid = ${groupid}
+      `);
+      const holdings = await pool.query(`
+        SELECT holdings FROM investment WHERE groupid = ${groupid} AND stockid = ${stockid} 
+      `);
+      holdings.rowCount > 0
+        ? await pool.query(`
+            UPDATE investment SET holdings = holdings + ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
+          `)
+        : await pool.query(`
+            INSERT INTO investment(stockid,groupid,holdings,profit) values(${stockid},${groupid},${amount},0)
+          `);
+      const gameInfo = await pool.query(`
+        select year,phase from "session" where sessionid = (select sessionid from "group" where groupid = ${groupid})
+      `);
+      const year = gameInfo.rows[0]["year"];
+      const phase = gameInfo.rows[0]["phase"];
+      await pool.query(
+        `
+        INSERT INTO transaction(assetid,groupid,amount,status,time,year,phase) VALUES(${stockid},${groupid},${amount},'buy',$1,${year},${phase})
+      `,
+        [new Date()]
+      );
+      wss.broadcast({ groupid: groupid, msgType: "Transact" });
+      res.status(200).send({ status: true });
+    } else{
+      res.status(200).send({ status: false , msg: "Not enough cash to run the transaction" });
+    }
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
   }
@@ -1151,30 +1147,38 @@ app.put("/buy", async (req, res) => {
 app.put("/sell", async (req, res) => {
   const { groupid, stockid, amount } = req.body;
   try {
-    await pool.query(`
-      UPDATE "group" SET cash = cash + ${amount} WHERE groupid = ${groupid}
+    const asset_holdings = await pool.query(`
+      SELECT holdings FROM investment WHERE groupid = ${groupid} AND stockid = ${stockid}
     `);
-    const holdings = await pool.query(`
-      SELECT holdings FROM investment WHERE groupid = ${groupid} AND stockid = ${stockid} 
-    `);
-    holdings.rowCount > 0
-      ? await pool.query(`
-      UPDATE investment SET holdings = holdings - ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
-    `)
-      : "";
-    const gameInfo = await pool.query(`
-      select year,phase from "session" where sessionid = (select sessionid from "group" where groupid = ${groupid})
-    `);
-    const year = gameInfo.rows[0]["year"];
-    const phase = gameInfo.rows[0]["phase"];
-    await pool.query(
-      `
-      INSERT INTO transaction(assetid,groupid,amount,status,time,year,phase) VALUES(${stockid},${groupid},${amount},'sell',$1,${year},${phase})
-    `,
-      [new Date()]
-    );
-    wss.broadcast({ groupid: groupid, msgType: "Transact" });
-    res.status(200).send({ status: true });
+    if(asset_holdings.rows[0]["holdings"]>=amount){
+      await pool.query(`
+        UPDATE "group" SET cash = cash + ${amount} WHERE groupid = ${groupid}
+      `);
+      const holdings = await pool.query(`
+        SELECT holdings FROM investment WHERE groupid = ${groupid} AND stockid = ${stockid} 
+      `);
+      holdings.rowCount > 0
+        ? await pool.query(`
+        UPDATE investment SET holdings = holdings - ${amount} WHERE groupid = ${groupid} AND stockid = ${stockid}
+      `)
+        : "";
+      const gameInfo = await pool.query(`
+        select year,phase from "session" where sessionid = (select sessionid from "group" where groupid = ${groupid})
+      `);
+      const year = gameInfo.rows[0]["year"];
+      const phase = gameInfo.rows[0]["phase"];
+      await pool.query(
+        `
+        INSERT INTO transaction(assetid,groupid,amount,status,time,year,phase) VALUES(${stockid},${groupid},${amount},'sell',$1,${year},${phase})
+      `,
+        [new Date()]
+      );
+      wss.broadcast({ groupid: groupid, msgType: "Transact" });
+      res.status(200).send({ status: true });
+    } else{
+      res.status(200).send({ status: true, msg:"Not enough holdings to run the transaction"});
+    }
+    
   } catch (err) {
     res.status(400).send({ status: false, msg: err.message });
   }
