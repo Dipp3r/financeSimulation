@@ -20,7 +20,7 @@ export default class PlayersPage extends React.Component {
   toggleDeletePromp = (isBack) => {
     let display = this.state.DeletePrompDisplay;
     display = !display;
-    if (!display && !isBack) this.props.toggleSession("sessionViewer");
+    if (!display && !isBack) this.props.toggleSession("groupPage");
     this.setState({
       DeletePrompDisplay: display,
     });
@@ -138,7 +138,11 @@ export default class PlayersPage extends React.Component {
               toggleDeletePromp={this.toggleDeletePromp}
             />
           )}
-          {this.state.playersList.map((element) => element)}
+          {this.state.playersList.length > 0 ? (
+            this.state.playersList.map((element) => element)
+          ) : (
+            <p>no players</p>
+          )}
         </div>
       </div>
     );
