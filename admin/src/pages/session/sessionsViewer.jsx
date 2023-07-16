@@ -202,9 +202,9 @@ export default class SessionsViewer extends React.Component {
             onClick={this.props.toggleSession}
             value="createSessionPage"
           >
-            <div>
-              <img src={add_round} id="add" alt="add" />
-              <p>Create Session</p>
+            <p>Session</p>
+            <div id="add">
+              <img src={add_round} alt="add" />
             </div>
           </button>
         </div>
