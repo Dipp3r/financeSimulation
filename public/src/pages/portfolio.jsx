@@ -166,7 +166,7 @@ class PortfolioComp extends React.Component {
               onClick={() => {
                 setTimeout(
                   () => this.props.toggleMainDisplay("dashboard"),
-                  600
+                  400
                 );
               }}
               alt="back_arrow"

@@ -24,5 +24,5 @@ export const WithRouter = (Component) => {
   return Wrapper;
 };
 WithRouter.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.number,
 };
