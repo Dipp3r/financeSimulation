@@ -100,7 +100,7 @@ class ProfileComp extends React.Component {
         holder.className = "starHolder starEmpty";
       }
     });
-    if (starCount == 7) {
+    if (JSON.parse(localStorage.getItem("isEnd"))) {
       if (!JSON.parse(sessionStorage.getItem("cardAnimationEnd"))) {
         document.querySelector("#card").style.animationName = "cardRotate";
         setTimeout(() => {
