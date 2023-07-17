@@ -141,7 +141,7 @@ export default class PlayersPage extends React.Component {
           {this.state.playersList.length > 0 ? (
             this.state.playersList.map((element) => element)
           ) : (
-            <div>
+            <div id="emptyPlayersPg">
               <div className="hourglass"></div>
               <p>Waiting for players to join . . .</p>
             </div>

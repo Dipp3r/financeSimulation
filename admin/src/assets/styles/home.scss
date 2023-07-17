@@ -1055,7 +1055,8 @@
           }
         }
         #playersList {
-          div {
+          #emptyPlayersPg{
+            transform: translateY(-50px);
             height:calc(100vh - 500px);
             @include flex(column,center,center);
 
