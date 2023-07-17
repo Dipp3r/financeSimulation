@@ -204,7 +204,8 @@
   height: 100vh;
   top: 0px;
   left: 0px;
-  background-color: #0000009c;
+  background: rgba(0, 0, 0, 0.70);
+  backdrop-filter: blur(2px);
   @include flex(column,center,center);
   #imgContainer{
     @include flex(column,center,center);

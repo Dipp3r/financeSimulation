@@ -181,3 +181,42 @@ input[type="time"] {
 ::-webkit-scrollbar-thumb:hover {
   background: transparent; /* Set the color of the thumb on hover */
 }
+
+@keyframes fill {
+  from {
+    clip-path: var(--polygonB1);
+    -webkit-clip-path: var(--polygonB1);
+  }
+  10% {
+    clip-path: var(--polygonB2);
+    -webkit-clip-path: var(--polygonB2);
+  }
+  45% {
+    clip-path: var(--polygonB3);
+    -webkit-clip-path: var(--polygonB3);
+  }
+  80% {
+    clip-path: var(--polygonB4);
+    -webkit-clip-path: var(--polygonB4);
+  }
+  85%, to {
+    clip-path: var(--polygonB5);
+    -webkit-clip-path: var(--polygonB5);
+  }
+}
+@keyframes glare {
+  from, 90% {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(3em);
+  }
+}
+@keyframes flip {
+  from, 90% {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}
