@@ -804,12 +804,6 @@ app.get("/download/:sessionId", async (req, res) => {
         rowStart +=1
       });
     }
-    const columnCount = worksheet.columns.length;
-    for (let colNumber = 1; colNumber <= columnCount; colNumber++) {
-      const column = worksheet.getColumn(colNumber);
-      column.width = 25;
-      column.height = 10; // Set desired width value
-    }
     let yearColStart = 3;
     for (tempYear; tempYear <= finalYear; tempYear++) {
       worksheet.mergeCells(`A${yearColStart}:A${yearColStart + 14}`);
@@ -820,6 +814,30 @@ app.get("/download/:sessionId", async (req, res) => {
         fgColor: { argb: getRandomLightHexColorCode() }
       };
       yearColStart += 15;
+    }
+    yearColStart+=5;
+    const stockData = {};
+    await assetInfo(stockData, group[`groupid`], '||');
+    let asset_name = [], asset_holdings = [];
+    Object.values(stockData).forEach(category=>{
+      category.forEach(s=>{
+        asset_name.push(s["name"]);
+        asset_holdings.push(s["holdings"])
+      });
+    });
+    const cash = await pool.query(`
+      SELECT cash FROM "group" WHERE groupid = ${group["groupid"]}
+    `);
+    const networth = asset_holdings.reduce((acc, curr) => acc + curr, 0) + cash.rows[0]["cash"];
+    asset_name.push("NetWorth");
+    asset_holdings.push(networth);
+    worksheet.spliceRows(yearColStart,1,asset_name);
+    worksheet.spliceRows(yearColStart+1,1,asset_holdings);
+    const columnCount = worksheet.columns.length;
+    for (let colNumber = 1; colNumber <= columnCount; colNumber++) {
+      const column = worksheet.getColumn(colNumber);
+      column.width = 25;
+      column.height = 10; // Set desired width value
     }
     worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
       row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
