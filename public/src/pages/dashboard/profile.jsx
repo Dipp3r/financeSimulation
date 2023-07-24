@@ -66,6 +66,7 @@ class ProfileComp extends React.Component {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
         // body: JSON.stringify({"userid":localStorage.getItem('userid')})
       }

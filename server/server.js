@@ -1,5 +1,7 @@
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+const ACCESS_TOKEN_SECRET = "b02bc9f2dee680d6979ee3f66d2db6543560f0bf4bf9344a8a17b3c5f7c15703cea1103f54c553f5b31469790c26b5456c025d49d91ac84e9ce3fa216ae88d10"
 const express = require("express");
-
 const ExcelJS = require("exceljs");
 const bodyParser = require("body-parser");
 const app = express();
@@ -8,11 +10,14 @@ const cors = require("cors");
 const Pool = require("pg").Pool;
 const http = require("http");
 const server = http.createServer(app);
+const jwt = require("jsonwebtoken")
+
+
 const WebSocket = require("ws");
 const wss = new WebSocket.Server({ server });
 const upload = require("express-fileupload");
-// const fs = require("fs");
-const path = require("path");
+
+
 
 const DATA = require("./info.json");
 const { group } = require("console");
@@ -23,23 +28,23 @@ const { get } = require("https");
 
 const COINS = 500000;
 
-const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "finance",
-  password: "arun",
-  port: 5432,
-});
-
 // const pool = new Pool({
-//   user: "vittaex",
+//   user: "postgres",
 //   host: "localhost",
 //   database: "finance",
-//   password: "123456",
+//   password: "arun",
 //   port: 5432,
 // });
 
-//middleware
+const pool = new Pool({
+  user: "vittaex",
+  host: "localhost",
+  database: "finance",
+  password: "123456",
+  port: 5432,
+});
+
+
 app.use(cors());
 app.use(express.json());
 app.use(upload());
@@ -49,6 +54,37 @@ app.use(
     extended: true,
   })
 );
+
+//middleWare
+async function authenticateToken(req,res,next) {
+  const authHeader = req.headers["authorization"]
+  let token = authHeader && authHeader.split(" ")[1]
+  if (token  == null) {
+    return res.sendStatus(401);
+  }
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err,user)=>{
+    if (err || !user) {
+      return res.sendStatus(403);
+    }
+    console.log(err,user,user == {},!user)
+    //check if user exist
+    try {
+      let result = await pool.query(`SELECT userid FROM users WHERE userid = $1`,[user.userid]);
+      if (result.rowCount = 0) return res.sendStatus(403);
+      //user exist 
+      req.user  = user;
+      next()
+    } catch {
+        return res.sendStatus(403);
+      }
+  })
+
+}
+
+function generateAccessToken(user) {
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,{expiresIn: process.env.TOKEN_EXPIRE_TIME})
+}
+
 
 let allYears = "";
 DATA.year.forEach((e) => {
@@ -536,7 +572,8 @@ app.post("/signup/:id", async (request, response) => {
             name: name,
             msgType: "NewUser",
           });
-          response.status(200).send({ userid: id });
+          let token = generateAccessToken({userid: id})
+          response.status(200).send({accessToken:token, userid: id });
         } else {
           response
             .status(400)
@@ -564,6 +601,7 @@ app.post("/signup/:id", async (request, response) => {
 
 app.post("/login/:id", async (req, res) => {
   const { mobile, password } = req.body;
+  console.log(req.body,Number.parseInt(req.params.id))
   var groupid = Number.parseInt(req.params.id);
   try {
     let result = await pool.query(
@@ -576,7 +614,9 @@ app.post("/login/:id", async (req, res) => {
       const { db_password, db_groupid, userid, role } = result.rows[0];
       if (db_groupid == groupid) {
         if (db_password == password) {
-          res.send({ userid: userid, role: role });
+          //jwt
+          let token = generateAccessToken({userid: userid})
+          res.send({accessToken: token ,userid: userid, role: role });
         } else {
           res.status(401).send({ status: false, msg: "Invalid password" });
         }
@@ -993,7 +1033,7 @@ app.post("/invest", async (req, res) => {
   }
 });
 
-app.get("/portfolio/:id", async (request, response) => {
+app.get("/portfolio/:id",authenticateToken, async (request, response) => {
   const groupid = request.params.id;
   let networth = 0,
     overall = 0;

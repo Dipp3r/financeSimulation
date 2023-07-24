@@ -19,6 +19,7 @@ class NewsComp extends React.Component {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({
         year: localStorage.getItem("newsYear"),

@@ -88,6 +88,7 @@ class PortfolioComp extends React.Component {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
         // body: JSON.stringify({"userid":localStorage.getItem('userid')})
       }
@@ -128,6 +129,7 @@ class PortfolioComp extends React.Component {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({ groupid: localStorage.getItem("groupid") }),
     })

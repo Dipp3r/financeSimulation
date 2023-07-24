@@ -1,0 +1,12 @@
+POST http://localhost:3003/login/474911 HTTP/1.1
+content-Type: application/json
+
+{ 
+  "mobile": "9360748969",
+  "password": "QWERTqwert1234"
+}
+
+###
+
+GET http://localhost:3003/portfolio/474911
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjQxODk4NiwiaWF0IjoxNjkwMjI0ODA2LCJleHAiOjE2OTAyNDY0MDZ9.FQkPdVVykgVFP1A1gCIv6e4yNF_-MGg1ag7OoDpv5uo

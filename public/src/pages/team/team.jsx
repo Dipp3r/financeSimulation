@@ -52,6 +52,9 @@ class TeamComp extends React.Component {
         localStorage.getItem("groupid"),
       {
         method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       }
     )
       .then((response) => response.json())
