@@ -18,6 +18,7 @@ class IndexComp extends React.Component {
     this.state = {
       mainPage: 1,
       mainPageValue: 1,
+      isAuth: false,
     };
     this.getItem = this.getItem.bind(this);
     this.setItem = this.setItem.bind(this);
@@ -62,44 +63,109 @@ class IndexComp extends React.Component {
     localStorage.setItem("mainPageValue", value);
   }
   componentDidMount() {
-    this.toggleMainPage(localStorage.getItem("mainPageValue"));
     socket.addEventListener("open", () => {
       console.log("WebSocket connection opened");
     });
+    this.checkAuth();
   }
+  checkAuth = () => {
+    fetch(import.meta.env.VITE_API_SERVER_URL + "authAdmin", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `brear ${localStorage.getItem("accessToken")}`,
+      },
+    }).then((response) => {
+      if (response.status == 200) {
+        this.setState({ isAuth: true }, () => {
+          this.toggleMainPage(localStorage.getItem("mainPageValue"));
+        });
+      } else {
+        this.setState({ isAuth: false });
+        // document.querySelector("#passwordInput").style.borderColor = "red";
+      }
+    });
+  };
+
+  submitPassword = () => {
+    let obj = {};
+    obj.password = document.querySelector("#passwordInput").value.trim();
+    console.log(!obj.password);
+    if (!obj.password || obj.password == "") {
+      document.querySelector("#passwordInput").style.borderColor = "red";
+      return;
+    }
+    fetch(import.meta.env.VITE_API_SERVER_URL + "adminLogin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(obj),
+    })
+      .then((response) => {
+        if (response.status == 200) return response.json();
+        document.querySelector("#passwordInput").style.borderColor = "red";
+        throw new Error();
+      })
+      .then((data) => {
+        localStorage.setItem("accessToken", data.accessToken);
+        this.setState({ isAuth: true }, () => {
+          this.toggleMainPage(localStorage.getItem("mainPageValue"));
+        });
+      });
+  };
   render() {
-    return (
-      <section id="home">
-        <nav id="sideBar">
-          <img src={vittae_logo_color} alt="vittae logo" />
-          <div id="options">
-            <div
-              className="button"
-              onClick={() => {
-                this.toggleMainPage("edit");
-              }}
-            >
-              <img id="imgEdit" src={Edit} alt="editIcon" />
-              <p>Edit</p>
+    if (this.state.isAuth) {
+      return (
+        <section id="home">
+          <nav id="sideBar">
+            <img src={vittae_logo_color} alt="vittae logo" />
+            <div id="options">
+              <div
+                className="button"
+                onClick={() => {
+                  this.toggleMainPage("edit");
+                }}
+              >
+                <img id="imgEdit" src={Edit} alt="editIcon" />
+                <p>Edit</p>
+              </div>
+              <div
+                className="button"
+                onClick={() => {
+                  this.toggleMainPage("session");
+                }}
+              >
+                <img id="imgGroup" src={Group} alt="groupIcon" />
+                <p>Sessions</p>
+              </div>
             </div>
-            <div
-              className="button"
-              onClick={() => {
-                this.toggleMainPage("session");
-              }}
-            >
-              <img id="imgGroup" src={Group} alt="groupIcon" />
-              <p>Sessions</p>
-            </div>
+            <img id="tree" src={illustration} alt="tree illustration" />
+          </nav>
+          <div id="main">
+            {this.state.mainPage}
+            {/* <SessionsComp /> */}
           </div>
-          <img id="tree" src={illustration} alt="tree illustration" />
-        </nav>
-        <div id="main">
-          {this.state.mainPage}
-          {/* <SessionsComp /> */}
-        </div>
-      </section>
-    );
+        </section>
+      );
+    } else {
+      return (
+        <section id="home">
+          <div id="loginForm">
+            <input
+              type="password"
+              id="passwordInput"
+              onInput={() => {
+                document.querySelector("#passwordInput").style.borderColor =
+                  "black";
+              }}
+              placeholder="enter password"
+            />
+            <button onClick={this.submitPassword}>submit</button>
+          </div>
+        </section>
+      );
+    }
   }
 }
 

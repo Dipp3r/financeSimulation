@@ -17,12 +17,13 @@ const WebSocket = require("ws");
 const wss = new WebSocket.Server({ server });
 const upload = require("express-fileupload");
 
-
-
 const DATA = require("./info.json");
 const { group } = require("console");
 const ASSET = require("./assetsName.json");
 const { get } = require("https");
+
+//utils 
+const secondsToHMS = require("./utils/secondsToHMS");
 
 //INITIALIZING VITTAE COIN
 
@@ -66,25 +67,37 @@ async function authenticateToken(req,res,next) {
     if (err || !user) {
       return res.sendStatus(403);
     }
-    console.log(err,user,user == {},!user)
     //check if user exist
     try {
-      let result = await pool.query(`SELECT userid FROM users WHERE userid = $1`,[user.userid]);
-      if (result.rowCount = 0) return res.sendStatus(403);
-      //user exist 
-      req.user  = user;
-      next()
+      let result 
+      if(user.type == 0){
+        //admin
+        result = ADMINS[user.userid];
+        if (!result) return res.sendStatus(403);
+        //user exist 
+        req.user  = user;
+        next()
+      } else if (user.type == 1) {
+        //user
+        result = await pool.query(`SELECT userid FROM users WHERE userid = $1`,[user.userid]);
+        if (result.rowCount = 0) return res.sendStatus(403);
+        //user exist 
+        req.user  = user;
+        next()
+      } else {
+        return res.sendStatus(403);
+      }
     } catch {
         return res.sendStatus(403);
       }
   })
-
 }
 
 function generateAccessToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,{expiresIn: process.env.TOKEN_EXPIRE_TIME})
 }
 
+let ADMINS = {};
 
 let allYears = "";
 DATA.year.forEach((e) => {
@@ -239,20 +252,6 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
   }
 }
 
-function secondsToHMS(seconds) {
-  if (!seconds) {
-    return;
-  }
-  var hours = Math.floor(seconds / 3600);
-  var minutes = Math.floor((seconds % 3600) / 60);
-  var remainingSeconds = Math.floor(seconds % 60);
-
-  var HH = hours < 10 ? "0" + hours : hours;
-  var MM = minutes < 10 ? "0" + minutes : minutes;
-  var SS = remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
-  return HH + ":" + MM + ":" + SS;
-}
-
 app.post("/start", async (req, res) => {
   let { sessionid, time } = req.body;
   time ??= secondsToHMS(remainingTime[`${sessionid}`]);
@@ -262,10 +261,10 @@ app.post("/start", async (req, res) => {
   let start = gameStatus.rows[0]["start"];
   if (start == 0) {
     await pool.query(`
-        UPDATE "session" SET start = 1 WHERE sessionid = ${sessionid}
+    UPDATE "session" SET start = 1 WHERE sessionid = ${sessionid}
       `);
-    let result = await pool.query(
-      "select year from gameData ORDER BY year ASC"
+      let result = await pool.query(
+        "select year from gameData ORDER BY year ASC"
     );
     let lastYear = result.rows.pop().year;
     let [currentYear, currentPhase] = [
@@ -284,12 +283,12 @@ app.post("/pause", async (req, res) => {
   elapsedTime = new Date().getTime() - startTime[`${sessionid}`];
   remainingTime[`${sessionid}`] = Math.round(
     (delay[`${sessionid}`] - elapsedTime) / 1000
-  );
-  pool.query(`
+    );
+    pool.query(`
     UPDATE "session" SET start = 0 WHERE sessionid = ${sessionid}
-  `);
-  console.log("paused");
-  let groups = await pool.query(`
+    `);
+    console.log("paused");
+    let groups = await pool.query(`
     SELECT groupid FROM "group" WHERE sessionid = ${sessionid}
   `);
   groups = groups.rows;
@@ -307,21 +306,38 @@ app.get("/", (request, response) => {
 
 //API(s) FOR ADMIN
 
-app.post("/createSession", async (request, response) => {
+app.post("/adminLogin", async (req,res)=>{
+  let password = req.body.password
+  if (password == process.env.ADMIN_PASSWORD){
+    let id = Math.floor(100000 + Math.random() * 900000);
+    // await pool.query(
+    //   "INSERT INTO users (userid,name,mobile,password,groupid,role,created_on) VALUES ($1, $2, $3, $4, $5, $6,$7)",
+    //   [id, "ADMIN", "0000000000", "", "0", "", new Date()]
+    // );
+    ADMINS[id] = true;
+    res.status(200).send({accessToken: generateAccessToken({userid:id, type:0})});
+  }else{
+    res.sendStatus(401);
+  }
+})
+app.get("/authAdmin", authenticateToken,(req,res)=>{
+  res.status(200).send();
+})
+app.post("/createSession",authenticateToken, async (request, response) => {
   let id = Math.floor(100000 + Math.random() * 900000);
   const { title } = request.body;
   if (title.length > 0) {
     try {
       let firstYear = await pool.query(`
-        SELECT year FROM gamedata ORDER BY year LIMIT 1
+      SELECT year FROM gamedata ORDER BY year LIMIT 1
       `);
       firstYear = firstYear.rows[0]["year"];
       await pool.query(
         `INSERT INTO session(sessionid,title,time_created,year,phase,start, ${allYears}) VALUES($1,$2,$3,$4,$5,0,0,0,0,0,0,0,0,0)`,
         [id, title, new Date(), firstYear, 1]
-      );
-      response.status(200).send({ status: true });
-    } catch (error) {
+        );
+        response.status(200).send({ status: true });
+      } catch (error) {
       console.log("Error: " + error.message);
       response.status(500).send("Error");
     }
@@ -330,7 +346,7 @@ app.post("/createSession", async (request, response) => {
   }
 });
 
-app.post("/addGroup", async (request, response) => {
+app.post("/addGroup",authenticateToken,async (request, response) => {
   let id = Math.floor(100000 + Math.random() * 900000);
   const { name, limit, sessionid } = request.body;
   if (name.length > 0) {
@@ -352,7 +368,7 @@ app.post("/addGroup", async (request, response) => {
   }
 });
 
-app.get("/sessions", async (request, response) => {
+app.get("/sessions",authenticateToken, async (request, response) => {
   try {
     var sessions = await pool.query(
       "SELECT * FROM session ORDER BY time_created DESC"
@@ -385,7 +401,7 @@ app.get("/sessions", async (request, response) => {
   }
 });
 
-app.post("/groups", async (request, response) => {
+app.post("/groups",authenticateToken, async (request, response) => {
   const { sessionid } = request.body;
   try {
     const groups = await pool.query(
@@ -410,7 +426,7 @@ app.post("/groups", async (request, response) => {
   }
 });
 
-app.get("/players", async (request, response) => {
+app.get("/players",authenticateToken, async (request, response) => {
   const { groupid } = request.body;
   try {
     const players = await pool.query(
@@ -423,7 +439,7 @@ app.get("/players", async (request, response) => {
   }
 });
 
-app.delete("/deleteGroup", async (request, response) => {
+app.delete("/deleteGroup",authenticateToken, async (request, response) => {
   const { groupid } = request.body;
   try {
     let users = await pool.query(
@@ -458,7 +474,7 @@ app.delete("/deleteGroup", async (request, response) => {
   }
 });
 
-app.delete("/removeUser", async (request, response) => {
+app.delete("/removeUser",authenticateToken, async (request, response) => {
   const { userid } = request.body;
   try {
     await pool.query(
@@ -489,7 +505,7 @@ app.delete("/removeUser", async (request, response) => {
   }
 });
 
-app.put("/assignrole", async (request, response) => {
+app.put("/assignrole",authenticateToken, async (request, response) => {
   const { userid, role } = request.body;
   try {
     if (role == "0") {
@@ -572,7 +588,7 @@ app.post("/signup/:id", async (request, response) => {
             name: name,
             msgType: "NewUser",
           });
-          let token = generateAccessToken({userid: id})
+          let token = generateAccessToken({userid: id , type: 1})
           response.status(200).send({accessToken:token, userid: id });
         } else {
           response
@@ -615,7 +631,7 @@ app.post("/login/:id", async (req, res) => {
       if (db_groupid == groupid) {
         if (db_password == password) {
           //jwt
-          let token = generateAccessToken({userid: userid})
+          let token = generateAccessToken({userid: userid, type: 1})
           res.send({accessToken: token ,userid: userid, role: role });
         } else {
           res.status(401).send({ status: false, msg: "Invalid password" });
@@ -636,7 +652,7 @@ app.post("/login/:id", async (req, res) => {
   }
 });
 
-app.get("/team/:id", async (req, res) => {
+app.get("/team/:id",authenticateToken, async (req, res) => {
   const groupid = Number.parseInt(req.params.id);
   try {
     const players = await pool.query(
@@ -649,7 +665,7 @@ app.get("/team/:id", async (req, res) => {
   }
 });
 
-app.get("/getNews", async (req, res) => {
+app.get("/getNews",authenticateToken, async (req, res) => {
   try {
     const news = await pool.query("SELECT * FROM gameData ORDER BY year ASC");
     res.status(200).send(news.rows);
@@ -659,7 +675,7 @@ app.get("/getNews", async (req, res) => {
   }
 });
 
-app.put("/editTime", async (req, res) => {
+app.put("/editTime",authenticateToken, async (req, res) => {
   const { year, phase, time } = req.body;
   try {
     const response = await pool.query(
@@ -684,7 +700,7 @@ function getRandomLightHexColorCode() {
   return colorCode;
 }
 
-app.get("/download/:sessionId", async (req, res) => {
+app.get("/download/:sessionId",authenticateToken, async (req, res) => {
   const { sessionId } = req.params;
   const info = await pool.query(`
     SELECT title, year, phase FROM "session" WHERE sessionid = ${sessionId}
@@ -869,7 +885,7 @@ app.get("/download/:sessionId", async (req, res) => {
 });
 
 
-app.put("/renameAsset", async (req, res) => {
+app.put("/renameAsset",authenticateToken, async (req, res) => {
   const { assetId, new_name } = req.body;
   try {
     const result = await pool.query(
@@ -898,7 +914,7 @@ app.put("/renameAsset", async (req, res) => {
   }
 });
 
-app.delete("/deleteSession", async (req, res) => {
+app.delete("/deleteSession",authenticateToken, async (req, res) => {
   const { sessionid } = req.body;
   try {
     const promises = [];
@@ -943,7 +959,7 @@ app.delete("/deleteSession", async (req, res) => {
   }
 });
 
-app.get("/getAssets", async (req, res) => {
+app.get("/getAssets",authenticateToken, async (req, res) => {
   try {
     const result = await pool.query(
       "SELECT id, asset_type, asset_name FROM assets ORDER BY asset_type, asset_name"
@@ -970,7 +986,7 @@ app.get("/getAssets", async (req, res) => {
   }
 });
 
-app.put("/renameGroup", async (req, res) => {
+app.put("/renameGroup",authenticateToken, async (req, res) => {
   const { groupid, name } = req.body;
   try {
     await pool.query(
@@ -1039,7 +1055,7 @@ async function assetInfo(assets, groupid, OP) {
   });
 }
 
-app.post("/invest", async (req, res) => {
+app.post("/invest",authenticateToken, async (req, res) => {
   const { groupid } = req.body;
   try {
     const assets = {};
@@ -1142,7 +1158,7 @@ app.get("/portfolio/:id",authenticateToken, async (request, response) => {
   }
 });
 
-app.post("/trade", async (req, res) => {
+app.post("/trade",authenticateToken, async (req, res) => {
   const { groupid, stockid } = req.body;
   try {
     let cash = await pool.query(`
@@ -1161,7 +1177,7 @@ app.post("/trade", async (req, res) => {
   }
 });
 
-app.put("/buy", async (req, res) => {
+app.put("/buy",authenticateToken, async (req, res) => {
   const { groupid, stockid, amount } = req.body;
   try {
     const cash = await pool.query(`
@@ -1202,7 +1218,7 @@ app.put("/buy", async (req, res) => {
   }
 });
 
-app.put("/sell", async (req, res) => {
+app.put("/sell",authenticateToken, async (req, res) => {
   const { groupid, stockid, amount } = req.body;
   try {
     const asset_holdings = await pool.query(`
@@ -1244,7 +1260,7 @@ app.put("/sell", async (req, res) => {
 
 // {option:1} -> year
 // {option:0} -> phase
-app.put("/gamechange", async (req, res) => {
+app.put("/gamechange",authenticateToken, async (req, res) => {
   const { sessionid, OP, option } = req.body;
   remainingTime[`${sessionid}`] = undefined;
   try {
@@ -1426,7 +1442,7 @@ app.put("/gamechange", async (req, res) => {
   }
 });
 
-app.post("/news", async (req, res) => {
+app.post("/news",authenticateToken, async (req, res) => {
   const { year, phase } = req.body;
   try {
     const stocks = await pool.query(`
@@ -1451,7 +1467,7 @@ app.post("/news", async (req, res) => {
   }
 });
 
-app.post("/end", async (req, res) => {
+app.post("/end",authenticateToken, async (req, res) => {
   const { sessionid } = req.body;
   try {
     const groups = await pool.query(`
@@ -1473,7 +1489,7 @@ app.post("/end", async (req, res) => {
   }
 });
 
-app.post("/assetInfo",async (req,res)=>{
+app.post("/assetInfo",authenticateToken,async (req,res)=>{
   const {assetid} = req.body;
   try {
     const info = await pool.query(`
@@ -1485,7 +1501,7 @@ app.post("/assetInfo",async (req,res)=>{
   }
 })
 
-app.put("/updateInfo",async (req,res)=>{
+app.put("/updateInfo",authenticateToken,async (req,res)=>{
   const {assetid, text} = req.body;
   try {
     await pool.query(`

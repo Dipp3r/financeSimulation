@@ -13,6 +13,9 @@ export default class NewsViewer extends React.Component {
   fetchNewsList = () => {
     fetch(import.meta.env.VITE_API_SERVER_URL + "getNews", {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
     })
       .then((response) => response.json())
       .then((data) => {

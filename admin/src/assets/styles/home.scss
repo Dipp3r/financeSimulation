@@ -3,6 +3,21 @@
 #home {
   overflow: hidden;
   @include flex(row, flex-start, flex-start);
+  #loginForm {
+    width: 100vw;
+    height: 100vh;
+    @include flex(column, center, center);
+    button {
+      height: 30px;
+      margin: 5px;
+      border-radius: 5px;
+      &:hover {
+        background-color: #223f80;
+        color: white;
+      }
+    }
+  }
+
   #sideBar {
     padding-top: 30px;
     position: relative;

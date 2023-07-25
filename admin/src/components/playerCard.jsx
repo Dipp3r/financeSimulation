@@ -25,7 +25,10 @@ export default class PlayerComp extends React.Component {
     obj.userid = this.state.userid;
     fetch(import.meta.env.VITE_API_SERVER_URL + `removeUser`, {
       method: "DELETE",
-      headers: { "Content-type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
       body: JSON.stringify(obj),
     });
   };

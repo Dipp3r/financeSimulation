@@ -22,7 +22,10 @@ export default class DeletePrompt extends React.Component {
           (this.props.type == "session" ? "deleteSession" : "deleteGroup"),
         {
           method: "DELETE",
-          headers: { "Content-type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
           body: JSON.stringify(obj),
         }
       ).then((response) => {

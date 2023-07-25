@@ -168,6 +168,10 @@ export default class SessionsViewer extends React.Component {
   fetchSessionsList = () => {
     fetch(import.meta.env.VITE_API_SERVER_URL + "sessions", {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
     })
       .then((response) => {
         return response.json();

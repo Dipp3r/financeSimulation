@@ -16,6 +16,7 @@ export default class AssetsComp extends React.Component {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({
         assetId: this.props.info.id,

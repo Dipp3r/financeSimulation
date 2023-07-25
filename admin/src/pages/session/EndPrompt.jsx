@@ -11,7 +11,10 @@ export default class EndPrompt extends React.Component {
       target.style.borderColor = "black";
       fetch(import.meta.env.VITE_API_SERVER_URL + "end", {
         method: "POST",
-        headers: { "Content-type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
         body: JSON.stringify(obj),
       }).then((response) => {
         if (response.status == 200) this.props.toggleEndPromp();

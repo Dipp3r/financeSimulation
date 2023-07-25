@@ -43,6 +43,9 @@ export default class AssetsViewer extends React.Component {
   fetchList = () => {
     fetch(import.meta.env.VITE_API_SERVER_URL + "getAssets", {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
     })
       .then((response) => response.json())
       .then((data) => {

@@ -24,6 +24,7 @@ export default class AddInfoPrompt extends React.Component {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({ assetid: this.props.assetId }),
     })
@@ -40,6 +41,7 @@ export default class AddInfoPrompt extends React.Component {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({
         assetid: this.props.assetId,
