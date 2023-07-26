@@ -1,6 +1,5 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
-const ACCESS_TOKEN_SECRET = "b02bc9f2dee680d6979ee3f66d2db6543560f0bf4bf9344a8a17b3c5f7c15703cea1103f54c553f5b31469790c26b5456c025d49d91ac84e9ce3fa216ae88d10"
 const express = require("express");
 const ExcelJS = require("exceljs");
 const bodyParser = require("body-parser");
@@ -15,12 +14,9 @@ const jwt = require("jsonwebtoken")
 
 const WebSocket = require("ws");
 const wss = new WebSocket.Server({ server });
-const upload = require("express-fileupload");
 
 const DATA = require("./info.json");
-const { group } = require("console");
 const ASSET = require("./assetsName.json");
-const { get } = require("https");
 
 //utils 
 const secondsToHMS = require("./utils/secondsToHMS");
@@ -48,7 +44,6 @@ const pool = new Pool({
 
 app.use(cors());
 app.use(express.json());
-app.use(upload());
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
