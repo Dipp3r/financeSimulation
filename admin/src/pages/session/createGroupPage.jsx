@@ -22,6 +22,10 @@ export default class CreateGroupPage extends React.Component {
       body: JSON.stringify(obj),
     })
       .then((response) => {
+        if (response.status == 403 || response.status == 401) {
+          this.props.setItem({ isAuth: false });
+          throw new Error("unAuth");
+        }
         if (response.status == 200 || response.status == 201) {
           this.props.toggleSession("groupPage");
         }
@@ -74,4 +78,6 @@ export default class CreateGroupPage extends React.Component {
 
 CreateGroupPage.propTypes = {
   toggleSession: PropTypes.func.isRequired,
+  setItem: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
 };

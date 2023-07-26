@@ -33,6 +33,11 @@ export default class PlayerComp extends React.Component {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify(obj),
+    }).then((response) => {
+      if (response.status == 403 || response.status == 401) {
+        this.props.setItem({ isAuth: false });
+        throw new Error("unAuth");
+      }
     });
   };
   componentDidUpdate(prevProps) {
@@ -78,4 +83,6 @@ export default class PlayerComp extends React.Component {
 PlayerComp.propTypes = {
   playerObj: PropTypes.object.isRequired,
   fetchPlayerList: PropTypes.func.isRequired,
+  setItem: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
 };

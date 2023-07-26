@@ -43,16 +43,40 @@ class SessionsComp extends React.Component {
         );
         break;
       case "playersPage":
-        displayComp = <PlayersPage toggleSession={this.toggleSession} />;
+        displayComp = (
+          <PlayersPage
+            toggleSession={this.toggleSession}
+            setItem={this.props.setItem}
+            getItem={this.props.getItem}
+          />
+        );
         break;
       case "createSessionPage":
-        displayComp = <CreateSessionPage toggleSession={this.toggleSession} />;
+        displayComp = (
+          <CreateSessionPage
+            toggleSession={this.toggleSession}
+            setItem={this.props.setItem}
+            getItem={this.props.getItem}
+          />
+        );
         break;
       case "createGroupPage":
-        displayComp = <CreateGroupPage toggleSession={this.toggleSession} />;
+        displayComp = (
+          <CreateGroupPage
+            toggleSession={this.toggleSession}
+            setItem={this.props.setItem}
+            getItem={this.props.getItem}
+          />
+        );
         break;
       case "groupPage":
-        displayComp = <GroupPage toggleSession={this.toggleSession} />;
+        displayComp = (
+          <GroupPage
+            toggleSession={this.toggleSession}
+            setItem={this.props.setItem}
+            getItem={this.props.getItem}
+          />
+        );
         break;
     }
     localStorage.setItem("sessionPage", value);

@@ -22,7 +22,11 @@ export default class AssetsComp extends React.Component {
         assetId: this.props.info.id,
         new_name: target.value.trim(),
       }),
-    }).then(() => {
+    }).then((response) => {
+      if (response.status == 403 || response.status == 401) {
+        this.props.setItem({ isAuth: false });
+        throw new Error("unAuth");
+      }
       this.props.info.name = target.value.trim();
     });
   };
@@ -62,4 +66,6 @@ AssetsComp.propTypes = {
   index: PropTypes.number,
   info: PropTypes.object.isRequired,
   toggleaddInfoPrompt: PropTypes.func.isRequired,
+  setItem: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
 };

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 // import NewsComp from "@components/newsComp";
 import AssetsViewer from "./assetsViewer";
 import NewsViewer from "./newsViewer";
@@ -76,9 +77,23 @@ class EditComp extends React.Component {
             News
           </button>
         </div>
-        {this.state.editMainSection == "0" ? <AssetsViewer /> : <NewsViewer />}
+        {this.state.editMainSection == "0" ? (
+          <AssetsViewer
+            setItem={this.props.setItem}
+            getItem={this.props.getItem}
+          />
+        ) : (
+          <NewsViewer
+            setItem={this.props.setItem}
+            getItem={this.props.getItem}
+          />
+        )}
       </div>
     );
   }
 }
+EditComp.propTypes = {
+  setItem: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
+};
 export default EditComp;

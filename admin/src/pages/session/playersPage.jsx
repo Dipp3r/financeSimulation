@@ -47,6 +47,11 @@ export default class PlayersPage extends React.Component {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify(obj),
+    }).then((response) => {
+      if (response.status == 403 || response.status == 401) {
+        this.props.setItem({ isAuth: false });
+        throw new Error("unAuth");
+      }
     });
   };
   fetchPlayerList = () => {
@@ -60,7 +65,13 @@ export default class PlayersPage extends React.Component {
         },
       }
     )
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status == 403 || response.status == 401) {
+          this.props.setItem({ isAuth: false });
+          throw new Error("unAuth");
+        }
+        return response.json();
+      })
       .then((data) => {
         let playersList = [];
         data.map((player) => {
@@ -69,6 +80,8 @@ export default class PlayersPage extends React.Component {
               playerObj={player}
               fetchPlayerList={this.fetchPlayerList}
               key={player.userid}
+              setItem={this.props.setItem}
+              getItem={this.props.getItem}
             />
           );
         });
@@ -157,4 +170,6 @@ export default class PlayersPage extends React.Component {
 }
 PlayersPage.propTypes = {
   toggleSession: PropTypes.func.isRequired,
+  setItem: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
 };

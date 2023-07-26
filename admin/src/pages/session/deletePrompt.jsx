@@ -29,6 +29,10 @@ export default class DeletePrompt extends React.Component {
           body: JSON.stringify(obj),
         }
       ).then((response) => {
+        if (response.status == 403 || response.status == 401) {
+          this.props.setItem({ isAuth: false });
+          throw new Error("unAuth");
+        }
         if (response.status == 200) {
           this.props.toggleDeletePromp(false);
         }
@@ -81,4 +85,6 @@ DeletePrompt.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   toggleDeletePromp: PropTypes.func.isRequired,
+  setItem: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
 };

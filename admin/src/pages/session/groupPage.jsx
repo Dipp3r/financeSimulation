@@ -141,6 +141,10 @@ export default class GroupPage extends React.Component {
         }),
       }
     ).then((response) => {
+      if (response.status == 403 || response.status == 401) {
+        this.props.setItem({ isAuth: false });
+        throw new Error("unAuth");
+      }
       if (response.status == 200) {
         let isRunning = this.state.isRunning;
         this.setState({ isRunning: !isRunning, newTime: null });
@@ -165,7 +169,13 @@ export default class GroupPage extends React.Component {
         option: option == "year" ? "1" : "0",
       }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status == 403 || response.status == 401) {
+          this.props.setItem({ isAuth: false });
+          throw new Error("unAuth");
+        }
+        return response.json();
+      })
       .then((message) => {
         this.setState({
           year: message.year,
@@ -191,6 +201,10 @@ export default class GroupPage extends React.Component {
       }),
     })
       .then((response) => {
+        if (response.status == 403 || response.status == 401) {
+          this.props.setItem({ isAuth: false });
+          throw new Error("unAuth");
+        }
         return response.json();
       })
       .then((data) => {
@@ -397,4 +411,6 @@ export default class GroupPage extends React.Component {
 }
 GroupPage.propTypes = {
   toggleSession: PropTypes.func.isRequired,
+  setItem: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
 };

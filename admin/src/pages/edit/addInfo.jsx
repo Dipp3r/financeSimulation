@@ -47,6 +47,11 @@ export default class AddInfoPrompt extends React.Component {
         assetid: this.props.assetId,
         text: this.state.value,
       }),
+    }).then((response) => {
+      if (response.status == 403 || response.status == 401) {
+        this.props.setItem({ isAuth: false });
+        throw new Error("unAuth");
+      }
     });
   };
   componentDidUpdate(prevProps) {
@@ -109,4 +114,6 @@ AddInfoPrompt.propTypes = {
   assetId: PropTypes.number.isRequired,
   assetName: PropTypes.string.isRequired,
   toggleaddInfoPrompt: PropTypes.func.isRequired,
+  setItem: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
 };

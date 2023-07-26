@@ -1,6 +1,7 @@
 import React from "react";
 import AssetsComp from "./assetComp";
 import AddInfoPrompt from "./addInfo";
+import PropTypes from "prop-types";
 
 export default class AssetsViewer extends React.Component {
   constructor(props) {
@@ -47,7 +48,13 @@ export default class AssetsViewer extends React.Component {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status == 403 || response.status == 401) {
+          this.props.setItem({ isAuth: false });
+          throw new Error("unAuth");
+        }
+        return response.json();
+      })
       .then((data) => {
         this.setState(data, () => {
           // console.log(this.state);
@@ -74,6 +81,8 @@ export default class AssetsViewer extends React.Component {
           toggleaddInfoPrompt={this.toggleaddInfoPrompt}
           assetId={this.state.assetId}
           assetName={this.state.assetName}
+          setItem={this.props.setItem}
+          getItem={this.props.getItem}
         />
 
         <div id="top">
@@ -95,6 +104,8 @@ export default class AssetsViewer extends React.Component {
                 index={index + 1}
                 info={assets}
                 toggleaddInfoPrompt={this.toggleaddInfoPrompt}
+                setItem={this.props.setItem}
+                getItem={this.props.getItem}
               />
             );
           })}
@@ -103,3 +114,7 @@ export default class AssetsViewer extends React.Component {
     );
   }
 }
+AssetsViewer.propTypes = {
+  setItem: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
+};
