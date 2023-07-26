@@ -29,21 +29,21 @@ const secondsToHMS = require("./utils/secondsToHMS");
 
 const COINS = 500000;
 
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "finance",
-//   password: "arun",
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: "vittaex",
+  user: "postgres",
   host: "localhost",
   database: "finance",
-  password: "123456",
+  password: "arun",
   port: 5432,
 });
+
+// const pool = new Pool({
+//   user: "vittaex",
+//   host: "localhost",
+//   database: "finance",
+//   password: "123456",
+//   port: 5432,
+// });
 
 
 app.use(cors());
@@ -252,7 +252,7 @@ async function updateGame(phase = 1, year = 1, lastYear = 0, session, time) {
   }
 }
 
-app.post("/start", async (req, res) => {
+app.post("/start",authenticateToken, async (req, res) => {
   let { sessionid, time } = req.body;
   time ??= secondsToHMS(remainingTime[`${sessionid}`]);
   const gameStatus = await pool.query(`
@@ -276,7 +276,7 @@ app.post("/start", async (req, res) => {
   }
 });
 
-app.post("/pause", async (req, res) => {
+app.post("/pause",authenticateToken, async (req, res) => {
   const { sessionid } = req.body;
   console.log("pause:", holdingsUpt);
   clearTimeout(timer_key[`${sessionid}`]);
@@ -1060,6 +1060,12 @@ app.post("/invest",authenticateToken, async (req, res) => {
   try {
     const assets = {};
     await assetInfo(assets, groupid, "&&");
+    let cashAmt = await pool.query(
+      'SELECT cash FROM "group" WHERE groupid = $1',
+      [groupid]
+    );
+    cashAmt = cashAmt.rows[0];
+    assets["cash"] = cashAmt.cash;
     res.status(200).send(assets);
   } catch (err) {
     console.log("error", err);

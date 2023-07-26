@@ -11,4 +11,4 @@ function secondsToHMS(seconds) {
   var SS = remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
   return HH + ":" + MM + ":" + SS;
 }
-module.exports = { secondsToHMS };
+module.exports = secondsToHMS;

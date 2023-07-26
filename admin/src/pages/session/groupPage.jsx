@@ -133,6 +133,7 @@ export default class GroupPage extends React.Component {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
         body: JSON.stringify({
           sessionid: localStorage.getItem("currentSessionID"),

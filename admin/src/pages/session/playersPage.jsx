@@ -55,6 +55,9 @@ export default class PlayersPage extends React.Component {
         `team/${this.state.groupInfo.groupid}`,
       {
         method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       }
     )
       .then((response) => response.json())
