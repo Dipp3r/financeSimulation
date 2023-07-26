@@ -11,6 +11,8 @@ import Edit_white from "@assets/images/Edit_white.svg";
 import Group_white from "@assets/images/Group_white.svg";
 import vittae_logo_color from "@assets/images/vittae_logo_color.svg";
 import illustration from "@assets/images/illustration.svg";
+import coin from "@assets/images/coin.svg";
+
 const socket = new WebSocket(import.meta.env.VITE_API_WEBSOCKET_URL);
 class IndexComp extends React.Component {
   constructor(props) {
@@ -151,17 +153,25 @@ class IndexComp extends React.Component {
     } else {
       return (
         <section id="home">
-          <div id="loginForm">
-            <input
-              type="password"
-              id="passwordInput"
-              onInput={() => {
-                document.querySelector("#passwordInput").style.borderColor =
-                  "black";
-              }}
-              placeholder="enter password"
-            />
-            <button onClick={this.submitPassword}>submit</button>
+          <img id="tree" src={illustration} alt="tree illustration" />
+          <div id="login">
+            <p id="title1">Finance</p>
+            <div id="title2">
+              <p>Simulator</p>
+              <img src={coin} alt="coin" />
+            </div>
+            <div id="loginForm">
+              <input
+                type="password"
+                id="passwordInput"
+                onInput={() => {
+                  document.querySelector("#passwordInput").style.borderColor =
+                    "black";
+                }}
+                placeholder="Password"
+              />
+              <button onClick={this.submitPassword}>Submit</button>
+            </div>
           </div>
         </section>
       );
