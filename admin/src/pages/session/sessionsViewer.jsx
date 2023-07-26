@@ -20,14 +20,37 @@ export default class SessionsViewer extends React.Component {
     };
   }
   downloadFile = (id, title) => {
-    const fileName = "session_" + title + ".xlsx";
+    const fileName = title + ".xlsx";
     const downloadUrl = import.meta.env.VITE_API_SERVER_URL + "download/" + id;
-
     const link = document.createElement("a");
     link.href = downloadUrl;
     link.setAttribute("download", fileName);
-    link.click();
+    fetch(downloadUrl, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.blob(); // Assumes the response is a Blob (e.g., a file)
+      })
+      .then((blob) => {
+        // Create a URL for the Blob data and trigger the download
+        const blobUrl = URL.createObjectURL(blob);
+        link.href = blobUrl;
+        link.click();
+
+        // Clean up the URL object after the download is initiated
+        URL.revokeObjectURL(blobUrl);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
+
   displaySessions = (list) => {
     let container = document.querySelector("#sessionList");
     if (!container) return;

@@ -13,7 +13,10 @@ export default class PlayerComp extends React.Component {
     obj.role = event.currentTarget.value;
     fetch(import.meta.env.VITE_API_SERVER_URL + `assignrole`, {
       method: "PUT",
-      headers: { "Content-type": "application/json" },
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
       body: JSON.stringify(obj),
     });
     this.setState({ role: obj.role });

@@ -60,6 +60,7 @@ class StocksComp extends React.Component {
         return response.json();
       })
       .then((data) => {
+        localStorage.setItem("cash", data.cash);
         this.setState(data, () => {
           this.toggleStatusButton();
         });
