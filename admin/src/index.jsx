@@ -51,7 +51,7 @@ class IndexComp extends React.Component {
         document.querySelector("#imgEdit").src = Edit;
         break;
       case "edit":
-        mainPage = <EditComp />;
+        mainPage = <EditComp setItem={this.setItem} getItem={this.getItem} />;
         document.querySelector("#imgEdit").src = Edit_white;
         document.querySelector("#imgGroup").src = Group;
         break;

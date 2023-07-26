@@ -32,6 +32,10 @@ export default class SessionsViewer extends React.Component {
       },
     })
       .then((response) => {
+        if (response.status == 403 || response.status == 401) {
+          this.props.setItem({ isAuth: false });
+          throw new Error("unAuth");
+        }
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -197,6 +201,10 @@ export default class SessionsViewer extends React.Component {
       },
     })
       .then((response) => {
+        if (response.status == 403 || response.status == 401) {
+          this.props.setItem({ isAuth: false });
+          throw new Error("unAuth");
+        }
         return response.json();
       })
       .then((data) => {

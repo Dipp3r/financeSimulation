@@ -1,5 +1,5 @@
 import React from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import NewsComp from "@components/newsComp";
 import yearPhase from "@utils/yearPhase.json";
 
@@ -17,12 +17,24 @@ export default class NewsViewer extends React.Component {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status == 403 || response.status == 401) {
+          this.props.setItem({ isAuth: false });
+          throw new Error("unAuth");
+        }
+        return response.json();
+      })
       .then((data) => {
         let newsList = [];
         data.forEach((news, index) => {
           newsList.push(
-            <NewsComp info={news} key={index} phases={yearPhase[news.year]} />
+            <NewsComp
+              info={news}
+              key={index}
+              phases={yearPhase[news.year]}
+              setItem={this.props.setItem}
+              getItem={this.props.getItem}
+            />
           );
         });
         this.setState({ newsList: newsList });
@@ -44,3 +56,7 @@ export default class NewsViewer extends React.Component {
     );
   }
 }
+NewsViewer.propTypes = {
+  setItem: PropTypes.func.isRequired,
+  getItem: PropTypes.func.isRequired,
+};
