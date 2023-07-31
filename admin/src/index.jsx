@@ -153,7 +153,7 @@ class IndexComp extends React.Component {
     } else {
       return (
         <section id="home">
-          <img id="tree" src={illustration} alt="tree illustration" />
+          <img id="tree1" src={illustration} alt="tree illustration" />
           <div id="login">
             <p id="title1">Finance</p>
             <div id="title2">
