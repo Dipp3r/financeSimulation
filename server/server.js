@@ -10,7 +10,7 @@ const Pool = require("pg").Pool;
 const http = require("http");
 const server = http.createServer(app);
 const jwt = require("jsonwebtoken")
-
+const pool = require("./connect")
 
 const WebSocket = require("ws");
 const wss = new WebSocket.Server({ server });
@@ -23,23 +23,7 @@ const secondsToHMS = require("./utils/secondsToHMS");
 
 //INITIALIZING VITTAE COIN
 
-const COINS = 500000;
-
-const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "finance",
-  password: "arun",
-  port: 5432,
-});
-
-// const pool = new Pool({
-//   user: "vittaex",
-//   host: "localhost",
-//   database: "finance",
-//   password: "123456",
-//   port: 5432,
-// });
+const COINS = 50000;
 
 
 app.use(cors());
