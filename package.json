@@ -2,6 +2,8 @@
   "dependencies": {
     "create-vite": "^4.3.2",
     "nodemon": "^2.0.22",
+    "pg": "^8.11.2",
+    "sequelize": "^6.32.1",
     "vite": "^4.3.9"
   },
   "scripts": {
